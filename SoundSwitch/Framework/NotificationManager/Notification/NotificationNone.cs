@@ -35,6 +35,8 @@ internal class NotificationNone : INotification
 
     public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId) { }
 
+    public void NotifyAppRuleNoProcess(AppSoundRule rule) { }
+
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState) { }
 
     public void OnSoundChanged(CachedSound newSound) { }

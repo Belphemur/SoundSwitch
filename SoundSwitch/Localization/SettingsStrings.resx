@@ -803,6 +803,69 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.description" xml:space="preserve">
     <value>Select the process of the application whose audio you want to control. The selected devices will be automatically applied whenever that application is running.</value>
   </data>
+  <data name="appSoundLock.rule.description.hotkey" xml:space="preserve">
+    <value>Select the process of the application whose audio you want to control. Press the hotkey to apply the next device pair to that application.</value>
+  </data>
+  <data name="appSoundLock.rule.mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="appSoundLock.rule.mode.automatic" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="appSoundLock.rule.mode.hotkey" xml:space="preserve">
+    <value>Hotkey</value>
+  </data>
+  <data name="appSoundLock.rule.shortcut" xml:space="preserve">
+    <value>Shortcut</value>
+  </data>
+  <data name="appSoundLock.rule.addPair" xml:space="preserve">
+    <value>Add pair</value>
+  </data>
+  <data name="appSoundLock.rule.updatePair" xml:space="preserve">
+    <value>Update pair</value>
+  </data>
+  <data name="appSoundLock.rule.newPair" xml:space="preserve">
+    <value>New pair</value>
+  </data>
+  <data name="appSoundLock.rule.removePair" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="appSoundLock.rule.moveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="appSoundLock.rule.moveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="appSoundLock.rule.keepCurrent" xml:space="preserve">
+    <value>Keep current</value>
+  </data>
+  <data name="appSoundLock.rule.pairCount" xml:space="preserve">
+    <value>{0} pairs · cycling</value>
+  </data>
+  <data name="appSoundLock.rule.pairCount.one" xml:space="preserve">
+    <value>{0} pair · cycling</value>
+  </data>
+  <data name="appSoundLock.rule.noProcess" xml:space="preserve">
+    <value>The application isn't running — nothing switched.</value>
+  </data>
+  <data name="appSoundLock.rule.error.hotkeyRequired" xml:space="preserve">
+    <value>Select a hotkey for this rule.</value>
+  </data>
+  <data name="appSoundLock.rule.error.pairRequired" xml:space="preserve">
+    <value>Add at least one device pair.</value>
+  </data>
+  <data name="appSoundLock.rule.error.pairIncomplete" xml:space="preserve">
+    <value>Each pair must select a playback or recording device.</value>
+  </data>
+  <data name="appSoundLock.rule.error.hotkeyInUse" xml:space="preserve">
+    <value>This hotkey is already used by another rule, profile, or application.</value>
+  </data>
+  <data name="appSoundLock.rule.error.duplicateTarget" xml:space="preserve">
+    <value>Another Hotkey rule already targets this application and window.</value>
+  </data>
+  <data name="appSoundLock.rule.confirm.trimPairs" xml:space="preserve">
+    <value>Automatic mode uses only the first device pair. Remove the other pairs?</value>
+  </data>
   <data name="appSoundLock.rule.error.patternRequired" xml:space="preserve">
     <value>At least one pattern (Process or Window) is required.</value>
   </data>

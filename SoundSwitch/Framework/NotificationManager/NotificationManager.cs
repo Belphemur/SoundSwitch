@@ -172,17 +172,27 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     /// <summary>
     /// Notify on App Rule matched
     /// </summary>
-    public void NotifyAppRuleMatched(AppSoundRule rule, uint processId)
+    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId)
     {
         if (rule.Notify)
         {
             var icon = GetIconForRule(rule, processId);
             
-            var playback = AppRuleDeviceResolver.Resolve(rule.PlaybackDevice, deviceService);
-            var recording = AppRuleDeviceResolver.Resolve(rule.RecordingDevice, deviceService);
+            var playback = AppRuleDeviceResolver.Resolve(pair.Playback, deviceService);
+            var recording = AppRuleDeviceResolver.Resolve(pair.Recording, deviceService);
             
             _switchProfileNotification.NotifyAppRuleMatched(rule, playback, recording, icon, processId);
         }
+    }
+
+    /// <summary>
+    /// Notify that an App Rule hotkey was pressed while its application isn't running.
+    /// This intentionally ignores <see cref="AppSoundRule.Notify"/>: it is an error the
+    /// user must see, and it still follows the global notification type.
+    /// </summary>
+    public void NotifyAppRuleNoProcess(AppSoundRule rule)
+    {
+        _switchProfileNotification.NotifyAppRuleNoProcess(rule);
     }
 
     private Bitmap GetIconForRule(AppSoundRule rule, uint processId)

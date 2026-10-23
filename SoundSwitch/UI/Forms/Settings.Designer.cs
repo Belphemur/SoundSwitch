@@ -880,6 +880,7 @@ sealed partial class SettingsForm
         appSoundLockListView.Name = "appSoundLockListView";
         appSoundLockListView.OwnerDraw = true;
         appSoundLockListView.ShowGroups = false;
+        appSoundLockListView.ShowItemToolTips = true;
         appSoundLockListView.Size = new System.Drawing.Size(656, 247);
         appSoundLockListView.TabIndex = 11;
         appSoundLockListView.UseCompatibleStateImageBehavior = false;

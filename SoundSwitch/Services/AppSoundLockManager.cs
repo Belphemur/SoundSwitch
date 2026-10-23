@@ -42,6 +42,12 @@ namespace SoundSwitch.Services
         /// </summary>
         private readonly HashSet<HotKey> _ruleHotkeys = new();
 
+        /// <summary>
+        /// In-memory index of the next device pair for each hotkey rule. Reset whenever
+        /// the rules change or the app restarts; it is deliberately not persisted.
+        /// </summary>
+        private readonly Dictionary<Guid, int> _nextPairIndex = new();
+
         public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager)
         {
             _configuration = configuration;
@@ -75,7 +81,7 @@ namespace SoundSwitch.Services
             if (e.ProcessId == 0 || e.ProcessId == Environment.ProcessId) return;
 
             _logger.Verbose("Foreground window changed: {WindowTitle} (PID: {ProcessId})", e.WindowName, e.ProcessId);
-            
+
             // For foreground changes, we re-apply immediately as it often means the app is interactive
             ApplyRulesToProcess(e.ProcessId, e.ProcessName, e.ProcessPath, e.WindowName, null, "foreground");
         }
@@ -95,8 +101,8 @@ namespace SoundSwitch.Services
         }
 
         /// <summary>
-        /// (Re-)register the hotkey of every enabled rule. Called on start and whenever the
-        /// rules change in Settings, so a hotkey takes effect without an app restart.
+        /// (Re-)register the hotkey of every enabled hotkey-mode rule. Called on start and
+        /// whenever the rules change in Settings, so a hotkey takes effect without an app restart.
         /// </summary>
         public void ReloadHotkeys()
         {
@@ -106,7 +112,7 @@ namespace SoundSwitch.Services
             {
                 if (_configuration.AppSoundRules == null) return;
 
-                foreach (var rule in _configuration.AppSoundRules.ToList().Where(r => r.Enabled && r.HotKey != null))
+                foreach (var rule in _configuration.AppSoundRules.ToList().Where(IsHotkeyRule))
                 {
                     var hotKey = rule.HotKey!;
                     if (_rulesByHotkey.ContainsKey(hotKey))
@@ -127,6 +133,8 @@ namespace SoundSwitch.Services
             }
         }
 
+        private static bool IsHotkeyRule(AppSoundRule rule) => rule.Enabled && rule.Mode == AppRuleMode.Hotkey && rule.HotKey is { Enabled: true };
+
         private void UnregisterRuleHotkeys()
         {
             lock (_lock)
@@ -138,6 +146,7 @@ namespace SoundSwitch.Services
 
                 _ruleHotkeys.Clear();
                 _rulesByHotkey.Clear();
+                _nextPairIndex.Clear();
             }
         }
 
@@ -150,37 +159,73 @@ namespace SoundSwitch.Services
         {
             lock (_lock)
             {
-                if (_rulesByHotkey.TryGetValue(hotKey, out var owner) && owner.Id != ruleId)
+                // A disabled Hotkey rule is not registered, so _rulesByHotkey alone
+                // would let another rule claim the same shortcut. Check the configured
+                // rules as well, excluding the rule being edited.
+                if (_configuration.AppSoundRules != null &&
+                    _configuration.AppSoundRules.Any(other =>
+                        other.Id != ruleId &&
+                        other.Mode == AppRuleMode.Hotkey &&
+                        other.HotKey != null &&
+                        other.HotKey.Equals(hotKey)))
                 {
                     return false;
+                }
+
+                if (_rulesByHotkey.TryGetValue(hotKey, out var owner))
+                {
+                    // The rule being edited already owns this hotkey: it stays valid.
+                    return owner.Id == ruleId;
                 }
             }
 
             return WindowsAPIAdapter.RegisterHotKey(hotKey) && WindowsAPIAdapter.UnRegisterHotKey(hotKey);
         }
 
+        /// <summary>
+        /// Two hotkey rules may not target the same application/window, otherwise the
+        /// cycle would be ambiguous.
+        /// </summary>
+        public bool IsHotkeyTargetAvailable(AppSoundRule rule)
+        {
+            if (_configuration.AppSoundRules == null) return true;
+
+            lock (_lock)
+            {
+                return !_configuration.AppSoundRules.Any(other =>
+                    other.Id != rule.Id &&
+                    other.Mode == AppRuleMode.Hotkey &&
+                    string.Equals(other.ProcessPath, rule.ProcessPath, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(other.WindowName, rule.WindowName, StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
         private void ApplyRulesToProcess(uint processId, string processName, string processPath, string windowTitle, HashSet<Guid>? notifiedRules, string triggerSource)
         {
             if (_configuration.AppSoundRules == null || _configuration.AppSoundRules.Count == 0) return;
 
-            foreach (var rule in _configuration.AppSoundRules.ToList().Where(r => r.Enabled))
+            foreach (var rule in _configuration.AppSoundRules.ToList().Where(r => r.Enabled && r.Mode == AppRuleMode.Automatic))
             {
                 if (!IsMatch(rule, processName, processPath, windowTitle)) continue;
-                ApplyRuleToProcess(rule, processId, processName, processPath, notifiedRules, triggerSource);
+
+                var pair = rule.DevicePairs?.FirstOrDefault();
+                if (pair == null) continue;
+
+                ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true);
             }
         }
 
         /// <summary>
-        /// Switch the given process to the rule's devices, notify and record telemetry.
+        /// Switch the given process to the pair's devices, notify and record telemetry.
         /// Shared by the automatic (process/foreground) path and the rule hotkey.
         /// </summary>
-        private void ApplyRuleToProcess(AppSoundRule rule, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource)
+        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify)
         {
             _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
 
             var changed = false;
-            changed |= SwitchRuleDevice(rule, r => r.PlaybackDevice, (r, v) => r.PlaybackDevice = v, EDataFlow.eRender, processId);
-            changed |= SwitchRuleDevice(rule, r => r.RecordingDevice, (r, v) => r.RecordingDevice = v, EDataFlow.eCapture, processId);
+            changed |= SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
+            changed |= SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
 
             if (changed)
             {
@@ -196,23 +241,38 @@ namespace SoundSwitch.Services
                 TelemetryService.TrackAppRuleActivated(basename, triggerSource);
             }
 
-            if (rule.Notify && changed)
+            if (notify && rule.Notify && changed)
             {
                 if (notifiedRules == null || !notifiedRules.Contains(rule.Id))
                 {
-                    _notificationManager.NotifyAppRuleMatched(rule, processId);
+                    _notificationManager.NotifyAppRuleMatched(rule, pair, processId);
                     notifiedRules?.Add(rule.Id);
                 }
             }
+
+            return changed;
         }
 
         /// <summary>
-        /// Apply a rule's devices to every currently running process matching it.
-        /// Triggered by the rule's optional hotkey; only the apps' own audio is switched,
-        /// the default device is never touched.
+        /// Apply the rule's next device pair to every currently running process matching it.
+        /// Triggered by the rule's hotkey; only the apps' own audio is switched, the default
+        /// device is never touched.
         /// </summary>
         private void ApplyRuleToRunningProcesses(AppSoundRule rule)
         {
+            var pairs = rule.DevicePairs;
+            if (pairs == null || pairs.Count == 0)
+            {
+                _logger.Warning("App rule hotkey pressed but rule {ProcessPattern} has no device pair", rule.ProcessPath);
+                return;
+            }
+
+            var pairIndex = GetNextPairIndex(rule.Id, pairs.Count);
+            var pair = pairs[pairIndex];
+
+            // Find every matching process first so "nothing running" always wins over an
+            // unavailable device: the user gets the actionable no-process message.
+            var matches = new List<(uint ProcessId, string ProcessName, string ProcessPath)>();
             foreach (var process in Process.GetProcesses())
             {
                 try
@@ -225,16 +285,87 @@ namespace SoundSwitch.Services
 
                     if (!IsMatch(rule, processName, processPath, windowTitle)) continue;
 
-                    ApplyRuleToProcess(rule, (uint)process.Id, processName, processPath, null, "hotkey");
+                    matches.Add(((uint)process.Id, processName, processPath));
                 }
                 catch (Exception ex)
                 {
-                    _logger.Debug(ex, "Couldn't apply app rule hotkey to process PID {PID}", process.Id);
+                    _logger.Debug(ex, "Couldn't inspect process PID {PID} for an app rule hotkey", process.Id);
                 }
                 finally
                 {
                     process.Dispose();
                 }
+            }
+
+            if (matches.Count == 0)
+            {
+                _logger.Information("App rule hotkey pressed but no running process matches {ProcessPattern}", rule.ProcessPath);
+                _notificationManager.NotifyAppRuleNoProcess(rule);
+                return;
+            }
+
+            // A pair that resolves to no live device can't be applied; keep the cycle where
+            // it is so the user can plug the device back in and press again.
+            if (!CanApplyPair(pair))
+            {
+                _logger.Warning("App rule hotkey pressed but no device of pair {Index} could be resolved for {ProcessPattern}", pairIndex, rule.ProcessPath);
+                return;
+            }
+
+            var changed = false;
+            foreach (var match in matches)
+            {
+                try
+                {
+                    changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false);
+                }
+                catch (Exception ex)
+                {
+                    // The process may have exited between enumeration and the switch.
+                    _logger.Debug(ex, "Couldn't apply app rule hotkey to process PID {PID}", match.ProcessId);
+                }
+            }
+
+            // Notify even when the endpoint already matched: the hotkey did apply this pair,
+            // and the banner is the feedback that tells the user which pair is now active.
+            // Advance first so a notification failure cannot block the cycle.
+            AdvancePairIndex(rule.Id, pairIndex, pairs.Count);
+
+            if (rule.Notify)
+            {
+                _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessId);
+            }
+
+            if (!changed)
+            {
+                _logger.Debug("App rule pair {Index} for {ProcessPattern} was already applied", pairIndex, rule.ProcessPath);
+            }
+        }
+
+        /// <summary>
+        /// Whether at least one side of the pair resolves to a live device.
+        /// </summary>
+        private static bool CanApplyPair(AppSoundRuleDevicePair pair)
+        {
+            return Resolves(pair.Playback) || Resolves(pair.Recording);
+
+            static bool Resolves(DeviceInfo? device) =>
+                device != null && AppRuleDeviceResolver.Resolve(device, AppModel.Instance.AudioDeviceLister) != null;
+        }
+
+        private int GetNextPairIndex(Guid ruleId, int pairCount)
+        {
+            lock (_lock)
+            {
+                return _nextPairIndex.TryGetValue(ruleId, out var index) && index >= 0 && index < pairCount ? index : 0;
+            }
+        }
+
+        private void AdvancePairIndex(Guid ruleId, int appliedIndex, int pairCount)
+        {
+            lock (_lock)
+            {
+                _nextPairIndex[ruleId] = pairCount <= 0 ? 0 : (appliedIndex + 1) % pairCount;
             }
         }
 
@@ -252,15 +383,15 @@ namespace SoundSwitch.Services
         }
 
         /// <summary>
-        /// Resolve the rule's stored device against the active devices, switch the process to it and
+        /// Resolve the pair's stored device against the active devices, switch the process to it and
         /// self-heal the stored <see cref="DeviceInfo"/> when the live device differs (new id or name,
         /// e.g. after a driver update). This is what keeps rules working and turns the migrated
         /// name=id placeholder rules back into properly named rules after the first successful match.
         /// </summary>
         /// <returns>`true` when the process was switched to the device.</returns>
-        private bool SwitchRuleDevice(AppSoundRule rule, Func<AppSoundRule, DeviceInfo?> getter, Action<AppSoundRule, DeviceInfo> setter, EDataFlow flow, uint processId)
+        private bool SwitchRuleDevice(AppSoundRuleDevicePair pair, Func<AppSoundRuleDevicePair, DeviceInfo?> getter, Action<AppSoundRuleDevicePair, DeviceInfo> setter, EDataFlow flow, uint processId)
         {
-            var stored = getter(rule);
+            var stored = getter(pair);
             if (stored == null) return false;
 
             var resolved = AppRuleDeviceResolver.Resolve(stored, AppModel.Instance.AudioDeviceLister);
@@ -270,11 +401,11 @@ namespace SoundSwitch.Services
                 return false;
             }
 
-#pragma warning disable CS0618 // Type or member is obsolete
             var healed = false;
+#pragma warning disable CS0618 // Type or member is obsolete
             if (resolved.Id != stored.Id || resolved.Name != stored.Name)
             {
-                setter(rule, new DeviceInfo(resolved.Name, resolved.Id, resolved.Type, resolved.IsUsb, DateTime.UtcNow));
+                setter(pair, new DeviceInfo(resolved.Name, resolved.Id, resolved.Type, resolved.IsUsb, DateTime.UtcNow));
                 healed = true;
             }
 #pragma warning restore CS0618 // Type or member is obsolete

@@ -123,6 +123,17 @@ internal class NotificationBanner : INotification
         _bannerManager.ShowNotification(bannerData);
     }
 
+    public void NotifyAppRuleNoProcess(AppSoundRule rule)
+    {
+        var content = NotificationContentBuilder.BuildAppRuleNoProcess();
+        var bannerData = CreateBannerData();
+        bannerData.Priority = content.Priority;
+        bannerData.Image = content.Image;
+        bannerData.Title = content.Title;
+        bannerData.Text = content.Text;
+        _bannerManager.ShowNotification(bannerData);
+    }
+
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
         var microphoneMuteBanner = newMuteState ? Configuration.MicrophoneMuteBanner : Configuration.MicrophoneUnmuteBanner;
