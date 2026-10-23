@@ -56,6 +56,12 @@ public interface INotification : IEnumImpl<NotificationType>
     void NotifyAppRuleMatched(AppSoundRule rule, [CanBeNull] DeviceFullInfo playback, [CanBeNull] DeviceFullInfo recording, [CanBeNull] Bitmap icon, uint processId);
 
     /// <summary>
+    /// Notify that an App Rule hotkey was pressed but its application isn't running
+    /// </summary>
+    /// <param name="rule"></param>
+    void NotifyAppRuleNoProcess(AppSoundRule rule);
+
+    /// <summary>
     /// Notify about the mute state having changed
     /// </summary>
     void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState);

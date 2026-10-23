@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -17,61 +18,73 @@ public partial class UpsertAppSoundLockRule : Form
     private readonly bool _editing;
     private readonly List<DeviceFullInfo> _playbacks;
     private readonly List<DeviceFullInfo> _recordings;
-    private TextBox _txtProcessPath;
-    private CheckBox _chkCaseSensitive;
+    private readonly List<AppSoundRuleDevicePair> _pairs;
+    private int _selectedPairIndex = -1;
+    private bool _initializing;
+    private bool _handlingModeChange;
+    private bool _formLoaded;
+    private bool _loadingPairBuilder;
+    private bool _pairPlaybackDirty;
+    private bool _pairRecordingDirty;
 
     public AppSoundRule Rule => _rule;
 
     public UpsertAppSoundLockRule(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, bool editing = false)
     {
+        _initializing = true;
         _rule = editing ? rule.Copy() : rule;
         _editing = editing;
         _playbacks = playbacks.ToList();
         _recordings = recordings.ToList();
+        _pairs = _rule.DevicePairs?.Select(pair => pair.Copy()).ToList() ?? new List<AppSoundRuleDevicePair>();
+
         InitializeComponent();
         LocalizeForm();
-        InitComboBoxes(_playbacks, _recordings);
+        InitComboBoxes();
         InitializeFromRule();
+
+        hotKeyBox.ListenToHotkey = true;
+        hotKeyBox.HotKeyChanged += (_, _) => btnHotKeyReset.Visible = hotKeyBox.HotKey != null;
+
+        _initializing = false;
+        ApplyModeLayout();
     }
 
     private void LocalizeForm()
     {
         Text = _editing ? SettingsStrings.appSoundLock_editRule : SettingsStrings.appSoundLock_addRule;
-        lblDescription.Text = SettingsStrings.appSoundLock_rule_description;
-        lblMatchMode.Text = SettingsStrings.appSoundLock_rule_processPath;
+        lblProcessPath.Text = SettingsStrings.appSoundLock_rule_processPath;
         lblPattern.Text = SettingsStrings.appSoundLock_rule_windowTitle;
         lblRegexNotice.Text = SettingsStrings.appSoundLock_rule_regexNotice;
+        lblMode.Text = SettingsStrings.appSoundLock_rule_mode;
+        rdoAutomatic.Text = SettingsStrings.appSoundLock_rule_mode_automatic;
+        rdoHotkey.Text = SettingsStrings.appSoundLock_rule_mode_hotkey;
         lblPlayback.Text = SettingsStrings.playback;
         lblRecording.Text = SettingsStrings.recording;
+        lblHotKey.Text = SettingsStrings.appSoundLock_rule_shortcut;
+        grpHotkey.Text = SettingsStrings.hotkey;
         chkEnabled.Text = SettingsStrings.appSoundLock_rule_enabled;
+        chkCaseSensitive.Text = SettingsStrings.appSoundLock_rule_caseSensitive;
         chkNotify.Text = SettingsStrings.appSoundLock_rule_notify;
+        btnNewPair.Text = SettingsStrings.appSoundLock_rule_newPair;
+        btnRemovePair.Text = SettingsStrings.appSoundLock_rule_removePair;
+        btnMoveUp.Text = SettingsStrings.appSoundLock_rule_moveUp;
+        btnMoveDown.Text = SettingsStrings.appSoundLock_rule_moveDown;
         btnSave.Text = SettingsStrings.buttonSave;
         btnCancel.Text = SettingsStrings.buttonClose;
-
-        // Repurpose cmbMatchMode by hiding it and adding a TextBox in its place
-        cmbMatchMode.Visible = false;
-        _txtProcessPath = new TextBox
-        {
-            Location = cmbMatchMode.Location,
-            Size = cmbMatchMode.Size,
-            Anchor = cmbMatchMode.Anchor
-        };
-        Controls.Add(_txtProcessPath);
-        
-        // Add CaseSensitive checkbox
-        _chkCaseSensitive = new CheckBox
-        {
-            Text = SettingsStrings.appSoundLock_rule_caseSensitive,
-            Location = new System.Drawing.Point(chkNotify.Right + 20, chkEnabled.Top),
-            AutoSize = true
-        };
-        Controls.Add(_chkCaseSensitive);
     }
 
-    private void InitComboBoxes(IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
+    private void InitComboBoxes()
     {
+        cmbPlayback.DataSource = BuildDeviceItems(_playbacks);
+        cmbRecording.DataSource = BuildDeviceItems(_recordings);
+        cmbPairPlayback.DataSource = BuildPairItems(_playbacks);
+        cmbPairRecording.DataSource = BuildPairItems(_recordings);
+    }
 
-        var playbackItems = playbacks
+    private static IconTextComboBox.DropDownItem[] BuildDeviceItems(IEnumerable<DeviceFullInfo> devices)
+    {
+        return devices
             .OrderBy(info => info.State)
             .ThenBy(info => info.NameClean)
             .Select(info => new IconTextComboBox.DropDownItem
@@ -81,35 +94,386 @@ public partial class UpsertAppSoundLockRule : Form
                 Text = info.NameClean
             })
             .ToArray();
+    }
 
-        var recordingItems = recordings
-            .OrderBy(info => info.State)
-            .ThenBy(info => info.NameClean)
-            .Select(info => new IconTextComboBox.DropDownItem
-            {
-                IconHandle = info.SmallIcon,
-                Tag = info.Id,
-                Text = info.NameClean
-            })
-            .ToArray();
+    private static IconTextComboBox.DropDownItem[] BuildPairItems(IEnumerable<DeviceFullInfo> devices)
+    {
+        var keepCurrent = new IconTextComboBox.DropDownItem
+        {
+            // An empty string (not null) keeps the item selectable with ValueMember:
+            // a null value makes the data-bound ComboBox fall back to no selection.
+            Tag = string.Empty,
+            Text = SettingsStrings.appSoundLock_rule_keepCurrent
+        };
 
-        cmbPlayback.DataSource = playbackItems;
-        cmbRecording.DataSource = recordingItems;
+        return new[] { keepCurrent }.Concat(BuildDeviceItems(devices)).ToArray();
     }
 
     private void InitializeFromRule()
     {
-        _txtProcessPath.Text = _rule.ProcessPath;
+        txtProcessPath.Text = _rule.ProcessPath;
         txtPattern.Text = _rule.WindowName;
-        _chkCaseSensitive.Checked = _rule.CaseSensitive;
+        chkCaseSensitive.Checked = _rule.CaseSensitive;
         chkEnabled.Checked = _rule.Enabled;
         chkNotify.Checked = _rule.Notify;
+        hotKeyBox.HotKey = _rule.HotKey;
 
-        SelectDevice(cmbPlayback, _rule.PlaybackDevice, _playbacks);
-        SelectDevice(cmbRecording, _rule.RecordingDevice, _recordings);
+        var firstPair = _pairs.FirstOrDefault();
+        SelectDevice(cmbPlayback, firstPair?.Playback, _playbacks);
+        SelectDevice(cmbRecording, firstPair?.Recording, _recordings);
 
         btnPlaybackReset.Visible = cmbPlayback.SelectedIndex != -1;
         btnRecordingReset.Visible = cmbRecording.SelectedIndex != -1;
+        btnHotKeyReset.Visible = _rule.HotKey != null;
+
+        rdoAutomatic.Checked = _rule.Mode != AppRuleMode.Hotkey;
+        rdoHotkey.Checked = _rule.Mode == AppRuleMode.Hotkey;
+
+        PopulatePairList();
+        if (_pairs.Count > 0)
+        {
+            SelectPair(0);
+        }
+        else
+        {
+            ResetPairBuilder();
+        }
+    }
+
+    private void ModeChanged(object sender, EventArgs e)
+    {
+        if (_initializing || _handlingModeChange) return;
+
+        _handlingModeChange = true;
+        try
+        {
+            if (rdoHotkey.Checked)
+            {
+                // Automatic -> Hotkey: seed the pair list from the single-device combos.
+                var seededPair = BuildPairFromCombo(cmbPlayback, cmbRecording, _playbacks, _recordings);
+                if (_pairs.Count == 0)
+                {
+                    if (seededPair != null) _pairs.Add(seededPair);
+                }
+                else if (_pairs.Count == 1 && seededPair != null)
+                {
+                    _pairs[0] = seededPair;
+                }
+
+                PopulatePairList();
+                if (_pairs.Count > 0)
+                {
+                    SelectPair(0);
+                }
+                else
+                {
+                    ResetPairBuilder();
+                }
+            }
+            else
+            {
+                // Hotkey -> Automatic: Automatic only uses the first pair.
+                if (_pairs.Count > 1)
+                {
+                    var confirm = MessageBox.Show(
+                        SettingsStrings.appSoundLock_rule_confirm_trimPairs,
+                        SettingsStrings.appSoundLock_rule_mode,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (confirm != DialogResult.Yes)
+                    {
+                        rdoHotkey.Checked = true;
+                        return;
+                    }
+
+                    var first = _pairs[0];
+                    _pairs.Clear();
+                    _pairs.Add(first);
+                    PopulatePairList();
+                }
+
+                var firstPair = _pairs.FirstOrDefault();
+                if (firstPair != null)
+                {
+                    SelectDevice(cmbPlayback, firstPair.Playback, _playbacks);
+                    SelectDevice(cmbRecording, firstPair.Recording, _recordings);
+                }
+            }
+        }
+        finally
+        {
+            _handlingModeChange = false;
+        }
+
+        ApplyModeLayout();
+    }
+
+    private void ApplyModeLayout()
+    {
+        var hotkeyMode = rdoHotkey.Checked;
+        lblDescription.Text = hotkeyMode
+            ? SettingsStrings.appSoundLock_rule_description_hotkey
+            : SettingsStrings.appSoundLock_rule_description;
+
+        lblPlayback.Visible = !hotkeyMode;
+        cmbPlayback.Visible = !hotkeyMode;
+        btnPlaybackReset.Visible = !hotkeyMode && cmbPlayback.SelectedIndex != -1;
+        lblRecording.Visible = !hotkeyMode;
+        cmbRecording.Visible = !hotkeyMode;
+        btnRecordingReset.Visible = !hotkeyMode && cmbRecording.SelectedIndex != -1;
+        grpHotkey.Visible = hotkeyMode;
+
+        // The design-time coordinates are set by the constructor before the form
+        // is shown, and the framework scales them once with AutoScaleMode.Font.
+        // Mode changes after the form is loaded must apply that same font factor
+        // themselves, otherwise the moved controls land at DPI-scaled, not
+        // font-scaled, positions at 125%+ text scaling.
+        var factor = _formLoaded ? FontScaleFactor() : 1f;
+
+        var checkboxY = (int)Math.Round((hotkeyMode ? 398 : 240) * factor);
+        chkEnabled.Location = new Point((int)Math.Round(110 * factor), checkboxY);
+        chkCaseSensitive.Location = new Point((int)Math.Round(210 * factor), checkboxY);
+        chkNotify.Location = new Point((int)Math.Round(340 * factor), checkboxY);
+
+        var buttonY = (int)Math.Round((hotkeyMode ? 430 : 272) * factor);
+        btnSave.Location = new Point((int)Math.Round(378 * factor), buttonY);
+        btnCancel.Location = new Point((int)Math.Round(459 * factor), buttonY);
+
+        ClientSize = new Size((int)Math.Round(560 * factor), (int)Math.Round((hotkeyMode ? 470 : 310) * factor));
+    }
+
+    /// <summary>
+    /// Ratio between the runtime font metrics and the form's design-time font. The
+    /// framework auto-scales the designer layout by this factor on the first
+    /// <see cref="Form.AutoScaleMode.Font"/> pass; mode switches performed after
+    /// the form is shown apply it here so the two layouts line up.
+    /// </summary>
+    private float FontScaleFactor()
+    {
+        var designHeight = AutoScaleDimensions.Height;
+        if (designHeight <= 0) return 1f;
+        var currentHeight = CurrentAutoScaleDimensions.Height;
+        if (currentHeight <= 0) return 1f;
+        return currentHeight / designHeight;
+    }
+
+    private void PopulatePairList()
+    {
+        lvPairs.BeginUpdate();
+        try
+        {
+            lvPairs.Items.Clear();
+            lvPairs.Columns.Clear();
+            lvPairs.Columns.Add("#", 30);
+            lvPairs.Columns.Add(SettingsStrings.playback, 235);
+            lvPairs.Columns.Add(SettingsStrings.recording, 235);
+
+            for (var index = 0; index < _pairs.Count; index++)
+            {
+                var pair = _pairs[index];
+                var item = new ListViewItem((index + 1).ToString()) { Tag = pair };
+
+                var playbackItem = item.SubItems.Add(DeviceLabel(pair.Playback));
+                playbackItem.Tag = FindDevice(pair.Playback, _playbacks)?.SmallIcon;
+
+                var recordingItem = item.SubItems.Add(DeviceLabel(pair.Recording));
+                recordingItem.Tag = FindDevice(pair.Recording, _recordings)?.SmallIcon;
+
+                lvPairs.Items.Add(item);
+            }
+        }
+        finally
+        {
+            lvPairs.EndUpdate();
+        }
+
+        UpdatePairCount();
+        UpdatePairButtons();
+    }
+
+    private static string DeviceLabel(DeviceInfo? device)
+    {
+        return device?.NameClean ?? SettingsStrings.appSoundLock_rule_keepCurrent;
+    }
+
+    private static DeviceFullInfo? FindDevice(DeviceInfo? stored, IEnumerable<DeviceFullInfo> devices)
+    {
+        if (stored == null) return null;
+        return devices.FirstOrDefault(d => d.Id == stored.Id) ?? devices.FirstOrDefault(d => d.Equals(stored));
+    }
+
+    private void UpdatePairCount()
+    {
+        lblPairCount.Visible = _pairs.Count > 0;
+        lblPairCount.Text = string.Format(
+            _pairs.Count == 1 ? SettingsStrings.appSoundLock_rule_pairCount_one : SettingsStrings.appSoundLock_rule_pairCount,
+            _pairs.Count);
+    }
+
+    private void UpdatePairButtons()
+    {
+        var hasSelection = _selectedPairIndex >= 0 && _selectedPairIndex < _pairs.Count;
+        btnAddPair.Text = hasSelection
+            ? SettingsStrings.appSoundLock_rule_updatePair
+            : SettingsStrings.appSoundLock_rule_addPair;
+        btnNewPair.Enabled = hasSelection;
+        btnRemovePair.Enabled = hasSelection;
+        btnMoveUp.Enabled = hasSelection && _selectedPairIndex > 0;
+        btnMoveDown.Enabled = hasSelection && _selectedPairIndex < _pairs.Count - 1;
+    }
+
+    private void SelectPair(int index)
+    {
+        if (index < 0 || index >= lvPairs.Items.Count) return;
+        lvPairs.SelectedItems.Clear();
+        lvPairs.Items[index].Selected = true;
+        lvPairs.Items[index].Focused = true;
+        lvPairs.EnsureVisible(index);
+    }
+
+    private void LvPairs_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (lvPairs.SelectedIndices.Count == 0)
+        {
+            _selectedPairIndex = -1;
+            UpdatePairButtons();
+            return;
+        }
+
+        _selectedPairIndex = lvPairs.SelectedIndices[0];
+        var pair = _pairs[_selectedPairIndex];
+        LoadPairIntoBuilder(pair);
+        UpdatePairButtons();
+    }
+
+    /// <summary>
+    /// Load a stored pair into the builder. Programmatic loads reset the per-side
+    /// dirty flags so an untouched side that is temporarily unavailable is not
+    /// silently dropped on Save (see <see cref="BuildEditedPair"/>).
+    /// </summary>
+    private void LoadPairIntoBuilder(AppSoundRuleDevicePair pair)
+    {
+        _loadingPairBuilder = true;
+        try
+        {
+            SelectPairDevice(cmbPairPlayback, pair.Playback, _playbacks);
+            SelectPairDevice(cmbPairRecording, pair.Recording, _recordings);
+        }
+        finally
+        {
+            _loadingPairBuilder = false;
+        }
+
+        _pairPlaybackDirty = false;
+        _pairRecordingDirty = false;
+    }
+
+    private void ResetPairBuilder()
+    {
+        _loadingPairBuilder = true;
+        try
+        {
+            cmbPairPlayback.SelectedIndex = 0;
+            cmbPairRecording.SelectedIndex = 0;
+        }
+        finally
+        {
+            _loadingPairBuilder = false;
+        }
+
+        _pairPlaybackDirty = false;
+        _pairRecordingDirty = false;
+    }
+
+    private void CmbPairPlayback_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (!_loadingPairBuilder)
+        {
+            _pairPlaybackDirty = true;
+        }
+    }
+
+    private void CmbPairRecording_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (!_loadingPairBuilder)
+        {
+            _pairRecordingDirty = true;
+        }
+    }
+
+    private void BtnAddPair_Click(object sender, EventArgs e)
+    {
+        var pair = BuildEditedPair();
+        if (pair == null)
+        {
+            MessageBox.Show(SettingsStrings.appSoundLock_rule_error_pairIncomplete, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (_selectedPairIndex >= 0 && _selectedPairIndex < _pairs.Count)
+        {
+            var index = _selectedPairIndex;
+            _pairs[index] = pair;
+            PopulatePairList();
+            SelectPair(index);
+            return;
+        }
+
+        _pairs.Add(pair);
+        PopulatePairList();
+        SelectPair(_pairs.Count - 1);
+    }
+
+    private void BtnNewPair_Click(object sender, EventArgs e)
+    {
+        _selectedPairIndex = -1;
+        lvPairs.SelectedItems.Clear();
+        ResetPairBuilder();
+        UpdatePairButtons();
+    }
+
+    private void BtnRemovePair_Click(object sender, EventArgs e)
+    {
+        if (_selectedPairIndex < 0 || _selectedPairIndex >= _pairs.Count) return;
+
+        var index = _selectedPairIndex;
+        _pairs.RemoveAt(index);
+        _selectedPairIndex = -1;
+        PopulatePairList();
+
+        if (_pairs.Count == 0)
+        {
+            ResetPairBuilder();
+            return;
+        }
+
+        SelectPair(Math.Min(index, _pairs.Count - 1));
+    }
+
+    private void BtnMoveUp_Click(object sender, EventArgs e)
+    {
+        var index = _selectedPairIndex;
+        if (index <= 0 || index >= _pairs.Count) return;
+
+        (_pairs[index - 1], _pairs[index]) = (_pairs[index], _pairs[index - 1]);
+        PopulatePairList();
+        SelectPair(index - 1);
+    }
+
+    private void BtnMoveDown_Click(object sender, EventArgs e)
+    {
+        var index = _selectedPairIndex;
+        if (index < 0 || index >= _pairs.Count - 1) return;
+
+        (_pairs[index + 1], _pairs[index]) = (_pairs[index], _pairs[index + 1]);
+        PopulatePairList();
+        SelectPair(index + 1);
+    }
+
+    private void BtnHotKeyReset_Click(object sender, EventArgs e)
+    {
+        hotKeyBox.HotKey = null;
+        btnHotKeyReset.Visible = false;
     }
 
     private void CmbPlayback_SelectedIndexChanged(object sender, EventArgs e)
@@ -141,13 +505,13 @@ public partial class UpsertAppSoundLockRule : Form
             if (!string.IsNullOrEmpty(form.SelectedProcessPath))
             {
                 var fileName = System.IO.Path.GetFileName(form.SelectedProcessPath);
-                _txtProcessPath.Text = $".*{Regex.Escape(fileName)}.*";
+                txtProcessPath.Text = $".*{Regex.Escape(fileName)}.*";
             }
             else if (!string.IsNullOrEmpty(form.SelectedProcessName))
             {
                 var name = form.SelectedProcessName;
                 if (!name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) name += ".exe";
-                _txtProcessPath.Text = $".*{Regex.Escape(name)}.*";
+                txtProcessPath.Text = $".*{Regex.Escape(name)}.*";
             }
 
             if (!string.IsNullOrEmpty(form.SelectedWindowTitle))
@@ -162,6 +526,7 @@ public partial class UpsertAppSoundLockRule : Form
     protected override void OnShown(EventArgs e)
     {
         base.OnShown(e);
+        _formLoaded = true;
         if (!_editing)
         {
             BeginInvoke(new Action(SelectProcess));
@@ -181,7 +546,7 @@ public partial class UpsertAppSoundLockRule : Form
             return;
         }
 
-        var match = devices.FirstOrDefault(d => d.Id == stored.Id) ?? devices.FirstOrDefault(d => d.Equals(stored));
+        var match = FindDevice(stored, devices);
         if (match == null)
         {
             comboBox.SelectedIndex = -1;
@@ -192,9 +557,19 @@ public partial class UpsertAppSoundLockRule : Form
     }
 
     /// <summary>
+    /// Select a device in a pair-builder combo. Unlike the Automatic combos, the first
+    /// item is "Keep current", so a null device selects index 0 instead of clearing the combo.
+    /// </summary>
+    private static void SelectPairDevice(ComboBox comboBox, DeviceInfo? stored, IEnumerable<DeviceFullInfo> devices)
+    {
+        var match = FindDevice(stored, devices);
+        comboBox.SelectedValue = match?.Id ?? string.Empty;
+        if (comboBox.SelectedIndex == -1) comboBox.SelectedIndex = 0;
+    }
+
+    /// <summary>
     /// Build the <see cref="DeviceInfo"/> to persist from the device selected in the combo box.
     /// </summary>
-#pragma warning disable CS0618 // Type or member is obsolete
     private static DeviceInfo? GetSelectedDevice(ComboBox comboBox, IEnumerable<DeviceFullInfo> devices)
     {
         if (comboBox.SelectedValue is not string id || string.IsNullOrEmpty(id)) return null;
@@ -202,24 +577,127 @@ public partial class UpsertAppSoundLockRule : Form
         var info = devices.FirstOrDefault(d => d.Id == id);
         if (info == null) return null;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         return new DeviceInfo(info.Name, info.Id, info.Type, info.IsUsb, DateTime.UtcNow);
-    }
 #pragma warning restore CS0618 // Type or member is obsolete
+    }
+
+    private static AppSoundRuleDevicePair? BuildPairFromCombo(ComboBox playback, ComboBox recording, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings)
+    {
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = GetSelectedDevice(playback, playbacks),
+            Recording = GetSelectedDevice(recording, recordings)
+        };
+
+        return pair.HasAnyDevice ? pair : null;
+    }
+
+    /// <summary>
+    /// Build the pair from the builder combos, merging any side the user did not
+    /// touch from the stored selected pair. This keeps an unavailable side that
+    /// the builder displayed as "Keep current" in place, while a side the user
+    /// explicitly changed (including to "Keep current") is honoured.
+    /// </summary>
+    private AppSoundRuleDevicePair? BuildEditedPair()
+    {
+        var builderPair = BuildPairFromCombo(cmbPairPlayback, cmbPairRecording, _playbacks, _recordings);
+        if (builderPair == null || _selectedPairIndex < 0 || _selectedPairIndex >= _pairs.Count)
+        {
+            return builderPair;
+        }
+
+        var storedPair = _pairs[_selectedPairIndex];
+        if (!_pairPlaybackDirty)
+        {
+            builderPair.Playback = storedPair.Playback;
+        }
+        if (!_pairRecordingDirty)
+        {
+            builderPair.Recording = storedPair.Recording;
+        }
+
+        return builderPair.HasAnyDevice ? builderPair : null;
+    }
+
+    private static bool SamePair(AppSoundRuleDevicePair left, AppSoundRuleDevicePair right)
+    {
+        return left.Playback?.Id == right.Playback?.Id && left.Recording?.Id == right.Recording?.Id;
+    }
 
     private void BtnSave_Click(object sender, EventArgs e)
     {
-        _rule.ProcessPath = _txtProcessPath.Text;
+        _rule.ProcessPath = txtProcessPath.Text;
         _rule.WindowName = txtPattern.Text;
-        _rule.CaseSensitive = _chkCaseSensitive.Checked;
+        _rule.CaseSensitive = chkCaseSensitive.Checked;
         _rule.Enabled = chkEnabled.Checked;
         _rule.Notify = chkNotify.Checked;
-        _rule.PlaybackDevice = GetSelectedDevice(cmbPlayback, _playbacks);
-        _rule.RecordingDevice = GetSelectedDevice(cmbRecording, _recordings);
 
         if (string.IsNullOrWhiteSpace(_rule.ProcessPath) && string.IsNullOrWhiteSpace(_rule.WindowName))
         {
             MessageBox.Show(SettingsStrings.appSoundLock_rule_error_patternRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
+        }
+
+        if (rdoAutomatic.Checked)
+        {
+            var pair = BuildPairFromCombo(cmbPlayback, cmbRecording, _playbacks, _recordings);
+            if (pair == null)
+            {
+                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_pairRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _rule.Mode = AppRuleMode.Automatic;
+            _rule.HotKey = null;
+            _rule.DevicePairs = new List<AppSoundRuleDevicePair> { pair };
+        }
+        else
+        {
+            // Apply a builder edit that wasn't confirmed with the Add/Update button.
+            var builderPair = BuildEditedPair();
+            if (_selectedPairIndex >= 0 && _selectedPairIndex < _pairs.Count && builderPair != null)
+            {
+                _pairs[_selectedPairIndex] = builderPair;
+            }
+            else if (builderPair != null && !_pairs.Any(pair => SamePair(pair, builderPair)))
+            {
+                _pairs.Add(builderPair);
+            }
+
+            if (hotKeyBox.HotKey == null || !hotKeyBox.IsValid)
+            {
+                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_hotkeyRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!AppModel.Instance.AppSoundLockManager.IsHotkeyAvailable(hotKeyBox.HotKey, _rule.Id))
+            {
+                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_hotkeyInUse, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (_pairs.Count == 0)
+            {
+                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_pairRequired, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (_pairs.Any(pair => !pair.HasAnyDevice))
+            {
+                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_pairIncomplete, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _rule.Mode = AppRuleMode.Hotkey;
+            _rule.HotKey = hotKeyBox.HotKey;
+            _rule.DevicePairs = _pairs.Select(pair => pair.Copy()).ToList();
+
+            if (!AppModel.Instance.AppSoundLockManager.IsHotkeyTargetAvailable(_rule))
+            {
+                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_duplicateTarget, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
         }
 
         DialogResult = DialogResult.OK;

@@ -55,6 +55,11 @@ internal class NotificationWindows : INotification
         ShowToastOrBalloon(data);
     }
 
+    public void NotifyAppRuleNoProcess(AppSoundRule rule)
+    {
+        ShowToastOrBalloon(NotificationContentBuilder.BuildAppRuleNoProcess());
+    }
+
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
         var data = NotificationContentBuilder.BuildMicrophoneMuteChanged(microphoneName, newMuteState);

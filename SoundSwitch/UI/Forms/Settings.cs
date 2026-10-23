@@ -1870,10 +1870,14 @@ public sealed partial class SettingsForm : Form
     private void PopulateAppSoundLockRules()
     {
         appSoundLockListView.Columns.Clear();
-        appSoundLockListView.Columns.Add(SettingsStrings.profile_program, 150);
-        appSoundLockListView.Columns.Add(SettingsStrings.appSoundLock_rule_windowTitle, 150);
-        appSoundLockListView.Columns.Add(SettingsStrings.playback, 150);
-        appSoundLockListView.Columns.Add(SettingsStrings.recording, 150);
+        // Fixed widths keep all six columns visible in the 656 px list. Longer
+        // process/device names are ellipsized and remain available in the tooltip.
+        appSoundLockListView.Columns.Add(SettingsStrings.profile_program, 110);
+        appSoundLockListView.Columns.Add(SettingsStrings.appSoundLock_rule_windowTitle, 85);
+        appSoundLockListView.Columns.Add(SettingsStrings.playback, 125);
+        appSoundLockListView.Columns.Add(SettingsStrings.recording, 125);
+        appSoundLockListView.Columns.Add(SettingsStrings.appSoundLock_rule_mode, 75);
+        appSoundLockListView.Columns.Add(SettingsStrings.hotkey, 120);
 
         appSoundLockListView.Items.Clear();
 
@@ -1887,8 +1891,10 @@ public sealed partial class SettingsForm : Form
         appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
         foreach (var rule in AppConfigs.Configuration.AppSoundRules)
         {
-            var playbackResult = AppRuleDeviceResolver.ResolveResult(rule.PlaybackDevice, playbacks);
-            var recordingResult = AppRuleDeviceResolver.ResolveResult(rule.RecordingDevice, recordings);
+            var pairs = rule.DevicePairs ?? new List<AppSoundRuleDevicePair>();
+            var firstPair = pairs.FirstOrDefault();
+            var playbackResult = AppRuleDeviceResolver.ResolveResult(firstPair?.Playback, playbacks);
+            var recordingResult = AppRuleDeviceResolver.ResolveResult(firstPair?.Recording, recordings);
             var playback = playbackResult.IsResolved ? playbackResult.Device : null;
             var recording = recordingResult.IsResolved ? recordingResult.Device : null;
 
@@ -1914,20 +1920,55 @@ public sealed partial class SettingsForm : Form
             item.SubItems.Add(rule.WindowName);
 
             // Playback
-            var playbackSubItem = item.SubItems.Add(FormatResolvedDevice(playback, rule.PlaybackDevice, activePlaybacks));
+            var playbackText = FormatResolvedDevice(playback, firstPair?.Playback, activePlaybacks);
+            var playbackSubItem = item.SubItems.Add(playbackText);
             playbackSubItem.Tag = playback?.SmallIcon;
 
             // Recording
-            var recordingSubItem = item.SubItems.Add(FormatResolvedDevice(recording, rule.RecordingDevice, activeRecordings));
+            var recordingText = FormatResolvedDevice(recording, firstPair?.Recording, activeRecordings);
+            var recordingSubItem = item.SubItems.Add(recordingText);
             recordingSubItem.Tag = recording?.SmallIcon;
+
+            // Mode (with the pair count for Hotkey rules, where the count matters)
+            var modeText = rule.Mode == AppRuleMode.Hotkey
+                ? SettingsStrings.appSoundLock_rule_mode_hotkey
+                : SettingsStrings.appSoundLock_rule_mode_automatic;
+            if (rule.Mode == AppRuleMode.Hotkey && pairs.Count > 1)
+            {
+                modeText = $"{modeText} ({pairs.Count})";
+            }
+            item.SubItems.Add(modeText);
+
+            // Hotkey
+            item.SubItems.Add(rule.Mode == AppRuleMode.Hotkey ? rule.HotKey?.Display() ?? string.Empty : string.Empty);
+
+            if (pairs.Count > 0)
+            {
+                var tooltip = new List<string>();
+                if (!string.IsNullOrEmpty(rule.ProcessPath))
+                {
+                    tooltip.Add($"{SettingsStrings.appSoundLock_rule_processPath}: {rule.ProcessPath}");
+                }
+                if (!string.IsNullOrEmpty(rule.WindowName))
+                {
+                    tooltip.Add($"{SettingsStrings.appSoundLock_rule_windowTitle}: {rule.WindowName}");
+                }
+                for (var index = 0; index < pairs.Count; index++)
+                {
+                    var pair = pairs[index];
+                    // Resolve and format every pair the same way the cells do, so an
+                    // ambiguous or unavailable side is visible for each cycle step.
+                    var pb = AppRuleDeviceResolver.ResolveResult(pair.Playback, activePlaybacks);
+                    var rc = AppRuleDeviceResolver.ResolveResult(pair.Recording, activeRecordings);
+                    tooltip.Add($"{index + 1}. {FormatResolvedDevice(pb.IsResolved ? pb.Device : null, pair.Playback, activePlaybacks)} / " +
+                        $"{FormatResolvedDevice(rc.IsResolved ? rc.Device : null, pair.Recording, activeRecordings)}");
+                }
+                item.ToolTipText = string.Join(Environment.NewLine, tooltip);
+            }
 
             appSoundLockListView.Items.Add(item);
         }
         appSoundLockListView.ItemCheck += AppSoundLockListView_ItemCheck;
-
-        if (AppConfigs.Configuration.AppSoundRules.Count <= 0) return;
-        foreach (ColumnHeader column in appSoundLockListView.Columns)
-            column.Width = -2;
     }
 
     /// <summary>
@@ -1965,6 +2006,7 @@ public sealed partial class SettingsForm : Form
         var rule = (AppSoundRule)appSoundLockListView.Items[e.Index].Tag;
         rule.Enabled = e.NewValue == CheckState.Checked;
         AppConfigs.Configuration.Save();
+        AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
     }
 
     private void AddAppSoundRuleButton_Click(object sender, EventArgs e)
@@ -1978,6 +2020,7 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
             AppConfigs.Configuration.Save();
             TelemetryService.TrackAppRuleCreated();
+            AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
             PopulateAppSoundLockRules();
         }
     }
@@ -1996,6 +2039,7 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Remove(rule);
             AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
             AppConfigs.Configuration.Save();
+            AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
             PopulateAppSoundLockRules();
         }
     }
@@ -2010,6 +2054,7 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Remove(rule);
             AppConfigs.Configuration.Save();
             TelemetryService.TrackAppRuleDeleted();
+            AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
             PopulateAppSoundLockRules();
         }
     }

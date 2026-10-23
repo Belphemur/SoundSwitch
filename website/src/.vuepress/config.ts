@@ -80,7 +80,7 @@ export default defineUserConfig({
         children: [
           { text: "Hotkeys", link: "/usage/hotkeys.md" },
           { text: "Profiles", link: "/usage/profiles.md" },
-          { text: "App Rules", link: "/usage/app-rules.md" },
+          { text: "App Rules", link: "/usage/app-rules/" },
           { text: "Communications", link: "/usage/communications.md" },
           { text: "CLI", link: "/usage/cli.md" },
         ],
@@ -127,7 +127,18 @@ export default defineUserConfig({
             { text: "Overview", link: "/usage/README.md" },
             { text: "Hotkeys", link: "/usage/hotkeys.md" },
             { text: "Profiles", link: "/usage/profiles.md" },
-            { text: "App Rules", link: "/usage/app-rules.md" },
+            {
+              text: "App Rules",
+              collapsible: true,
+              children: [
+                { text: "Overview", link: "/usage/app-rules/" },
+                { text: "Automatic mode", link: "/usage/app-rules/automatic.md" },
+                { text: "Hotkey mode", link: "/usage/app-rules/hotkey.md" },
+                { text: "Device pairs", link: "/usage/app-rules/device-pairs.md" },
+                { text: "Examples", link: "/usage/app-rules/examples.md" },
+                { text: "Troubleshooting", link: "/usage/app-rules/troubleshooting.md" },
+              ],
+            },
             { text: "Communications", link: "/usage/communications.md" },
             { text: "CLI", link: "/usage/cli.md" },
           ],

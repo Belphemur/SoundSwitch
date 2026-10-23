@@ -141,6 +141,195 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add pair.
+        /// </summary>
+        internal static string appSoundLock_rule_addPair {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.addPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic mode uses only the first device pair. Remove the other pairs?.
+        /// </summary>
+        internal static string appSoundLock_rule_confirm_trimPairs {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.confirm.trimPairs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the process of the application whose audio you want to control. Press the hotkey to apply the next device pair to that application..
+        /// </summary>
+        internal static string appSoundLock_rule_description_hotkey {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.description.hotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Another Hotkey rule already targets this application and window..
+        /// </summary>
+        internal static string appSoundLock_rule_error_duplicateTarget {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.duplicateTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This hotkey is already used by another rule, profile, or application..
+        /// </summary>
+        internal static string appSoundLock_rule_error_hotkeyInUse {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.hotkeyInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a hotkey for this rule..
+        /// </summary>
+        internal static string appSoundLock_rule_error_hotkeyRequired {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.hotkeyRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Each pair must select a playback or recording device..
+        /// </summary>
+        internal static string appSoundLock_rule_error_pairIncomplete {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.pairIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add at least one device pair..
+        /// </summary>
+        internal static string appSoundLock_rule_error_pairRequired {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.pairRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep current.
+        /// </summary>
+        internal static string appSoundLock_rule_keepCurrent {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.keepCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mode.
+        /// </summary>
+        internal static string appSoundLock_rule_mode {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        internal static string appSoundLock_rule_mode_automatic {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.mode.automatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hotkey.
+        /// </summary>
+        internal static string appSoundLock_rule_mode_hotkey {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.mode.hotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcut.
+        /// </summary>
+        internal static string appSoundLock_rule_shortcut {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.shortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move down.
+        /// </summary>
+        internal static string appSoundLock_rule_moveDown {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.moveDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move up.
+        /// </summary>
+        internal static string appSoundLock_rule_moveUp {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.moveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New pair.
+        /// </summary>
+        internal static string appSoundLock_rule_newPair {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.newPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application isn&apos;t running — nothing switched..
+        /// </summary>
+        internal static string appSoundLock_rule_noProcess {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.noProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} pairs · cycling.
+        /// </summary>
+        internal static string appSoundLock_rule_pairCount {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.pairCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} pair · cycling.
+        /// </summary>
+        internal static string appSoundLock_rule_pairCount_one {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.pairCount.one", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        internal static string appSoundLock_rule_removePair {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.removePair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update pair.
+        /// </summary>
+        internal static string appSoundLock_rule_updatePair {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.updatePair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enabled.
         /// </summary>
         internal static string appSoundLock_rule_enabled {
