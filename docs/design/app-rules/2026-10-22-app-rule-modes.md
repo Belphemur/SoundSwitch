@@ -1,11 +1,11 @@
 # App Rules: Automatic and Hotkey modes with device-pair cycling
 
-**Status:** Draft v1 for review
+**Status:** Implemented on `feat/2496-app-rule-hotkey`
 **Author:** Hermes
 **Branch:** `feat/2496-app-rule-hotkey` (rework of PR #2522)
-**Base:** `origin/dev` (`6ce0c4d8`)
+**Base:** `origin/dev` (`ecd5ca85`)
 **Issue:** [Belphemur/SoundSwitch#2496](https://github.com/Belphemur/SoundSwitch/issues/2496) — "Assign hotkeys to switch audio output for specific applications"
-**Related:** PR #2522 (current hotkey implementation, to be reworked)
+**Related:** PR #2522 (current hotkey implementation, reworked here)
 
 ---
 
@@ -74,6 +74,7 @@ The mockup above is the design artifact for this document. It shows the same `Ad
 - **Hotkey** field, using the existing `HotKeyTextBox` component, plus a clear button.
 - A pair builder row: Playback combo + Recording combo + **Add pair**.
 - An ordered pair table with columns `#`, `Playback`, `Recording`, showing device icons where available.
+- **Update pair** replaces **Add pair** while a row is selected. **New pair** clears the selection and resets the builder to **Keep current**.
 - **Remove**, **Move up**, **Move down** buttons.
 - A `N pairs · cycling` badge next to the section title.
 - The first pair is selected by default; the selected row is the one edited by the builder or removed by the buttons.
@@ -92,12 +93,12 @@ Add a **Mode** column and keep the **Hotkey** column from PR #2522.
 |---|---|---|
 | Process Path | pattern | pattern |
 | Window Title | pattern or empty | pattern or empty |
-| Playback | device | first pair's playback, plus `(+N)` when more pairs exist |
-| Recording | device | first pair's recording, plus `(+N)` when more pairs exist |
-| Mode | `Automatic` | `Hotkey` |
+| Playback | device | first pair's playback |
+| Recording | device | first pair's recording |
+| Mode | `Automatic` | `Hotkey`, or `Hotkey (N)` when N > 1 |
 | Hotkey | empty | `Ctrl+Alt+S` |
 
-The `(+N)` suffix avoids adding a second pair-count column. Tooltips on the device cells can list every pair.
+The Mode column carries the pair count for Hotkey rules; the device columns stay readable. The row tooltip lists every pair. All six columns use fixed widths so they fit the Settings list without a horizontal scrollbar.
 
 ## 5. Data model
 
@@ -161,7 +162,8 @@ Pressing the hotkey:
 1. Resolve the rule from the hotkey map.
 2. Enumerate running processes and keep those matching the rule (same `IsMatch` logic as the automatic path).
 3. If none match: show the no-process notification and **do not advance** the cycle (§6.4).
-4. If at least one matches: apply the current pair to every matching process, notify if enabled, record telemetry, and advance the cycle.
+4. If the current pair has no resolvable device: log a warning and **do not advance** the cycle.
+5. Apply the current pair to every matching process. Record telemetry for each process that actually changed. Notify once if the rule's `Notify` flag is on. Advance the cycle once, even when the endpoint already matched.
 
 Automatic rules are never applied by the hotkey path, and Hotkey rules are never applied by the process/foreground path. The mode is the switch.
 
@@ -169,11 +171,12 @@ Automatic rules are never applied by the hotkey path, and Hotkey rules are never
 
 - The cycle index is kept in memory per rule id: `Dictionary<Guid, int> _nextPairIndex`, guarded by the existing `_lock`.
 - The first press applies pair `0`; the next press applies pair `1`; after the last pair it wraps to `0`.
-- The index advances only when at least one process was switched. A pair whose devices cannot be resolved does not advance the cycle, and the failure is logged.
+- The index advances when the rule matched a running process and the current pair has at least one resolvable device. It advances even when the process is already on that endpoint (`SwitchProcessTo` returns `false` in that case); the notification tells the user which pair is now active.
+- A pair whose devices all fail to resolve does not advance the cycle, and the failure is logged.
 - Multiple matching processes (for example several Electron children) all receive the same pair and advance the cycle once.
 - The index resets when:
   - the rule is edited,
-  - the rule is enabled or disabled,
+  - any rule is added, deleted, enabled, or disabled (all of these call `ReloadHotkeys`),
   - the rule's mode changes,
   - SoundSwitch restarts,
   - `ReloadHotkeys` runs.
@@ -224,8 +227,8 @@ On save:
 - Automatic: exactly one pair with at least one device.
 - Hotkey: a hotkey is required, and at least one pair with at least one device.
 - Every pair must have at least one side set.
-- The hotkey must pass `AppSoundLockManager.IsHotkeyAvailable(hotKey, ruleId)`, which checks other App Rules, profiles, and the OS registration.
-- Two Hotkey rules may not have the same `ProcessPath` + `WindowName` combination. Two rules cycling the same target would fight over the same sessions; the second one is rejected with a localized message.
+- The hotkey must pass `AppSoundLockManager.IsHotkeyAvailable(hotKey, ruleId)`, which checks other App Rules, profiles, and the OS registration. It returns `true` when the rule being edited already owns the hotkey, so re-saving an unchanged rule works.
+- Two Hotkey rules may not have the same `ProcessPath` + `WindowName` combination (`IsHotkeyTargetAvailable`). Two rules cycling the same target would fight over the same sessions; the second one is rejected with a localized message.
 - Disabled rules keep their configuration but are not registered and do not auto-apply.
 
 ### 6.7 Hotkey registration
@@ -237,15 +240,20 @@ On save:
 
 ## 7. Migration
 
-`AppSoundRuleMigrator.Migrate` becomes a two-stage, idempotent migration.
+`AppSoundRuleMigrator.Migrate` is a three-stage, idempotent migration.
 
-1. Existing legacy id migration: `PlaybackDeviceId` / `RecordingDeviceId` → `PlaybackDevice` / `RecordingDevice` (unchanged).
-2. Pair migration:
-   - If `DevicePairs` is null or empty and `PlaybackDevice` or `RecordingDevice` is set, add a single pair with those devices.
-   - If `Mode` is unset, default to `Automatic`.
-   - If `HotKey` is set and `Mode` is still `Automatic`, this is a rule created by PR #2522: set `Mode = Hotkey` and keep the single pair.
-   - Clear the legacy `PlaybackDevice`, `RecordingDevice`, `PlaybackDeviceId`, and `RecordingDeviceId` properties so they are not serialized again.
-3. Return `true` if anything changed, so the caller saves the configuration once.
+1. Legacy id migration: `PlaybackDeviceId` / `RecordingDeviceId` → `PlaybackDevice` / `RecordingDevice` (unchanged).
+2. Pair migration: if `DevicePairs` is null or empty and `PlaybackDevice` or `RecordingDevice` is set, add a single pair with those devices.
+3. Hotkey-schema migration: a rule created by PR #2522 has a `HotKey` and no pair list. If it did not already have pairs and its mode is still `Automatic`, set `Mode = Hotkey` and keep the single pair.
+
+Additional rules:
+
+- A missing `Mode` deserializes to `Automatic` (the enum default).
+- An out-of-range `Mode` falls back to `Automatic`.
+- Null or empty pair entries (hand-edited JSON, old bugs) are removed.
+- Legacy `PlaybackDevice`, `RecordingDevice`, `PlaybackDeviceId`, and `RecordingDeviceId` are cleared so they are not serialized again.
+- The migration is idempotent: a second run changes nothing and returns `false`.
+- Return `true` if anything changed, so the caller saves the configuration once.
 
 Migration examples:
 
@@ -271,21 +279,27 @@ Add to the base `SettingsStrings.resx` first; localized files can follow in the 
 | `appSoundLock.rule.mode` | `Mode` |
 | `appSoundLock.rule.mode.automatic` | `Automatic` |
 | `appSoundLock.rule.mode.hotkey` | `Hotkey` |
-| `appSoundLock.rule.hotkey` | `Hotkey` |
+| `appSoundLock.rule.shortcut` | `Shortcut` |
+| `hotkey` | `Hotkey` |
+| `appSoundLock.rule.description.hotkey` | `Select the process of the application whose audio you want to control. Press the hotkey to apply the next device pair to that application.` |
 | `appSoundLock.rule.addPair` | `Add pair` |
+| `appSoundLock.rule.updatePair` | `Update pair` |
+| `appSoundLock.rule.newPair` | `New pair` |
 | `appSoundLock.rule.removePair` | `Remove` |
 | `appSoundLock.rule.moveUp` | `Move up` |
 | `appSoundLock.rule.moveDown` | `Move down` |
 | `appSoundLock.rule.keepCurrent` | `Keep current` |
 | `appSoundLock.rule.pairCount` | `{0} pairs · cycling` |
+| `appSoundLock.rule.pairCount.one` | `{0} pair · cycling` |
 | `appSoundLock.rule.noProcess` | `The application isn't running — nothing switched.` |
 | `appSoundLock.rule.error.hotkeyRequired` | `Select a hotkey for this rule.` |
 | `appSoundLock.rule.error.pairRequired` | `Add at least one device pair.` |
 | `appSoundLock.rule.error.pairIncomplete` | `Each pair must select a playback or recording device.` |
 | `appSoundLock.rule.error.hotkeyInUse` | `This hotkey is already used by another rule, profile, or application.` |
+| `appSoundLock.rule.error.duplicateTarget` | `Another Hotkey rule already targets this application and window.` |
 | `appSoundLock.rule.confirm.trimPairs` | `Automatic mode uses only the first device pair. Remove the other pairs?` |
 
-The `pairCount` string is formatted with the number of pairs; the middle dot matches the mockup.
+The `pairCount` string is formatted with the number of pairs; the middle dot matches the mockup. `pairCount.one` keeps the singular form correct for a one-pair Hotkey rule.
 
 ## 10. Files touched
 
@@ -294,22 +308,24 @@ The `pairCount` string is formatted with the number of pairs; the middle dot mat
 | `SoundSwitch/Model/AppSoundRule.cs` | `Mode`, `DevicePairs`, `HotKey`; legacy properties marked obsolete |
 | `SoundSwitch/Model/AppRuleMode.cs` | New enum |
 | `SoundSwitch/Model/AppSoundRuleDevicePair.cs` | New pair model |
-| `SoundSwitch/Model/AppSoundRuleMigrator.cs` | Two-stage migration |
+| `SoundSwitch/Model/AppSoundRuleMigrator.cs` | Three-stage, idempotent migration |
 | `SoundSwitch/Services/AppSoundLockManager.cs` | Mode filter, hotkey registration, cycling, no-process notification, pair-aware self-heal |
 | `SoundSwitch/UI/Forms/UpsertAppSoundLockRule.cs` / `.Designer.cs` | Mode radios, hotkey field, pair builder/list, validation |
-| `SoundSwitch/UI/Forms/Settings.cs` / `.Designer.cs` | Mode and pair columns, reload hotkeys on every rule mutation |
-| `SoundSwitch/Framework/NotificationManager/NotificationManager.cs` | `NotifyAppRuleNoProcess` |
-| `SoundSwitch/Framework/NotificationManager/Notification/INotification.cs` | New notification method |
+| `SoundSwitch/UI/Forms/Settings.cs` / `.Designer.cs` | Mode and pair columns, row tooltips, reload hotkeys on every rule mutation |
+| `SoundSwitch/UI/Component/IconTextComboBox.cs` | Draw text for items without an icon (`Keep current`) |
+| `SoundSwitch/Framework/NotificationManager/NotificationManager.cs` | `NotifyAppRuleMatched` pair/process overload and `NotifyAppRuleNoProcess` |
+| `SoundSwitch/Framework/NotificationManager/Notification/INotification.cs` | New notification methods |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationBanner.cs` | Banner implementation |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationWindows.cs` | Toast implementation |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationSound.cs` | No-op |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationNone.cs` | No-op |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationContentBuilder.cs` | `BuildAppRuleNoProcess` |
-| `SoundSwitch/Localization/SettingsStrings.resx` (+ localized) | New keys |
-| `SoundSwitch.Tests/AppSoundRuleHotKeyTests.cs` | Rework for modes and cycling |
-| `SoundSwitch.Tests/AppSoundRuleMigratorTests.cs` | Legacy → pair and PR #2522 → Hotkey cases |
-| `website/src/usage/app-rules.md` | Document modes, pairs, cycling, no-process banner |
-| `img/Documentation/AppRules Add.png`, `img/Documentation/AppRules.png` | Refresh screenshots after implementation |
+| `SoundSwitch/Localization/SettingsStrings.resx` / `SettingsStrings.Designer.cs` | New keys |
+| `SoundSwitch.Tests/AppSoundRuleHotKeyTests.cs` | Copy, pair semantics, round-trip, legacy defaults |
+| `SoundSwitch.Tests/AppSoundRuleMigrationTests.cs` | Legacy ids/devices, PR #2522, invalid mode, idempotency |
+| `website/src/usage/app-rules/**` | Overview plus Automatic, Hotkey, Device pairs, Examples, Troubleshooting pages |
+| `img/Documentation/AppRules.png`, `AppRules Add.png`, `AppRules Add Hotkey.png` | Refreshed screenshots |
+| `tools/Capture-DocumentationScreenshot.ps1` | `-Select` support for mode-specific dialogs |
 | `docs/design/app-rules/2026-10-22-app-rule-modes.md` | This document |
 | `docs/design/app-rules/app-rule-modes.png` | Mockup |
 
@@ -317,13 +333,11 @@ The `pairCount` string is formatted with the number of pairs; the middle dot mat
 
 ### Automated
 
-- Migration: legacy playback-only, recording-only, both, neither, and PR #2522 hotkey rule.
+- Migration: legacy playback-only, recording-only, both, neither, null pairs, PR #2522 hotkey rule, explicit Automatic, invalid mode, and idempotency.
 - `Copy()` deep-copies pairs and does not share mutable pair objects.
-- Pair validation: both sides null rejected; one side accepted.
-- Cycle state: first press → pair 0; wrap-around; no advance when no process matches; no advance when no device resolves; reset on reload.
-- Mode filter: Automatic rules are skipped by the hotkey path; Hotkey rules are skipped by the process/foreground path.
-- Hotkey registration: disabled rules are not registered; duplicate hotkeys keep the first; dispose unregisters everything.
-- No-process notification: called once, cycle unchanged, no telemetry event.
+- Pair semantics: both sides null invalid; one side accepted.
+- Round-trip serialization keeps `Mode`, `HotKey`, and `DevicePairs`.
+- The Windows-specific cycle, hotkey registration, and notification paths are covered by the manual checks below; the model and migration layers are unit-tested.
 
 ### Manual
 
@@ -353,10 +367,11 @@ The `pairCount` string is formatted with the number of pairs; the middle dot mat
 | 6 | Automatic normalizes to one pair; Hotkey → Automatic trims after confirmation. | Keeps the automatic path simple and the UI honest about what is used. |
 | 7 | The no-process message ignores the rule's `Notify` flag but respects the global notification type. | The flag describes automatic trigger notifications; the no-process message is manual-action feedback. Users who selected `None` still opt out globally. |
 | 8 | No cycle persistence across restarts. | Matches the main device cycler's in-memory behaviour and avoids stale state after device changes. |
+| 9 | Show the pair count in the Mode column (`Hotkey (N)`), not as a `(+N)` device suffix. | The six-column list has fixed widths; long device names ellipsize and would hide a suffix. |
 
 ## 13. Future work
 
 - Add an optional `DisplayName` to `AppSoundRule`, set by the process picker, and use it in the rule list and the no-process banner (`Spotify isn't running — nothing switched.`).
 - Consider a third mode, `Automatic + Hotkey`, where the rule applies pair 1 on match and the hotkey cycles from there.
 - Persist the cycle index per rule if users ask for it.
-- Expose the pair list as a tooltip or expandable row in the App Rules list if `(+N)` proves too subtle.
+- Expose the pair list as an expandable row in the App Rules list if the tooltip proves too subtle.
