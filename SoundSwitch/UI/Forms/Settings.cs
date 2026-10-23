@@ -1944,18 +1944,31 @@ public sealed partial class SettingsForm : Form
 
             if (pairs.Count > 0)
             {
-                item.ToolTipText = string.Join(Environment.NewLine, pairs.Select((pair, index) =>
-                    $"{index + 1}. {DeviceLabel(pair.Playback)} / {DeviceLabel(pair.Recording)}"));
+                var tooltip = new List<string>();
+                if (!string.IsNullOrEmpty(rule.ProcessPath))
+                {
+                    tooltip.Add($"{SettingsStrings.appSoundLock_rule_processPath}: {rule.ProcessPath}");
+                }
+                if (!string.IsNullOrEmpty(rule.WindowName))
+                {
+                    tooltip.Add($"{SettingsStrings.appSoundLock_rule_windowTitle}: {rule.WindowName}");
+                }
+                for (var index = 0; index < pairs.Count; index++)
+                {
+                    var pair = pairs[index];
+                    // Resolve and format every pair the same way the cells do, so an
+                    // ambiguous or unavailable side is visible for each cycle step.
+                    var pb = AppRuleDeviceResolver.ResolveResult(pair.Playback, activePlaybacks);
+                    var rc = AppRuleDeviceResolver.ResolveResult(pair.Recording, activeRecordings);
+                    tooltip.Add($"{index + 1}. {FormatResolvedDevice(pb.IsResolved ? pb.Device : null, pair.Playback, activePlaybacks)} / " +
+                        $"{FormatResolvedDevice(rc.IsResolved ? rc.Device : null, pair.Recording, activeRecordings)}");
+                }
+                item.ToolTipText = string.Join(Environment.NewLine, tooltip);
             }
 
             appSoundLockListView.Items.Add(item);
         }
         appSoundLockListView.ItemCheck += AppSoundLockListView_ItemCheck;
-    }
-
-    private static string DeviceLabel(DeviceInfo? device)
-    {
-        return device?.NameClean ?? SettingsStrings.appSoundLock_rule_keepCurrent;
     }
 
     /// <summary>

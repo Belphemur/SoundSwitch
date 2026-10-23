@@ -93,6 +93,7 @@ param(
     [int]$Pr,
     [string]$Json,
     [string]$Jq,
+    [switch]$List,
     [string]$Thread,
     [string]$Reply,
     [string]$Body,
@@ -128,7 +129,9 @@ function Graphql($query, $variables) {
     $payload = @{ query = $query; variables = $variables } | ConvertTo-Json -Depth 20 -Compress
     $out = ($payload | gh api graphql --input - 2>$null | Out-String).Trim()
     if ($LASTEXITCODE -ne 0) {
-        Fail "gh api graphql failed (exit $LASTEXITCODE).`n$out"
+        # Throw (not exit) so a -ResolveAll batch can catch a failed entry and
+        # keep going; earlier replies in the batch have already been posted.
+        throw "gh api graphql failed (exit $LASTEXITCODE).`n$out"
     }
     return ($out | ConvertFrom-Json)
 }
@@ -136,11 +139,11 @@ function Graphql($query, $variables) {
 # --- queries -----------------------------------------------------------------
 
 $ListQuery = @'
-query($owner: String!, $repo: String!, $number: Int!, $max: Int!) {
+query($owner: String!, $repo: String!, $number: Int!, $max: Int!, $after: String) {
   repository(owner: $owner, name: $repo) {
     pullRequest(number: $number) {
       headRefOid
-      reviewThreads(first: $max) {
+      reviewThreads(first: $max, after: $after) {
         pageInfo { hasNextPage endCursor }
         nodes {
           id
@@ -148,7 +151,7 @@ query($owner: String!, $repo: String!, $number: Int!, $max: Int!) {
           isOutdated
           path
           line
-          comments(first: 50) {
+          comments(first: 100) {
             nodes { id author { login } createdAt body diffHunk }
           }
         }
@@ -166,7 +169,7 @@ query($threadId: ID!) {
       line
       isResolved
       isOutdated
-      comments(first: 50) { nodes { id author { login } createdAt body diffHunk } }
+      comments(first: 100) { nodes { id author { login } createdAt body diffHunk } }
     }
   }
 }
@@ -196,15 +199,53 @@ mutation($threadId: ID!) {
 }
 '@
 
+$ReviewsQuery = @'
+query($owner: String!, $repo: String!, $number: Int!, $max: Int!, $after: String) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: $number) {
+      reviews(first: $max, after: $after) {
+        pageInfo { hasNextPage endCursor }
+        nodes { author { login } state submittedAt body }
+      }
+    }
+  }
+}
+'@
+
 function Get-Threads {
     $split = $Repo.Split('/')
-    $data = Graphql $ListQuery @{ owner = $split[0]; repo = $split[1]; number = $Pr; max = $MaxThreads }
-    $pr = $data.data.repository.pullRequest
+    $all = @()
+    $pageInfo = $null
+    $after = $null
+    do {
+        $data = Graphql $ListQuery @{ owner = $split[0]; repo = $split[1]; number = $Pr; max = $MaxThreads; after = $after }
+        $pr = $data.data.repository.pullRequest
+        $all += $pr.reviewThreads.nodes
+        $pageInfo = $pr.reviewThreads.pageInfo
+        $after = $pageInfo.endCursor
+    } while ($pageInfo.hasNextPage)
+
     return @{
         headRefOid = $pr.headRefOid
-        pageInfo   = $pr.reviewThreads.pageInfo
-        threads    = $pr.reviewThreads.nodes
+        pageInfo   = $pageInfo
+        threads    = $all
     }
+}
+
+function Get-Reviews {
+    $split = $Repo.Split('/')
+    $all = @()
+    $pageInfo = $null
+    $after = $null
+    do {
+        $data = Graphql $ReviewsQuery @{ owner = $split[0]; repo = $split[1]; number = $Pr; max = $MaxThreads; after = $after }
+        $pr = $data.data.repository.pullRequest
+        foreach ($n in $pr.reviews.nodes) { if (-not [string]::IsNullOrWhiteSpace($n.body)) { $all += $n } }
+        $pageInfo = $pr.reviews.pageInfo
+        $after = $pageInfo.endCursor
+    } while ($pageInfo.hasNextPage)
+
+    return $all
 }
 
 function Read-Thread($id) {
@@ -256,6 +297,7 @@ if ($ResolveAll) {
     $planObject = ConvertFrom-Json ([System.IO.File]::ReadAllText($Plan))
 
     if ($planObject.repo -and $planObject.repo -ne $Repo) { Fail "Plan targets $($planObject.repo), script was called with $Repo." }
+    if ($planObject.pullRequest -and $planObject.pullRequest -ne $Pr) { Fail "Plan targets pull request $($planObject.pullRequest), script was called with $Pr." }
 
     $ids = @{}
     foreach ($entry in $planObject.threads) {
@@ -297,8 +339,17 @@ if ($ResolveAll) {
     foreach ($r in $results) {
         $status = $r.ok ? 'OK  ' : 'FAIL'
         $replyUrl = $r.Contains('replyUrl') ? $r.replyUrl : ''
-        $error = $r.Contains('error') ? $r.error : ''
-        Write-Host "[$status] $($r.threadId) $($r.action) $replyUrl $error"
+        $errorMessage = $r.Contains('error') ? $r.error : ''
+        Write-Host "[$status] $($r.threadId) $($r.action) $replyUrl $errorMessage"
+    }
+
+    $anyFailed = $false
+    foreach ($r in $results) {
+        if (-not $r.ok) { $anyFailed = $true }
+    }
+    if ($anyFailed) {
+        Write-Error "One or more plan entries failed; see the report above."
+        exit 1
     }
 
     Write-Host ''
@@ -314,10 +365,10 @@ if ($ResolveAll) {
 # --- default: -List ----------------------------------------------------------
 
 $data = Get-Threads
-$list = @{ repo = $Repo; pullRequest = $Pr; headRefOid = $data.headRefOid; pageInfo = $data.pageInfo; threads = @() }
+$summary = @{ repo = $Repo; pullRequest = $Pr; headRefOid = $data.headRefOid; pageInfo = $data.pageInfo; threads = @() }
 foreach ($t in $data.threads) {
     $first = $t.comments.nodes.Count -gt 0 ? $t.comments.nodes[0] : $null
-    $list.threads += @{
+    $summary.threads += @{
         threadId   = $t.id
         isResolved = $t.isResolved
         isOutdated = $t.isOutdated
@@ -329,13 +380,20 @@ foreach ($t in $data.threads) {
 }
 
 if (-not [string]::IsNullOrWhiteSpace($Json)) {
-    $full = @{ repo = $Repo; pullRequest = $Pr; headRefOid = $data.headRefOid; pageInfo = $data.pageInfo; threads = $data.threads }
+    $full = @{
+        repo        = $Repo
+        pullRequest = $Pr
+        headRefOid  = $data.headRefOid
+        pageInfo    = $data.pageInfo
+        threads     = $data.threads
+        reviews     = (Get-Reviews)
+    }
     [System.IO.File]::WriteAllText($Json, ($full | ConvertTo-Json -Depth 20), [System.Text.Encoding]::UTF8)
     Write-Host "Wrote $Json" -ForegroundColor Green
 }
 
 $jqExpr = -not [string]::IsNullOrWhiteSpace($Jq) ? $Jq : ''
-$summaryJson = $list | ConvertTo-Json -Depth 12
+$summaryJson = $summary | ConvertTo-Json -Depth 12
 if (-not [string]::IsNullOrWhiteSpace($jqExpr)) {
     $jqBin = (Get-Command jq -ErrorAction SilentlyContinue)
     if ($null -ne $jqBin) {

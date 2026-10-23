@@ -311,7 +311,7 @@ namespace SoundSwitch.Services
             {
                 _logger.Information("App rule hotkey pressed but no running process matches {ProcessPattern}", rule.ProcessPath);
                 _notificationManager.NotifyAppRuleNoProcess(rule);
-                RevertPairIndex(rule.Id, pairIndex);
+                RevertPairIndex(rule.Id, pairIndex, pairs.Count);
                 return;
             }
 
@@ -320,7 +320,7 @@ namespace SoundSwitch.Services
             if (!CanApplyPair(pair))
             {
                 _logger.Warning("App rule hotkey pressed but no device of pair {Index} could be resolved for {ProcessPattern}", pairIndex, rule.ProcessPath);
-                RevertPairIndex(rule.Id, pairIndex);
+                RevertPairIndex(rule.Id, pairIndex, pairs.Count);
                 return;
             }
 
@@ -381,11 +381,18 @@ namespace SoundSwitch.Services
             }
         }
 
-        private void RevertPairIndex(Guid ruleId, int appliedIndex)
+        private void RevertPairIndex(Guid ruleId, int appliedIndex, int pairCount)
         {
             lock (_lock)
             {
-                _nextPairIndex[ruleId] = appliedIndex;
+                // Only rewind when this press still owns the cursor. A newer press that
+                // already took the next index must not be clobbered.
+                if (pairCount > 0 &&
+                    _nextPairIndex.TryGetValue(ruleId, out var next) &&
+                    next == (appliedIndex + 1) % pairCount)
+                {
+                    _nextPairIndex[ruleId] = appliedIndex;
+                }
             }
         }
 

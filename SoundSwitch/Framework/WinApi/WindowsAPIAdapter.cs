@@ -355,23 +355,26 @@ public class WindowsAPIAdapter : Form
             return false;
         }
 
-        lock (_instance)
+        // Probe on the adapter thread without holding `lock (_instance)` across the
+        // blocking Invoke: ReRegisterAllHotkeys runs on that thread and needs the
+        // same lock, so taking it here would deadlock when both race (e.g. right
+        // after a resume from sleep). The probe's counter increments and the native
+        // register/unregister calls all run on the adapter thread under `Invoke`,
+        // which serializes them by itself.
+        return (bool)_instance.Invoke(() =>
         {
-            return (bool)_instance.Invoke(() =>
+            var id = _instance._hotKeyId++;
+            if (NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
+                    (uint)hotKey.Keys))
             {
-                var id = _instance._hotKeyId++;
-                if (NativeMethods.RegisterHotKey(_instance.Handle, id, (uint)hotKey.Modifier,
-                        (uint)hotKey.Keys))
-                {
-                    NativeMethods.UnregisterHotKey(_instance.Handle, id);
-                    return true;
-                }
+                NativeMethods.UnregisterHotKey(_instance.Handle, id);
+                return true;
+            }
 
-                var lastError = Marshal.GetLastWin32Error();
-                Log.Warning("Hotkey {hotkey} is not available natively (error {error})", hotKey, lastError);
-                return false;
-            });
-        }
+            var lastError = Marshal.GetLastWin32Error();
+            Log.Warning("Hotkey {hotkey} is not available natively (error {error})", hotKey, lastError);
+            return false;
+        });
     }
 
     /// <summary>
