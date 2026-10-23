@@ -114,7 +114,17 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public HotKey PlaybackHotKey { get; set; } = new(Keys.F11, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey RecordingHotKey { get; set; } = new(Keys.F7, HotKey.ModifierKeys.Alt | HotKey.ModifierKeys.Control);
     public HotKey MuteRecordingHotKey { get; set; } = new(Keys.M, HotKey.ModifierKeys.Control | HotKey.ModifierKeys.Alt);
+
+    /// <summary>
+    /// Recording endpoint controlled by the global mute action. Null uses the Windows default input.
+    /// The full device snapshot is persisted because endpoint ids change after driver updates and
+    /// re-enumeration; it lets the device be matched by stable path or unique name.
+    /// </summary>
+    public DeviceInfo MuteRecordingDevice { get; set; }
+
+    [Obsolete("Use " + nameof(MuteRecordingDevice))]
     public string MuteRecordingDeviceId { get; set; }
+
     public bool LimitMuteBannersToTarget { get; set; } = true;
 
     /// <inheritdoc />
@@ -157,9 +167,18 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public bool Migrate()
     {
         var migrated = false;
-        if (MigratedFields.Add(nameof(MuteRecordingDeviceId)))
+        if (MigratedFields.Add(nameof(MuteRecordingDevice)))
         {
-            // Legacy configurations have no selected target and use the Windows default input.
+#pragma warning disable CS0618 // Type or member is obsolete
+            // Configurations written by early builds stored only the endpoint id. Convert it to a
+            // device snapshot; the id doubles as the placeholder name until the device is resolved,
+            // at which point it is healed with the real name.
+            if (MuteRecordingDevice == null && !string.IsNullOrEmpty(MuteRecordingDeviceId))
+            {
+                MuteRecordingDevice = new DeviceInfo(MuteRecordingDeviceId, MuteRecordingDeviceId, EDataFlow.eCapture, false, DateTime.UtcNow);
+                MuteRecordingDeviceId = null;
+            }
+#pragma warning restore CS0618 // Type or member is obsolete
             migrated = true;
         }
 

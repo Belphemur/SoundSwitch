@@ -24,6 +24,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Microphone;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
+using SoundSwitch.Services;
 
 namespace SoundSwitch.Model;
 
@@ -130,12 +131,50 @@ public partial class AppModel
     }
 
     /// <summary>
-    /// Resolves the recording endpoint muted by the global mute action, using the Windows
-    /// default input when no target is configured.
+    /// Resolves the configured mute target against the currently active devices.
+    /// Endpoint ids are not stable (driver updates and re-enumeration change them), so the
+    /// stored device is matched by exact id, then stable instance path, then unique name.
+    /// </summary>
+    /// <returns>The active device, or null when no target is configured or it is unavailable.</returns>
+    private DeviceFullInfo? ResolveMuteTarget()
+    {
+        var stored = MuteRecordingDevice;
+        if (stored == null || AudioDeviceLister == null) return null;
+
+        var resolved = AppRuleDeviceResolver.Resolve(stored, AudioDeviceLister);
+        if (resolved == null) return null;
+        // Heal the stored snapshot when the endpoint id or name changed (e.g. after a driver
+        // update), so the next lookup stays exact. Write the config directly to avoid
+        // re-entering the banner reconcile from the property setter.
+        if (!string.Equals(resolved.Id, stored.Id, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(resolved.NameClean, stored.NameClean, StringComparison.Ordinal))
+        {
+            Log.Information("Mute microphone {OldDevice} re-resolved to {NewDevice}", stored.NameClean, resolved.NameClean);
+#pragma warning disable CS0618 // Type or member is obsolete
+            AppConfigs.Configuration.MuteRecordingDevice = new DeviceInfo(resolved.Name, resolved.Id, resolved.Type, resolved.IsUsb, DateTime.UtcNow);
+#pragma warning restore CS0618 // Type or member is obsolete
+            AppConfigs.Configuration.Save();
+        }
+
+        return resolved;
+    }
+
+    /// <summary>
+    /// Resolves the recording endpoint controlled by the mute action. Falls back to the
+    /// Windows default input when no target is configured or the configured device is gone;
+    /// the selection itself is kept so the device is used again once it comes back.
     /// </summary>
     private string GetConfiguredOrDefaultMuteDeviceId()
     {
-        if (!string.IsNullOrEmpty(MuteRecordingDeviceId)) return MuteRecordingDeviceId;
+        var target = ResolveMuteTarget();
+        if (target != null) return target.Id;
+
+        var stored = MuteRecordingDevice;
+        if (stored != null)
+        {
+            Log.Warning("Configured mute microphone {DeviceName} ({DeviceId}) is unavailable; using the Windows default input",
+                stored.NameClean, stored.Id);
+        }
 
         using var defaultInput = AudioSwitcher.Instance.GetDefaultAudioDevice(EDataFlow.eCapture, ERole.eCommunications);
         return defaultInput?.Id;
@@ -190,7 +229,7 @@ public partial class AppModel
     /// </remarks>
     public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute()
     {
-        var result = _microphoneMuteToggler.ToggleMute(MuteRecordingDeviceId);
+        var result = _microphoneMuteToggler.ToggleMute(GetConfiguredOrDefaultMuteDeviceId());
         if (result == null)
         {
             ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
@@ -210,7 +249,7 @@ public partial class AppModel
     /// <returns>Tuple with device name and mute state, null if no microphone found or state unavailable</returns>
     public (string DeviceName, bool IsMuted)? GetMicrophoneMuteState()
     {
-        var result = _microphoneMuteToggler.GetMuteState(MuteRecordingDeviceId);
+        var result = _microphoneMuteToggler.GetMuteState(GetConfiguredOrDefaultMuteDeviceId());
         return result == null ? null : (result.Value.Name, result.Value.MuteState);
     }
 
@@ -235,7 +274,7 @@ public partial class AppModel
     /// <returns>Tuple with device name and mute state, null if no default microphone found or operation failed</returns>
     public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState)
     {
-        var result = _microphoneMuteToggler.SetConfiguredMuteState(muteState, MuteRecordingDeviceId);
+        var result = _microphoneMuteToggler.SetConfiguredMuteState(muteState, GetConfiguredOrDefaultMuteDeviceId());
         if (result == null)
         {
             ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to set mute state")));

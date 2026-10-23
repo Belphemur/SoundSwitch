@@ -102,11 +102,19 @@ public partial class AppModel : IAppModel
         JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
         AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
         {
-            if (_initialized && LimitMuteBannersToTarget && string.IsNullOrEmpty(MuteRecordingDeviceId) &&
+            if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice == null &&
                 @event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
                 RefreshMicrophoneMuteBanners();
 
             DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
+        });
+
+        // Device arrival/removal changes which microphone the configured target resolves to
+        // (and whether it resolves at all), so reconcile the persistent mute banners too.
+        AudioDeviceLister.DeviceListRefreshed.Subscribe(_ =>
+        {
+            if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice != null)
+                RefreshMicrophoneMuteBanners();
         });
 
         // Subscribe to volume change events for microphones

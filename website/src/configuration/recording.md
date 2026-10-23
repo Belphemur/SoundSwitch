@@ -25,7 +25,7 @@ The **Mute microphone** dropdown at the bottom of the tab chooses which input th
 - **Windows default input** — Mutes the Windows default communication input (default).
 - **A specific device** — Mutes exactly the chosen input, even a virtual input such as NVIDIA Broadcast or a virtual cable, whether or not it is part of the switching rotation.
 
-The list covers active and currently unplugged recording devices. If the selected device disappears, the entry is shown as **Selected microphone (unavailable)** until it comes back or you pick another one.
+SoundSwitch remembers your choice and will do its best to find the microphone again if it disappears. While it is unavailable, the mute hotkey uses the Windows default input.
 
 ## Mute Banners
 

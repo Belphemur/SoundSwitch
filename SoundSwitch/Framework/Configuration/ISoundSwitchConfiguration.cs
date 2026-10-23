@@ -98,7 +98,12 @@ public interface ISoundSwitchConfiguration : IConfiguration
     DateTime LastDonationNagTime { get; set; }
     TimeSpan TimeBetweenDonateNag { get; set; }
     HotKey MuteRecordingHotKey { get; set; }
-    string MuteRecordingDeviceId { get; set; }
+
+    /// <summary>
+    /// Recording endpoint controlled by the global mute action. Null uses the Windows default input.
+    /// </summary>
+    DeviceInfo MuteRecordingDevice { get; set; }
+
     bool LimitMuteBannersToTarget { get; set; }
 
     /// <summary>

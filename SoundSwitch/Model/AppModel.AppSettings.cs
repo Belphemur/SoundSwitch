@@ -17,6 +17,7 @@ using System;
 using System.Threading;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using Serilog;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Telemetry;
@@ -33,13 +34,17 @@ namespace SoundSwitch.Model;
 
 public partial class AppModel
 {
-    public string MuteRecordingDeviceId
+    public DeviceInfo MuteRecordingDevice
     {
-        get => AppConfigs.Configuration.MuteRecordingDeviceId;
+        get => AppConfigs.Configuration.MuteRecordingDevice;
         set
         {
-            if (AppConfigs.Configuration.MuteRecordingDeviceId == value) return;
-            AppConfigs.Configuration.MuteRecordingDeviceId = value;
+            var current = AppConfigs.Configuration.MuteRecordingDevice;
+            if (current == null && value == null) return;
+            if (current != null && value != null &&
+                string.Equals(current.Id, value.Id, StringComparison.OrdinalIgnoreCase)) return;
+
+            AppConfigs.Configuration.MuteRecordingDevice = value;
             AppConfigs.Configuration.Save();
             RefreshMicrophoneMuteBanners();
         }

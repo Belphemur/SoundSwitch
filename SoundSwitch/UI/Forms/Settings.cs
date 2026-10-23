@@ -417,7 +417,7 @@ public sealed partial class SettingsForm : Form
         public override string ToString() => Label;
     }
 
-    private sealed record MuteTargetChoice(string Label, string DeviceId)
+    private sealed record MuteTargetChoice(string Label, DeviceInfo Device)
     {
         public override string ToString() => Label;
     }
@@ -454,7 +454,7 @@ public sealed partial class SettingsForm : Form
             if (!_loaded || _suppressMuteTargetSelection || _muteTargetComboBox.SelectedItem is not MuteTargetChoice choice)
                 return;
 
-            AppModel.Instance.MuteRecordingDeviceId = choice.DeviceId;
+            AppModel.Instance.MuteRecordingDevice = choice.Device;
         };
 
         var tooltip = new ToolTip();
@@ -471,20 +471,37 @@ public sealed partial class SettingsForm : Form
         _suppressMuteTargetSelection = true;
         try
         {
-            var selectedId = AppModel.Instance.MuteRecordingDeviceId;
+            var stored = AppModel.Instance.MuteRecordingDevice;
+            var devices = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged);
+
             _muteTargetComboBox.Items.Clear();
-            _muteTargetComboBox.Items.Add(new MuteTargetChoice(GetBannerString("mute.target.default"), null));
+            var defaultChoice = new MuteTargetChoice(GetBannerString("mute.target.default"), null);
+            _muteTargetComboBox.Items.Add(defaultChoice);
 
-            foreach (var device in _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active | EDeviceState.Unplugged)
-                         .OrderBy(device => device.NameClean))
-                _muteTargetComboBox.Items.Add(new MuteTargetChoice(device.NameClean, device.Id));
+            foreach (var device in devices.OrderBy(device => device.NameClean))
+                _muteTargetComboBox.Items.Add(new MuteTargetChoice(device.NameClean, Snapshot(device)));
 
-            var selected = _muteTargetComboBox.Items.Cast<MuteTargetChoice>()
-                .FirstOrDefault(choice => string.Equals(choice.DeviceId, selectedId, StringComparison.OrdinalIgnoreCase));
-            if (selected == null)
+            MuteTargetChoice selected;
+            if (stored == null)
             {
-                selected = new MuteTargetChoice(GetBannerString("mute.target.unavailable"), selectedId);
-                _muteTargetComboBox.Items.Add(selected);
+                selected = defaultChoice;
+            }
+            else
+            {
+                // Match the persisted device exactly like the runtime does: endpoint ids change
+                // after driver updates, so fall back to the stable instance path or unique name.
+                var match = devices.Match(stored);
+                selected = match.IsResolved
+                    ? _muteTargetComboBox.Items.Cast<MuteTargetChoice>()
+                        .FirstOrDefault(choice => choice.Device != null &&
+                                                  string.Equals(choice.Device.Id, match.Device!.Id, StringComparison.OrdinalIgnoreCase))
+                    : null;
+
+                if (selected == null)
+                {
+                    selected = new MuteTargetChoice(GetBannerString("mute.target.unavailable"), stored);
+                    _muteTargetComboBox.Items.Add(selected);
+                }
             }
 
             _muteTargetComboBox.SelectedItem = selected;
@@ -494,6 +511,15 @@ public sealed partial class SettingsForm : Form
             _suppressMuteTargetSelection = false;
         }
     }
+
+    /// <summary>
+    /// Snapshot a live device into the serializable <see cref="DeviceInfo"/> stored in the
+    /// configuration. The snapshot keeps the name so the target survives endpoint-id changes.
+    /// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
+    private static DeviceInfo Snapshot(DeviceFullInfo device) =>
+        new(device.Name, device.Id, device.Type, device.IsUsb, DateTime.UtcNow);
+#pragma warning restore CS0618 // Type or member is obsolete
 
     /// <summary>
     /// Builds the banner monitor, background colour and scale controls and grows the form just
