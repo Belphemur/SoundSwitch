@@ -216,7 +216,10 @@ namespace SoundSwitch.Services
                 var pair = rule.DevicePairs?.FirstOrDefault();
                 if (pair == null) continue;
 
-                ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true);
+                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true))
+                {
+                    TrackRuleActivated(triggerSource, processPath, processName);
+                }
             }
         }
 
@@ -232,20 +235,6 @@ namespace SoundSwitch.Services
             changed |= SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
             changed |= SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
 
-            if (changed)
-            {
-                // Prefer the basename from the process path. If it's empty (ProcessMonitor
-                // sets the path to string.Empty) or a placeholder (WindowMonitor uses "N/A"
-                // when it can't read the path), fall back to the process name so we still
-                // capture an anonymized hash instead of hashing the literal "N/A".
-                var basename = Path.GetFileName(processPath);
-                if (string.IsNullOrEmpty(basename) || basename == "N/A")
-                {
-                    basename = processName;
-                }
-                TelemetryService.TrackAppRuleActivated(basename, triggerSource);
-            }
-
             if (notify && rule.Notify && changed)
             {
                 if (notifiedRules == null || !notifiedRules.Contains(rule.Id))
@@ -256,6 +245,22 @@ namespace SoundSwitch.Services
             }
 
             return changed;
+        }
+
+        /// <summary>
+        /// Emit the activation telemetry once per event or press. Prefer the basename from the
+        /// process path; if it's empty (ProcessMonitor sets the path to <c>string.Empty</c>) or a
+        /// placeholder (WindowMonitor uses "N/A" when it can't read the path), fall back to the
+        /// process name so we still capture an anonymized hash instead of hashing "N/A".
+        /// </summary>
+        private static void TrackRuleActivated(string triggerSource, string processPath, string processName)
+        {
+            var basename = Path.GetFileName(processPath);
+            if (string.IsNullOrEmpty(basename) || basename == "N/A")
+            {
+                basename = processName;
+            }
+            TelemetryService.TrackAppRuleActivated(basename, triggerSource);
         }
 
         /// <summary>
@@ -340,6 +345,13 @@ namespace SoundSwitch.Services
             if (rule.Notify)
             {
                 _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessId);
+            }
+
+            // A single press is one activation: record telemetry once for the first match
+            // rather than once per switched process, mirroring the notify behaviour above.
+            if (changed)
+            {
+                TrackRuleActivated("hotkey", matches[0].ProcessPath, matches[0].ProcessName);
             }
 
             if (!changed)
