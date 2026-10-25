@@ -100,6 +100,13 @@ public interface ISoundSwitchConfiguration : IConfiguration
     HotKey MuteRecordingHotKey { get; set; }
 
     /// <summary>
+    /// Recording endpoint controlled by the global mute action. Null uses the Windows default input.
+    /// </summary>
+    DeviceInfo MuteRecordingDevice { get; set; }
+
+    bool LimitMuteBannersToTarget { get; set; }
+
+    /// <summary>
     /// Unique ID assigned at installation
     /// </summary>
     Guid UniqueInstallationId { get; set; }

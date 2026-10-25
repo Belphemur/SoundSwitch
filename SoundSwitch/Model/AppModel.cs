@@ -81,6 +81,14 @@ public partial class AppModel : IAppModel
     private readonly MicrophoneMuteToggler _microphoneMuteToggler;
     private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
+    // The default capture endpoint is resolved with a COM call; microphone mute events are
+    // frequent, so cache it and invalidate whenever the default or the device list changes.
+    // Invalidation and publication share this lock so a lookup that started before an event
+    // cannot publish the former default after the cache was invalidated.
+    private readonly object _defaultMuteDeviceIdLock = new();
+    private string _defaultMuteDeviceId;
+    private bool _defaultMuteDeviceIdValid;
+
     public ProfileManager ProfileManager { get; private set; }
 
     public Services.AppSoundLockManager AppSoundLockManager { get; private set; }
@@ -101,7 +109,32 @@ public partial class AppModel : IAppModel
         AudioDeviceLister = active;
         JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob());
         AudioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
-            { DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role)); });
+        {
+            if (@event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
+            {
+                lock (_defaultMuteDeviceIdLock)
+                    _defaultMuteDeviceIdValid = false;
+            }
+
+            // Refresh on every communications-input change: with a configured target that is
+            // available the result is unchanged, and when it is unavailable the mute action falls
+            // back to the default input, whose banners must follow the new default.
+            if (_initialized && LimitMuteBannersToTarget &&
+                @event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
+                RefreshMicrophoneMuteBanners();
+
+            DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
+        });
+
+        // Device arrival/removal changes which microphone the configured target resolves to
+        // (and whether it resolves at all), so reconcile the persistent mute banners too.
+        AudioDeviceLister.DeviceListRefreshed.Subscribe(_ =>
+        {
+            lock (_defaultMuteDeviceIdLock)
+                _defaultMuteDeviceIdValid = false;
+            if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice != null)
+                RefreshMicrophoneMuteBanners();
+        });
 
         // Subscribe to volume change events for microphones
         AudioDeviceLister.DeviceVolumeChanged
@@ -113,20 +146,17 @@ public partial class AppModel : IAppModel
             .Subscribe(HandleMicrophoneMuteChanged);
 
         RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
-        var saveConfig = false;
         if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
         {
-            Log.Information("Disabling Recording hotkey: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
-            AppConfigs.Configuration.RecordingHotKey.Enabled = false;
-            saveConfig = true;
+            Log.Warning("Recording hotkey could not be registered: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
         }
 
         if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
         {
-            Log.Information("Disabling Mute hotkey: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
-            AppConfigs.Configuration.MuteRecordingHotKey.Enabled = false;
-            saveConfig = true;
+            Log.Warning("Mute hotkey could not be registered: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
         }
+
+        var saveConfig = false;
 
         if (!AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_cleanup")
             && AppConfigs.Configuration.MigratedFields.Contains($"{nameof(SwitchForegroundProgram)}_force_off") &&

@@ -86,6 +86,8 @@ internal class NotificationSound : INotification
         }
     }
 
+    public void NotifyAppRuleNoProcess(AppSoundRule rule) { }
+
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
         _cancellationTokenSource?.Cancel();

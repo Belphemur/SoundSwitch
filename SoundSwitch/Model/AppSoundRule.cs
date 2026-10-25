@@ -1,6 +1,9 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.WinApi.Keyboard;
 
 namespace SoundSwitch.Model
 {
@@ -10,14 +13,37 @@ namespace SoundSwitch.Model
         public bool CaseSensitive { get; set; } = false;
         public string ProcessPath { get; set; } = string.Empty;
         public string WindowName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// How the rule is applied: automatically on process/foreground match, or
+        /// manually through <see cref="HotKey"/>.
+        /// </summary>
+        public AppRuleMode Mode { get; set; } = AppRuleMode.Automatic;
+
+        /// <summary>
+        /// Ordered cycle steps. <see cref="AppRuleMode.Automatic"/> uses the first
+        /// pair; <see cref="AppRuleMode.Hotkey"/> cycles through all of them.
+        /// </summary>
+        public List<AppSoundRuleDevicePair> DevicePairs { get; set; } = new();
+
+        /// <summary>
+        /// Optional global hotkey that applies the next device pair to the matching
+        /// running process(es). Only meaningful in <see cref="AppRuleMode.Hotkey"/>.
+        /// </summary>
+        public HotKey? HotKey { get; set; }
+
+        [Obsolete("Migrated to " + nameof(DevicePairs))]
         public DeviceInfo? PlaybackDevice { get; set; }
+
+        [Obsolete("Migrated to " + nameof(DevicePairs))]
         public DeviceInfo? RecordingDevice { get; set; }
 
-        [Obsolete("Migrated to " + nameof(PlaybackDevice))]
+        [Obsolete("Migrated to " + nameof(DevicePairs))]
         public string? PlaybackDeviceId { get; set; }
 
-        [Obsolete("Migrated to " + nameof(RecordingDevice))]
+        [Obsolete("Migrated to " + nameof(DevicePairs))]
         public string? RecordingDeviceId { get; set; }
+
         public bool Enabled { get; set; } = true;
         public bool Notify { get; set; } = true;
 
@@ -29,8 +55,9 @@ namespace SoundSwitch.Model
                 CaseSensitive = CaseSensitive,
                 ProcessPath = ProcessPath,
                 WindowName = WindowName,
-                PlaybackDevice = PlaybackDevice,
-                RecordingDevice = RecordingDevice,
+                Mode = Mode,
+                DevicePairs = DevicePairs?.Where(pair => pair != null).Select(pair => pair.Copy()).ToList() ?? new List<AppSoundRuleDevicePair>(),
+                HotKey = HotKey,
                 Enabled = Enabled,
                 Notify = Notify
             };

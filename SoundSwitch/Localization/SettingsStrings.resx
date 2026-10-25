@@ -587,6 +587,24 @@ Restore the state of the system when the application is closed.</value>
   <data name="microphone.off" xml:space="preserve">
     <value>Microphone Off</value>
   </data>
+  <data name="mute.target" xml:space="preserve">
+    <value>Mute microphone</value>
+  </data>
+  <data name="mute.target.default" xml:space="preserve">
+    <value>Windows default input</value>
+  </data>
+  <data name="mute.target.unavailable" xml:space="preserve">
+    <value>Selected microphone (unavailable)</value>
+  </data>
+  <data name="mute.target.tooltip" xml:space="preserve">
+    <value>Choose the microphone used by the app you want to mute, such as NVIDIA Broadcast.</value>
+  </data>
+  <data name="mute.banner.targetOnly" xml:space="preserve">
+    <value>Show mute banners only for selected input</value>
+  </data>
+  <data name="mute.banner.targetOnly.tooltip" xml:space="preserve">
+    <value>When off, mute changes on any microphone can show a banner.</value>
+  </data>
   <data name="microphoneMuted" xml:space="preserve">
     <value>Microphone muted</value>
   </data>
@@ -784,6 +802,69 @@ Press Esc to close.</value>
   </data>
   <data name="appSoundLock.rule.description" xml:space="preserve">
     <value>Select the process of the application whose audio you want to control. The selected devices will be automatically applied whenever that application is running.</value>
+  </data>
+  <data name="appSoundLock.rule.description.hotkey" xml:space="preserve">
+    <value>Select the process of the application whose audio you want to control. Press the hotkey to apply the next device pair to that application.</value>
+  </data>
+  <data name="appSoundLock.rule.mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="appSoundLock.rule.mode.automatic" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="appSoundLock.rule.mode.hotkey" xml:space="preserve">
+    <value>Hotkey</value>
+  </data>
+  <data name="appSoundLock.rule.shortcut" xml:space="preserve">
+    <value>Shortcut</value>
+  </data>
+  <data name="appSoundLock.rule.addPair" xml:space="preserve">
+    <value>Add pair</value>
+  </data>
+  <data name="appSoundLock.rule.updatePair" xml:space="preserve">
+    <value>Update pair</value>
+  </data>
+  <data name="appSoundLock.rule.newPair" xml:space="preserve">
+    <value>New pair</value>
+  </data>
+  <data name="appSoundLock.rule.removePair" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="appSoundLock.rule.moveUp" xml:space="preserve">
+    <value>Move up</value>
+  </data>
+  <data name="appSoundLock.rule.moveDown" xml:space="preserve">
+    <value>Move down</value>
+  </data>
+  <data name="appSoundLock.rule.keepCurrent" xml:space="preserve">
+    <value>Keep current</value>
+  </data>
+  <data name="appSoundLock.rule.pairCount" xml:space="preserve">
+    <value>{0} pairs · cycling</value>
+  </data>
+  <data name="appSoundLock.rule.pairCount.one" xml:space="preserve">
+    <value>{0} pair · cycling</value>
+  </data>
+  <data name="appSoundLock.rule.noProcess" xml:space="preserve">
+    <value>The application isn't running — nothing switched.</value>
+  </data>
+  <data name="appSoundLock.rule.error.hotkeyRequired" xml:space="preserve">
+    <value>Select a hotkey for this rule.</value>
+  </data>
+  <data name="appSoundLock.rule.error.pairRequired" xml:space="preserve">
+    <value>Add at least one device pair.</value>
+  </data>
+  <data name="appSoundLock.rule.error.pairIncomplete" xml:space="preserve">
+    <value>Each pair must select a playback or recording device.</value>
+  </data>
+  <data name="appSoundLock.rule.error.hotkeyInUse" xml:space="preserve">
+    <value>This hotkey is already used by another rule, profile, or application.</value>
+  </data>
+  <data name="appSoundLock.rule.error.duplicateTarget" xml:space="preserve">
+    <value>Another Hotkey rule already targets this application and window.</value>
+  </data>
+  <data name="appSoundLock.rule.confirm.trimPairs" xml:space="preserve">
+    <value>Automatic mode uses only the first device pair. Remove the other pairs?</value>
   </data>
   <data name="appSoundLock.rule.error.patternRequired" xml:space="preserve">
     <value>At least one pattern (Process or Window) is required.</value>

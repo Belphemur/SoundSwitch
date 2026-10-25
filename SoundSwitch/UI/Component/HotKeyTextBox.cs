@@ -35,6 +35,14 @@ public class HotKeyTextBox : TextBox
         Invalid
     }
 
+    /// <summary>
+    /// Whether the box currently holds a valid hotkey. A hotkey that was edited
+    /// into an invalid state (e.g. a modifier-less key, an AltGr combination) still
+    /// keeps its previous <see cref="HotKey"/> value until a valid one is entered,
+    /// so callers must check this before persisting.
+    /// </summary>
+    public bool IsValid => _displayState != HotKeyDisplayState.Invalid && _hotKey != null;
+
     private HotKeyDisplayState _displayState = HotKeyDisplayState.Neutral;
 
     public HotKeyTextBox()

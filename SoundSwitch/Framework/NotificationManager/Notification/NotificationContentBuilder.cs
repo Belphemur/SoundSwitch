@@ -93,6 +93,14 @@ internal static class NotificationContentBuilder
         };
     }
 
+    internal static BannerData BuildAppRuleNoProcess() => new()
+    {
+        Priority = 1,
+        Image = Resources.default_profile_image,
+        Title = SettingsStrings.appSoundLock_tab,
+        Text = SettingsStrings.appSoundLock_rule_noProcess
+    };
+
     internal static BannerData BuildMicrophoneMuteChanged(string microphoneName, bool newMuteState) => new()
     {
         Priority = 2,

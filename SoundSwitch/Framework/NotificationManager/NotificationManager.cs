@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -25,6 +26,7 @@ using Serilog;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.Audio;
+using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
 using SoundSwitch.Framework.Toast;
@@ -64,6 +66,11 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         ApplyConfigurationChanges(_switchDeviceNotification, e);
         ApplyConfigurationChanges(_switchProfileNotification, e);
         ApplyConfigurationChanges(_microphoneMuteNotification, e);
+
+        // Leaving the persistent mute style must dismiss banners that are already pinned on
+        // screen; otherwise they would stay visible until the next mute-target or device event.
+        if (e.PrevMicrophoneMuteBanner == MicrophoneMute.Persistent && e.NewMicrophoneMuteBanner != MicrophoneMute.Persistent)
+            ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
     }
 
     private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -82,9 +89,15 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
 
     private void SetNotifications(NotificationType switchDeviceType, NotificationType switchProfileType, NotificationType microphoneMuteType)
     {
+        var wasMicrophoneMuteBanner = MicrophoneMuteNotificationIsBanner;
         _switchDeviceNotification = BuildNotification(switchDeviceType);
         _switchProfileNotification = BuildNotification(switchProfileType);
         _microphoneMuteNotification = BuildNotification(microphoneMuteType);
+
+        // The banner notification instance is shared, so leaving banner notifications must
+        // dismiss persistent mute banners that were already on screen.
+        if (wasMicrophoneMuteBanner && microphoneMuteType != NotificationType.BannerNotification)
+            ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
     }
 
     private INotification BuildNotification(NotificationType notificationType)
@@ -159,17 +172,27 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     /// <summary>
     /// Notify on App Rule matched
     /// </summary>
-    public void NotifyAppRuleMatched(AppSoundRule rule, uint processId)
+    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId)
     {
         if (rule.Notify)
         {
             var icon = GetIconForRule(rule, processId);
             
-            var playback = AppRuleDeviceResolver.Resolve(rule.PlaybackDevice, deviceService);
-            var recording = AppRuleDeviceResolver.Resolve(rule.RecordingDevice, deviceService);
+            var playback = AppRuleDeviceResolver.Resolve(pair.Playback, deviceService);
+            var recording = AppRuleDeviceResolver.Resolve(pair.Recording, deviceService);
             
             _switchProfileNotification.NotifyAppRuleMatched(rule, playback, recording, icon, processId);
         }
+    }
+
+    /// <summary>
+    /// Notify that an App Rule hotkey was pressed while its application isn't running.
+    /// This intentionally ignores <see cref="AppSoundRule.Notify"/>: it is an error the
+    /// user must see, and it still follows the global notification type.
+    /// </summary>
+    public void NotifyAppRuleNoProcess(AppSoundRule rule)
+    {
+        _switchProfileNotification.NotifyAppRuleNoProcess(rule);
     }
 
     private Bitmap GetIconForRule(AppSoundRule rule, uint processId)
@@ -232,6 +255,29 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
         _microphoneMuteNotification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
+    }
+
+    /// <summary>
+    /// True when microphone mute changes are rendered as banners. Only banners honour the
+    /// "show mute banners only for the selected input" scope; sound and toast notifications
+    /// keep reporting every microphone.
+    /// </summary>
+    public bool MicrophoneMuteNotificationIsBanner =>
+        _microphoneMuteNotification?.TypeEnum == NotificationType.BannerNotification;
+
+    /// <summary>
+    /// Reconciles the persistent mute banners after the mute target or banner scope changed.
+    /// </summary>
+    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
+    /// <param name="mutedInScopeMicrophones">In-scope microphones that are currently muted</param>
+    public void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
+        IReadOnlyCollection<(string Id, string Name)> mutedInScopeMicrophones)
+    {
+        var banner = (NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification);
+        if (MicrophoneMuteNotificationIsBanner)
+            banner.SyncMuteBanners(inScopeMicrophoneIds, mutedInScopeMicrophones);
+        else
+            banner.ClearPersistentMuteBanners();
     }
 
     public void Dispose()

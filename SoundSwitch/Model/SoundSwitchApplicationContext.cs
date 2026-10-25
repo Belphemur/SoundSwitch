@@ -105,33 +105,20 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 {
                     var stateResponse = await Task.Run(() =>
                     {
-                        using var defaultDevice = AudioSwitcher.Instance.GetDefaultAudioDevice(
-                            EDataFlow.eCapture,
-                            ERole.eCommunications
-                        );
-                        if (defaultDevice == null)
-                        {
-                            return null;
-                        }
+                        var result = AppModel.Instance.GetMicrophoneMuteState();
+                        if (result == null) return null;
 
-                        return AudioSwitcher.Instance.InteractWithDevice(defaultDevice, device =>
+                        return new MicrophoneStateResponse
                         {
-                            var endpointVolume = device.EndpointVolume ?? throw new InvalidOperationException("No endpoint volume for the default capture device.");
-                            return new MicrophoneStateResponse
-                            {
-                                Success = true,
-                                IsMuted = endpointVolume.Mute,
-                                // DeviceInfo is the non-owning DTO carrying the NameClean
-                                // normalization (DeviceFullInfo would wrongly take ownership of
-                                // the caller-owned AudioDevice).
-                                DeviceName = new DeviceInfo(device).NameClean
-                            };
-                        });
+                            Success = true,
+                            IsMuted = result.Value.IsMuted,
+                            DeviceName = result.Value.DeviceName
+                        };
                     }, token);
 
                     if (stateResponse == null)
                     {
-                        Log.Warning("No default capture device found");
+                        Log.Warning("No microphone found to read mute state");
                         return new MicrophoneStateResponse { Success = false, IsMuted = false, DeviceName = "" };
                     }
 

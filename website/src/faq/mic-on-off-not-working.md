@@ -9,6 +9,10 @@ If SoundSwitch no longer toggles your microphone correctly, check your Windows d
 
 In this case, the issue was caused by a different audio device being set as the **default communication device**. Once the intended microphone was set back as the default, microphone on/off worked again.
 
+::: tip Pick the microphone explicitly
+Instead of relying on the Windows default communication device, choose the exact input in **Settings → Recording → Mute microphone**. SoundSwitch then keeps muting that device even if Windows changes its default.
+:::
+
 ## How to fix it
 
 1. In SoundSwitch, open **Settings → General** and enable **Switch Default Communication Device**.

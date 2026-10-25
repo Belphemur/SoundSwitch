@@ -103,7 +103,16 @@ public class IconTextComboBox : ComboBox
             var iconHandle = item.IconHandle;
             if (iconHandle == null)
             {
-                base.OnDrawItem(e);
+                // Items without an icon (e.g. the pair builder's "Keep current") still
+                // need their text drawn: base.OnDrawItem does not paint owner-drawn text.
+                if (string.IsNullOrEmpty(item.Text))
+                {
+                    base.OnDrawItem(e);
+                    return;
+                }
+
+                TextRenderer.DrawText(e.Graphics, item.Text, e.Font, e.Bounds, e.ForeColor,
+                    TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 return;
             }
 

@@ -1,13 +1,13 @@
 ---
 title: Notification Settings
-description: Choose how SoundSwitch alerts you on device changes — banner, Windows toast, sound only or silent — and configure the microphone mute banner.
+description: Choose how SoundSwitch alerts you on device changes — banner, Windows toast, sound only or silent — and configure the microphone mute banner, its monitor, color, position and scale.
 ---
 
 # Notifications
 
-The **Notifications** tab lets you choose how SoundSwitch alerts you when an audio device is switched or when your microphone is muted or unmuted.
-
 ![Notifications](/images/Notifications.png)
+
+The **Notifications** tab lets you choose how SoundSwitch alerts you when an audio device is switched or when your microphone is muted or unmuted.
 
 ## Notification Type
 
@@ -45,22 +45,42 @@ SoundSwitch detects true exclusive fullscreen using a layered approach:
 
 **Borderless fullscreen** games (including modern titles like Counter-Strike 2 that use the DXGI flip model) are handled normally with banner notifications. Banners are designed to never steal focus — they use non-activating window styles that do not trigger focus-loss events in the game.
 
-When using banner notifications, you can customize their behavior:
+When using banner notifications, you can customize their appearance and behavior:
 
-- **Always use primary screen** — Forces the banner to display on your primary monitor instead of the monitor with the currently focused window.
 - **Only one banner** — When checked, only one banner is shown at a time. If multiple events occur, they queue rather than stacking.
 - **On-screen time** — How long the banner stays visible (in seconds, default is 3).
 - **Opacity** — Banner transparency level (0–100%, default is 100).
+- **Background color** — Opens a color picker and sets the banner's background color. The button shows the color currently in use.
+- **Scale** — Scales the banner between **50%** and **200%** (default 100%), so it stays readable on high-DPI displays.
 - **Display Info** — How much detail to show on the banner: **Full Display** (device name and icon), **Name Only**, or **Icon Only**.
+- **Show mute banners only for selected input** — When checked (default), mute banners appear only for the microphone selected in **Mute microphone** on the Recording tab. Uncheck it to show a banner for every microphone's mute changes.
+
+Changing any of these options refreshes banners that are already on screen instead of waiting for the next notification.
 
 ## Microphone Mute
+
+![Mute microphone target](/images/Recording.png)
 
 Controls the notification behavior when the microphone mute toggle is activated:
 
 - **Microphone On** — Notification style when the microphone is unmuted. Options include **None**, **Fading In**, or **Persistent**.
 - **Microphone Off** — Notification style when the microphone is muted. Options include **None**, **Fading In**, or **Persistent**.
 
+The mute action targets the microphone chosen with **Mute microphone** on the [Recording](recording.md) tab. Only mute banners follow that choice; Windows toasts and sounds still report every microphone.
+
 ## Position
+
+### Monitor
+
+The dropdown at the bottom of the **Position** group selects which display the banner appears on:
+
+- **Screen with cursor** — the display the mouse pointer is on at the time the banner appears (default).
+- **Primary screen** — always the primary display.
+- **Monitor N (`\\.\DISPLAYn`)** — pins the banner to a specific connected display.
+
+The list is rebuilt when a display is plugged in or unplugged. If a pinned monitor is disconnected, the banner falls back to the cursor/primary behavior.
+
+### Placement
 
 Select where on the screen the banner appears using the 3×3 grid of radio buttons:
 
@@ -70,4 +90,4 @@ Select where on the screen the banner appears using the 3×3 grid of radio butto
 | Center Left | Center        | Center Right |
 | Bottom Left | Bottom Center | Bottom Right |
 
-A **Custom...** option with a slider lets you drag the banner to any position on your screen for fine-tuned placement.
+A **Custom...** option with a slider lets you drag the banner to any position on your screen for fine-tuned placement. A saved custom position follows the monitor it was dragged onto, and pressing <kbd>R</kbd> while dragging resets it.
