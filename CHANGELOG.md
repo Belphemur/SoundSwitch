@@ -1,3 +1,14 @@
+## [7.4.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v7.4.0-beta.1...v7.4.0-beta.2) (2026-10-25)
+
+### Features
+
+* **app-rules:** assign a hotkey to an app rule ([#2522](https://github.com/Belphemur/SoundSwitch/issues/2522)) ([843c550](https://github.com/Belphemur/SoundSwitch/commit/843c5505bcee5a2f44f3aa57bdf40eb71f1e7e75)), closes [#2496](https://github.com/Belphemur/SoundSwitch/issues/2496)
+* **microphone:** select mute target and scope mute banners ([7b81213](https://github.com/Belphemur/SoundSwitch/commit/7b81213bb9b4510baf41a9a7fe479e8533c903d4))
+
+### Bug Fixes
+
+* **docs:** sync website lock file and pin Node 26 ([5965eed](https://github.com/Belphemur/SoundSwitch/commit/5965eed0d27adb665c11b724097873dac6883a91))
+
 ## [7.4.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.3.3...v7.4.0-beta.1) (2026-10-19)
 
 ### Features
