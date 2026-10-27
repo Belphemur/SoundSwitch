@@ -69,8 +69,8 @@ watch(() => route.path, () => {
   max-width: 960px;
   margin: 1.5rem auto 0;
   padding: 0 2rem;
+  box-sizing: border-box;
   min-height: 90px;
-  min-width: 100%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -79,7 +79,6 @@ watch(() => route.path, () => {
 
 .adsbygoogle {
   display: block;
-  min-width: 100%;
   min-height: 90px;
   width: 100%;
 }
