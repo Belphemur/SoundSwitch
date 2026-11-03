@@ -313,7 +313,7 @@ onMounted(async () => {
 
 .home-wrapper {
   position: relative;
-  margin: -2rem -2rem 0;
+  margin: -2rem 0 0;
   padding-bottom: 2rem;
   /* Background gradient is applied to .vp-project-home (in styles/index.scss)
      so the entire home page shares the same blue tint. */

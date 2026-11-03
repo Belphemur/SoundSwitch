@@ -210,6 +210,9 @@ export default defineUserConfig({
         // Boost matches in the title over body content.
         searchDelay: 150,
         suggestDelay: 50,
+        // Exclude the changelog page from search: its full release notes flood
+        // every query with noise.
+        filter: (page) => page.path !== "/changelog.html",
       },
       // Open Graph / Twitter / JSON-LD metadata. The plugin reads `hostname`
       // and `author` from the theme options above, plus per-page frontmatter.
