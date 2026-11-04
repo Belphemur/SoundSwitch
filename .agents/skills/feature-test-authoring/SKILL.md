@@ -86,6 +86,8 @@ Load the `end-to-end-testing` skill when writing the E2E script, the
      while that app runs: keep the backup, print its path, and tell the user to
      reapply it after stopping the app — the app would otherwise write its
      in-memory state over the restore, which the file restore alone cannot undo.
+     If the file was absent before the run, there is no backup: print that the
+     test created the file and tell the user to delete it after stopping the app.
 6. **Write the `<feature>-testing` skill** from `TEMPLATE.md`, moving per-feature
    facts (real commands, fixture table, automation ids, gotchas) in.
 7. **Register:** add one line for each new script to `tools/README.md`; the
