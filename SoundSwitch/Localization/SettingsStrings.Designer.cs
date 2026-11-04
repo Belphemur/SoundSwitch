@@ -123,6 +123,42 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has own device.
+        /// </summary>
+        internal static string appSoundLock_picker_hasOwnDevice {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.hasOwnDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (not running).
+        /// </summary>
+        internal static string appSoundLock_picker_notRunningSuffix {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.notRunningSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show all processes.
+        /// </summary>
+        internal static string appSoundLock_picker_showAllProcesses {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.showAllProcesses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using audio now.
+        /// </summary>
+        internal static string appSoundLock_picker_usingAudioNow {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.usingAudioNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Case Sensitive.
         /// </summary>
         internal static string appSoundLock_rule_caseSensitive {

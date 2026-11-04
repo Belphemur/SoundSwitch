@@ -1,6 +1,6 @@
 # App Rules picker: list apps that already have their own audio device set first
 
-**Status:** Proposed
+**Status:** Implemented on `adr-app-rules-picker`
 **Author:** GLM (OpenCode agent)
 **Issue:** —
 **Related:** `docs/design/app-rules/2026-10-22-app-rule-modes.md` (App Rules modes)
@@ -112,7 +112,7 @@ public sealed class PersistedDefaultEndpointStore
 }
 ```
 
-Layout verified by experiment (§2.2): the `(Default)` value is the exe path (`\Device\HarddiskVolume...\app.exe`), and values named `<role-index>_000` hold the full MMDEVAPI device token; `role-index` is `000`/`001`/`002` for eConsole/eMultimedia/eCommunications. Values that do not match the pattern are ignored (forward compatibility); a null/unresolvable device id yields a record with an empty map.
+Layout verified by experiment (§2.2): the `(Default)` value is the exe path (`\Device\HarddiskVolume...\app.exe`), and values named `<role-index>_000` hold the full MMDEVAPI device token; `role-index` is `000`/`001`/`002` for eConsole/eMultimedia/eCommunications. Values that do not match the pattern are ignored (forward compatibility); a record with no recognizable device token is skipped entirely — the token is the only direction signal, so a tokenless record has no flow and no per-flow column data (refines §6.1's draft "empty map" option). `DeviceIds` hold the **unwrapped** MMDevice id (`{0.0.0.00000000}.{guid}`, what `GetUsedDevice`/the device cache resolve), not the raw `\\?\SWD#MMDEVAPI#…` token; the full token is only used to derive direction and role mapping.
 
 One fact, one source: **the device's direction comes from the token itself** (interface suffix `#e6327cad…` = render, `#2eef81be…` = capture) — not from the undocumented numeric suffix of the record key, which has not been reverse-engineered and is not relied upon anywhere.
 
@@ -133,12 +133,12 @@ If the registry read ever proves stale or unreliable in the field, the fallback 
 1. `records = PersistedDefaultEndpointStore.ReadAll()` — pure registry read, no COM.
 2. Collect active-session pids / per-process devices from `AudioSwitcher.GetProcessDeviceMap` (already loaded today for the display columns).
 3. Classify rows:
-   - a running process that appears in **either** the store records or `pidsWithOwnDevice` → **Has own device** (running);
-   - store records whose exe path matched **no** running process → **Has own device** (dimmed, `(not running)`);
+   - a running process whose persisted `GetUsedDevice` result (today's existing per-pid persisted read, already used for the display columns) returns a device, **or** whose path suffix-matches a store record → **Has own device** (running);
+   - store records whose exe path matched **no** running process → **Has own device** (dimmed, `(not running)`, still selectable — the rule editor only needs the `.exe` name, so NT-form store paths remain compatible);
    - other processes with active sessions → **Using audio now**;
-   - everyone else → **All processes**.
+   - everyone else → **All processes**, behind the collapsed toggle.
 
-The store records are the source of truth for "this app has a device assignment"; the live queries additionally confirm running-process liveness and freshly-resolvable devices.
+The store records are the source of truth for "this app has a device assignment"; the pre-existing per-pid `GetUsedDevice` read (display columns, unchanged) freshly confirms running-process devices.
 
 Rows keep carrying their per-side device names, computed as today (`GetUsedDevice` → `GetProcessDeviceMap` → system default), so no display logic changes.
 

@@ -800,6 +800,18 @@ Press Esc to close.</value>
   <data name="appSoundLock.filter" xml:space="preserve">
     <value>Filter:</value>
   </data>
+  <data name="appSoundLock.picker.hasOwnDevice" xml:space="preserve">
+    <value>Has own device</value>
+  </data>
+  <data name="appSoundLock.picker.notRunningSuffix" xml:space="preserve">
+    <value>(not running)</value>
+  </data>
+  <data name="appSoundLock.picker.showAllProcesses" xml:space="preserve">
+    <value>Show all processes</value>
+  </data>
+  <data name="appSoundLock.picker.usingAudioNow" xml:space="preserve">
+    <value>Using audio now</value>
+  </data>
   <data name="appSoundLock.rule.description" xml:space="preserve">
     <value>Select the process of the application whose audio you want to control. The selected devices will be automatically applied whenever that application is running.</value>
   </data>
