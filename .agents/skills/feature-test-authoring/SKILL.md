@@ -13,6 +13,11 @@ run with one command: focused unit fixtures, a live-control surface it reuses
 `tools/Test-MuteTarget.ps1` + `tools/Test-MuteTargetEndToEnd.ps1` +
 `.agents/skills/mute-target-testing/SKILL.md` is the reference implementation.
 Read all three alongside this skill before writing anything.
+All four tools are part of this layer and are referenced throughout:
+`tools/Test-MuteTarget.ps1`, `tools/Test-MuteTargetEndToEnd.ps1`,
+`tools/Control-SoundSwitch.ps1` (live control: launch/stop, IPC CLI, Settings
+tabs, screenshot capture), and `tools/Capture-DocumentationScreenshot.ps1`
+(the PrintWindow doc-capture whose primitives the live-control scripts reuse).
 
 ## What you produce
 
