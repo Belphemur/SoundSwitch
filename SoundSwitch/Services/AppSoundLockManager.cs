@@ -81,13 +81,32 @@ namespace SoundSwitch.Services
         }
 
         /// <summary>
-        /// Device arrival/removal can leave an assignment rule pointing at a dead device or a
-        /// pending remove-default clear waiting for its app; reconcile so the state converges
-        /// (ADR §6.6). Publishes nothing on its own.
+        /// Device arrival/removal can change which device an assigned route resolves to
+        /// (replugged/re-enumerated endpoint, device back after it was unavailable at the last
+        /// sighting). Reconcile the ledger's convergence and re-apply every live assignment rule
+        /// to the running processes — SwitchRuleDevice resolves the stored device against the
+        /// fresh device list and self-heals the stored info (ADR §6.6). Publishes nothing on
+        /// its own.
         /// </summary>
         public void OnDevicesChanged()
         {
             ReconcileAssignments("device-change");
+
+            if (_configuration.AppSoundRules == null)
+                return;
+
+            foreach (var rule in _configuration.AppSoundRules.ToList().Where(rule =>
+                         rule.Enabled && rule.Mode == AppRuleMode.Automatic && rule.Enforcement == AppRuleEnforcement.Assignment))
+            {
+                try
+                {
+                    ApplyAssignmentRuleToRunningProcesses(rule);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warning(ex, "Failed to re-apply assignment rule {RuleId} after a device change", rule.Id);
+                }
+            }
         }
 
         /// <summary>
@@ -176,6 +195,12 @@ namespace SoundSwitch.Services
                 return;
             }
 
+            // One banner and one activation metric per rule and batch, not per running pid
+            // (mirrors the hotkey batch, which notifies for the first match only).
+            var notifiedRules = new HashSet<Guid>();
+            string? firstMatchPath = null;
+            string? firstMatchName = null;
+
             foreach (var process in Process.GetProcesses())
             {
                 using (process)
@@ -201,10 +226,11 @@ namespace SoundSwitch.Services
                     // The process may have exited between enumeration and the switch.
                     try
                     {
-                        if (ApplyRuleToProcess(rule, pair, (uint)process.Id, processName, processPath, null, "assignment", true))
+                        if (ApplyRuleToProcess(rule, pair, (uint)process.Id, processName, processPath, notifiedRules, "assignment", true, out var flowsWritten))
                         {
-                            TrackRuleActivated("engine", processPath, processName);
-                            _assignmentReconciler.EnsureEntry(rule, processPath, pair);
+                            firstMatchPath ??= processPath;
+                            firstMatchName ??= processName;
+                            _assignmentReconciler.EnsureEntry(rule, processPath, pair, flowsWritten);
                         }
                     }
                     catch (Exception ex)
@@ -212,6 +238,11 @@ namespace SoundSwitch.Services
                         _logger.Debug(ex, "Couldn't apply assignment rule to process PID {PID}", process.Id);
                     }
                 }
+            }
+
+            if (firstMatchPath != null)
+            {
+                TrackRuleActivated("engine", firstMatchPath, firstMatchName);
             }
         }
 
@@ -398,15 +429,16 @@ namespace SoundSwitch.Services
                     : IsMatch(rule, processName, processPath, windowTitle);
                 if (!matched) continue;
 
-                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true))
+                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true, out var flowsWritten))
                 {
                     // An assignment's engine re-applies the route itself after the first write;
                     // keep that observable in the trigger telemetry (ADR §7).
                     TrackRuleActivated(rule.Enforcement == AppRuleEnforcement.Assignment ? "engine" : triggerSource, processPath, processName);
 
-                    // Own the route in the ledger — for any enforcement kind (ADR §6.4). Only a
-                    // actually written route is claimed; adoption covers pre-existing records.
-                    _assignmentReconciler.EnsureEntry(rule, processPath, pair);
+                    // Own the route in the ledger — for any enforcement kind (ADR §6.4). Only
+                    // the flows actually written are claimed; adoption covers pre-existing
+                    // records and later successful writes extend the claim.
+                    _assignmentReconciler.EnsureEntry(rule, processPath, pair, flowsWritten);
                 }
             }
         }
@@ -415,13 +447,18 @@ namespace SoundSwitch.Services
         /// Switch the given process to the pair's devices, notify and record telemetry.
         /// Shared by the automatic (process/foreground) path and the rule hotkey.
         /// </summary>
-        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify)
+        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify, out IReadOnlyCollection<EDataFlow> flowsWritten)
         {
             _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
 
-            var changed = false;
-            changed |= SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
-            changed |= SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
+            var playbackSwitched = SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
+            var recordingSwitched = SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
+            var changed = playbackSwitched || recordingSwitched;
+
+            var flows = new List<EDataFlow>();
+            if (playbackSwitched) flows.Add(EDataFlow.eRender);
+            if (recordingSwitched) flows.Add(EDataFlow.eCapture);
+            flowsWritten = flows;
 
             if (notify && rule.Notify && changed)
             {
@@ -515,9 +552,9 @@ namespace SoundSwitch.Services
             var changed = false;
             foreach (var match in matches)
             {
-                try
-                {
-                    changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false);
+            try
+            {
+                changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out _);
                 }
                 catch (Exception ex)
                 {
