@@ -76,6 +76,11 @@ Load the `end-to-end-testing` skill when writing the E2E script, the
      (or delete it if the test created it). Restoring the file while an app is
      still running loses: the app caches its config in memory and the next save
      (on exit or on change) clobbers your restore. Stop → restore.
+   - `-KeepRunning` trades away that safety: the app still runs with the test's
+     config in memory, so a restored file can be overwritten by the app's next
+     save. Either skip the restore and leave the backup where it is, printing
+     its path for the user to reapply after stopping the app, or document the
+     limitation in the script's help.
    - Prefer failing fast when an instance is already running. `-AllowExistingInstance`
      means your test drives the user's live app; the config restore does not undo
      in-memory state, so document that trade-off in the script help.

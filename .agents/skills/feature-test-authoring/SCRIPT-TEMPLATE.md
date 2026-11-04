@@ -154,7 +154,7 @@ Invoke-TestProject -Project $testProject -Filter $testFilter -Label '<Feature> f
 if ($Audio) {
     $audioTestProject = Join-Path $repoRoot 'SoundSwitch.Audio.Manager.Tests\SoundSwitch.Audio.Manager.Tests.csproj'
     if (-not (Test-Path $audioTestProject)) {
-        Write-Warning "Audio test project not found: $audioTestProject"
+        throw "Audio test project not found: $audioTestProject"
     }
     else {
         Invoke-TestProject -Project $audioTestProject -Filter $null -Label 'SoundSwitch.Audio.Manager.Tests (COM audio stack)'
