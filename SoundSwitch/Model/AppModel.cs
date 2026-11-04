@@ -201,6 +201,12 @@ public partial class AppModel : IAppModel
         if (!_skipUpdate)
             InitUpdateChecker();
         _initialized = true;
+
+        // A mute event that arrived while the mute notification was still uninitialized
+        // (NotifyMuteChanged) was skipped, and RefreshMicrophoneMuteBanners early-returned
+        // until now. Reconcile once so a microphone muted during startup gets its
+        // persistent banner back.
+        RefreshMicrophoneMuteBanners();
     }
 
     public IAudioDeviceLister AudioDeviceLister { get; private set; }
