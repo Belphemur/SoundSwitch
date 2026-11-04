@@ -188,19 +188,23 @@ public static class ConfigurationManager
     /// Is this error caused by another process holding the files, worth retrying?
     /// </summary>
     /// <remarks>
-    /// Locks surface in two shapes: sharing or lock violations while opening a file, and
-    /// plain access denied when replacing a destination that another process holds open
-    /// without any share flags. Other failures, e.g. a full disk or denied permissions,
-    /// are permanent and must not be retried or swallowed.
+    /// Locks surface in several shapes: sharing, lock, delete-pending or user-mapped-file
+    /// violations while opening or replacing a file, and plain access denied when replacing
+    /// a destination that another process holds open without any share flags. Other
+    /// failures, e.g. a full disk or denied permissions, are permanent and must not be
+    /// retried or swallowed.
     /// </remarks>
     private static bool IsTransientFileLockError(Exception exception, string destinationPath)
     {
         const int ErrorSharingViolation = 32;
         const int ErrorLockViolation = 33;
+        const int ErrorDeletePending = 303;
+        const int ErrorUserMappedFile = 1224;
 
         switch (exception)
         {
-            case IOException ioException when (ioException.HResult & 0xFFFF) is ErrorSharingViolation or ErrorLockViolation:
+            case IOException ioException when (ioException.HResult & 0xFFFF) is ErrorSharingViolation
+                or ErrorLockViolation or ErrorDeletePending or ErrorUserMappedFile:
                 return true;
             case UnauthorizedAccessException:
                 try

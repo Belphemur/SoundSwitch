@@ -98,6 +98,45 @@ public class ConfigurationManagerSaveTests
     }
 
     [Test]
+    public void SaveConfigurationToPath_RetriesWhenDestinationIsDeletePending()
+    {
+        var directory = CreateTempDirectory();
+        try
+        {
+            var filePath = Path.Combine(directory, nameof(TestConfiguration) + ".json");
+            File.WriteAllText(filePath, "previous");
+            // A handle scheduled for delete on close (OneDrive/AV style replacement) keeps the
+            // destination delete-pending; the retry hook releases it once the save has observed
+            // the failure, so the retry is deterministic and must succeed.
+            var deletePendingStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None,
+                bufferSize: 1, FileOptions.DeleteOnClose);
+            try
+            {
+                Exception failedAttempt = null;
+                ConfigurationManager.SaveConfigurationToPath(new TestConfiguration {Value = "updated"}, filePath,
+                    ex =>
+                    {
+                        failedAttempt = ex;
+                        deletePendingStream.Dispose();
+                    });
+
+                failedAttempt.Should().NotBeNull();
+            }
+            finally
+            {
+                // Independent of the hook, so a failing test never leaves the directory locked.
+                deletePendingStream.Dispose();
+            }
+
+            File.ReadAllText(filePath).Should().Contain("updated");
+        }
+        finally
+        {
+            DeleteDirectoryWithRetries(directory);
+        }
+    }
+
+    [Test]
     public void SaveConfigurationToPath_DoesNotThrowAndKeepsPreviousConfigurationOnPersistentLock()
     {
         var directory = CreateTempDirectory();
