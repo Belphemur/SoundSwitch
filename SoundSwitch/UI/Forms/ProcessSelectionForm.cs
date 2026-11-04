@@ -164,6 +164,10 @@ public partial class ProcessSelectionForm : Form
             Width = 32,
             ImageLayout = DataGridViewImageCellLayout.Zoom
         };
+        // Cells without an image (the group-header bands) would otherwise paint
+        // the image column's default placeholder glyph; an empty value must
+        // render nothing so band rows show no icon.
+        colIcon.DefaultCellStyle.NullValue = null;
         dgvProcesses.Columns.Add(colIcon);
         dgvProcesses.Columns.Add("colName", SettingsStrings.appSoundLock_rule_processName);
         dgvProcesses.Columns.Add("colTitle", SettingsStrings.appSoundLock_rule_windowTitle);
