@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Services;
 
 namespace SoundSwitch.Model
 {
@@ -16,7 +17,10 @@ namespace SoundSwitch.Model
     /// <item>the single <see cref="AppSoundRule.PlaybackDevice"/>/<see cref="AppSoundRule.RecordingDevice"/>
     /// pair to the ordered <see cref="AppSoundRule.DevicePairs"/> list;</item>
     /// <item>rules created by the short-lived hotkey schema (a <see cref="AppSoundRule.HotKey"/>
-    /// without a mode) to <see cref="AppRuleMode.Hotkey"/>.</item>
+    /// without a mode) to <see cref="AppRuleMode.Hotkey"/>;</item>
+    /// <item>unknown or unsustainable <see cref="AppSoundRule.Enforcement"/> values
+    /// (<see cref="AppRuleEnforcement.Assignment"/> outside its constraints) to
+    /// <see cref="AppRuleEnforcement.Dynamic"/>.</item>
     /// </list>
     /// The migration is idempotent: after the first run the legacy properties are
     /// cleared, so a second run returns <c>false</c> and leaves the pairs untouched.
@@ -92,6 +96,22 @@ namespace SoundSwitch.Model
                 if (!Enum.IsDefined(typeof(AppRuleMode), rule.Mode))
                 {
                     rule.Mode = AppRuleMode.Automatic;
+                    migrated = true;
+                }
+
+                // 4. Enforcement normalization: persisted values that predate the enum, are
+                // out of range, or are an Assignment rule with constraints the store routing
+                // cannot honour (Hotkey mode — one route per cycle step; window-title pattern
+                // — the store keys on exe identity only; a patterned or empty identity —
+                // there is no exact exe to route) fall back to Dynamic. Idempotent.
+                var assignmentIdentity = rule.AssignmentExePath ?? rule.ProcessPath;
+                if (!Enum.IsDefined(typeof(AppRuleEnforcement), rule.Enforcement) ||
+                    (rule.Enforcement == AppRuleEnforcement.Assignment &&
+                     (rule.Mode != AppRuleMode.Automatic || !string.IsNullOrEmpty(rule.WindowName) ||
+                      string.IsNullOrWhiteSpace(assignmentIdentity) ||
+                      AppRuleAssignmentValidator.HasPatternSyntax(assignmentIdentity))))
+                {
+                    rule.Enforcement = AppRuleEnforcement.Dynamic;
                     migrated = true;
                 }
 

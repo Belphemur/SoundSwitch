@@ -130,7 +130,45 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             return null;
         }
 
-        public void ResetAllSetEndpoint()
+        /// <summary>
+    /// Clear the persisted default endpoint of the given process for a flow by setting the
+    /// null endpoint for every role. The per-app store is the engine's own territory; this is
+    /// the only supported clear (live pid required, see the app-rules identity ADR §5.2):
+    /// Windows resolves the pid back to its exe identity and drops both the in-memory override
+    /// and the persisted record.
+    /// </summary>
+    public bool ClearDefaultEndPoint(EDataFlow flow, uint processId)
+    {
+        _log.Information("ExtendedPolicyClient ClearDefaultEndPoint [{Flow}] {ProcessId}", flow, processId);
+        var allCleared = true;
+        foreach (var eRole in new[] { ERole.eConsole, ERole.eMultimedia, ERole.eCommunications })
+        {
+            try
+            {
+                // false = the engine's PROCESS_NO_AUDIO: this pid has no audio session, so the
+                // clear was a no-op and the identity's record is untouched. Report it: the
+                // caller aggregates the identity's pids and only needs one to accept, so a
+                // session-less copy no longer blocks the clear while its playing sibling is
+                // the one that removes the record (AppRuleAssignmentReconciler).
+                if (!PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceId: null!))
+                {
+                    _log.Debug("No audio session for process {ProcessId} [{Flow}] {Role}: clear not applied", processId, flow, eRole);
+                    allCleared = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // A genuine write failure (engine rejection, dead COM object) must surface so
+                // the caller keeps its pending clear and retries at the next sighting.
+                _log.Debug(ex, "Can't clear the default endpoint for process {ProcessId}", processId);
+                allCleared = false;
+            }
+        }
+
+        return allCleared;
+    }
+
+    public void ResetAllSetEndpoint()
         {
             try
             {

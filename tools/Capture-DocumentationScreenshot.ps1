@@ -45,6 +45,18 @@
     inside the dialog opened by -Click, before capturing. Use it to capture a
     specific mode, e.g. -Click addAppSoundRuleButton -Select rdoHotkey.
 
+.PARAMETER ThenClick
+    Accessible name or automation id of a button to click inside the dialog opened
+    by -Click, after -Select is applied. The window that button opens (a
+    second-level dialog, e.g. the "Select a process" picker opened from the
+    "Add Rule" dialog) is captured instead. Requires -Click.
+
+.PARAMETER ThenClickRow
+    Text of a cell in a row to click inside the dialog opened by -Click, after
+    -ThenClick is applied (e.g. the collapsible "Show all processes" band of the
+    process picker, which has no button to click). The first row with a cell
+    containing the text is activated with a simulated mouse click. Requires -Click.
+
 .PARAMETER OutputDirectory
     Directory the PNG is written to when -Name is not rooted.
     Defaults to <repo>\img\Documentation.
@@ -82,8 +94,16 @@
     Builds the app, opens the Notifications tab and writes img\Documentation\Notifications.png.
 
 .EXAMPLE
-    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add" -Tab "App Rules" -Click addAppSoundRuleButton
-    Opens the App Rules tab, clicks Add and captures the "Add Rule" dialog.
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add Hotkey" -Tab "App Rules" -Click addAppSoundRuleButton -Select rdoHotkey
+    Opens the App Rules tab, clicks Add, selects the Hotkey mode and captures the "Add Rule" dialog.
+
+.EXAMPLE
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Process Picker" -Tab "App Rules" -Click addAppSoundRuleButton -ThenClick btnSelectProcess
+    Opens the "Add Rule" dialog, then the "Select a process" picker inside it, and captures the picker.
+
+.EXAMPLE
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Process Picker" -Tab "App Rules" -Click addAppSoundRuleButton -ThenClick btnSelectProcess -ThenClickRow "Show all processes"
+    Same as above, and additionally activates the collapsible "Show all processes" band so the full process list is visible in the capture.
 
 .EXAMPLE
     .\tools\Capture-DocumentationScreenshot.ps1 -Name Playback -Tab Playback -NoBuild -KeepOpen
@@ -102,6 +122,13 @@ param(
     [string]$Click,
 
     [string]$Select,
+
+    [string]$ThenClick,
+
+    [string]$ThenClickRow,
+
+    # Fills a text field in the captured dialog, e.g. 'txtProcessPath=C:\Apps\SampleApp.exe'.
+    [string]$SetText,
 
     [string]$OutputDirectory,
 
@@ -135,6 +162,22 @@ if (-not (Test-Path (Join-Path $RepoRoot 'SoundSwitch.sln'))) {
 
 if (-not $ListWindows -and [string]::IsNullOrWhiteSpace($Name)) {
     throw '-Name is required (except with -ListWindows).'
+}
+
+if ($ThenClick -and -not $Click) {
+    throw '-ThenClick requires -Click: it opens a second-level dialog from that dialog.'
+}
+
+if ($ThenClickRow -and -not $Click) {
+    throw '-ThenClickRow requires -Click: it activates a row inside that dialog.'
+}
+
+if ($ThenClickRow -and -not $ThenClick) {
+    # Without -ThenClick the flow never resolves the picker's window handle ($dialogHandle
+    # stays on the rule editor, or the auto-opened picker is never identified), so the row
+    # search would run against the wrong dialog. Give the correction logic the inner dialog
+    # it needs.
+    throw '-ThenClickRow requires -ThenClick: the row is activated inside the dialog that -ThenClick opens.'
 }
 
 # --- Win32 interop -----------------------------------------------------------------
@@ -192,6 +235,24 @@ namespace SoundSwitch.DocCapture
 
         [DllImport("user32.dll")]
         public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetCursorPos(int x, int y);
+
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, UIntPtr dwExtraInfo);
+
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref POINT point);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
     }
 }
 '@
@@ -432,6 +493,140 @@ function Invoke-Element {
     throw "The control '$($Element.Current.Name)' cannot be invoked."
 }
 
+function Invoke-ButtonAndFindDialog {
+    <#
+        Clicks a button and waits until a top-level window of the process appears
+        whose handle is not in the given set. Returns the new handle and title.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [int]$ProcessId,
+
+        [Parameter(Mandatory = $true)]
+        $Button,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ButtonId,
+
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyCollection()]
+        [long[]]$KnownHandles,
+
+        [int]$TimeoutSeconds = 60,
+
+        [int]$WaitSeconds = 0
+    )
+
+    Write-Host "Clicking '$ButtonId'..." -ForegroundColor Cyan
+    Invoke-Element -Element $Button
+
+    $dialogHandle = [IntPtr]::Zero
+    $dialogTitle = $null
+    $waitSeconds = if ($WaitSeconds -gt 0) { $WaitSeconds } else { $TimeoutSeconds }
+    $dialogDeadline = (Get-Date).AddSeconds($waitSeconds)
+    while ((Get-Date) -lt $dialogDeadline -and $dialogHandle -eq [IntPtr]::Zero) {
+        foreach ($candidate in @(Get-TopLevelWindows -ProcessId $ProcessId)) {
+            if ($KnownHandles -notcontains $candidate.Handle.ToInt64()) {
+                $dialogHandle = $candidate.Handle
+                $dialogTitle = $candidate.Title
+                break
+            }
+        }
+
+        if ($dialogHandle -eq [IntPtr]::Zero) {
+            Start-Sleep -Milliseconds 250
+        }
+    }
+
+    if ($dialogHandle -eq [IntPtr]::Zero) {
+        throw "No window opened after clicking '$ButtonId' within $waitSeconds seconds."
+    }
+
+    return [pscustomobject]@{ Handle = $dialogHandle; Title = $dialogTitle }
+}
+
+function Select-DialogRow {
+    <#
+        Activates the row whose cell text contains the given text inside the
+        window (e.g. the picker's collapsible "Show all processes" band, which
+        has no button whose BM_CLICK can be posted). WinForms surfaces the
+        DataGridView rows with evolving control types (Custom/DataItem, and
+        even Pane on other framework builds), so the search is deliberately
+        type-agnostic: every descendant element whose value carries the text is
+        a candidate.
+
+        The click only happens when the row is inside the dialog's visible
+        bounds — an off-viewport row would silently take the click elsewhere.
+
+        The dialog is pushed to the top of the z-order first: modal sub-dialogs
+        of a non-foreground Settings window stay behind whichever window covers
+        them, and a cursor click would land on that window instead of the row.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$RowText
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    # HWND_TOPMOST; cleared again after the capture (see the SetWindowPos call below),
+    # because when the picker is kept open (-KeepOpen/-KeepRunning) it would otherwise
+    # remain above every other window.
+    [SoundSwitch.DocCapture.Native]::SetWindowPos($Handle, [IntPtr](-1), 0, 0, 0, 0, 0x0043) | Out-Null # SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW
+    [SoundSwitch.DocCapture.Native]::SetForegroundWindow($Handle) | Out-Null
+    Start-Sleep -Milliseconds 200
+
+    $window = [System.Windows.Automation.AutomationElement]::FromHandle($Handle)
+    if ($null -eq $window) {
+        throw "Window is not reachable through UI Automation."
+    }
+
+    $windowRect = [SoundSwitch.DocCapture.Native+RECT]::new()
+    if (-not [SoundSwitch.DocCapture.Native]::GetWindowRect($Handle, [ref]$windowRect)) {
+        throw 'GetWindowRect failed for the dialog.'
+    }
+
+    $candidates = $window.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)
+    foreach ($element in $candidates) {
+        $valuePattern = $null
+        if (-not $element.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
+            continue
+        }
+
+        $text = $valuePattern.Current.Value
+        if ([string]::IsNullOrEmpty($text) -or $text.IndexOf($RowText, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
+            continue
+        }
+
+        $rect = $element.Current.BoundingRectangle
+        $clickX = [int]($rect.X + $rect.Width / 2)
+        $clickY = [int]($rect.Y + $rect.Height / 2)
+        if ($rect.IsEmpty -or
+            $clickX -lt $windowRect.Left -or $clickX -ge $windowRect.Right -or
+            $clickY -lt $windowRect.Top -or $clickY -ge $windowRect.Bottom)
+        {
+            # The row is off the dialog's viewport (e.g. a counterpart band on
+            # an underlying screen): clicking it would miss. Fail loudly instead
+            # of logging success and saving the collapsed state.
+            throw "Row with cell text '$text' is outside the dialog's visible bounds; scroll it into view first."
+        }
+
+        [SoundSwitch.DocCapture.Native]::SetCursorPos($clickX, $clickY) | Out-Null
+        Start-Sleep -Milliseconds 150
+        [SoundSwitch.DocCapture.Native]::mouse_event(0x0002, 0, 0, 0, [UIntPtr]::Zero) # left down
+        Start-Sleep -Milliseconds 60
+        [SoundSwitch.DocCapture.Native]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero) # left up
+        Write-Host "Clicked row with cell text '$text'..." -ForegroundColor Cyan
+        return
+    }
+
+    throw "No row with cell text '$RowText' was found in the dialog."
+}
+
 function Save-WindowScreenshot {
     <#
         Captures the window bounds into a PNG. PrintWindow renders the window even
@@ -564,6 +759,7 @@ if (-not $process) {
     $launched = $true
 }
 
+$captureHandle = [IntPtr]::Zero
 try {
     if ($ListWindows) {
         # Give a freshly launched instance a moment to create its window.
@@ -613,6 +809,8 @@ try {
 
     $captureHandle = $settingsHandle
     $captureLabel = if ($Tab) { "the '$Tab' tab" } else { 'the Settings window' }
+    # Second-level dialog handles opened along the way, closed during cleanup (inner first).
+    $openedDialogHandles = [System.Collections.Generic.List[long]]::new()
 
     if ($Click) {
         # Remember what is already on screen so the dialog opened by the click can be
@@ -624,27 +822,30 @@ try {
             throw "Button '$Click' was not found in the Settings window."
         }
 
-        Write-Host "Clicking '$Click'..." -ForegroundColor Cyan
-        Invoke-Element -Element $button
+        $dialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $button -ButtonId $Click -KnownHandles $existingHandles -TimeoutSeconds $TimeoutSeconds
+        $dialogHandle = $dialog.Handle
+        $openedDialogHandles.Add($dialogHandle.ToInt64())
+        $captureLabel = "'$($dialog.Title)' dialog"
 
-        $dialogHandle = [IntPtr]::Zero
-        $dialogDeadline = (Get-Date).AddSeconds($TimeoutSeconds)
-        while ((Get-Date) -lt $dialogDeadline -and $dialogHandle -eq [IntPtr]::Zero) {
+        if ($Select -or $ThenClick -or $SetText) {
+            # Rule editors auto-open their first child dialog as well (the rule editor
+            # pops its process picker right after opening). Whichever window the click
+            # detection grabbed, the editor is the one carrying the requested controls:
+            # give the auto-opened child a moment, look at every other window of that
+            # click, prefer the one carrying the target and close the extra copies.
+            Start-Sleep -Milliseconds 600
             foreach ($candidate in @(Get-TopLevelWindows -ProcessId $process.Id)) {
-                if ($existingHandles -notcontains $candidate.Handle.ToInt64()) {
+                if ($candidate.Handle.ToInt64() -in $existingHandles -or $candidate.Handle -eq $dialogHandle) { continue }
+                $target = if ($Select) { Find-VisibleControl -Handle $candidate.Handle -ControlId $Select } elseif ($ThenClick) { Find-VisibleButton -Handle $candidate.Handle -ButtonId $ThenClick } else { Find-VisibleControl -Handle $candidate.Handle -ControlId ($SetText -split '=', 2)[0] }
+                if ($null -ne $target) {
+                    Write-Host "Preferring '$($candidate.Title)' (carries the requested control), closing the extra dialog..." -ForegroundColor Yellow
+                    [SoundSwitch.DocCapture.Native]::PostMessage($dialogHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+                    Start-Sleep -Milliseconds 300
                     $dialogHandle = $candidate.Handle
                     $captureLabel = "'$($candidate.Title)' dialog"
                     break
                 }
             }
-
-            if ($dialogHandle -eq [IntPtr]::Zero) {
-                Start-Sleep -Milliseconds 250
-            }
-        }
-
-        if ($dialogHandle -eq [IntPtr]::Zero) {
-            throw "No window opened after clicking '$Click' within $TimeoutSeconds seconds."
         }
 
         if ($Select) {
@@ -656,6 +857,65 @@ try {
             Write-Host "Selecting '$Select'..." -ForegroundColor Cyan
             Select-Element -Element $control
             Start-Sleep -Milliseconds 200
+        }
+
+        if ($SetText) {
+            $parts = $SetText -split '=', 2
+            if ($parts.Count -ne 2) { throw "SetText must be 'AutomationId=value'." }
+            $field = Find-VisibleControl -Handle $dialogHandle -ControlId $parts[0]
+            if ($null -eq $field) { throw "Control '$($parts[0])' was not found for SetText." }
+            $valuePattern = $null
+            if (-not $field.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
+                throw "Control '$($parts[0])' does not accept text."
+            }
+            Write-Host "Typing into '$($parts[0])'..." -ForegroundColor Cyan
+            $valuePattern.SetValue($parts[1])
+            Start-Sleep -Milliseconds 300
+        }
+
+        if ($ThenClick) {
+            # A second-level dialog (e.g. the process picker opened from the rule
+            # dialog): click inside the dialog and capture what that button opens.
+            $existingDialogHandles = @(Get-TopLevelWindows -ProcessId $process.Id | ForEach-Object { $_.Handle.ToInt64() })
+
+            $innerButton = Find-VisibleButton -Handle $dialogHandle -ButtonId $ThenClick
+            if ($null -eq $innerButton) {
+                throw "Button '$ThenClick' was not found in the dialog opened by '$Click'."
+            }
+
+            try {
+                $innerDialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $innerButton -ButtonId $ThenClick -KnownHandles $existingDialogHandles -TimeoutSeconds $TimeoutSeconds -WaitSeconds 10
+            }
+            catch {
+                # The dialog may already be open (the Add-rule flow auto-opens its process
+                # picker from OnShown, and the editor refuses to stack a second one) =>
+                # reuse the already-open dialog instead of waiting for a new window. Only a
+                # candidate that is not the just-clicked editor (which still carries the
+                # '$ThenClick' button) and not Settings qualifies; anything else is another
+                # unrelated window that must not be captured.
+                $knownSecondLevel = @(Get-TopLevelWindows -ProcessId $process.Id | Where-Object {
+                    $_.Handle.ToInt64() -in $existingDialogHandles -and
+                    $_.Handle.ToInt64() -ne $dialogHandle -and
+                    $_.Handle.ToInt64() -ne $settingsHandle.ToInt64() -and
+                    $null -eq (Find-VisibleButton -Handle $_.Handle -ButtonId $ThenClick)
+                })
+                # Nothing usable was already open.
+                if ($knownSecondLevel.Count -eq 0) {
+                    throw "No window opened after clicking '$ThenClick' and none were already open: $_"
+                }
+
+                $innerDialog = [pscustomobject]@{ Handle = $knownSecondLevel[0].Handle; Title = $knownSecondLevel[0].Title }
+                Write-Host "Reusing the already-open dialog '$($knownSecondLevel[0].Title)'..." -ForegroundColor Yellow
+            }
+
+            $dialogHandle = $innerDialog.Handle
+            $openedDialogHandles.Add($dialogHandle.ToInt64())
+            $captureLabel = "'$($innerDialog.Title)' dialog"
+        }
+
+        if ($ThenClickRow) {
+            Select-DialogRow -Handle $dialogHandle -RowText $ThenClickRow
+            Start-Sleep -Milliseconds 300
         }
 
         $captureHandle = $dialogHandle
@@ -676,15 +936,26 @@ try {
     Write-Host "Saved $($result.Path) ($($result.Width)x$($result.Height))." -ForegroundColor Green
 
     if (-not $KeepOpen) {
-        if ($captureHandle -ne $settingsHandle) {
-            [SoundSwitch.DocCapture.Native]::PostMessage($captureHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
-            Start-Sleep -Milliseconds 300
+        # Close the captured dialog and every intermediate second-level dialog (e.g. a rule
+        # editor left between Settings and the picker), inner first, so a modal opener does
+        # not keep Settings from closing.
+        foreach ($openHandle in $openedDialogHandles) {
+            if ($openHandle -eq $settingsHandle.ToInt64()) { continue }
+            [SoundSwitch.DocCapture.Native]::PostMessage([IntPtr]$openHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+            Start-Sleep -Milliseconds 200
         }
 
         [SoundSwitch.DocCapture.Native]::PostMessage($settingsHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
     }
 }
 finally {
+    if ($ThenClickRow -and $captureHandle -and $captureHandle -ne [IntPtr]::Zero) {
+        # Select-DialogRow pushed the dialog to HWND_TOPMOST to make the click land on the
+        # row. Clear that on every exit path (save failure, throw, -KeepOpen/-KeepRunning or an
+        # existing instance) so a picker that stays open returns to the normal z-order.
+        [SoundSwitch.DocCapture.Native]::SetWindowPos($captureHandle, [IntPtr](-2), 0, 0, 0, 0, 0x0043) | Out-Null # HWND_NOTOPMOST
+    }
+
     if ($launched -and -not $KeepRunning) {
         $process | Wait-Process -Timeout 5 -ErrorAction SilentlyContinue
         if (-not $process.HasExited) {

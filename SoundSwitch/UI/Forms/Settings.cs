@@ -1892,6 +1892,62 @@ public sealed partial class SettingsForm : Form
         var activePlaybacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active);
         var activeRecordings = _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active);
 
+        // Windows assignments section (ADR §4): assignments that exist in Windows' own per-app
+        // store and that no SoundSwitch rule owns. Read-only rows above the user's rules; the
+        // merge rule keeps one identity in one place only (§11.5).
+        var assignmentTint = WindowsThemeHelper.IsDarkModeEnabled()
+            ? ProcessSelectionForm.DarkGridDimmedColor
+            : SystemColors.GrayText;
+
+        var windowsAssignments = AppModel.Instance.AppSoundLockManager.GetWindowsAssignments();
+
+        // The section band that names the group (ADR §6.5): without it the tinted rows are the
+        // only cue, and ShowGroups is off so a ListViewGroup would not render either. No rows,
+        // no band — an empty header above the user's rules reads as a broken section.
+        if (windowsAssignments.Count > 0)
+        {
+            var sectionHeader = new ListViewItem(SettingsStrings.appSoundLock_rules_section_windows)
+            {
+                Tag = null,
+                ForeColor = assignmentTint
+            };
+            sectionHeader.SubItems[0].Tag = assignmentTint;
+            for (var column = 1; column < appSoundLockListView.Columns.Count; column++)
+            {
+                sectionHeader.SubItems.Add(string.Empty).Tag = assignmentTint;
+            }
+            appSoundLockListView.Items.Add(sectionHeader);
+        }
+
+        foreach (var assignment in windowsAssignments)
+        {
+            var name = Path.GetFileNameWithoutExtension(assignment.RelativePath);
+            var item = new ListViewItem(name)
+            {
+                Tag = null,
+                ToolTipText = $"{name}{Environment.NewLine}{assignment.ExePath}{Environment.NewLine}{SettingsStrings.appSoundLock_rules_section_windowsHint}",
+                Checked = false
+            };
+            item.SubItems[0].Tag = assignmentTint;
+
+            var windowSub = item.SubItems.Add(string.Empty);
+            windowSub.Tag = assignmentTint;
+
+            var playbackSub = item.SubItems.Add(EndpointDisplay(assignment.PlaybackDeviceId, playbacks));
+            playbackSub.Tag = assignmentTint;
+
+            var recordingSub = item.SubItems.Add(EndpointDisplay(assignment.RecordingDeviceId, recordings));
+            recordingSub.Tag = assignmentTint;
+
+            var modeSub = item.SubItems.Add(SettingsStrings.appSoundLock_rules_section_windowsHint);
+            modeSub.Tag = assignmentTint;
+
+            var hotkeySub = item.SubItems.Add(string.Empty);
+            hotkeySub.Tag = assignmentTint;
+
+            appSoundLockListView.Items.Add(item);
+        }
+
         appSoundLockListView.ItemCheck -= AppSoundLockListView_ItemCheck;
         foreach (var rule in AppConfigs.Configuration.AppSoundRules)
         {
@@ -1933,7 +1989,9 @@ public sealed partial class SettingsForm : Form
             var recordingSubItem = item.SubItems.Add(recordingText);
             recordingSubItem.Tag = recording?.SmallIcon;
 
-            // Mode (with the pair count for Hotkey rules, where the count matters)
+            // Mode (with the pair count for Hotkey rules, where the count matters). Enforcement is
+            // derived state, not a mode the user picks (ADR §0), so Automatic covers both the
+            // dynamic path and the identity assignment it also writes.
             var modeText = rule.Mode == AppRuleMode.Hotkey
                 ? SettingsStrings.appSoundLock_rule_mode_hotkey
                 : SettingsStrings.appSoundLock_rule_mode_automatic;
@@ -2005,12 +2063,31 @@ public sealed partial class SettingsForm : Form
         try { return Path.GetFileName(processPath); } catch { return processPath; }
     }
 
+    /// <summary>
+    /// Device cell text for a Windows-assignment row: the <see cref="DeviceFullInfo.NameClean"/>
+    /// of the persisted endpoint id, or the raw id when no device currently matches.
+    /// </summary>
+    private static string EndpointDisplay(string? deviceId, IReadOnlyList<DeviceFullInfo> devices)
+    {
+        if (string.IsNullOrEmpty(deviceId)) return string.Empty;
+
+        var match = devices.FirstOrDefault(device => string.Equals(device.Id, deviceId, StringComparison.OrdinalIgnoreCase));
+        return match?.NameClean ?? deviceId;
+    }
+
     private void AppSoundLockListView_ItemCheck(object sender, ItemCheckEventArgs e)
     {
-        var rule = (AppSoundRule)appSoundLockListView.Items[e.Index].Tag;
+        // Windows-assignment rows are read-only — their tag is not a rule.
+        if (appSoundLockListView.Items[e.Index].Tag is not AppSoundRule rule)
+        {
+            e.NewValue = e.CurrentValue;
+            return;
+        }
+
         rule.Enabled = e.NewValue == CheckState.Checked;
         AppConfigs.Configuration.Save();
         AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
+        AppModel.Instance.AppSoundLockManager.OnRulesChanged();
     }
 
     private void AddAppSoundRuleButton_Click(object sender, EventArgs e)
@@ -2025,13 +2102,15 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.Save();
             TelemetryService.TrackAppRuleCreated();
             AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
+            AppModel.Instance.AppSoundLockManager.OnRulesChanged();
             PopulateAppSoundLockRules();
         }
     }
 
     private void EditAppSoundRuleButton_Click(object sender, EventArgs e)
     {
-        if (appSoundLockListView.SelectedItems.Count == 0) return;
+        if (appSoundLockListView.SelectedItems.Count == 0 ||
+            appSoundLockListView.SelectedItems[0].Tag is not AppSoundRule) return;
         var rule = (AppSoundRule)appSoundLockListView.SelectedItems[0].Tag;
 
         var playbacks = _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active);
@@ -2044,13 +2123,15 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.AppSoundRules.Add(form.Rule);
             AppConfigs.Configuration.Save();
             AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
+            AppModel.Instance.AppSoundLockManager.OnRulesChanged();
             PopulateAppSoundLockRules();
         }
     }
 
     private void DeleteAppSoundRuleButton_Click(object sender, EventArgs e)
     {
-        if (appSoundLockListView.SelectedItems.Count == 0) return;
+        if (appSoundLockListView.SelectedItems.Count == 0 ||
+            appSoundLockListView.SelectedItems[0].Tag is not AppSoundRule) return;
         var rule = (AppSoundRule)appSoundLockListView.SelectedItems[0].Tag;
 
         if (MessageBox.Show($"Are you sure you want to delete this rule?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -2059,20 +2140,26 @@ public sealed partial class SettingsForm : Form
             AppConfigs.Configuration.Save();
             TelemetryService.TrackAppRuleDeleted();
             AppModel.Instance.AppSoundLockManager.ReloadHotkeys();
+            AppModel.Instance.AppSoundLockManager.OnRulesChanged();
             PopulateAppSoundLockRules();
         }
     }
 
     private void AppSoundLockListView_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var hasSelection = appSoundLockListView.SelectedItems.Count > 0;
-        editAppSoundRuleButton.Enabled = hasSelection;
-        deleteAppSoundRuleButton.Enabled = hasSelection;
+        var isRule = appSoundLockListView.SelectedItems.Count > 0 &&
+                     appSoundLockListView.SelectedItems[0].Tag is AppSoundRule;
+        editAppSoundRuleButton.Enabled = isRule;
+        deleteAppSoundRuleButton.Enabled = isRule;
     }
 
     private void AppSoundLockListView_DoubleClick(object sender, EventArgs e)
     {
-        EditAppSoundRuleButton_Click(sender, e);
+        if (appSoundLockListView.SelectedItems.Count > 0 &&
+            appSoundLockListView.SelectedItems[0].Tag is AppSoundRule)
+        {
+            EditAppSoundRuleButton_Click(sender, e);
+        }
     }
 
     #endregion

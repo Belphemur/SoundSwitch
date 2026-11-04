@@ -198,6 +198,10 @@ public partial class AppModel : IAppModel
         AppSoundLockManager = new Services.AppSoundLockManager(AppConfigs.Configuration, AudioSwitcher.Instance, new WindowMonitor(), new ProcessMonitor(), _notificationManager);
         AppSoundLockManager.Start();
 
+        // Device arrival/removal changes which persisted route resolves: reconciled assignment
+        // rules keep working, disabled ones restore their default (identity ADR §6.6).
+        AudioDeviceLister.DeviceListRefreshed.Subscribe(_ => AppSoundLockManager.OnDevicesChanged());
+
         if (!_skipUpdate)
             InitUpdateChecker();
         _initialized = true;

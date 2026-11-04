@@ -148,4 +148,11 @@ public interface ISoundSwitchConfiguration : IConfiguration
     /// Rules for per-app audio routing (App Sound Lock)
     /// </summary>
     HashSet<Model.AppSoundRule> AppSoundRules { get; set; }
+
+    /// <summary>
+    /// SoundSwitch's ownership ledger of the routes it wrote into Windows' per-app persisted
+    /// endpoint store (assignment rules and dynamic matches, design doc §6.4). Keeps track of
+    /// what to restore to the default when an assignment rule is deleted or disabled.
+    /// </summary>
+    Model.AssignmentLedgerCollection AssignmentLedger { get; set; }
 }

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -8,6 +9,7 @@ using System.Windows.Forms;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using SoundSwitch.Services;
 using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms;
@@ -26,6 +28,13 @@ public partial class UpsertAppSoundLockRule : Form
     private bool _loadingPairBuilder;
     private bool _pairPlaybackDirty;
     private bool _pairRecordingDirty;
+
+    /// <summary>
+    /// The concrete exe identity the process picker last returned (a full path, or the NT device
+    /// path of a not-running store row). Assignment rules persist it as their identity; dynamic
+    /// rules only need its basename wrapped in a regex pattern.
+    /// </summary>
+    private string? _pickedProcessPath;
 
     public AppSoundRule Rule => _rule;
 
@@ -47,6 +56,7 @@ public partial class UpsertAppSoundLockRule : Form
         hotKeyBox.HotKeyChanged += (_, _) => btnHotKeyReset.Visible = hotKeyBox.HotKey != null;
 
         _initializing = false;
+        UpdateAssignmentNote();
         ApplyModeLayout();
     }
 
@@ -72,6 +82,8 @@ public partial class UpsertAppSoundLockRule : Form
         btnMoveDown.Text = SettingsStrings.appSoundLock_rule_moveDown;
         btnSave.Text = SettingsStrings.buttonSave;
         btnCancel.Text = SettingsStrings.buttonClose;
+
+        lblAssignmentHelper.Text = SettingsStrings.appSoundLock_rule_assignmentNote;
     }
 
     private void InitComboBoxes()
@@ -128,6 +140,19 @@ public partial class UpsertAppSoundLockRule : Form
 
         rdoAutomatic.Checked = _rule.Mode != AppRuleMode.Hotkey;
         rdoHotkey.Checked = _rule.Mode == AppRuleMode.Hotkey;
+
+        // No enforcement control exists any more (ADR �0): every eligible rule also writes an
+        // identity assignment. Only those rules carry a concrete identity, so only those show
+        // it in the process field instead of their matching pattern.
+        if (_rule.Enforcement == AppRuleEnforcement.Assignment)
+        {
+            _pickedProcessPath = _rule.AssignmentExePath ?? _rule.ProcessPath;
+            // An edited assignment routes by its identity (ADR �6.1): surface that identity in
+            // the process field instead of a stale display value, so an edit that only changes
+            // the device cannot quietly change which executable the rule targets.
+            if (!string.IsNullOrEmpty(_pickedProcessPath))
+                txtProcessPath.Text = _pickedProcessPath;
+        }
 
         PopulatePairList();
         if (_pairs.Count > 0)
@@ -205,6 +230,7 @@ public partial class UpsertAppSoundLockRule : Form
             _handlingModeChange = false;
         }
 
+        UpdateAssignmentNote();
         ApplyModeLayout();
     }
 
@@ -223,6 +249,11 @@ public partial class UpsertAppSoundLockRule : Form
         btnRecordingReset.Visible = !hotkeyMode && cmbRecording.SelectedIndex != -1;
         grpHotkey.Visible = hotkeyMode;
 
+        // Assignment enforcement is offered on Automatic rules only (ADR �6.4).
+        lblEnforcement.Visible = false;
+        pnlEnforcement.Visible = false;
+        lblAssignmentHelper.Visible = false;
+
         // The design-time coordinates are set by the constructor before the form
         // is shown, and the framework scales them once with AutoScaleMode.Font.
         // Mode changes after the form is loaded must apply that same font factor
@@ -230,16 +261,24 @@ public partial class UpsertAppSoundLockRule : Form
         // font-scaled, positions at 125%+ text scaling.
         var factor = _formLoaded ? FontScaleFactor() : 1f;
 
-        var checkboxY = (int)Math.Round((hotkeyMode ? 398 : 240) * factor);
+        var checkboxY = (int)Math.Round((hotkeyMode ? 398 : 302) * factor);
         chkEnabled.Location = new Point((int)Math.Round(110 * factor), checkboxY);
         chkCaseSensitive.Location = new Point((int)Math.Round(210 * factor), checkboxY);
         chkNotify.Location = new Point((int)Math.Round(340 * factor), checkboxY);
 
-        var buttonY = (int)Math.Round((hotkeyMode ? 430 : 272) * factor);
+        var buttonY = (int)Math.Round((hotkeyMode ? 430 : 334) * factor);
         btnSave.Location = new Point((int)Math.Round(378 * factor), buttonY);
         btnCancel.Location = new Point((int)Math.Round(459 * factor), buttonY);
 
-        ClientSize = new Size((int)Math.Round(560 * factor), (int)Math.Round((hotkeyMode ? 470 : 310) * factor));
+        // The enforcement row sits between the device combos and the checkboxes; scale it the
+        // same way so a mode switch after the form is shown keeps the layout aligned.
+        lblEnforcement.Location = new Point((int)Math.Round(12 * factor), (int)Math.Round(233 * factor));
+        pnlEnforcement.Location = new Point((int)Math.Round(110 * factor), (int)Math.Round(228 * factor));
+        pnlEnforcement.Size = new Size((int)Math.Round(438 * factor), (int)Math.Round(20 * factor));
+        lblAssignmentHelper.Location = new Point((int)Math.Round(110 * factor), (int)Math.Round(252 * factor));
+        lblAssignmentHelper.Size = new Size((int)Math.Round(438 * factor), (int)Math.Round(46 * factor));
+
+        ClientSize = new Size((int)Math.Round(560 * factor), (int)Math.Round((hotkeyMode ? 470 : 372) * factor));
     }
 
     /// <summary>
@@ -496,32 +535,114 @@ public partial class UpsertAppSoundLockRule : Form
         cmbRecording.SelectedIndex = -1;
     }
 
+    /// <summary>True while a process picker is open. The Add flow auto-opens it from
+    /// <see cref="OnShown"/>; a click on the ... button while it is up (or another re-entry)
+    /// must not stack a second modal picker.</summary>
+    private bool _processPickerOpen;
+
     private void SelectProcess()
+    {
+        if (_processPickerOpen)
+        {
+            return;
+        }
+
+        _processPickerOpen = true;
+        try
+        {
+            OpenProcessPickerCore();
+        }
+        finally
+        {
+            _processPickerOpen = false;
+        }
+    }
+
+    private void OpenProcessPickerCore()
     {
         using var form = new ProcessSelectionForm();
         if (form.ShowDialog(this) == DialogResult.OK)
         {
-            // Always pre-fill all patterns
+            _pickedProcessPath = form.SelectedProcessPath;
+
+            // Always pre-fill the matching pattern; the concrete identity the picker knows is
+            // preferred at save time when the rule qualifies for an identity assignment.
             if (!string.IsNullOrEmpty(form.SelectedProcessPath))
             {
-                var fileName = System.IO.Path.GetFileName(form.SelectedProcessPath);
-                txtProcessPath.Text = $".*{Regex.Escape(fileName)}.*";
+                txtProcessPath.Text = EscapeToPattern(Path.GetFileName(form.SelectedProcessPath));
             }
             else if (!string.IsNullOrEmpty(form.SelectedProcessName))
             {
                 var name = form.SelectedProcessName;
                 if (!name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) name += ".exe";
-                txtProcessPath.Text = $".*{Regex.Escape(name)}.*";
+                txtProcessPath.Text = EscapeToPattern(name);
             }
 
             if (!string.IsNullOrEmpty(form.SelectedWindowTitle))
             {
                 txtPattern.Text = $".*{Regex.Escape(form.SelectedWindowTitle)}.*";
             }
+
+            UpdateAssignmentNote();
         }
     }
 
     private void BtnSelectProcess_Click(object sender, EventArgs e) => SelectProcess();
+
+    private static string EscapeToPattern(string value) => $".*{Regex.Escape(value)}.*";
+
+    /// <summary>
+    /// The assignment option only makes sense where the constraints the persisted store routes
+    /// can be honoured: a concrete exe identity (picked or typed), no window-title pattern and
+    /// Automatic mode (ADR �6.4). A just-picked concrete identity counts even while the
+    /// dynamic pattern pre-filled the process field � switching to App assignment writes it in.
+    /// </summary>
+    /// <summary>
+    /// Show the "Windows will remember this app" note only while the rule actually qualifies
+    /// for an identity assignment (ADR �0): Automatic mode, no window-title condition and a
+    /// concrete identity (typed, or picked from the process picker). There is no control to
+    /// set: eligibility is derived.
+    /// </summary>
+    private void UpdateAssignmentNote()
+    {
+        lblAssignmentHelper.Visible =
+            !_initializing &&
+            rdoAutomatic.Checked &&
+            string.IsNullOrWhiteSpace(txtPattern.Text) &&
+            TryGetConcreteIdentity(out _);
+    }
+
+    private void TxtProcessPath_TextChanged(object sender, EventArgs e) => UpdateAssignmentNote();
+
+    private void TxtPattern_TextChanged(object sender, EventArgs e) => UpdateAssignmentNote();
+
+    /// <summary>
+    /// The concrete exe path the rule targets, when the editor knows one: what the user typed
+    /// if it is a path rather than a pattern, otherwise the process picked from the picker
+    /// (whose pattern pre-fill names the same exe).
+    /// </summary>
+    private bool TryGetConcreteIdentity(out string identity)
+    {
+        identity = string.Empty;
+
+        var typed = (txtProcessPath.Text ?? string.Empty).Trim();
+        if (typed.Length > 0 && !AppRuleAssignmentValidator.HasPatternSyntax(typed))
+        {
+            identity = typed;
+            return true;
+        }
+
+        var picked = (_pickedProcessPath ?? string.Empty).Trim();
+        if (picked.Length > 0 &&
+            !AppRuleAssignmentValidator.HasPatternSyntax(picked) &&
+            (typed.Length == 0 || typed.Contains(Path.GetFileName(picked), StringComparison.OrdinalIgnoreCase)))
+        {
+            identity = picked;
+            return true;
+        }
+
+        return false;
+    }
 
     protected override void OnShown(EventArgs e)
     {
@@ -535,7 +656,7 @@ public partial class UpsertAppSoundLockRule : Form
 
     /// <summary>
     /// Preselect the combo box for a stored device: exact id match first, then
-    /// <see cref="DeviceInfo.Equals(DeviceInfo)"/> (NameClean) match — this survives device id changes.
+    /// <see cref="DeviceInfo.Equals(DeviceInfo)"/> (NameClean) match � this survives device id changes.
     /// When nothing matches, the combo is left unselected; the user re-picks the device once.
     /// </summary>
     private static void SelectDevice(ComboBox comboBox, DeviceInfo? stored, IEnumerable<DeviceFullInfo> devices)
@@ -651,9 +772,27 @@ public partial class UpsertAppSoundLockRule : Form
             _rule.Mode = AppRuleMode.Automatic;
             _rule.HotKey = null;
             _rule.DevicePairs = new List<AppSoundRuleDevicePair> { pair };
+            // No enforcement choice (ADR �0): a rule that can be an identity assignment is one
+            // and keeps the dynamic path as its fallback. A known concrete identity replaces the
+            // picker's basename pattern (that is what makes the rule eligible); a typed pattern
+            // or a window-title condition stays dynamic-only.
+            if (string.IsNullOrWhiteSpace(txtPattern.Text) && TryGetConcreteIdentity(out var identity))
+            {
+                _rule.ProcessPath = identity.Trim();
+            }
+
+            _rule.Enforcement = AppRuleAssignmentValidator.EnforcementFor(_rule);
+            // The identity is the process field itself for assignment rules; the matching for
+            // them compares it exactly (ADR �6.1).
+            _rule.AssignmentExePath = _rule.Enforcement == AppRuleEnforcement.Assignment ? _rule.ProcessPath : null;
+
         }
         else
         {
+            // Hotkey rules enforce nothing at identity level; a cycle cannot live in the store.
+            _rule.Enforcement = AppRuleEnforcement.Dynamic;
+            _rule.AssignmentExePath = null;
+
             // Apply a builder edit that wasn't confirmed with the Add/Update button.
             var builderPair = BuildEditedPair();
             if (_selectedPairIndex >= 0 && _selectedPairIndex < _pairs.Count && builderPair != null)

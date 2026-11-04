@@ -431,5 +431,15 @@ namespace SoundSwitch.Audio.Manager
         {
             ComThread.Invoke(() => ExtendPolicyClient.ResetAllSetEndpoint());
         }
+
+        /// <summary>
+        /// Clear the per-app persisted default endpoints of the given process for every role of a
+        /// flow (write the null endpoint). Only works while the process has a live audio session;
+        /// returns false — leaving state untouched — otherwise.
+        /// </summary>
+        public bool ClearProcessDefaultEndpoint(EDataFlow flow, uint processId)
+        {
+            return ComThread.Invoke(() => ExtendPolicyClient.ClearDefaultEndPoint(flow, processId));
+        }
     }
 }

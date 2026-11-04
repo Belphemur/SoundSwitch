@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,6 +31,7 @@ namespace SoundSwitch.Services
         private readonly NotificationManager _notificationManager;
         private readonly ILogger _logger = Log.ForContext<AppSoundLockManager>();
         private readonly object _lock = new();
+        private readonly AppRuleAssignmentReconciler _assignmentReconciler;
 
         /// <summary>
         /// The rule bound to each currently registered hotkey.
@@ -48,6 +49,13 @@ namespace SoundSwitch.Services
         /// </summary>
         private readonly Dictionary<Guid, int> _nextPairIndex = new();
 
+        /// <summary>
+        /// The rules as they were at the last <see cref="OnRulesChanged"/>, used to detect
+        /// deletions, disables and edits of assignment rules so their written route gets
+        /// restored to the default (deferred to the next sighting for a closed app).
+        /// </summary>
+        private List<AppSoundRule> _rulesSnapshot = new();
+
         public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager)
         {
             _configuration = configuration;
@@ -55,6 +63,7 @@ namespace SoundSwitch.Services
             _windowMonitor = windowMonitor;
             _processMonitor = processMonitor;
             _notificationManager = notificationManager;
+            _assignmentReconciler = new AppRuleAssignmentReconciler(configuration, audioSwitcher);
         }
 
         public void Start()
@@ -65,6 +74,267 @@ namespace SoundSwitch.Services
             _processMonitor.Start();
             WindowsAPIAdapter.HotKeyPressed += OnHotKeyPressed;
             ReloadHotkeys();
+            // Adopt pre-ledger records for existing rules and resume pending restore-default
+            // clears from the previous run, before anything is sighted.
+            ReconcileAssignments("start");
+            _rulesSnapshot = _configuration.AppSoundRules?.ToList() ?? new List<AppSoundRule>();
+        }
+
+        /// <summary>
+        /// Device arrival/removal can change which device an assigned route resolves to
+        /// (replugged/re-enumerated endpoint, device back after it was unavailable at the last
+        /// sighting). Reconcile the ledger's convergence and re-apply every live assignment rule
+        /// to the running processes � SwitchRuleDevice resolves the stored device against the
+        /// fresh device list and self-heals the stored info (ADR �6.6). Publishes nothing on
+        /// its own.
+        /// </summary>
+        public void OnDevicesChanged()
+        {
+            ReconcileAssignments("device-change");
+
+            if (_configuration.AppSoundRules == null)
+                return;
+
+            List<ProcessSnapshot>? snapshot = null;
+            foreach (var rule in _configuration.AppSoundRules.ToList().Where(rule =>
+                         rule.Enabled && AppRuleAssignmentValidator.IsEligible(rule)))
+            {
+                try
+                {
+                    // A self-healing re-apply is not a user-triggered switch: no banner per
+                    // running instance (the docstring promises silence on this path). The table
+                    // is read once, and only when at least one rule actually needs it.
+                    ApplyAssignmentRuleToRunningProcesses(rule, snapshot ??= SnapshotProcesses(), notify: false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warning(ex, "Failed to re-apply assignment rule {RuleId} after a device change", rule.Id);
+                }
+            }
+
+            // The re-apply may have stamped new entries: persist them here instead of waiting
+            // for an unrelated save, or a restart would lose the ownership of those routes.
+            SaveLedgerIfDirty("device-change");
+        }
+
+        /// <summary>
+        /// The read-only "Windows assignments" rows for the rule list: persisted per-app routes
+        /// that no SoundSwitch rule owns (ADR �6.5).
+        /// </summary>
+        public IReadOnlyList<AppRuleAssignmentReconciler.StoreAssignment> GetWindowsAssignments()
+        {
+            return _assignmentReconciler.GetWindowsAssignments();
+        }
+
+        /// <summary>
+        /// The rules changed in Settings (add/edit/delete/enable/disable): retract the routing
+        /// the change did away with � restoring the default for assignment rules (immediately
+        /// for running apps, deferred for closed ones), releasing the ledger claim of removed
+        /// dynamic rules � then apply still-live assignment rules to the running apps (ADR
+        /// �6.2, �6.3) and reconcile the ledger.
+        /// </summary>
+        public void OnRulesChanged()
+        {
+            var current = _configuration.AppSoundRules?.ToList() ?? new List<AppSoundRule>();
+
+            foreach (var previous in _rulesSnapshot)
+            {
+                var now = current.FirstOrDefault(rule => rule.Id == previous.Id);
+
+                if (now == null)
+                {
+                    // Removed: an assignment route gets restored to the default (kept pending
+                    // while the app is closed); a dynamic route keeps today's delete behaviour
+                    // and the ledger just releases its claim (ADR �11.5, �11.6).
+                    _assignmentReconciler.ClearRuleAssignments(previous);
+                    continue;
+                }
+
+                if (!AppRuleAssignmentValidator.IsEligible(previous))
+                    continue; // Dynamic en/disable keeps the route alive (�11.6)
+
+                if (!previous.Enabled)
+                    continue; // already retracted when it was disabled
+
+                var stillRoutesTheSame =
+                    now.Enabled &&
+                    AppRuleAssignmentValidator.IsEligible(now) &&
+                    AppRuleIdentityMatcher.SameApp(previous.AssignmentExePath ?? previous.ProcessPath, now.AssignmentExePath ?? now.ProcessPath) &&
+                    SameRoute(previous, now);
+
+                // An edit that changed identity, route or enforcement, or a disable: clear the
+                // written route; the apply loop below re-applies while the rule still is a live
+                // assignment.
+                if (!stillRoutesTheSame)
+                    _assignmentReconciler.ClearRuleAssignments(previous);
+            }
+
+            _rulesSnapshot = current;
+
+            foreach (var rule in current.Where(rule => rule.Enabled && AppRuleAssignmentValidator.IsEligible(rule)))
+            {
+                ApplyAssignmentRuleToRunningProcesses(rule);
+            }
+
+            ReconcileAssignments("rules-changed");
+        }
+
+        private static bool SameRoute(AppSoundRule left, AppSoundRule right)
+        {
+            var leftPair = left.DevicePairs?.FirstOrDefault();
+            var rightPair = right.DevicePairs?.FirstOrDefault();
+            return leftPair?.Playback?.Id == rightPair?.Playback?.Id &&
+                   leftPair?.Recording?.Id == rightPair?.Recording?.Id;
+        }
+
+        /// <summary>
+        /// Write the assignment rule's route into every running process of its exe identity
+        /// through the existing switch pipeline (device self-heal, notify, telemetry included);
+        /// a Set is authoritative, so this also replaces stale routing from a deleted rule.
+        /// Nothing is written while the app is closed � it routes on its next sighting (�6.2).
+        /// </summary>
+        private void ApplyAssignmentRuleToRunningProcesses(
+            AppSoundRule rule,
+            IReadOnlyList<ProcessSnapshot>? snapshot = null,
+            bool notify = true)
+        {
+            var identity = rule.AssignmentExePath ?? rule.ProcessPath;
+            var pair = rule.DevicePairs?.FirstOrDefault();
+            if (string.IsNullOrEmpty(identity) || pair == null)
+            {
+                _logger.Warning("Assignment rule {RuleId} has no identity or device pair, skipping apply", rule.Id);
+                return;
+            }
+
+            // One banner and one activation metric per rule and batch, not per running pid
+            // (mirrors the hotkey batch, which notifies for the first match only).
+            var notifiedRules = new HashSet<Guid>();
+            string? firstMatchPath = null;
+            string? firstMatchName = null;
+
+            // A device-change burst re-applies every live assignment rule: enumerate the process
+            // table once for all of them instead of once per rule (O(rules x processes)).
+            snapshot ??= SnapshotProcesses();
+
+            foreach (var running in snapshot)
+            {
+                if (!AppRuleIdentityMatcher.SameApp(identity, running.Path))
+                    continue;
+
+                // The snapshot can be a moment old and the engine writes by pid: re-read the
+                // path so a recycled pid is not switched as the identity of a process that
+                // exited since the enumeration.
+                if (!StillSameApp(identity, running.Pid))
+                    continue;
+
+                // The process may have exited between enumeration and the switch.
+                try
+                {
+                    if (ApplyRuleToProcess(rule, pair, running.Pid, running.Name, running.Path, notifiedRules, "assignment", notify, out var flowsWritten))
+                    {
+                        firstMatchPath ??= running.Path;
+                        firstMatchName ??= running.Name;
+                        _assignmentReconciler.EnsureEntry(rule, running.Path, pair, flowsWritten);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "Couldn't apply assignment rule to process PID {PID}", running.Pid);
+                }
+            }
+
+            if (firstMatchPath != null)
+            {
+                TrackRuleActivated("engine", firstMatchPath, firstMatchName);
+            }
+        }
+
+        /// <summary>
+        /// Whether the pid still runs the expected exe. A pid captured earlier can be recycled by
+        /// another process, and the policy engine writes by pid; unreadable/protected processes
+        /// are treated as no longer matching (they cannot be switched meaningfully anyway).
+        /// </summary>
+        private bool StillSameApp(string identity, uint pid)
+        {
+            try
+            {
+                using var process = Process.GetProcessById((int)pid);
+                return AppRuleIdentityMatcher.SameApp(identity, process.MainModule?.FileName ?? string.Empty);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Couldn't recheck process PID {PID} before switching it", pid);
+                return false;
+            }
+        }
+
+        /// <summary>One process of the machine's table, captured once for a batch of rules.</summary>
+        private readonly record struct ProcessSnapshot(uint Pid, string Name, string Path);
+
+        /// <summary>
+        /// Read the process table once. Unreadable/protected processes are skipped: they cannot
+        /// be matched against an identity, so they never receive a switch either way.
+        /// </summary>
+        private List<ProcessSnapshot> SnapshotProcesses()
+        {
+            var snapshot = new List<ProcessSnapshot>();
+            foreach (var process in Process.GetProcesses())
+            {
+                using (process)
+                {
+                    if (process.Id <= 4 || process.Id == Environment.ProcessId) continue;
+
+                    try
+                    {
+                        snapshot.Add(new ProcessSnapshot((uint)process.Id, process.ProcessName, process.MainModule?.FileName ?? string.Empty));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex, "Couldn't inspect process PID {PID} for an assignment rule", process.Id);
+                    }
+                }
+            }
+
+            return snapshot;
+        }
+
+        /// <summary>Reconcile the ownership ledger, persisting it when the pass changed anything.</summary>
+        private void ReconcileAssignments(string trigger)
+        {
+            try
+            {
+                _assignmentReconciler.Reconcile();
+            }
+            catch (Exception ex)
+            {
+                // A failure partway through a pass must not lose the ledger edits it already
+                // made: they are persisted below before the error is surfaced.
+                _logger.Warning(ex, "Assignment reconciliation ({Trigger}) failed", trigger);
+            }
+            finally
+            {
+                SaveLedgerIfDirty(trigger);
+            }
+        }
+
+        /// <summary>Persist the ledger when a pass changed it.</summary>
+        private void SaveLedgerIfDirty(string trigger)
+        {
+            if (!_assignmentReconciler.IsDirty)
+                return;
+
+            _logger.Debug("Assignment ledger changed ({Trigger}), saving", trigger);
+            try
+            {
+                _configuration.Save();
+                // Only a successful save may consume the flag: a failed one must keep the
+                // ledger dirty so the next pass retries instead of losing ownership edits.
+                _assignmentReconciler.TakeDirty();
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "Failed to save the assignment ledger ({Trigger})", trigger);
+            }
         }
 
         private void OnProcessesDetected(object? sender, List<ProcessMonitor.Event> events)
@@ -74,6 +344,8 @@ namespace SoundSwitch.Services
             {
                 ApplyRulesToProcess(@event.ProcessId, @event.ProcessName, @event.ProcessPath, @event.WindowTitle, notifiedRulesInBatch, "process");
             }
+
+            ReconcileAssignments("sighting");
         }
 
         private void OnForegroundWindowChanged(object? sender, WindowMonitor.Event e)
@@ -84,6 +356,7 @@ namespace SoundSwitch.Services
 
             // For foreground changes, we re-apply immediately as it often means the app is interactive
             ApplyRulesToProcess(e.ProcessId, e.ProcessName, e.ProcessPath, e.WindowName, null, "foreground");
+            ReconcileAssignments("foreground");
         }
 
         private void OnHotKeyPressed(object? sender, WindowsAPIAdapter.KeyPressedEventArgs e)
@@ -211,14 +484,28 @@ namespace SoundSwitch.Services
 
             foreach (var rule in _configuration.AppSoundRules.ToList().Where(r => r.Enabled && r.Mode == AppRuleMode.Automatic))
             {
-                if (!IsMatch(rule, processName, processPath, windowTitle)) continue;
-
                 var pair = rule.DevicePairs?.FirstOrDefault();
                 if (pair == null) continue;
 
-                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true))
+                // Assignment rules match one exe identity exactly; other rules keep their
+                // regex/glob/window-title matching (ADR �6.1).
+                var identityRule = AppRuleAssignmentValidator.IsEligible(rule);
+                var identity = rule.AssignmentExePath ?? rule.ProcessPath;
+                var matched = identityRule
+                    ? !string.IsNullOrEmpty(identity) && AppRuleIdentityMatcher.SameApp(identity, processPath)
+                    : IsMatch(rule, processName, processPath, windowTitle);
+                if (!matched) continue;
+
+                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true, out var flowsWritten))
                 {
-                    TrackRuleActivated(triggerSource, processPath, processName);
+                    // An assignment's engine re-applies the route itself after the first write;
+                    // keep that observable in the trigger telemetry (ADR �7).
+                    TrackRuleActivated(identityRule ? "engine" : triggerSource, processPath, processName);
+
+                    // Own the route in the ledger � for any enforcement kind (ADR �6.4). Only
+                    // the flows actually written are claimed; adoption covers pre-existing
+                    // records and later successful writes extend the claim.
+                    _assignmentReconciler.EnsureEntry(rule, processPath, pair, flowsWritten);
                 }
             }
         }
@@ -227,13 +514,18 @@ namespace SoundSwitch.Services
         /// Switch the given process to the pair's devices, notify and record telemetry.
         /// Shared by the automatic (process/foreground) path and the rule hotkey.
         /// </summary>
-        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify)
+        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify, out IReadOnlyCollection<EDataFlow> flowsWritten)
         {
             _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
 
-            var changed = false;
-            changed |= SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
-            changed |= SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
+            var playbackSwitched = SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
+            var recordingSwitched = SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
+            var changed = playbackSwitched || recordingSwitched;
+
+            var flows = new List<EDataFlow>();
+            if (playbackSwitched) flows.Add(EDataFlow.eRender);
+            if (recordingSwitched) flows.Add(EDataFlow.eCapture);
+            flowsWritten = flows;
 
             if (notify && rule.Notify && changed)
             {
@@ -329,7 +621,18 @@ namespace SoundSwitch.Services
             {
                 try
                 {
-                    changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false);
+                    var applied = ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out var flowsWritten);
+                    changed |= applied;
+
+                    // Only an actually written route is claimed: a repeat press that already
+                    // matches writes nothing, and stamping it would create (or blank out) an
+                    // entry whose missing devices read as "clear both flows".
+                    // Every written route owns its record in the ledger for any enforcement
+                    // kind (ADR �6.4): a hotkey write under a window-title condition could
+                    // otherwise never be re-adopted by reconcile (the store carries no titles)
+                    // and the app would surface under Windows assignments while its rule lives.
+                    if (applied)
+                        _assignmentReconciler.EnsureEntry(rule, match.ProcessPath, pair, flowsWritten);
                 }
                 catch (Exception ex)
                 {
@@ -337,6 +640,10 @@ namespace SoundSwitch.Services
                     _logger.Debug(ex, "Couldn't apply app rule hotkey to process PID {PID}", match.ProcessId);
                 }
             }
+
+            // Persist the claims this press stamped: nothing later in the hotkey flow saves, so
+            // a restart would otherwise load a ledger that does not own the route in the store.
+            SaveLedgerIfDirty("hotkey");
 
             // Notify even when the endpoint already matched: the hotkey did apply this pair,
             // and the banner is the feedback that tells the user which pair is now active.
@@ -481,7 +788,12 @@ namespace SoundSwitch.Services
             return switched;
         }
 
-        private bool IsMatch(AppSoundRule rule, string processName, string processPath, string windowTitle)
+        /// <summary>
+        /// The full rule match expression (process regex/glob plus optional window pattern).
+        /// Internal static so the assignment reconciler can evaluate the same expression for
+        /// adoption/ownership of store records (ADR �6.4).
+        /// </summary>
+        internal static bool IsMatch(AppSoundRule rule, string processName, string processPath, string windowTitle)
         {
             var options = rule.CaseSensitive ? RegexOptions.None : RegexOptions.IgnoreCase;
 
@@ -498,12 +810,12 @@ namespace SoundSwitch.Services
                 }
                 catch (RegexParseException ex)
                 {
-                    _logger.Warning(ex, "Invalid Regex for ProcessPath: {Pattern}. Falling back to glob.", rule.ProcessPath);
+                    Log.Warning(ex, "Invalid Regex for ProcessPath: {Pattern}. Falling back to glob.", rule.ProcessPath);
                     processMatched = targets.Any(t => !string.IsNullOrEmpty(t) && IsGlobMatch(t, rule.ProcessPath, options));
                 }
                 catch (Exception ex)
                 {
-                    _logger.Warning(ex, "Unexpected error matching pattern {Pattern}", rule.ProcessPath);
+                    Log.Warning(ex, "Unexpected error matching pattern {Pattern}", rule.ProcessPath);
                 }
             }
 
@@ -515,7 +827,7 @@ namespace SoundSwitch.Services
                     windowTitle,
                     rule.WindowName,
                     options,
-                    ex => _logger.Warning(ex, "Invalid Regex for WindowName: {Pattern}. Falling back to glob.", rule.WindowName)
+                    ex => Log.Warning(ex, "Invalid Regex for WindowName: {Pattern}. Falling back to glob.", rule.WindowName)
                 );
             }
 

@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.UI.Forms
+namespace SoundSwitch.UI.Forms
 {
     partial class UpsertAppSoundLockRule
     {
@@ -60,9 +60,15 @@
             this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.chkCaseSensitive = new System.Windows.Forms.CheckBox();
             this.chkNotify = new System.Windows.Forms.CheckBox();
+            this.lblEnforcement = new System.Windows.Forms.Label();
+            this.pnlEnforcement = new System.Windows.Forms.Panel();
+            this.rdoEnforcementDynamic = new System.Windows.Forms.RadioButton();
+            this.rdoEnforcementAssignment = new System.Windows.Forms.RadioButton();
+            this.lblAssignmentHelper = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.grpHotkey.SuspendLayout();
+            this.pnlEnforcement.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblDescription
@@ -89,6 +95,7 @@
             this.txtProcessPath.Name = "txtProcessPath";
             this.txtProcessPath.Size = new System.Drawing.Size(380, 23);
             this.txtProcessPath.TabIndex = 3;
+            this.txtProcessPath.TextChanged += new System.EventHandler(this.TxtProcessPath_TextChanged);
             // 
             // btnSelectProcess
             // 
@@ -115,6 +122,7 @@
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(380, 23);
             this.txtPattern.TabIndex = 5;
+            this.txtPattern.TextChanged += new System.EventHandler(this.TxtPattern_TextChanged);
             // 
             // lblRegexNotice
             // 
@@ -383,7 +391,7 @@
             // chkEnabled
             // 
             this.chkEnabled.AutoSize = true;
-            this.chkEnabled.Location = new System.Drawing.Point(110, 240);
+            this.chkEnabled.Location = new System.Drawing.Point(110, 302);
             this.chkEnabled.Name = "chkEnabled";
             this.chkEnabled.Size = new System.Drawing.Size(68, 19);
             this.chkEnabled.TabIndex = 19;
@@ -393,7 +401,7 @@
             // chkCaseSensitive
             // 
             this.chkCaseSensitive.AutoSize = true;
-            this.chkCaseSensitive.Location = new System.Drawing.Point(210, 240);
+            this.chkCaseSensitive.Location = new System.Drawing.Point(210, 302);
             this.chkCaseSensitive.Name = "chkCaseSensitive";
             this.chkCaseSensitive.Size = new System.Drawing.Size(102, 19);
             this.chkCaseSensitive.TabIndex = 20;
@@ -403,16 +411,60 @@
             // chkNotify
             // 
             this.chkNotify.AutoSize = true;
-            this.chkNotify.Location = new System.Drawing.Point(340, 240);
+            this.chkNotify.Location = new System.Drawing.Point(340, 302);
             this.chkNotify.Name = "chkNotify";
             this.chkNotify.Size = new System.Drawing.Size(138, 19);
             this.chkNotify.TabIndex = 21;
             this.chkNotify.Text = string.Empty;
             this.chkNotify.UseVisualStyleBackColor = true;
             // 
+            // lblEnforcement
+            // 
+            this.lblEnforcement.AutoSize = true;
+            this.lblEnforcement.Location = new System.Drawing.Point(12, 233);
+            this.lblEnforcement.Name = "lblEnforcement";
+            this.lblEnforcement.TabIndex = 24;
+            this.lblEnforcement.Text = string.Empty;
+            // 
+            // pnlEnforcement
+            // 
+            this.pnlEnforcement.Controls.Add(this.rdoEnforcementDynamic);
+            this.pnlEnforcement.Controls.Add(this.rdoEnforcementAssignment);
+            this.pnlEnforcement.Location = new System.Drawing.Point(110, 228);
+            this.pnlEnforcement.Name = "pnlEnforcement";
+            this.pnlEnforcement.TabIndex = 25;
+            // 
+            // rdoEnforcementDynamic
+            // 
+            this.rdoEnforcementDynamic.AutoSize = true;
+            this.rdoEnforcementDynamic.Checked = true;
+            this.rdoEnforcementDynamic.Location = new System.Drawing.Point(0, 0);
+            this.rdoEnforcementDynamic.Name = "rdoEnforcementDynamic";
+            this.rdoEnforcementDynamic.TabStop = true;
+            this.rdoEnforcementDynamic.Text = string.Empty;
+            this.rdoEnforcementDynamic.UseVisualStyleBackColor = true;
+                        // 
+            // rdoEnforcementAssignment
+            // 
+            this.rdoEnforcementAssignment.AutoSize = true;
+            this.rdoEnforcementAssignment.Location = new System.Drawing.Point(150, 0);
+            this.rdoEnforcementAssignment.Name = "rdoEnforcementAssignment";
+            this.rdoEnforcementAssignment.Text = string.Empty;
+            this.rdoEnforcementAssignment.UseVisualStyleBackColor = true;
+                        // 
+            // lblAssignmentHelper
+            // 
+            this.lblAssignmentHelper.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.lblAssignmentHelper.Location = new System.Drawing.Point(110, 252);
+            this.lblAssignmentHelper.Name = "lblAssignmentHelper";
+            this.lblAssignmentHelper.Size = new System.Drawing.Size(438, 46);
+            this.lblAssignmentHelper.TabIndex = 26;
+            this.lblAssignmentHelper.Text = string.Empty;
+            this.lblAssignmentHelper.Visible = false;
+            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(378, 272);
+            this.btnSave.Location = new System.Drawing.Point(378, 334);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.TabIndex = 22;
@@ -423,7 +475,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(459, 272);
+            this.btnCancel.Location = new System.Drawing.Point(459, 334);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.TabIndex = 23;
@@ -436,7 +488,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(560, 470);
+            this.ClientSize = new System.Drawing.Size(560, 372);
+            this.Controls.Add(this.lblAssignmentHelper);
+            this.Controls.Add(this.pnlEnforcement);
+            this.Controls.Add(this.lblEnforcement);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -467,6 +522,8 @@
             this.Text = string.Empty;
             this.grpHotkey.ResumeLayout(false);
             this.grpHotkey.PerformLayout();
+            this.pnlEnforcement.ResumeLayout(false);
+            this.pnlEnforcement.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -506,6 +563,11 @@
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.CheckBox chkCaseSensitive;
         private System.Windows.Forms.CheckBox chkNotify;
+        private System.Windows.Forms.Label lblEnforcement;
+        private System.Windows.Forms.Panel pnlEnforcement;
+        private System.Windows.Forms.RadioButton rdoEnforcementDynamic;
+        private System.Windows.Forms.RadioButton rdoEnforcementAssignment;
+        private System.Windows.Forms.Label lblAssignmentHelper;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
     }

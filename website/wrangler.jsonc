@@ -61,5 +61,32 @@
   "vars": {
     "SITE_HOSTNAME": "https://soundswitch.aaflalo.me",
     "PAYPAL_IPN_MODE": "live"
+  },
+  // Cloudflare Workers Previews (`wrangler preview`). A Preview never talks to production:
+  // the vars are placeholders, the KV id is a dummy (Previews only need a format-valid id;
+  // donations are not exercised there), and the Durable Object binding is declared so each
+  // Preview gets its own automatically-provisioned namespace and storage.
+  "previews": {
+    "vars": {
+      "SITE_HOSTNAME": "https://preview.example.com",
+      "PAYPAL_IPN_MODE": "sandbox"
+    },
+    "kv_namespaces": [
+      {
+        "binding": "IPN_DEDUPE",
+        "id": "00000000000000000000000000000000"
+      }
+    ],
+    "durable_objects": {
+      "bindings": [
+        {
+          "name": "DOWNLOADS_TRACKER",
+          "class_name": "DownloadsTracker"
+        }
+      ]
+    },
+    "placement": {
+      "mode": "smart"
+    }
   }
 }
