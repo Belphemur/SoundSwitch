@@ -39,8 +39,9 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     // Dedicated .NET 9 lock serializing the two mutation paths (Refresh's wholesale publish and
     // ProcessDeviceUpdates' incremental edits). It is held ONLY for the immutable-dictionary
     // reference swaps (microseconds) — never during COM enumeration, event subscription, or
-    // device disposal. Readers never take it: they read the published immutable snapshot, which
-    // is inherently safe to enumerate.
+    // device disposal. Readers never take it: they read the published snapshot, which is safe
+    // to enumerate only if it is materialized while the lock blocks mutation — the published
+    // Dictionary instances stay live and mutable (see SOUNDSWITCH-49X).
     private readonly Lock _cacheLock = new Lock();
 
     // Volatile backing fields give the lock-free readers (GetDevices, DefaultChanged lookup) acquire
@@ -383,6 +384,12 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 DeviceFullInfo[] oldDevices;
                 List<DeviceFullInfo> rejectedFresh;
                 List<DeviceFullInfo> newlyPublished;
+                // Ids retained in the caches being published, collected at publication time.
+                // MUST be built here, under _cacheLock: the published dictionaries are live
+                // mutable Dictionary instances (ProcessDeviceUpdates edits them in place under
+                // the same lock), so enumerating their Keys outside the lock races with that
+                // mutation and throws "Collection was modified" (Sentry SOUNDSWITCH-49X).
+                HashSet<string> retainedIds;
                 lock (_cacheLock)
                 {
                     oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
@@ -448,6 +455,12 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
 
                     _playbackDevices = mergedPlayback;
                     _recordingDevices = mergedRecording;
+
+                    // Snapshot the retained ids from the merging locals while still under the
+                    // lock: the shared lock blocks any concurrent ProcessDeviceUpdates edit, and
+                    // the resulting HashSet is a detached copy no later mutation can affect.
+                    retainedIds = new HashSet<string>(
+                        mergedPlayback.Keys.Concat(mergedRecording.Keys));
                 }
 
                 // Dispose freshly enumerated instances that were not published (rejected in favour
@@ -463,9 +476,8 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                 // freshly enumerated ones). Deriving the retained set from the published caches —
                 // not from the freshly enumerated dictionaries — is essential: reused instances are
                 // NOT in the fresh-enumeration keys, so using those would schedule still-published
-                // (reused) devices for disposal. Disposal happens outside the lock.
-                var retainedIds = new HashSet<string>(
-                    PlaybackDevices.Keys.Concat(RecordingDevices.Keys));
+                // (reused) devices for disposal. The set was captured under _cacheLock at
+                // publication time (SOUNDSWITCH-49X); disposal itself happens outside the lock.
                 var removedOld = oldDevices.Where(d => !retainedIds.Contains(d.Id)).ToArray();
                 if (removedOld.Length > 0)
                 {

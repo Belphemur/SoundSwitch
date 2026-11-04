@@ -67,6 +67,49 @@ public class RefreshDeviceTests
     private static DeviceFullInfo MakeDevice() =>
         new DeviceFullInfo("Test Device", Guid.NewGuid().ToString(), EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
 
+    /// <summary>
+    /// Refresh used to build its retained-id set with
+    /// <c>new HashSet&lt;string&gt;(PlaybackDevices.Keys.Concat(RecordingDevices.Keys))</c> AFTER
+    /// releasing the publication lock. The published <see cref="Dictionary{TKey,TValue}"/>
+    /// instances stay live: <c>ProcessDeviceUpdates</c> mutates them in place (indexer set, Remove)
+    /// under the lock, bumping their version. Enumerating a live dictionary while it mutates
+    /// throws <see cref="InvalidOperationException"/> (Sentry SOUNDSWITCH-49X).
+    /// </summary>
+    [Test]
+    public void Refresh_RetainedIds_LiveDictionaryEnumerationThrowsWhileUnderLockSnapshotDoesNot()
+    {
+        // Release-published cache that ProcessDeviceUpdates (mutator) keeps editing in place.
+        var playback = new Dictionary<string, DeviceFullInfo> { ["p1"] = MakeDevice() };
+        var recording = new Dictionary<string, DeviceFullInfo> { ["r1"] = MakeDevice() };
+
+        // Old (buggy) pattern, made deterministic without threads: the first MoveNext makes the
+        // lazy Concat create playback.Keys' enumerator, which captures the dictionary version;
+        // an interleaved ProcessDeviceUpdates add then bumps the version, and the NEXT MoveNext —
+        // the very one the HashSet ctor drives — throws.
+        Action buggy = () =>
+        {
+            var keys = playback.Keys.Concat(recording.Keys);
+            using var enumerator = keys.GetEnumerator();
+            enumerator.MoveNext(); // playback.Keys enumerator captures the dictionary version
+            playback["p2"] = MakeDevice(); // mutator edit mid-enumeration (version bump)
+            enumerator.MoveNext(); // version check → the exact throw the HashSet ctor hit
+        };
+        buggy.Should().Throw<InvalidOperationException>().WithMessage("*Collection was modified*");
+
+        // New (fixed) pattern: the retained ids are collected from the private merging locals
+        // while still under the publication lock (no concurrent edit possible), producing a
+        // detached HashSet that later in-place mutations of the published cache cannot touch.
+        var mergedPlayback = new Dictionary<string, DeviceFullInfo> { ["p1"] = MakeDevice() };
+        var mergedRecording = new Dictionary<string, DeviceFullInfo> { ["r1"] = MakeDevice() };
+        Action fixedPattern = () =>
+        {
+            var retainedIds = new HashSet<string>(mergedPlayback.Keys.Concat(mergedRecording.Keys));
+            mergedPlayback["p2"] = MakeDevice(); // post-publication mutator edit
+            retainedIds.Should().Contain("p1").And.NotContain("p2");
+        };
+        fixedPattern.Should().NotThrow();
+    }
+
     private const BindingFlags InstanceMembers = BindingFlags.NonPublic | BindingFlags.Instance;
 
     /// <summary>
