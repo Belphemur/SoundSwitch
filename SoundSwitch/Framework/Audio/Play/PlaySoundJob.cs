@@ -123,6 +123,17 @@ public class PlaySoundJob([CanBeNull] string deviceId, [NotNull] CachedSound sou
                     abandoned = true;
                 }
             }
+            catch (OperationCanceledException)
+            {
+                // The notification pipeline cancels the previous job before scheduling the next
+                // one (issue #2557). Synchronously releasing the player here would block on the
+                // render-thread join just like the lost-signal case above (a wedged thread would
+                // never return), so leave the teardown to the detached path too — then let the
+                // cancellation propagate.
+                DetachAbandonedPlayback(player, waveStream);
+                abandoned = true;
+                throw;
+            }
             finally
             {
                 player.PlaybackStopped -= OnPlaybackStoppedHandler;

@@ -132,6 +132,30 @@ public class PlaySoundJobTests
         EventsFor(LogEventLevel.Warning).Should().Contain(e => e.RenderMessage().Contains("abandoning it"));
     }
 
+    [Test]
+    public async Task PlayToCompletionAsync_CancelledWhilePlaying_TeardownIsDetachedNotBlocking()
+    {
+        // NotificationSound cancels the previous job before scheduling the next one: the wait
+        // throws OperationCanceledException, and the player must then be torn down in the
+        // background (same wedged-render-thread risk as the lost-signal case), never by a
+        // synchronous join on the job. The cancellation still propagates.
+        var job = new PlaySoundJob(null, MakeSilentSound());
+        var player = new PlayerNeverCompleting();
+
+        Func<Task> act = async () =>
+        {
+            using var cancellationSource = new CancellationTokenSource(TimeSpan.FromMilliseconds(100));
+            await job.PlayToCompletionAsync(player, cancellationSource.Token).WaitAsync(Timeout);
+        };
+
+        await act.Should().ThrowAsync<OperationCanceledException>();
+
+        (await player.DisposalStarted.Task.WaitAsync(Timeout)).Should()
+            .BeTrue("because the cancellation path detaches the teardown instead of joining the render thread synchronously");
+
+        EventsFor(LogEventLevel.Error).Should().BeEmpty("because a cancelled playback is not a failure");
+    }
+
     /// <summary>
     /// A player double that starts but never raises <c>PlaybackStopped</c>, and whose
     /// <c>DisposeAsync</c> records that teardown was (detached) started but never returns
