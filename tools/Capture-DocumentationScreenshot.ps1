@@ -45,6 +45,12 @@
     inside the dialog opened by -Click, before capturing. Use it to capture a
     specific mode, e.g. -Click addAppSoundRuleButton -Select rdoHotkey.
 
+.PARAMETER ThenClick
+    Accessible name or automation id of a button to click inside the dialog opened
+    by -Click, after -Select is applied. The window that button opens (a
+    second-level dialog, e.g. the "Select a process" picker opened from the
+    "Add Rule" dialog) is captured instead. Requires -Click.
+
 .PARAMETER OutputDirectory
     Directory the PNG is written to when -Name is not rooted.
     Defaults to <repo>\img\Documentation.
@@ -82,8 +88,12 @@
     Builds the app, opens the Notifications tab and writes img\Documentation\Notifications.png.
 
 .EXAMPLE
-    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add" -Tab "App Rules" -Click addAppSoundRuleButton
-    Opens the App Rules tab, clicks Add and captures the "Add Rule" dialog.
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Add Hotkey" -Tab "App Rules" -Click addAppSoundRuleButton -Select rdoHotkey
+    Opens the App Rules tab, clicks Add, selects the Hotkey mode and captures the "Add Rule" dialog.
+
+.EXAMPLE
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Process Picker" -Tab "App Rules" -Click addAppSoundRuleButton -ThenClick btnSelectProcess
+    Opens the "Add Rule" dialog, then the "Select a process" picker inside it, and captures the picker.
 
 .EXAMPLE
     .\tools\Capture-DocumentationScreenshot.ps1 -Name Playback -Tab Playback -NoBuild -KeepOpen
@@ -102,6 +112,8 @@ param(
     [string]$Click,
 
     [string]$Select,
+
+    [string]$ThenClick,
 
     [string]$OutputDirectory,
 
@@ -135,6 +147,10 @@ if (-not (Test-Path (Join-Path $RepoRoot 'SoundSwitch.sln'))) {
 
 if (-not $ListWindows -and [string]::IsNullOrWhiteSpace($Name)) {
     throw '-Name is required (except with -ListWindows).'
+}
+
+if ($ThenClick -and -not $Click) {
+    throw '-ThenClick requires -Click: it opens a second-level dialog from that dialog.'
 }
 
 # --- Win32 interop -----------------------------------------------------------------
@@ -432,6 +448,55 @@ function Invoke-Element {
     throw "The control '$($Element.Current.Name)' cannot be invoked."
 }
 
+function Invoke-ButtonAndFindDialog {
+    <#
+        Clicks a button and waits until a top-level window of the process appears
+        whose handle is not in the given set. Returns the new handle and title.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [int]$ProcessId,
+
+        [Parameter(Mandatory = $true)]
+        $Button,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ButtonId,
+
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyCollection()]
+        [long[]]$KnownHandles,
+
+        [int]$TimeoutSeconds = 60
+    )
+
+    Write-Host "Clicking '$ButtonId'..." -ForegroundColor Cyan
+    Invoke-Element -Element $Button
+
+    $dialogHandle = [IntPtr]::Zero
+    $dialogTitle = $null
+    $dialogDeadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $dialogDeadline -and $dialogHandle -eq [IntPtr]::Zero) {
+        foreach ($candidate in @(Get-TopLevelWindows -ProcessId $ProcessId)) {
+            if ($KnownHandles -notcontains $candidate.Handle.ToInt64()) {
+                $dialogHandle = $candidate.Handle
+                $dialogTitle = $candidate.Title
+                break
+            }
+        }
+
+        if ($dialogHandle -eq [IntPtr]::Zero) {
+            Start-Sleep -Milliseconds 250
+        }
+    }
+
+    if ($dialogHandle -eq [IntPtr]::Zero) {
+        throw "No window opened after clicking '$ButtonId' within $TimeoutSeconds seconds."
+    }
+
+    return [pscustomobject]@{ Handle = $dialogHandle; Title = $dialogTitle }
+}
+
 function Save-WindowScreenshot {
     <#
         Captures the window bounds into a PNG. PrintWindow renders the window even
@@ -624,28 +689,9 @@ try {
             throw "Button '$Click' was not found in the Settings window."
         }
 
-        Write-Host "Clicking '$Click'..." -ForegroundColor Cyan
-        Invoke-Element -Element $button
-
-        $dialogHandle = [IntPtr]::Zero
-        $dialogDeadline = (Get-Date).AddSeconds($TimeoutSeconds)
-        while ((Get-Date) -lt $dialogDeadline -and $dialogHandle -eq [IntPtr]::Zero) {
-            foreach ($candidate in @(Get-TopLevelWindows -ProcessId $process.Id)) {
-                if ($existingHandles -notcontains $candidate.Handle.ToInt64()) {
-                    $dialogHandle = $candidate.Handle
-                    $captureLabel = "'$($candidate.Title)' dialog"
-                    break
-                }
-            }
-
-            if ($dialogHandle -eq [IntPtr]::Zero) {
-                Start-Sleep -Milliseconds 250
-            }
-        }
-
-        if ($dialogHandle -eq [IntPtr]::Zero) {
-            throw "No window opened after clicking '$Click' within $TimeoutSeconds seconds."
-        }
+        $dialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $button -ButtonId $Click -KnownHandles $existingHandles -TimeoutSeconds $TimeoutSeconds
+        $dialogHandle = $dialog.Handle
+        $captureLabel = "'$($dialog.Title)' dialog"
 
         if ($Select) {
             $control = Find-VisibleControl -Handle $dialogHandle -ControlId $Select
@@ -656,6 +702,21 @@ try {
             Write-Host "Selecting '$Select'..." -ForegroundColor Cyan
             Select-Element -Element $control
             Start-Sleep -Milliseconds 200
+        }
+
+        if ($ThenClick) {
+            # A second-level dialog (e.g. the process picker opened from the rule
+            # dialog): click inside the dialog and capture what that button opens.
+            $existingDialogHandles = @(Get-TopLevelWindows -ProcessId $process.Id | ForEach-Object { $_.Handle.ToInt64() })
+
+            $innerButton = Find-VisibleButton -Handle $dialogHandle -ButtonId $ThenClick
+            if ($null -eq $innerButton) {
+                throw "Button '$ThenClick' was not found in the dialog opened by '$Click'."
+            }
+
+            $innerDialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $innerButton -ButtonId $ThenClick -KnownHandles $existingDialogHandles -TimeoutSeconds $TimeoutSeconds
+            $dialogHandle = $innerDialog.Handle
+            $captureLabel = "'$($innerDialog.Title)' dialog"
         }
 
         $captureHandle = $dialogHandle

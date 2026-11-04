@@ -61,7 +61,19 @@ Hover a row to see every device pair in a tooltip.
 
 ## The process picker
 
-The **Process Path** field has a **...** button. It opens a process picker that lists running processes with their process name, window title, current playback and recording devices, and full path. Select a process to pre-fill the pattern, or use the filter box to narrow the list.
+The **Process Path** field has a **...** button. It opens a process picker that lists applications with their process name, window title, current playback and recording devices, and full path. Select an application to pre-fill the pattern, or use the filter box to narrow the list.
+
+Instead of one flat list of every process, the picker groups the entries:
+
+| Group | What it shows |
+|-------|---------------|
+| **Has own device** | Applications that already have their own audio device assigned — through Windows' per-app device setting or one of your rules. Applications that are not currently running appear here too, dimmed and labelled with a *(not running)* suffix. They are still selectable, so you can create a rule for a closed application. |
+| **Using audio now** | Applications that have an active audio session but no device of their own yet. |
+| **Show all processes** | The full process list as before. Collapsed by default; click the header row to expand or collapse it. |
+
+The filter box searches all three groups.
+
+![The process picker grouped by device assignment](/images/AppRules%20Process%20Picker.png)
 
 ## Creating a rule
 
