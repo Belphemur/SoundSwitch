@@ -21,6 +21,20 @@ namespace SoundSwitch.Model
         public AppRuleMode Mode { get; set; } = AppRuleMode.Automatic;
 
         /// <summary>
+        /// The enforcement kind: <see cref="AppRuleEnforcement.Dynamic"/> re-applies at every
+        /// sighting, <see cref="AppRuleEnforcement.Assignment"/> writes the route into Windows'
+        /// persisted per-app store once (the engine then re-applies it by identity).
+        /// </summary>
+        public AppRuleEnforcement Enforcement { get; set; } = AppRuleEnforcement.Dynamic;
+
+        /// <summary>
+        /// Only meaningful with <see cref="AppRuleEnforcement.Assignment"/>: the exe identity
+        /// resolved from the process/picker pick, e.g. <c>C:\...\Spotify.exe</c> (or the
+        /// volume-relative NT path the persisted store carries for a not-running app).
+        /// </summary>
+        public string? AssignmentExePath { get; set; }
+
+        /// <summary>
         /// Ordered cycle steps. <see cref="AppRuleMode.Automatic"/> uses the first
         /// pair; <see cref="AppRuleMode.Hotkey"/> cycles through all of them.
         /// </summary>
@@ -56,6 +70,8 @@ namespace SoundSwitch.Model
                 ProcessPath = ProcessPath,
                 WindowName = WindowName,
                 Mode = Mode,
+                Enforcement = Enforcement,
+                AssignmentExePath = AssignmentExePath,
                 DevicePairs = DevicePairs?.Where(pair => pair != null).Select(pair => pair.Copy()).ToList() ?? new List<AppSoundRuleDevicePair>(),
                 HotKey = HotKey,
                 Enabled = Enabled,

@@ -285,6 +285,87 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enforced by.
+        /// </summary>
+        internal static string appSoundLock_rule_enforcement {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.enforcement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processes (dynamic).
+        /// </summary>
+        internal static string appSoundLock_rule_enforcement_dynamic {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.enforcement.dynamic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App assignment.
+        /// </summary>
+        internal static string appSoundLock_rule_enforcement_assignment {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.enforcement.assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows assignments.
+        /// </summary>
+        internal static string appSoundLock_rules_section_windows {
+            get {
+                return ResourceManager.GetString("appSoundLock.rules.section.windows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Managed in Windows Settings.
+        /// </summary>
+        internal static string appSoundLock_rules_section_windowsHint {
+            get {
+                return ResourceManager.GetString("appSoundLock.rules.section.windowsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment.
+        /// </summary>
+        internal static string appSoundLock_rules_list_column_mode_assignment {
+            get {
+                return ResourceManager.GetString("appSoundLock.rules.list.column.mode.assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment rules need a specific application. Use the process picker..
+        /// </summary>
+        internal static string appSoundLock_rule_error_assignmentNeedsIdentity {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.assignmentNeedsIdentity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment rules don't support window title matching..
+        /// </summary>
+        internal static string appSoundLock_rule_error_assignmentNoWindowTitle {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.assignmentNoWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoundSwitch sets this app's audio device once. Windows keeps applying it, even when SoundSwitch is closed. Deleting the rule restores the default (a closed app may briefly keep its route until its next launch)..
+        /// </summary>
+        internal static string appSoundLock_rule_assignmentDescription {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.assignmentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shortcut.
         /// </summary>
         internal static string appSoundLock_rule_shortcut {

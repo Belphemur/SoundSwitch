@@ -153,6 +153,17 @@ public static class TelemetryService
         SentrySdk.Metrics.EmitCounter("soundswitch.apprule.deleted", 1);
     }
 
+    /// <summary>
+    /// A deleted/disabled assignment rule's restore-default completed at the app's sighting;
+    /// the elapsed seconds since the route was written is the user-visible restore delay to
+    /// watch (app-rules identity ADR §7).
+    /// </summary>
+    public static void TrackAppRuleAssignmentDeferredClear(double seconds)
+    {
+        if (!AppConfigs.Configuration.Telemetry) return;
+        SentrySdk.Metrics.EmitGauge("soundswitch.apprule.assignment_deferred_clear", seconds, (string?)null);
+    }
+
     public static void TrackProfileActivationFailed(string reason)
     {
         if (!AppConfigs.Configuration.Telemetry) return;

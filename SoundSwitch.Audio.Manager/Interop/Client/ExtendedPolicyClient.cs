@@ -130,7 +130,37 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
             return null;
         }
 
-        public void ResetAllSetEndpoint()
+        /// <summary>
+    /// Clear the persisted default endpoint of the given process for a flow by setting the
+    /// null endpoint for every role. The per-app store is the engine's own territory; this is
+    /// the only supported clear (live pid required, see the app-rules identity ADR §5.2):
+    /// Windows resolves the pid back to its exe identity and drops both the in-memory override
+    /// and the persisted record.
+    /// </summary>
+    public bool ClearDefaultEndPoint(EDataFlow flow, uint processId)
+    {
+        _log.Information("ExtendedPolicyClient ClearDefaultEndPoint [{Flow}] {ProcessId}", flow, processId);
+        var allCleared = true;
+        foreach (var eRole in new[] { ERole.eConsole, ERole.eMultimedia, ERole.eCommunications })
+        {
+            try
+            {
+                if (!PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, null))
+                    allCleared = false;
+            }
+            catch (Exception ex)
+            {
+                // A pid without an audio session refuses the write (E_INVALIDARG); the caller
+                // keeps its pending clear and retries at the next sighting.
+                _log.Debug(ex, "Can't clear the default endpoint for process {ProcessId}", processId);
+                allCleared = false;
+            }
+        }
+
+        return allCleared;
+    }
+
+    public void ResetAllSetEndpoint()
         {
             try
             {
