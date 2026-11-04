@@ -12,7 +12,9 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System;
 using System.IO;
+using System.Threading;
 
 using Newtonsoft.Json;
 
@@ -98,17 +100,89 @@ public static class ConfigurationManager
     private static readonly object SaveLock = new();
 
     /// <summary>
+    /// How many times a save is attempted before giving up, to ride out short-lived
+    /// locks taken by other processes (second instance, backup/AV scanners) on the files.
+    /// </summary>
+    private const int SaveMaxAttempts = 3;
+
+    /// <summary>
+    /// Delay between two save attempts, letting the locking process release the files.
+    /// </summary>
+    private static readonly TimeSpan SaveRetryDelay = TimeSpan.FromMilliseconds(150);
+
+    /// <summary>
     /// Save the configuration in a json file.
     /// </summary>
     /// <param name="configuration">configuration object to save</param>
     public static void SaveConfiguration<T>(T configuration) where T : IConfiguration, new()
     {
+        SaveConfigurationToPath(configuration, GetFilePath<T>());
+    }
+
+    /// <summary>
+    /// Serializes the configuration to a temporary file next to <paramref name="filePath"/>,
+    /// then atomically replaces it, so readers only ever see a complete JSON document.
+    /// Transient locks held by other processes on the destination are retried briefly;
+    /// if the save still fails, the previous configuration on disk is kept and the error is logged.
+    /// </summary>
+    internal static void SaveConfigurationToPath<T>(T configuration, string filePath) where T : IConfiguration, new()
+    {
         lock (SaveLock)
         {
-            var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
-            using var streamWriter = new StreamWriter(GetFilePath<T>());
-            using var writer = new JsonTextWriter(streamWriter);
-            serializer.Serialize(writer, configuration);
+            // Include the process id so two SoundSwitch instances never serialize on
+            // the same temporary file (SaveLock only covers writers within one process).
+            var tempPath = filePath + "." + Environment.ProcessId + ".tmp";
+            try
+            {
+                var serializer = new JsonSerializer {NullValueHandling = NullValueHandling.Ignore};
+                for (var attempt = 1; ; attempt++)
+                {
+                    try
+                    {
+                        using (var streamWriter = new StreamWriter(tempPath, append: false))
+                        using (var writer = new JsonTextWriter(streamWriter))
+                        {
+                            serializer.Serialize(writer, configuration);
+                        }
+
+                        File.Move(tempPath, filePath, overwrite: true);
+                        return;
+                    }
+                    catch (Exception ex) when (IsTransientFileLockError(ex) && attempt < SaveMaxAttempts)
+                    {
+                        Log.Warning(ex,
+                            "Attempt {attempt}/{maxAttempts} to save configuration to {filePath} failed, retrying",
+                            attempt, SaveMaxAttempts, filePath);
+                        Thread.Sleep(SaveRetryDelay);
+                    }
+                }
+            }
+            catch (Exception ex) when (IsTransientFileLockError(ex))
+            {
+                Log.Error(ex,
+                    "Unable to save configuration to {filePath} after {maxAttempts} attempts: {message}. The previous configuration on disk is kept",
+                    filePath, SaveMaxAttempts, ex.Message);
+            }
+            finally
+            {
+                try
+                {
+                    // Best effort: no-op if the temp file has been moved to the destination already.
+                    File.Delete(tempPath);
+                }
+                catch (IOException ex)
+                {
+                    Log.Debug(ex, "Could not delete temporary configuration save file {tempPath}", tempPath);
+                }
+            }
         }
+    }
+
+    /// <summary>
+    /// Is this error caused by another process holding the file, worth retrying?
+    /// </summary>
+    private static bool IsTransientFileLockError(Exception exception)
+    {
+        return exception is IOException or UnauthorizedAccessException;
     }
 }
