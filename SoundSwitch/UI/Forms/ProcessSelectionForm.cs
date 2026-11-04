@@ -187,6 +187,11 @@ public partial class ProcessSelectionForm : Form
         // Crisp single-line outline around the list canvas (the default sunken 3D
         // border fights the white surface).
         dgvProcesses.BorderStyle = BorderStyle.FixedSingle;
+        // The process-name column carries long names and the group bands (e.g.
+        // "▸ Show all processes (247)") plus the not-running suffix; the path
+        // column truncates anyway, so it gives up most of its width.
+        dgvProcesses.Columns["colName"].FillWeight = 160;
+        dgvProcesses.Columns["colPath"].FillWeight = 40;
         if (dgvProcesses.Columns.Contains("colIcon")) dgvProcesses.Columns["colIcon"].Width = 32;
     }
 
