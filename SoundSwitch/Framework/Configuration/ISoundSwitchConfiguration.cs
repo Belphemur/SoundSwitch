@@ -154,5 +154,5 @@ public interface ISoundSwitchConfiguration : IConfiguration
     /// endpoint store (assignment rules and dynamic matches, design doc §6.4). Keeps track of
     /// what to restore to the default when an assignment rule is deleted or disabled.
     /// </summary>
-    List<Model.AssignmentLedgerEntry> AssignmentLedger { get; set; }
+    Model.AssignmentLedgerCollection AssignmentLedger { get; set; }
 }

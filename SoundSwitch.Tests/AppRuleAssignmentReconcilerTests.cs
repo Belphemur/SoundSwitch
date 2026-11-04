@@ -14,9 +14,12 @@ using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Client;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Audio.Manager.Interop.Interface.Policy.Extended;
+using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Model;
 using SoundSwitch.Services;
+
+#pragma warning disable CS0618 // DeviceInfo's obsolete constructor is the test seam here
 
 namespace SoundSwitch.Tests;
 
@@ -190,13 +193,33 @@ public class AppRuleAssignmentReconcilerTests
     }
 
     [Test]
-    public void GetWindowsAssignments_LedgerCoveredRecordWithLetterPath_MatchesStoreNtPath()
+    public void GetWindowsAssignments_LedgerCoveredRecordWithoutLiveRule_IsListed()
     {
         WriteStoreRecord("abc0005_0", @"\Device\HarddiskVolume3\Apps\Spotify\Spotify.exe");
-        // An entry carrying the volume-relative letter-form of the same identity.
+        // An entry whose rule no longer exists (a pending restore-default clear is still
+        // waiting for the closed app) owns nothing that a rule row displays, so the record
+        // stays visible in the read-only Windows section.
         _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
         {
             RuleId = Guid.NewGuid(),
+            ExePath = @"C:\Apps\Spotify\Spotify.exe",
+            Enforcement = AppRuleEnforcement.Assignment,
+            PlaybackDeviceId = "playback-id"
+        });
+
+        _reconciler.GetWindowsAssignments().Should().ContainSingle();
+    }
+
+    [Test]
+    public void GetWindowsAssignments_LiveRuleLedgerCoveredRecord_MatchesStoreNtPath()
+    {
+        WriteStoreRecord("abc0005_1", @"\Device\HarddiskVolume3\Apps\Spotify\Spotify.exe");
+        var rule = AssignmentRule(@"C:\Apps\Spotify\Spotify.exe");
+        _configuration.AppSoundRules.Add(rule);
+        // An entry carrying the volume-relative letter-form of the same identity.
+        _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
+        {
+            RuleId = rule.Id,
             ExePath = @"C:\Apps\Spotify\Spotify.exe",
             Enforcement = AppRuleEnforcement.Assignment,
             PlaybackDeviceId = "playback-id"
@@ -269,6 +292,32 @@ public class AppRuleAssignmentReconcilerTests
         new PersistedDefaultEndpointStore(_scratchStorePath).ReadAll().Should().HaveCount(1, "the leftover route keeps today's delete behaviour");
     }
 
+    [Test]
+    public void Reconcile_ReleasesPendingClearWhenAnotherAssignmentRuleOwnsTheIdentity()
+    {
+        var (path, pid) = LaunchSleeper();
+        WriteStoreRecordFor(path);
+        _policy.SetDevice(pid, EDataFlow.eRender, RenderToken);
+
+        // A deleted rule's entry waits for its deferred clear; a surviving replacement rule
+        // (created while the app was closed) owns the same identity and already wrote its
+        // route to the sighted process.
+        _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
+        {
+            RuleId = Guid.NewGuid(),
+            ExePath = path,
+            Enforcement = AppRuleEnforcement.Assignment,
+            PlaybackDeviceId = "playback-id"
+        });
+        _configuration.AppSoundRules.Add(AssignmentRule(path));
+
+        _reconciler.Reconcile();
+
+        _configuration.AssignmentLedger.Should().BeEmpty("the stale pending clear is released, not run");
+        _policy.GetDevice(pid, EDataFlow.eRender).Should().NotBeNull("the surviving rule's route must survive the pending clear");
+        _reconciler.TakeDirty().Should().BeTrue();
+    }
+
     // ── deferred restore-default clear (live and pending) ───────────
 
     [Test]
@@ -332,7 +381,12 @@ public class AppRuleAssignmentReconcilerTests
         _reconciler.Reconcile();
 
         _configuration.AssignmentLedger.Should().ContainSingle("a closed app keeps its route until its next sighting (ADR §6.3)");
-        _reconciler.TakeDirty().Should().BeFalse("nothing changed on this pass");
+        // The pass stamped ClearRequestedAt (persisted — it is what the deferred-clear metric
+        // measures from), so the first pass reports dirty; a second pass is idempotent.
+        _configuration.AssignmentLedger.Single().ClearRequestedAt.Should().NotBeNull();
+        _reconciler.TakeDirty().Should().BeTrue();
+        _reconciler.Reconcile();
+        _reconciler.TakeDirty().Should().BeFalse("the stamp is written once");
     }
 
     [Test]
@@ -374,8 +428,52 @@ public class AppRuleAssignmentReconcilerTests
         _configuration.AssignmentLedger.Should().ContainSingle();
     }
 
-    // ── policy client behaviour ─────────────────────────────────────
+    // ── ledger claims ───────────────────────────────────────────────
 
+    [Test]
+    public void EnsureEntry_ClaimsOnlyTheFlowsTheWriteReproduced()
+    {
+        var rule = AssignmentRule(@"C:\Apps\Spotify\Spotify.exe");
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = new DeviceInfo("Speakers", "playback-id", EDataFlow.eRender, false, DateTime.UtcNow),
+            Recording = new DeviceInfo("Microphone", "recording-id", EDataFlow.eCapture, false, DateTime.UtcNow)
+        };
+
+        // Only the playback side switched (the recording device was unavailable): the ledger
+        // must not claim the app's pre-existing recording route (§6.4 — clearing unclaimed
+        // flows happens only where SoundSwitch wrote first).
+        _reconciler.EnsureEntry(rule, @"C:\Apps\Spotify\Spotify.exe", pair, new[] { EDataFlow.eRender });
+
+        var entry = _configuration.AssignmentLedger.Single();
+        entry.PlaybackDeviceId.Should().Be("playback-id");
+        entry.RecordingDeviceId.Should().BeNull();
+
+        // A later successful recording write extends the claim without an unnecessary
+        // playback update (the id stays what was written).
+        _reconciler.EnsureEntry(rule, @"C:\Apps\Spotify\Spotify.exe", pair, new[] { EDataFlow.eCapture });
+        entry = _configuration.AssignmentLedger.Single();
+        entry.PlaybackDeviceId.Should().Be("playback-id", "the playback claim of the first write survives");
+        entry.RecordingDeviceId.Should().Be("recording-id");
+    }
+
+    [Test]
+    public void EnsureEntry_WithoutFlowsWritten_ClaimsBothSides()
+    {
+        var rule = AssignmentRule(@"C:\Apps\Spotify\Spotify.exe");
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = new DeviceInfo("Speakers", "playback-id", EDataFlow.eRender, false, DateTime.UtcNow)
+        };
+
+        _reconciler.EnsureEntry(rule, @"C:\Apps\Spotify\Spotify.exe", pair);
+
+        var entry = _configuration.AssignmentLedger.Single();
+        entry.RecordingDeviceId.Should().BeNull("the pair carries no recording device");
+        entry.PlaybackDeviceId.Should().Be("playback-id");
+    }
+
+    // ── policy client behaviour ─────────────────────────────────────
     [Test]
     public void ClearDefaultEndPoint_ClearsStateViaEngineOnly()
     {

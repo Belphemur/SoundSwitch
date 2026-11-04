@@ -128,7 +128,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public HashSet<Model.AppSoundRule> AppSoundRules { get; set; } = new();
 
     /// <inheritdoc />
-    public List<Model.AssignmentLedgerEntry> AssignmentLedger { get; set; } = new();
+    public Model.AssignmentLedgerCollection AssignmentLedger { get; set; } = new();
 
     [Obsolete("Feature has been removed")]
     public bool AutoAddNewConnectedDevices { get; set; } = false;

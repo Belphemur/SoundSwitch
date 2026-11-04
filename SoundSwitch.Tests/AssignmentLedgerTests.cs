@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
@@ -29,7 +31,8 @@ public class AssignmentLedgerTests
         Enforcement = AppRuleEnforcement.Assignment,
         PlaybackDeviceId = "{0.0.0.00000000}.{11111111-1111-1111-1111-111111111111}",
         RecordingDeviceId = "{0.0.1.00000000}.{22222222-2222-2222-2222-222222222222}",
-        WrittenAt = new DateTime(2026, 11, 3, 12, 0, 0, DateTimeKind.Utc)
+        WrittenAt = new DateTime(2026, 11, 3, 12, 0, 0, DateTimeKind.Utc),
+        ClearRequestedAt = new DateTime(2026, 11, 3, 18, 0, 0, DateTimeKind.Utc)
     };
 
     [Test]
@@ -57,6 +60,42 @@ public class AssignmentLedgerTests
         restored.PlaybackDeviceId.Should().Be(original.PlaybackDeviceId);
         restored.RecordingDeviceId.Should().Be(original.RecordingDeviceId);
         restored.WrittenAt.Should().Be(original.WrittenAt);
+        restored.ClearRequestedAt.Should().Be(original.ClearRequestedAt);
+    }
+
+    [Test]
+    public void Ledger_EnumeratedWhileMutated_ReturnsStableSnapshots()
+    {
+        var ledger = new AssignmentLedgerCollection();
+        for (var i = 0; i < 10; i++)
+        {
+            ledger.Add(SampleEntry());
+        }
+
+        // The reconciler mutates on background threads while saves/UI enumerate: the
+        // enumerator must snapshot instead of throwing "collection was modified". Removals
+        // happen by entry reference (Remove(entry)), mirroring the reconciler's usage.
+        var mutatedEverything = Parallel.For(0, 8, _ =>
+        {
+            for (var i = 0; i < 5_000; i++)
+            {
+                if (ledger.Count > 40)
+                {
+                    var stale = ledger[0];
+                    ledger.Remove(stale);
+                }
+
+                ledger.Add(SampleEntry());
+            }
+        });
+
+        foreach (var _ in ledger)
+        {
+            // enumeration must not throw while the writers run
+        }
+
+        mutatedEverything.IsCompleted.Should().BeTrue();
+        ledger.Should().NotBeEmpty();
     }
 
     [Test]

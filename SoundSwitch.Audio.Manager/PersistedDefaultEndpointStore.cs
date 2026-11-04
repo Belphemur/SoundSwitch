@@ -75,8 +75,12 @@ namespace SoundSwitch.Audio.Manager
         /// Enumerate every record currently in the store, sorted by executable path so callers don't
         /// depend on registry enumeration order. Unknown shapes are skipped.
         /// </summary>
-        /// <returns>Empty when the store doesn't exist (e.g. pre-1709 builds) or can't be read.</returns>
-        public IReadOnlyList<Record> ReadAll()
+        /// <returns>
+        /// The records, or <c>null</c> when the enumeration itself failed (access error). Only a
+        /// store that legitimately holds no records yields an empty result — a caller must treat
+        /// <c>null</c> as "state known, not as an empty store".
+        /// </returns>
+        public IReadOnlyList<Record>? TryReadAll()
         {
             try
             {
@@ -108,9 +112,19 @@ namespace SoundSwitch.Audio.Manager
             }
             catch (Exception ex)
             {
-                _logger.Debug(ex, "Failed to enumerate the persisted default endpoint store at {StorePath}", _storePath);
-                return Array.Empty<Record>();
+                _logger.Warning(ex, "Failed to enumerate the persisted default endpoint store at {StorePath}; treating this pass as unreadable, not empty", _storePath);
+                return null;
             }
+        }
+
+        /// <summary>
+        /// Enumerate every record currently in the store (see <see cref="TryReadAll"/>), taking an
+        /// enumeration failure as an empty store — for readers that merely display the store, where
+        /// the distinction does not matter.
+        /// </summary>
+        public IReadOnlyList<Record> ReadAll()
+        {
+            return TryReadAll() ?? Array.Empty<Record>();
         }
 
         /// <summary>
@@ -185,8 +199,14 @@ namespace SoundSwitch.Audio.Manager
                     continue; // unrecognizable device token
 
                 flow ??= tokenFlow;
-                deviceIds[role.Value] = UnwrapDeviceToken(token);
-            }
+                // A token whose direction contradicts the record's first recognized flow is
+                // ordinary drift (the engine keys a record per flow); keep the role map
+                // consistent with the record's flow instead of surfacing the capture id under
+                // a render record (or vice versa).
+                if (tokenFlow != flow.Value)
+                    continue; // drift: role token of the other flow
+
+                deviceIds[role.Value] = UnwrapDeviceToken(token);            }
 
             // The direction signal is the device token itself; without any recognizable token a
             // record carries no direction and is not surfaced (ordinary drift, not an error).

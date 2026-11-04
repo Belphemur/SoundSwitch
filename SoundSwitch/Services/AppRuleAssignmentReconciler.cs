@@ -14,6 +14,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Model;
 
+
 namespace SoundSwitch.Services
 {
     /// <summary>
@@ -82,6 +83,7 @@ namespace SoundSwitch.Services
             public string? PlaybackDeviceId;
             public string? RecordingDeviceId;
             public bool CoveredByLedger;
+            public bool CoveredByLiveLedger;
             public AppSoundRule? CoveringRule;
         }
 
@@ -98,8 +100,14 @@ namespace SoundSwitch.Services
                 groups = ReadGroups(rules);
             }
 
+            if (groups == null)
+                return Array.Empty<StoreAssignment>();
+
+            // Coverage by an entry whose rule no longer exists (e.g. a pending restore-default
+            // clear for a closed app) is not ownership for display: the record belongs to no
+            // rule row anymore, so the read-only Windows section is where it stays visible.
             return groups
-                .Where(group => !group.CoveredByLedger && group.CoveringRule == null)
+                .Where(group => !group.CoveredByLiveLedger && group.CoveringRule == null)
                 .Select(group => new StoreAssignment
                 {
                     ExePath = group.NtExePath,
@@ -123,16 +131,26 @@ namespace SoundSwitch.Services
         /// <summary>
         /// Stamp the ledger with the route <paramref name="rule"/> just wrote (or re-asserted) for
         /// the identity it matched — the ownership record of §6.4, for any enforcement kind.
+        /// Only flows the write actually reproduced are claimed: a side whose device could not
+        /// resolve (or already matched) may hold the app's pre-existing Windows assignment, and
+        /// the ledger must not later clear a route SoundSwitch never wrote.
         /// </summary>
-        public void EnsureEntry(AppSoundRule rule, string processPath, AppSoundRuleDevicePair pair)
+        public void EnsureEntry(AppSoundRule rule, string processPath, AppSoundRuleDevicePair pair, IReadOnlyCollection<EDataFlow>? flowsWritten = null)
         {
             var identity = IdentityOf(rule, processPath);
+            var playbackId = flowsWritten == null || flowsWritten.Contains(EDataFlow.eRender)
+                ? pair.Playback?.Id
+                : null;
+            var recordingId = flowsWritten == null || flowsWritten.Contains(EDataFlow.eCapture)
+                ? pair.Recording?.Id
+                : null;
+
             lock (_sync)
             {
                 var entry = Ledger(rule.Id, identity).FirstOrDefault();
                 if (entry != null)
                 {
-                    if (UpdateEntry(entry, rule, pair))
+                    if (UpdateEntry(entry, rule, playbackId, recordingId))
                         MarkDirty();
                     return;
                 }
@@ -142,8 +160,8 @@ namespace SoundSwitch.Services
                     RuleId = rule.Id,
                     ExePath = identity,
                     Enforcement = rule.Enforcement,
-                    PlaybackDeviceId = pair.Playback?.Id,
-                    RecordingDeviceId = pair.Recording?.Id,
+                    PlaybackDeviceId = playbackId,
+                    RecordingDeviceId = recordingId,
                     WrittenAt = _clock()
                 });
                 MarkDirty();
@@ -166,6 +184,10 @@ namespace SoundSwitch.Services
                 {
                     if (entry.Enforcement == AppRuleEnforcement.Assignment)
                     {
+                        // The restore-default measurement (§7) starts when the rule retracted
+                        // its route, not when the route was last written.
+                        entry.ClearRequestedAt ??= _clock();
+                        MarkDirty();
                         ClearAssignmentRoute(entry);
                         continue;
                     }
@@ -187,6 +209,13 @@ namespace SoundSwitch.Services
             lock (_sync)
             {
                 var groups = ReadGroups(rules);
+
+                // An unreadable store is not an empty store: without the real state the pass
+                // cannot distinguish "record vanished" from "read failed", so drop nothing and
+                // adopt nothing this round (ADR §6.6 idempotence) — ownership survives to the
+                // next pass instead of being deleted because a read hiccup returned nothing.
+                if (groups == null)
+                    return;
 
                 // 1. Adoption: a store record matching an enabled rule but missing from the
                 //    ledger is ours (written before the ledger existed) — claim it without
@@ -245,6 +274,26 @@ namespace SoundSwitch.Services
                     //    pending and the sighting clears it (ADR §6.3 deferred restore).
                     if (entry.Enforcement == AppRuleEnforcement.Assignment && !stillOwned)
                     {
+                        // A surviving assignment rule replaced the retracted one for the same
+                        // identity (the rule was deleted while the app was closed, then a new
+                        // rule for the exe was created): the sighting that brought the app back
+                        // already wrote the new route, and a clear would wipe it moments later.
+                        // Release the stale entry — the new rule's own ledger entry owns now.
+                        if (ReplacedByLiveAssignmentRule(rules, entry))
+                        {
+                            _logger.Information("Released pending clear of {ExePath}: rule {OldRuleId} was replaced by another assignment rule",
+                                entry.ExePath, entry.RuleId);
+                            _configuration.AssignmentLedger.Remove(entry);
+                            MarkDirty();
+                            continue;
+                        }
+
+                        if (entry.ClearRequestedAt == null)
+                        {
+                            entry.ClearRequestedAt = _clock();
+                            MarkDirty();
+                        }
+
                         ClearAssignmentRoute(entry);
                     }
                 }
@@ -286,18 +335,19 @@ namespace SoundSwitch.Services
                 .ToList();
         }
 
-        private bool UpdateEntry(AssignmentLedgerEntry entry, AppSoundRule rule, AppSoundRuleDevicePair pair)
+        private bool UpdateEntry(AssignmentLedgerEntry entry, AppSoundRule rule, string? playbackId, string? recordingId)
         {
             var changed = false;
-            var playbackId = pair.Playback?.Id;
-            var recordingId = pair.Recording?.Id;
-            if (!string.Equals(entry.PlaybackDeviceId, playbackId, StringComparison.OrdinalIgnoreCase))
+            // Only a flow this write actually reproduced replaces the stored endpoint id: a side
+            // the switch didn't touch (device unavailable, already matching) keeps the id the
+            // previously written route carried — the flows-to-clear set (§6.3/§6.4) stays honest.
+            if (playbackId != null && !string.Equals(entry.PlaybackDeviceId, playbackId, StringComparison.OrdinalIgnoreCase))
             {
                 entry.PlaybackDeviceId = playbackId;
                 changed = true;
             }
 
-            if (!string.Equals(entry.RecordingDeviceId, recordingId, StringComparison.OrdinalIgnoreCase))
+            if (recordingId != null && !string.Equals(entry.RecordingDeviceId, recordingId, StringComparison.OrdinalIgnoreCase))
             {
                 entry.RecordingDeviceId = recordingId;
                 changed = true;
@@ -313,11 +363,19 @@ namespace SoundSwitch.Services
             return changed;
         }
 
-        /// <summary>Group the store's records per identity and annotate ledger/rule coverage.</summary>
-        private List<StoreGroup> ReadGroups(List<AppSoundRule> rules)
+        /// <summary>
+        /// Group the store's records per identity and annotate ledger/rule coverage. Returns
+        /// <c>null</c> when Windows' store could not be read this pass (not "no records").
+        /// </summary>
+        private List<StoreGroup>? ReadGroups(List<AppSoundRule> rules)
         {
+            var records = _store.TryReadAll();
+            if (records == null)
+                return null;
+
+            var liveRuleIds = rules.Select(rule => rule.Id).ToHashSet();
             var groups = new List<StoreGroup>();
-            foreach (var groupOfRecords in _store.ReadAll()
+            foreach (var groupOfRecords in records
                          .GroupBy(record => PersistedDefaultEndpointStore.GetVolumeRelativePath(record.ExePath),
                              StringComparer.OrdinalIgnoreCase)
                          .Where(g => g.Key.Length > 0))
@@ -334,6 +392,9 @@ namespace SoundSwitch.Services
 
                 group.CoveredByLedger = _configuration.AssignmentLedger
                     .Any(entry => AppRuleIdentityMatcher.SameApp(entry.ExePath, group.NtExePath));
+                group.CoveredByLiveLedger = _configuration.AssignmentLedger
+                    .Any(entry => liveRuleIds.Contains(entry.RuleId) &&
+                                  AppRuleIdentityMatcher.SameApp(entry.ExePath, group.NtExePath));
                 group.CoveringRule = rules.FirstOrDefault(rule => RuleCovers(rule, group));
                 groups.Add(group);
             }
@@ -359,18 +420,19 @@ namespace SoundSwitch.Services
 
         /// <summary>
         /// Whether the rule targets the record's identity: assignment rules compare the
-        /// assignment exe identity exactly; other rules through their usual match expression
-        /// against the store's exe path (no window title available in the store).
+        /// assignment exe identity exactly; other rules through their usual match expression —
+        /// the store has no window titles and its paths are NT-device form, so the dynamic
+        /// expression is evaluated against the record's volume-relative path in addition to the
+        /// NT path and the bundle name.
         /// </summary>
         private static bool RuleCovers(AppSoundRule rule, StoreGroup group)
         {
             if (!rule.Enabled)
                 return false;
 
-            var bundleName = Path.GetFileNameWithoutExtension(group.RelativePath);
             return rule.Enforcement == AppRuleEnforcement.Assignment
                 ? AppRuleIdentityMatcher.SameApp(IdentityOf(rule, group.NtExePath), group.NtExePath)
-                : AppSoundLockManager.IsMatch(rule, bundleName, group.NtExePath, string.Empty);
+                : AppSoundLockManager.IsMatch(rule, group.RelativePath, group.NtExePath, string.Empty);
         }
 
         /// <summary>Flows the entry's route covered, or both when the entry carries no device.</summary>
@@ -385,9 +447,24 @@ namespace SoundSwitch.Services
         }
 
         /// <summary>
+        /// Whether another enabled assignment rule (not the entry's own) targets the same exe
+        /// identity — the rule that own the route the pending clear is about to run against.
+        /// </summary>
+        private static bool ReplacedByLiveAssignmentRule(List<AppSoundRule> rules, AssignmentLedgerEntry entry)
+        {
+            return rules.Any(other =>
+                other.Id != entry.RuleId &&
+                other.Enabled &&
+                other.Enforcement == AppRuleEnforcement.Assignment &&
+                AppRuleIdentityMatcher.SameApp(IdentityOf(other, entry.ExePath), entry.ExePath));
+        }
+
+        /// <summary>
         /// Clear a pending assignment route right away where the engine accepts the write (only
-        /// for a pid with a live audio session). Returns whether the whole route was cleared —
-        /// a closed app keeps its entry pending for its next sighting (ADR §6.3).
+        /// for a pid with a live audio session) — for every running instance of the identity, so
+        /// zero-pid copies keep no leftover route. Returns whether every running pid accepted
+        /// the clear of every claimed flow — a closed app (or a pid without a session yet)
+        /// keeps the entry pending for its next sighting (ADR §6.3).
         /// </summary>
         private bool ClearAssignmentRoute(AssignmentLedgerEntry entry)
         {
@@ -404,9 +481,9 @@ namespace SoundSwitch.Services
                 return false; // stays pending
 
             var allCleared = flows.All(flow =>
-                runningPids.Exists(tuple => _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid)));
+                runningPids.All(tuple => _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid)));
             if (!allCleared)
-                return false; // partially failed or no live session: stay pending
+                return false; // a pid without a live session refused the write: stay pending
 
             _configuration.AssignmentLedger.Remove(entry);
             TrackDeferredClear(entry);
@@ -446,7 +523,10 @@ namespace SoundSwitch.Services
 
         private void TrackDeferredClear(AssignmentLedgerEntry entry)
         {
-            var elapsed = _clock() - entry.WrittenAt;
+            // Measured from when the rule was retracted (deleted/disabled/edited), not from the
+            // route's last write: a route written weeks earlier must not report weeks of
+            // restore delay (ADR §7 — the metric watches the user-visible restore delay).
+            var elapsed = _clock() - (entry.ClearRequestedAt ?? entry.WrittenAt);
             _logger.Information("Assignment route of {ExePath} (rule {RuleId}) restored to the default after {Seconds:N0}s",
                 entry.ExePath, entry.RuleId, elapsed.TotalSeconds);
             TelemetryService.TrackAppRuleAssignmentDeferredClear(elapsed.TotalSeconds);
