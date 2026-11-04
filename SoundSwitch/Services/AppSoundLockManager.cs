@@ -95,15 +95,16 @@ namespace SoundSwitch.Services
             if (_configuration.AppSoundRules == null)
                 return;
 
-            var snapshot = SnapshotProcesses();
+            List<ProcessSnapshot>? snapshot = null;
             foreach (var rule in _configuration.AppSoundRules.ToList().Where(rule =>
                          rule.Enabled && rule.Mode == AppRuleMode.Automatic && rule.Enforcement == AppRuleEnforcement.Assignment))
             {
                 try
                 {
                     // A self-healing re-apply is not a user-triggered switch: no banner per
-                    // running instance (the docstring promises silence on this path).
-                    ApplyAssignmentRuleToRunningProcesses(rule, snapshot, notify: false);
+                    // running instance (the docstring promises silence on this path). The table
+                    // is read once, and only when at least one rule actually needs it.
+                    ApplyAssignmentRuleToRunningProcesses(rule, snapshot ??= SnapshotProcesses(), notify: false);
                 }
                 catch (Exception ex)
                 {
