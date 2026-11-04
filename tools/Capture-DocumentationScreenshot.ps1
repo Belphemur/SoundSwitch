@@ -794,6 +794,27 @@ try {
         $dialogHandle = $dialog.Handle
         $captureLabel = "'$($dialog.Title)' dialog"
 
+        if ($Select -or $ThenClick) {
+            # Rule editors auto-open their first child dialog as well (the rule editor
+            # pops its process picker right after opening). Whichever window the click
+            # detection grabbed, the editor is the one carrying the requested controls:
+            # give the auto-opened child a moment, look at every other window of that
+            # click, prefer the one carrying the target and close the extra copies.
+            Start-Sleep -Milliseconds 600
+            foreach ($candidate in @(Get-TopLevelWindows -ProcessId $process.Id)) {
+                if ($candidate.Handle.ToInt64() -in $existingHandles -or $candidate.Handle -eq $dialogHandle) { continue }
+                $target = if ($Select) { Find-VisibleControl -Handle $candidate.Handle -ControlId $Select } else { Find-VisibleButton -Handle $candidate.Handle -ButtonId $ThenClick }
+                if ($null -ne $target) {
+                    Write-Host "Preferring '$($candidate.Title)' (carries the requested control), closing the extra dialog..." -ForegroundColor Yellow
+                    [SoundSwitch.DocCapture.Native]::PostMessage($dialogHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+                    Start-Sleep -Milliseconds 300
+                    $dialogHandle = $candidate.Handle
+                    $captureLabel = "'$($candidate.Title)' dialog"
+                    break
+                }
+            }
+        }
+
         if ($Select) {
             $control = Find-VisibleControl -Handle $dialogHandle -ControlId $Select
             if ($null -eq $control) {

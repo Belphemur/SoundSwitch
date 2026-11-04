@@ -23,9 +23,28 @@ Use Automatic mode when an application should **always** use the same audio devi
 3. Optionally narrow the rule with a **Window Title** pattern.
 4. Choose **Automatic** as the mode.
 5. Select a **Playback** device, a **Recording** device, or both. At least one is required.
-6. Click **Save**.
+6. Pick **Enforced by** (see below). The default is fine for most setups.
+7. Click **Save**.
 
 ![Add an App Rule in Automatic mode](/images/AppRules%20Add.png)
+
+## Enforced by
+
+Automatic rules get a choice of **how** the routing is kept in place:
+
+| Enforced by | What happens |
+|-------------|--------------|
+| **Processes (dynamic)** | The default. SoundSwitch keeps watching for the application and applies its device pair on every sighting while SoundSwitch runs. |
+| **App assignment** | SoundSwitch writes the route once into Windows' own per-app audio settings. **Windows keeps applying it from then on, even when SoundSwitch is closed**, and on every future launch of the application. |
+
+![Choosing App assignment in the rule editor](/images/AppRules%20Add%20Assignment.png)
+
+Behaviour of an **App assignment** rule:
+
+- The assignment is stored **per application, not per process**: it uses the exact executable you pick, not a pattern.
+- **Deleting or disabling the rule restores the default.** A running application returns to the system default immediately; an application that is closed keeps its assignment until its next launch.
+- Requires a **concrete Process Path** — pick the application with the **...** button. Window Title patterns are not supported, and the option stays disabled until a specific application is picked.
+- Editing the rule's device pair updates the assignment the next time the application is seen (immediately if it is running).
 
 ## Example
 
