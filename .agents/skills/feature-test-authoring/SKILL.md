@@ -66,19 +66,28 @@ Load the `end-to-end-testing` skill when writing the E2E script, the
    it describes a suite that still fails.
 5. **Write the E2E script** (if the decision table asked for one) from
    `tools/Test-MuteTargetEndToEnd.ps1` and the `end-to-end-testing` skill.
-   Non-negotiables: back up and restore
-   `%APPDATA%\SoundSwitch\SoundSwitchConfiguration.json` in `finally`, launch
-   with `--disable-updater`, poll `CLI status` for readiness (never a guessed
-   sleep), stop only the instance you launched, also in `finally`. Build on
-   `Control-SoundSwitch.ps1` primitives; never re-implement UIA/Win32 interop.
+   Launch with `--disable-updater`, poll `CLI status` for readiness (never a
+   guessed sleep), and build on `Control-SoundSwitch.ps1` primitives — never
+   re-implement UIA/Win32 interop. The reference's cleanup is not the model to
+   copy: put the teardown in `finally` **in this order**:
+   - Stop only the instance *you* launched (track it with a `$launched` flag,
+     never by process name and never a stale PID file), honouring `-KeepRunning`.
+   - **Then** restore `%APPDATA%\SoundSwitch\SoundSwitchConfiguration.json`
+     (or delete it if the test created it). Restoring the file while an app is
+     still running loses: the app caches its config in memory and the next save
+     (on exit or on change) clobbers your restore. Stop → restore.
+   - Prefer failing fast when an instance is already running. `-AllowExistingInstance`
+     means your test drives the user's live app; the config restore does not undo
+     in-memory state, so document that trade-off in the script help.
 6. **Write the `<feature>-testing` skill** from `TEMPLATE.md`, moving per-feature
    facts (real commands, fixture table, automation ids, gotchas) in.
 7. **Register:** add one line for each new script to `tools/README.md`; the
    `<feature>-testing` SKILL.md routes changes to the scripts.
 8. **Validate:** `pwsh tools\Test-<Feature>.ps1 -List`, then the default run
    (green), then `-All` if your fixtures interact with shared state. Push a
-   conventional commit: `tests(<feature>): ...` keeps it out of release notes;
-   `feat`/`fix` trigger a release.
+   conventional commit: `tests(<feature>): ...` does not trigger a release but
+   can still appear in generated release notes; `chore(<area>): ...` for pure
+   tooling avoids both. `feat`/`fix` trigger a release.
 
 ## Before pushing
 

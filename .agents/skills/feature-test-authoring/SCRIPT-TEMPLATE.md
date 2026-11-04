@@ -5,7 +5,8 @@ Mirrors `tools/Test-MuteTarget.ps1`. Rules the skeleton encodes:
 - `#Requires -Version 7.0` first line; `[CmdletBinding()]`; `-ErrorActionPreference = 'Stop'`
   and `Set-StrictMode -Version Latest`.
 - Params: `-All`, optionally `-Audio` (only if the feature touches the COM audio
-  stack), `-List`, `-NoBuild`.
+  stack), `-List`, `-NoBuild`. The `-Audio` support is three pieces (param, test
+  project path, execution branch) — include all three or none.
 - `$featureFixtures` = the feature's fixture list, each with a one-line comment
   naming the behaviour it covers.
 - **Known-flaky tests are excluded by an explicit test filter on every run mode
@@ -13,10 +14,12 @@ Mirrors `tools/Test-MuteTarget.ps1`. Rules the skeleton encodes:
   script.** `$flakyExclusions` below is composed into the single filter that
   every run of the test project uses. A documented exclusion that does not apply
   on `-All` is a bug: the suite still fails and the doc lies.
-- One solution build, then reuse it (`-NoBuild` sets itself).
+- One solution build, then reuse it: after the build `-NoBuild` sets itself, so
+  `dotnet test` runs with `--no-restore --no-build` and never rebuilds.
 
-Replace `<Feature>`, fixture names, and comments; delete the `-Audio` branch if
-not applicable; keep the trailing `All requested tests passed.` summary.
+Replace `<Feature>`, fixture names, and comments; delete the `-Audio` param,
+project path, and branch together when the feature does not need audio tests;
+keep the trailing `All requested tests passed.` summary.
 
 ---
 
@@ -34,13 +37,17 @@ not applicable; keep the trailing `All requested tests passed.` summary.
     SoundSwitch.Audio.Manager.Tests project (COM/hardware dependent, Windows
     only).
 
-    <FlakyTestName>.<TestName> is excluded on every run mode: it is a
-    timing-sensitive race that CI also skips and fails intermittently on fast
-    local machines regardless of code changes. The rest of the fixture still
-    runs.
+    <FlakyTestName>.<TestName> is excluded on every run mode (including -All):
+    it is a timing-sensitive race that CI also skips and fails intermittently
+    on fast local machines regardless of code changes. The rest of the fixture
+    still runs.
 
 .PARAMETER All
     Run the full SoundSwitch.Tests suite instead of just the feature fixtures.
+
+.PARAMETER Audio
+    Additionally run the SoundSwitch.Audio.Manager.Tests project (COM audio
+    stack, Windows only, slower).
 
 .PARAMETER List
     List the feature test fixtures without running anything.
@@ -56,6 +63,7 @@ not applicable; keep the trailing `All requested tests passed.` summary.
 [CmdletBinding()]
 param(
     [switch]$All,
+    [switch]$Audio,
     [switch]$List,
     [switch]$NoBuild
 )
@@ -78,8 +86,9 @@ $featureFixtures = @(
 
 # Known-flaky tests, excluded on every run mode (documented above). One place,
 # used by the main path AND -All, so the documented exclusion actually applies.
+# The filter key is the test METHOD name (Name!), not the fixture type name.
 $flakyExclusions = @(
-    'Name!=<FlakyTestName>'   # <why: timing-sensitive race; CI skips it too>
+    'Name!=<TestName>'   # <why: timing-sensitive race; CI skips it too>
 )
 
 if ($List) {
@@ -99,8 +108,10 @@ function Invoke-TestProject {
     Write-Host "=== $Label ===" -ForegroundColor Cyan
 
     $args = @('test', $Project, '-c', 'Debug')
-    if (-not $NoBuild) {
-        $args += @('--no-restore')
+    if ($NoBuild) {
+        # The solution build already happened (or -NoBuild was requested):
+        # reuse the built outputs instead of rebuilding.
+        $args += @('--no-restore', '--no-build')
     }
     if ($Filter) {
         $args += @('--filter', $Filter)
@@ -115,7 +126,6 @@ function Invoke-TestProject {
     Write-Host "PASSED: $Label" -ForegroundColor Green
 }
 
-$buildSw = $false
 if (-not $NoBuild) {
     Write-Host 'Building solution (Debug)...' -ForegroundColor Cyan
     & dotnet build (Join-Path $repoRoot 'SoundSwitch.sln') -c Debug --nologo -v minimal
@@ -128,15 +138,28 @@ if (-not $NoBuild) {
 }
 
 # One filter for every run mode: fixture selection (if any) + flaky exclusions.
-if ($All) {
-    $testFilter = $flakyExclusions -join '&'
-}
-else {
+# Guard against an empty exclusions list: a trailing '&' is an invalid filter.
+$exclusionFilter = $flakyExclusions -join '&'
+$testFilter = $exclusionFilter
+if (-not $All) {
     $fixtureFilter = ($featureFixtures | ForEach-Object { "FullyQualifiedName~$_" }) -join '|'
-    $testFilter = "($fixtureFilter)&$($flakyExclusions -join '&')"
+    $testFilter = "($fixtureFilter)"
+    if ($exclusionFilter) {
+        $testFilter += "&$exclusionFilter"
+    }
 }
 
 Invoke-TestProject -Project $testProject -Filter $testFilter -Label '<Feature> feature tests'
+
+if ($Audio) {
+    $audioTestProject = Join-Path $repoRoot 'SoundSwitch.Audio.Manager.Tests\SoundSwitch.Audio.Manager.Tests.csproj'
+    if (-not (Test-Path $audioTestProject)) {
+        Write-Warning "Audio test project not found: $audioTestProject"
+    }
+    else {
+        Invoke-TestProject -Project $audioTestProject -Filter $null -Label 'SoundSwitch.Audio.Manager.Tests (COM audio stack)'
+    }
+}
 
 Write-Host ''
 Write-Host 'All requested tests passed.' -ForegroundColor Green

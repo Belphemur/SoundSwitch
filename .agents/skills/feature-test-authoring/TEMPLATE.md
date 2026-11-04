@@ -8,7 +8,8 @@ imperative style — the skill is a routing table, not an essay.
 Placeholders: `<Feature>`, `<FeaturePath>` (code under `SoundSwitch/`),
 `<feature>`, `<AutomationId>`, `<TabName>`.
 
----
+The copied file **starts at the frontmatter opener** — the `---` line that
+opens the YAML block below. Delete this preamble; do not copy it.
 
 ---
 name: <Feature> testing
@@ -20,8 +21,11 @@ description: Test the <feature> feature — unit fixtures, a live-app control sc
 <One paragraph: what the user-visible feature does, in the same words the docs
 use, split into numbered sub-behaviours below.>
 
-Testing has three layers. Use the cheapest layer that can catch your change, and
-run the end-to-end layer before shipping anything that touches <the feature>.
+Testing has three layers. Use the cheapest layer that can catch your change,
+following the layer decision in the `feature-test-authoring` skill:
+run the end-to-end layer before shipping anything that touches the feature's
+runtime behaviour — skip it entirely for a pure-logic feature (parsing,
+formatting, math) and delete the Layer 3 section here.
 
 | Layer | Command | Time | Needs a running app | Needs real devices |
 | --- | --- | --- | --- | --- |
@@ -83,7 +87,9 @@ even when a check fails. State this only if true.>
 ## Before pushing
 
 - Change under `<FeaturePath>` or <related files>: run
-  `pwsh tools\Test-<Feature>.ps1` and `pwsh tools\Test-<Feature>EndToEnd.ps1`.
+  `pwsh tools\Test-<Feature>.ps1`<and, when the change touches what the feature
+  does at runtime, `pwsh tools\Test-<Feature>EndToEnd.ps1`>. For pure-logic
+  changes the unit layer alone is the requirement.
 - <Change class>: <which layer covers it / what to extend>.
 - <User-visible sub-behaviour> changed: also load the `documentation-sync` skill
   — docs and screenshots change in the same PR.
