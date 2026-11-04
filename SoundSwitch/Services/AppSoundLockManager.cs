@@ -576,13 +576,18 @@ namespace SoundSwitch.Services
             {
                 try
                 {
-                    changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out var flowsWritten);
+                    var applied = ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out var flowsWritten);
+                    changed |= applied;
 
+                    // Only an actually written route is claimed: a repeat press that already
+                    // matches writes nothing, and stamping it would create (or blank out) an
+                    // entry whose missing devices read as "clear both flows".
                     // Every written route owns its record in the ledger for any enforcement
                     // kind (ADR §6.4): a hotkey write under a window-title condition could
                     // otherwise never be re-adopted by reconcile (the store carries no titles)
                     // and the app would surface under Windows assignments while its rule lives.
-                    _assignmentReconciler.EnsureEntry(rule, match.ProcessPath, pair, flowsWritten);
+                    if (applied)
+                        _assignmentReconciler.EnsureEntry(rule, match.ProcessPath, pair, flowsWritten);
                 }
                 catch (Exception ex)
                 {
