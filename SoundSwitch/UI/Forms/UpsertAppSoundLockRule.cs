@@ -644,7 +644,13 @@ public partial class UpsertAppSoundLockRule : Form
             if (!string.IsNullOrEmpty(_pickedProcessPath) && !typedIsConcrete)
                 txtProcessPath.Text = _pickedProcessPath;
         }
-        else if (!string.IsNullOrEmpty(_pickedProcessPath) && !typedIsConcrete)
+        else if (typedIsConcrete)
+        {
+            // A concrete identity must become a pattern for dynamic matching: `IsMatch` reads
+            // the field as a regex, so a raw "C:\Apps\X.exe" would never match anything.
+            txtProcessPath.Text = EscapeToPattern(Path.GetFileName(typed));
+        }
+        else if (!string.IsNullOrEmpty(_pickedProcessPath) && !txtProcessPath.Text.Contains("*"))
         {
             txtProcessPath.Text = EscapeToPattern(Path.GetFileName(_pickedProcessPath));
         }
