@@ -278,4 +278,53 @@ public class AppSoundRuleMigrationTests
         rule.DevicePairs.Select(pair => pair.Playback?.Id).Should().Equal(OldPlaybackId, null);
         rule.DevicePairs.Select(pair => pair.Recording?.Id).Should().Equal(null, OldRecordingId);
     }
+
+    [Test]
+    public void Migrate_AssignmentRuleWithPatternedIdentity_FallsBackToDynamic()
+    {
+        // An Assignment rule persisted with regex/glob syntax (hand-edited config) can never
+        // match: the runtime compares identities exactly, so it must not stay a silent no-op rule.
+        var rule = new AppSoundRule
+        {
+            Enabled = true,
+            Mode = AppRuleMode.Automatic,
+            Enforcement = AppRuleEnforcement.Assignment,
+            ProcessPath = ".*Spotify.exe.*"
+        };
+
+        AppSoundRuleMigrator.Migrate(new[] { rule }).Should().BeTrue();
+        rule.Enforcement.Should().Be(AppRuleEnforcement.Dynamic);
+    }
+
+    [Test]
+    public void Migrate_AssignmentRuleWithEmptyIdentity_FallsBackToDynamic()
+    {
+        var rule = new AppSoundRule
+        {
+            Enabled = true,
+            Mode = AppRuleMode.Automatic,
+            Enforcement = AppRuleEnforcement.Assignment,
+            ProcessPath = "  "
+        };
+
+        AppSoundRuleMigrator.Migrate(new[] { rule }).Should().BeTrue();
+        rule.Enforcement.Should().Be(AppRuleEnforcement.Dynamic);
+    }
+
+    [Test]
+    public void Migrate_ConcreteAssignmentRule_KeepsAssignmentEnforcement()
+    {
+        var rule = new AppSoundRule
+        {
+            Enabled = true,
+            Mode = AppRuleMode.Automatic,
+            Enforcement = AppRuleEnforcement.Assignment,
+            ProcessPath = @"C:\Program Files\Spotify\Spotify.exe",
+            AssignmentExePath = @"C:\Program Files\Spotify\Spotify.exe",
+            DevicePairs = { new AppSoundRuleDevicePair { Playback = Playback() } }
+        };
+
+        AppSoundRuleMigrator.Migrate(new[] { rule }).Should().BeFalse();
+        rule.Enforcement.Should().Be(AppRuleEnforcement.Assignment);
+    }
 }

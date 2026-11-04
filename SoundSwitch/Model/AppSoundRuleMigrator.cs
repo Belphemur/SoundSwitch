@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Services;
 
 namespace SoundSwitch.Model
 {
@@ -101,10 +102,14 @@ namespace SoundSwitch.Model
                 // 4. Enforcement normalization: persisted values that predate the enum, are
                 // out of range, or are an Assignment rule with constraints the store routing
                 // cannot honour (Hotkey mode — one route per cycle step; window-title pattern
-                // — the store keys on exe identity only) fall back to Dynamic. Idempotent.
+                // — the store keys on exe identity only; a patterned or empty identity —
+                // there is no exact exe to route) fall back to Dynamic. Idempotent.
+                var assignmentIdentity = rule.AssignmentExePath ?? rule.ProcessPath;
                 if (!Enum.IsDefined(typeof(AppRuleEnforcement), rule.Enforcement) ||
                     (rule.Enforcement == AppRuleEnforcement.Assignment &&
-                     (rule.Mode != AppRuleMode.Automatic || !string.IsNullOrEmpty(rule.WindowName))))
+                     (rule.Mode != AppRuleMode.Automatic || !string.IsNullOrEmpty(rule.WindowName) ||
+                      string.IsNullOrWhiteSpace(assignmentIdentity) ||
+                      AppRuleAssignmentValidator.HasPatternSyntax(assignmentIdentity))))
                 {
                     rule.Enforcement = AppRuleEnforcement.Dynamic;
                     migrated = true;
