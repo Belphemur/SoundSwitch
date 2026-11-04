@@ -307,11 +307,14 @@ namespace SoundSwitch.Services
             }
             catch (Exception ex)
             {
+                // A failure partway through a pass must not lose the ledger edits it already
+                // made: they are persisted below before the error is surfaced.
                 _logger.Warning(ex, "Assignment reconciliation ({Trigger}) failed", trigger);
-                return;
             }
-
-            SaveLedgerIfDirty(trigger);
+            finally
+            {
+                SaveLedgerIfDirty(trigger);
+            }
         }
 
         /// <summary>Persist the ledger when a pass changed it.</summary>

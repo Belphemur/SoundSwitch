@@ -64,7 +64,8 @@ Set-StrictMode -Version Latest
 $RepoRoot      = Split-Path -Parent $PSScriptRoot
 $ControlScript = Join-Path $PSScriptRoot 'Control-SoundSwitch.ps1'
 $ConfigPath    = Join-Path $env:APPDATA 'SoundSwitch\SoundSwitchConfiguration.json'
-$BackupPath    = Join-Path $env:TEMP 'SoundSwitchControl\SoundSwitchConfiguration.backup.json'
+$RunId         = [guid]::NewGuid().ToString('N')
+$BackupPath    = Join-Path $env:TEMP "SoundSwitchControl\SoundSwitchConfiguration.$RunId.backup.json"
 $StorePath     = 'Software\Microsoft\Multimedia\Audio\DefaultEndpoint'
 $ScratchDir    = Join-Path $env:TEMP 'SoundSwitchAppRulesE2E'
 $ScratchExe    = Join-Path $ScratchDir 'SampleAudioApp.exe'
@@ -381,9 +382,12 @@ try {
 
     # A deterministic config (no rules, empty ledger) must be staged while no instance runs.
     if ($instances.Count -eq 0) {
+        # The flag is set before the file is touched: if the write fails, teardown still
+        # knows it must restore (or delete) a configuration it may have removed.
+        $stagedConfig = $true
+        $null = New-Item -ItemType Directory -Path (Split-Path -Parent $ConfigPath) -Force
         if ($hadConfig) { Remove-Item -Path $ConfigPath -Force -ErrorAction SilentlyContinue }
         Set-Content -Path $ConfigPath -Value '{}' -Encoding utf8
-        $stagedConfig = $true
         Write-Host 'Staged an empty test configuration (no rules, no ledger).' -ForegroundColor DarkGray
         $null = Start-SoundSwitchApp -AppExe $appExe.FullName -CliExe $cli -TimeoutSeconds $TimeoutSeconds
         $launched = $true

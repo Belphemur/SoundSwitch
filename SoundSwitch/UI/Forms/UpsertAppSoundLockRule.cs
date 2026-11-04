@@ -772,13 +772,13 @@ public partial class UpsertAppSoundLockRule : Form
             _rule.Mode = AppRuleMode.Automatic;
             _rule.HotKey = null;
             _rule.DevicePairs = new List<AppSoundRuleDevicePair> { pair };
-            // No enforcement choice (ADR §0): a rule that can be an identity assignment is one
+            // No enforcement choice (ADR ï¿½0): a rule that can be an identity assignment is one
             // and keeps the dynamic path as its fallback. A known concrete identity replaces the
             // picker's basename pattern (that is what makes the rule eligible); a typed pattern
             // or a window-title condition stays dynamic-only.
             if (string.IsNullOrWhiteSpace(txtPattern.Text) && TryGetConcreteIdentity(out var identity))
             {
-                _rule.ProcessPath = identity;
+                _rule.ProcessPath = identity.Trim();
             }
 
             _rule.Enforcement = AppRuleAssignmentValidator.EnforcementFor(_rule);

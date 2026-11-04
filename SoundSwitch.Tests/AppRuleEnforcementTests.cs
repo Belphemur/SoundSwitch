@@ -202,6 +202,12 @@ public class AppRuleEnforcementTests
     public void HasPatternSyntax_AcceptsAnExistingPathWithARegexCharacter()
     {
         // "+" is legal in Windows file/directory names: a real C:\...\C++\app.exe is concrete.
+        // A UNC temp directory would make HasPatternSyntax skip its file probe by design
+        // (an SMB timeout must not block the editor), so the premise of this test does not hold
+        // there: skip instead of failing on a machine whose TEMP is a network share.
+        Assume.That(System.IO.Path.GetTempPath().StartsWith(@"\\") == false,
+            "UNC temp directories are excluded by the local-path probe this test covers");
+
         var directory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "ss-app-rule-" + Guid.NewGuid().ToString("N"));
         var path = System.IO.Path.Combine(directory, "C++", "app.exe");
         System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path)!);

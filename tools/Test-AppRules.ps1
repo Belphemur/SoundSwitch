@@ -64,6 +64,7 @@ $featureFixtures = @(
     'AppRuleAssignmentReconcilerTests',    # ownership reconcile state machine vs a scratch persisted store (ADR §6.4)
     'AssignmentLedgerTests',               # ledger entries survive a configuration round-trip (ADR §6.4)
     'AppRuleIdentityMatcherTests',         # NT-device vs drive-letter identity matching (picker + reconciler shared)
+    'AppSoundRuleMigrationTests',          # legacy devices/ids, pair migration and enforcement normalization (ADR §6.1)
     'PersistedDefaultEndpointStoreTests'   # Windows' DefaultEndpoint store parsing against a scratch registry root
 )
 

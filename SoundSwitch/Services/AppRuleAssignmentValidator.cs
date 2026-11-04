@@ -57,12 +57,22 @@ namespace SoundSwitch.Services
         /// </summary>
         internal static bool HasPatternSyntax(string processPath)
         {
+            // Cheap check first: a path without any operator cannot be a pattern, so the common
+            // case never touches the filesystem (this runs per keystroke on the UI thread).
+            if (processPath.IndexOfAny(PatternCharacters) < 0)
+                return false;
+
+            // A path that names an existing local file is concrete even when its name carries an
+            // operator ("C:\...\C++\app.exe"). The probe is skipped for UNC paths: this runs on
+            // the UI thread per keystroke, and an SMB timeout must not block the editor.
             if (processPath.IndexOf('\\') >= 0 &&
                 !processPath.StartsWith(@"\\", StringComparison.Ordinal) &&
                 File.Exists(processPath))
                 return false;
 
-            return processPath.IndexOfAny(new[] {'*', '?', '[', ']', '{', '}', '^', '$', '|', '+'}) >= 0;
+            return true;
         }
+
+        private static readonly char[] PatternCharacters = {'*', '?', '[', ']', '{', '}', '^', '$', '|', '+'};
     }
 }
