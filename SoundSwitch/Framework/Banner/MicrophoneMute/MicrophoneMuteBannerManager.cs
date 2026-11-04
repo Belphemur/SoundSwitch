@@ -121,7 +121,8 @@ public class MicrophoneMuteBannerManager
     /// Tracks the banner for a microphone and clears the tracked reference when the form is
     /// disposed, whatever path disposes it (manager call, fade-out after a click, ...). Without
     /// this, a form dying outside the manager would leave a stale disposed entry behind and the
-    /// next rearrange pass would dereference it (Sentry SOUNDSWITCH-40H).
+    /// next rearrange pass would dereference it (Sentry SOUNDSWITCH-40H). Surviving banners are
+    /// pulled up so the vacated spot does not leave a gap.
     /// </summary>
     private void TrackBanner(string microphoneId, BannerForm banner)
     {
@@ -129,9 +130,15 @@ public class MicrophoneMuteBannerManager
         banner.Disposed += (_, _) =>
         {
             // Only clear the entry while it still points at this banner: the temporary
-            // unmute notification removes its own entry before disposing the form.
-            if (_activeBanners.TryGetValue(microphoneId, out var tracked) && ReferenceEquals(tracked, banner))
-                _activeBanners.Remove(microphoneId);
+            // unmute notification removes its own entry before disposing the form, and
+            // that path already rearranges the survivors on Disposed.
+            if (!_activeBanners.TryGetValue(microphoneId, out var tracked) || !ReferenceEquals(tracked, banner))
+                return;
+
+            _activeBanners.Remove(microphoneId);
+            // The form died on its own, without going through the manager: run a layout
+            // pass so the surviving banners move up into the vacated spot.
+            RearrangeBanners();
         };
     }
 

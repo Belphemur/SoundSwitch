@@ -7,6 +7,7 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 
 namespace SoundSwitch.Tests;
@@ -104,6 +105,35 @@ public class MicrophoneMuteBannerManagerTests
         var tracked = GetTrackedBanners(manager);
         tracked.Should().ContainKey("mic-id");
         tracked["mic-id"].Should().BeSameAs(second, "disposing a replaced banner must not clear the new tracking");
+    }
+
+    [Test]
+    public void TrackBanner_PullsSurvivorUpWhenATrackedBannerIsDisposedOutsideTheManager()
+    {
+        var manager = new MicrophoneMuteBannerManager();
+        var track = manager.GetType()
+            .GetMethod("TrackBanner", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
+        var first = new BannerForm();
+        var second = new BannerForm();
+        track.Invoke(manager, new object[] { "first-mic", first });
+        track.Invoke(manager, new object[] { "second-mic", second });
+
+        // Simulate the previous layout pass: the survivor sits below the first banner. The
+        // survivor needs banner data to be positionable at all (UpdatePosition is a no-op
+        // without it).
+        second.GetType().GetField("_currentData", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .SetValue(second, new BannerData { Position = new PositionTopLeft() });
+        second.GetType().GetField("_currentOffset", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .SetValue(second, first.Height + 10);
+
+        first.Dispose();
+
+        GetTrackedBanners(manager).Should().NotContainKey("first-mic",
+            "disposing the banner outside the manager must clear its tracked reference");
+        var secondOffset = (int) second.GetType().GetField("_currentOffset", BindingFlags.Instance | BindingFlags.NonPublic)!
+            .GetValue(second)!;
+        secondOffset.Should().Be(0, "the surviving banner must move up into the vacated spot instead of leaving a gap");
     }
 
     [TearDown]
