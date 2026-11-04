@@ -17,6 +17,9 @@ public class AppRuleIdentityMatcherTests
     [TestCase(@"\Device\HarddiskVolume7\Program Files\WindowsApps\Spotify.exe", @"D:\Program Files\WindowsApps\Spotify.exe", true)]
     [TestCase(@"\Device\HarddiskVolume3\Apps\Spotify\Spotify.exe", @"C:\Other\Spotify\Spotify.exe", false)]
     [TestCase(@"C:\Apps\Spotify\Spotify.exe", @"C:\Apps\Spotify\Spotify.exe", true)]
+    // Same relative path on two volumes is two different apps:
+    [TestCase(@"C:\Apps\Spotify\Spotify.exe", @"D:\Apps\Spotify\Spotify.exe", false)]
+    [TestCase(@"D:\Apps\Spotify\Spotify.exe", @"D:\Apps\Spotify\Spotify.exe", true)]
     [TestCase(@"C:\Apps\Spotify\Spotify.exe", "Different.exe", false)]
     [TestCase(@"Spotify.exe", @"C:\Any\Where\Spotify.exe", true)]
     // A suffix that continues a longer directory/component name is a different app:

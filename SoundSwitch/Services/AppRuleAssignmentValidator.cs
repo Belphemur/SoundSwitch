@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.IO;
 
 using SoundSwitch.Model;
 
@@ -40,10 +41,15 @@ namespace SoundSwitch.Services
         /// <summary>
         /// Whether the process field carries regex or glob syntax instead of a concrete exe
         /// path. Parentheses are legal in Windows paths ("Program Files (x86)"), so only
-        /// operators with no directory-name meaning flag a pattern.
+        /// operators with no directory-name meaning flag a pattern. Characters such as
+        /// <c>+</c>, <c>[</c> or <c>^</c> are legal in file names too (<c>C:\Apps\C++\app.exe</c>),
+        /// so a path that names an existing file is trusted as concrete.
         /// </summary>
         internal static bool HasPatternSyntax(string processPath)
         {
+            if (processPath.IndexOf('\\') >= 0 && File.Exists(processPath))
+                return false;
+
             return processPath.IndexOfAny(new[] {'*', '?', '[', ']', '{', '}', '^', '$', '|', '+'}) >= 0;
         }
     }

@@ -1899,21 +1899,27 @@ public sealed partial class SettingsForm : Form
             ? ProcessSelectionForm.DarkGridDimmedColor
             : SystemColors.GrayText;
 
-        // The section band that names the group (ADR §6.5): without it the tinted rows are the
-        // only cue, and ShowGroups is off so a ListViewGroup would not render either.
-        var sectionHeader = new ListViewItem(SettingsStrings.appSoundLock_rules_section_windows)
-        {
-            Tag = null,
-            ForeColor = assignmentTint
-        };
-        sectionHeader.SubItems[0].Tag = assignmentTint;
-        for (var column = 1; column < appSoundLockListView.Columns.Count; column++)
-        {
-            sectionHeader.SubItems.Add(string.Empty).Tag = assignmentTint;
-        }
-        appSoundLockListView.Items.Add(sectionHeader);
+        var windowsAssignments = AppModel.Instance.AppSoundLockManager.GetWindowsAssignments();
 
-        foreach (var assignment in AppModel.Instance.AppSoundLockManager.GetWindowsAssignments())
+        // The section band that names the group (ADR §6.5): without it the tinted rows are the
+        // only cue, and ShowGroups is off so a ListViewGroup would not render either. No rows,
+        // no band — an empty header above the user's rules reads as a broken section.
+        if (windowsAssignments.Count > 0)
+        {
+            var sectionHeader = new ListViewItem(SettingsStrings.appSoundLock_rules_section_windows)
+            {
+                Tag = null,
+                ForeColor = assignmentTint
+            };
+            sectionHeader.SubItems[0].Tag = assignmentTint;
+            for (var column = 1; column < appSoundLockListView.Columns.Count; column++)
+            {
+                sectionHeader.SubItems.Add(string.Empty).Tag = assignmentTint;
+            }
+            appSoundLockListView.Items.Add(sectionHeader);
+        }
+
+        foreach (var assignment in windowsAssignments)
         {
             var name = Path.GetFileNameWithoutExtension(assignment.RelativePath);
             var item = new ListViewItem(name)

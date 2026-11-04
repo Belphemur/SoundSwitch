@@ -43,7 +43,7 @@ Behaviour of an **App assignment** rule:
 
 - The assignment is stored **per application, not per process**: it uses the exact executable you pick, not a pattern.
 - **Deleting or disabling the rule restores the default.** A running application returns to the system default immediately; an application that is closed keeps its assignment until its next launch.
-- Requires a **concrete Process Path** (picked with the **...** button or typed in). Window Title patterns are not supported, and the option stays disabled until the field holds a concrete path — a typed `*.exe` or regex pattern keeps it off.
+- Requires a **concrete executable identity**, picked with the **...** button or typed as a concrete path. Window Title patterns are not supported. The option stays disabled while the field holds a `*.exe` or regex pattern and no application was picked; picking the application fills the field in.
 - Editing the rule's device pair updates the assignment the next time the application is seen (immediately if it is running).
 
 ## Example

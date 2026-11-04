@@ -756,6 +756,7 @@ if (-not $process) {
     $launched = $true
 }
 
+$captureHandle = [IntPtr]::Zero
 try {
     if ($ListWindows) {
         # Give a freshly launched instance a moment to create its window.
@@ -917,13 +918,6 @@ try {
     $result = Save-WindowScreenshot -Handle $captureHandle -Path $targetPath
     Write-Host "Saved $($result.Path) ($($result.Width)x$($result.Height))." -ForegroundColor Green
 
-    if ($ThenClickRow) {
-        # Select-DialogRow pushed the dialog to HWND_TOPMOST to make the click land on the
-        # row. Clear that state so a picker that stays open (-KeepOpen, -KeepRunning or an
-        # existing instance) returns to the normal z-order.
-        [SoundSwitch.DocCapture.Native]::SetWindowPos($captureHandle, [IntPtr](-2), 0, 0, 0, 0, 0x0043) | Out-Null # HWND_NOTOPMOST
-    }
-
     if (-not $KeepOpen) {
         # Close the captured dialog and every intermediate second-level dialog (e.g. a rule
         # editor left between Settings and the picker), inner first, so a modal opener does
@@ -938,6 +932,13 @@ try {
     }
 }
 finally {
+    if ($ThenClickRow -and $captureHandle -and $captureHandle -ne [IntPtr]::Zero) {
+        # Select-DialogRow pushed the dialog to HWND_TOPMOST to make the click land on the
+        # row. Clear that on every exit path (save failure, throw, -KeepOpen/-KeepRunning or an
+        # existing instance) so a picker that stays open returns to the normal z-order.
+        [SoundSwitch.DocCapture.Native]::SetWindowPos($captureHandle, [IntPtr](-2), 0, 0, 0, 0, 0x0043) | Out-Null # HWND_NOTOPMOST
+    }
+
     if ($launched -and -not $KeepRunning) {
         $process | Wait-Process -Timeout 5 -ErrorAction SilentlyContinue
         if (-not $process.HasExited) {

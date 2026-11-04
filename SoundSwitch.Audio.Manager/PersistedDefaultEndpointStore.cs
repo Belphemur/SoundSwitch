@@ -103,7 +103,11 @@ namespace SoundSwitch.Audio.Manager
                     }
                     catch (Exception ex)
                     {
-                        _logger.Debug(ex, "Skipping unreadable persisted endpoint record {Key}", keyName);
+                        // A partial read is not a complete store: callers drop ledger claims
+                        // for identities they cannot see, so report the pass as unreadable
+                        // instead of silently omitting the record.
+                        _logger.Warning(ex, "Couldn't read persisted endpoint record {Key}; treating this pass as unreadable, not partial", keyName);
+                        return null;
                     }
                 }
 

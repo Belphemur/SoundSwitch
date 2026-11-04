@@ -20,6 +20,14 @@ namespace SoundSwitch.Services
         /// </summary>
         public static bool SameApp(string? left, string? right)
         {
+            // Two drive-letter spellings are two different apps when the volumes differ:
+            // clearing C:\Apps\Player.exe must not touch a D:\Apps\Player.exe route (and vice
+            // versa). NT store paths keep the volume-relative match below.
+            if (left != null && right != null &&
+                IsDriveLetterPath(left) && IsDriveLetterPath(right) &&
+                char.ToUpperInvariant(left[0]) != char.ToUpperInvariant(right[0]))
+                return false;
+
             var l = Normalize(left);
             var r = Normalize(right);
             return l.Length > 0 && r.Length > 0 &&
@@ -46,6 +54,9 @@ namespace SoundSwitch.Services
         /// letter paths without the drive colon. Anything else is kept as-is (case-insensitive
         /// suffix matching still applies).
         /// </summary>
+        private static bool IsDriveLetterPath(string path) =>
+            path.Length > 2 && path[1] == ':' && path[2] == '\\';
+
         private static string Normalize(string? path)
         {
             if (string.IsNullOrEmpty(path))

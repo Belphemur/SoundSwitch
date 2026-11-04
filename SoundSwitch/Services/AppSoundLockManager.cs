@@ -111,6 +111,10 @@ namespace SoundSwitch.Services
                     _logger.Warning(ex, "Failed to re-apply assignment rule {RuleId} after a device change", rule.Id);
                 }
             }
+
+            // The re-apply may have stamped new entries: persist them here instead of waiting
+            // for an unrelated save, or a restart would lose the ownership of those routes.
+            SaveLedgerIfDirty("device-change");
         }
 
         /// <summary>
@@ -275,22 +279,30 @@ namespace SoundSwitch.Services
             try
             {
                 _assignmentReconciler.Reconcile();
-                if (_assignmentReconciler.TakeDirty())
-                {
-                    _logger.Debug("Assignment ledger changed during reconcile ({Trigger}), saving", trigger);
-                    try
-                    {
-                        _configuration.Save();
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Warning(ex, "Failed to save the assignment ledger ({Trigger})", trigger);
-                    }
-                }
             }
             catch (Exception ex)
             {
                 _logger.Warning(ex, "Assignment reconciliation ({Trigger}) failed", trigger);
+                return;
+            }
+
+            SaveLedgerIfDirty(trigger);
+        }
+
+        /// <summary>Persist the ledger when a pass changed it.</summary>
+        private void SaveLedgerIfDirty(string trigger)
+        {
+            if (!_assignmentReconciler.TakeDirty())
+                return;
+
+            _logger.Debug("Assignment ledger changed ({Trigger}), saving", trigger);
+            try
+            {
+                _configuration.Save();
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "Failed to save the assignment ledger ({Trigger})", trigger);
             }
         }
 

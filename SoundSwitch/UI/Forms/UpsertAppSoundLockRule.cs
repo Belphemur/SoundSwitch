@@ -633,13 +633,18 @@ public partial class UpsertAppSoundLockRule : Form
         if (_initializing) return;
 
         // Bring the process field to the enforcement's shape: the identity itself for an
-        // assignment, the basename pattern for dynamic matching.
+        // assignment, the basename pattern for dynamic matching. A path the user typed is
+        // theirs: only an empty or pattern-shaped field is replaced by the picked identity.
+        var typed = txtProcessPath.Text.Trim();
+        var typedIsConcrete = !string.IsNullOrWhiteSpace(typed) &&
+                              !AppRuleAssignmentValidator.HasPatternSyntax(typed);
+
         if (rdoEnforcementAssignment.Checked)
         {
-            if (!string.IsNullOrEmpty(_pickedProcessPath))
+            if (!string.IsNullOrEmpty(_pickedProcessPath) && !typedIsConcrete)
                 txtProcessPath.Text = _pickedProcessPath;
         }
-        else if (!string.IsNullOrEmpty(_pickedProcessPath) && !txtProcessPath.Text.Contains("*"))
+        else if (!string.IsNullOrEmpty(_pickedProcessPath) && !typedIsConcrete)
         {
             txtProcessPath.Text = EscapeToPattern(Path.GetFileName(_pickedProcessPath));
         }

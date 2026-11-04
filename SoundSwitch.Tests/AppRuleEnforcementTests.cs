@@ -211,4 +211,23 @@ public class AppRuleEnforcementTests
     {
         AppRuleAssignmentValidator.HasPatternSyntax(processPath).Should().Be(expected);
     }
+
+    [Test]
+    public void HasPatternSyntax_AcceptsAnExistingPathWithARegexCharacter()
+    {
+        // "+" is legal in Windows file/directory names: a real C:\...\C++\app.exe is concrete.
+        var directory = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "ss-app-rule-" + Guid.NewGuid().ToString("N"));
+        var path = System.IO.Path.Combine(directory, "C++", "app.exe");
+        System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path)!);
+        System.IO.File.WriteAllText(path, string.Empty);
+        try
+        {
+            AppRuleAssignmentValidator.HasPatternSyntax(path).Should().BeFalse(
+                "a path naming an existing file is concrete even when its name carries a regex operator");
+        }
+        finally
+        {
+            System.IO.Directory.Delete(directory, true);
+        }
+    }
 }
