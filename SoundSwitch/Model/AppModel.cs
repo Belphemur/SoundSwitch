@@ -201,6 +201,20 @@ public partial class AppModel : IAppModel
         if (!_skipUpdate)
             InitUpdateChecker();
         _initialized = true;
+
+        // A mute event that arrived while the mute notification was still uninitialized
+        // (NotifyMuteChanged) was skipped, and RefreshMicrophoneMuteBanners early-returned
+        // until now. Reconcile once so a microphone muted during startup gets its
+        // persistent banner back. Banner loss is cosmetic, so never let a reconcile
+        // failure abort initialization.
+        try
+        {
+            RefreshMicrophoneMuteBanners();
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to reconcile microphone mute banners during startup");
+        }
     }
 
     public IAudioDeviceLister AudioDeviceLister { get; private set; }
