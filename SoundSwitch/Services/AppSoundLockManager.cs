@@ -552,9 +552,15 @@ namespace SoundSwitch.Services
             var changed = false;
             foreach (var match in matches)
             {
-            try
-            {
-                changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out _);
+                try
+                {
+                    changed |= ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out var flowsWritten);
+
+                    // Every written route owns its record in the ledger for any enforcement
+                    // kind (ADR §6.4): a hotkey write under a window-title condition could
+                    // otherwise never be re-adopted by reconcile (the store carries no titles)
+                    // and the app would surface under Windows assignments while its rule lives.
+                    _assignmentReconciler.EnsureEntry(rule, match.ProcessPath, pair, flowsWritten);
                 }
                 catch (Exception ex)
                 {

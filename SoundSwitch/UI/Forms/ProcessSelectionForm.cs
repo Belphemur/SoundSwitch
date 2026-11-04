@@ -268,6 +268,31 @@ public partial class ProcessSelectionForm : Form
                     if (string.IsNullOrEmpty(outputId)) playbackMap.TryGetValue(pid, out outputId);
                     if (string.IsNullOrEmpty(inputId)) recordingMap.TryGetValue(pid, out inputId);
 
+                    // 2b. Fallback to the persisted store (design doc §6.1): an app running
+                    // without a live audio session still carries Windows' persisted route, and
+                    // its row sits in "Has own device" — show that device, not the default.
+                    if (string.IsNullOrEmpty(outputId) || string.IsNullOrEmpty(inputId))
+                    {
+                        var persisted = persistedRecords
+                            .Where(record => AppRuleIdentityMatcher.SameApp(record.ExePath, path))
+                            .ToList();
+                        if (string.IsNullOrEmpty(outputId))
+                        {
+                            outputId = persisted
+                                .Where(record => record.Flow == Audio.Manager.Interop.Enum.EDataFlow.eRender)
+                                .Select(GetPreferredDeviceId)
+                                .FirstOrDefault(id => id != null);
+                        }
+
+                        if (string.IsNullOrEmpty(inputId))
+                        {
+                            inputId = persisted
+                                .Where(record => record.Flow == Audio.Manager.Interop.Enum.EDataFlow.eCapture)
+                                .Select(GetPreferredDeviceId)
+                                .FirstOrDefault(id => id != null);
+                        }
+                    }
+
                     // 3. Resolve names or fallback to system default
                     var outputName = string.IsNullOrEmpty(outputId) ? defaultPlaybackName : (audioSwitcher.GetAudioEndpoint(outputId)?.NameClean ?? outputId);
                     var inputName = string.IsNullOrEmpty(inputId) ? defaultRecordingName : (audioSwitcher.GetAudioEndpoint(inputId)?.NameClean ?? inputId);
@@ -300,10 +325,13 @@ public partial class ProcessSelectionForm : Form
             }
         }
 
-        // Only show one row per process/path/window combination
+        // Only show one row per process/path/window combination. The most specific group wins
+        // (`PickerGroup` is ordered most-specific first), so a co-instanced pair of the same
+        // app is not demoted to "Show all processes" just because the dedupe kept the idle
+        // copy (OrderBy is stable, so equal groups keep their enumeration order).
         _allProcesses = _allProcesses
             .GroupBy(x => new {x.Name, x.Path, x.WindowTitle})
-            .Select(g => g.First())
+            .Select(g => g.OrderBy(x => x.Group).First())
             .ToList();
 
         LoadNotRunningApps(persistedRecords, defaultPlaybackName, defaultRecordingName);
