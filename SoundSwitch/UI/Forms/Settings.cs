@@ -1898,6 +1898,21 @@ public sealed partial class SettingsForm : Form
         var assignmentTint = WindowsThemeHelper.IsDarkModeEnabled()
             ? ProcessSelectionForm.DarkGridDimmedColor
             : SystemColors.GrayText;
+
+        // The section band that names the group (ADR §6.5): without it the tinted rows are the
+        // only cue, and ShowGroups is off so a ListViewGroup would not render either.
+        var sectionHeader = new ListViewItem(SettingsStrings.appSoundLock_rules_section_windows)
+        {
+            Tag = null,
+            ForeColor = assignmentTint
+        };
+        sectionHeader.SubItems[0].Tag = assignmentTint;
+        for (var column = 1; column < appSoundLockListView.Columns.Count; column++)
+        {
+            sectionHeader.SubItems.Add(string.Empty).Tag = assignmentTint;
+        }
+        appSoundLockListView.Items.Add(sectionHeader);
+
         foreach (var assignment in AppModel.Instance.AppSoundLockManager.GetWindowsAssignments())
         {
             var name = Path.GetFileNameWithoutExtension(assignment.RelativePath);
@@ -2050,7 +2065,7 @@ public sealed partial class SettingsForm : Form
     {
         if (string.IsNullOrEmpty(deviceId)) return string.Empty;
 
-        var match = devices.FirstOrDefault(device => device.Id == deviceId);
+        var match = devices.FirstOrDefault(device => string.Equals(device.Id, deviceId, StringComparison.OrdinalIgnoreCase));
         return match?.NameClean ?? deviceId;
     }
 

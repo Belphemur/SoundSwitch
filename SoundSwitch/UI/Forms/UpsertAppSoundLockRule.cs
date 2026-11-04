@@ -146,7 +146,19 @@ public partial class UpsertAppSoundLockRule : Form
 
         rdoEnforcementDynamic.Checked = _rule.Enforcement != AppRuleEnforcement.Assignment;
         rdoEnforcementAssignment.Checked = _rule.Enforcement == AppRuleEnforcement.Assignment;
-        _pickedProcessPath = _rule.ProcessPath;
+
+        // Only assignment rules carry a concrete identity. The pattern text of a dynamic rule
+        // must not masquerade as one: it would later be written back over a concrete path the
+        // user types before choosing App assignment.
+        if (_rule.Enforcement == AppRuleEnforcement.Assignment)
+        {
+            _pickedProcessPath = _rule.AssignmentExePath ?? _rule.ProcessPath;
+            // An edited assignment routes by its identity (ADR §6.1): surface that identity in
+            // the process field instead of a stale display value, so an edit that only changes
+            // the device cannot quietly change which executable the rule targets.
+            if (!string.IsNullOrEmpty(_pickedProcessPath))
+                txtProcessPath.Text = _pickedProcessPath;
+        }
 
         PopulatePairList();
         if (_pairs.Count > 0)
@@ -594,15 +606,22 @@ public partial class UpsertAppSoundLockRule : Form
     /// <summary>
     /// The assignment option only makes sense where the constraints the persisted store routes
     /// can be honoured: a concrete exe identity (picked or typed), no window-title pattern and
-    /// Automatic mode (ADR §6.4).
+    /// Automatic mode (ADR §6.4). A just-picked concrete identity counts even while the
+    /// dynamic pattern pre-filled the process field — switching to App assignment writes it in.
     /// </summary>
     private void UpdateEnforcementState()
     {
+        var typedIdentity =
+            !string.IsNullOrWhiteSpace(txtProcessPath.Text) &&
+            !AppRuleAssignmentValidator.HasPatternSyntax(txtProcessPath.Text.Trim());
+        var pickedIdentity =
+            !string.IsNullOrWhiteSpace(_pickedProcessPath) &&
+            !AppRuleAssignmentValidator.HasPatternSyntax(_pickedProcessPath.Trim());
+
         rdoEnforcementAssignment.Enabled =
             rdoAutomatic.Checked &&
             string.IsNullOrWhiteSpace(txtPattern.Text) &&
-            !string.IsNullOrWhiteSpace(txtProcessPath.Text) &&
-            !AppRuleAssignmentValidator.HasPatternSyntax(txtProcessPath.Text.Trim());
+            (typedIdentity || pickedIdentity);
     }
 
     private void TxtProcessPath_TextChanged(object sender, EventArgs e) => UpdateEnforcementState();
