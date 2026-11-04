@@ -546,6 +546,72 @@ try {
     if ($script:Failures -gt 0) { throw 'Scenario B failed; skipping Scenario C.' }
 
     # ================================================================================
+    # Scenario D — pick the playing application from the grouped picker
+    # ================================================================================
+
+    Write-Host ''
+    Write-Host 'Scenario D: selecting the playing app from the picker' -ForegroundColor Cyan
+
+    try {
+        # The scratch app is playing again after Scenario C's relaunch: it has a live audio
+        # session and, since its rule is gone, no persisted route either — exactly the row the
+        # picker lists under "Using audio now".
+        $rulesBefore = @((Get-RulesOf (Read-Config))).Count
+        $selected = $false
+        $preClickHandles = @(Get-SoundSwitchWindows -ProcessId $script:AppPid | ForEach-Object { $_.Handle.ToInt64() })
+        $ruleEditor = Open-RuleEditor -SettingsHandle $settings.Handle -KnownHandles $preClickHandles
+        Assert-True -Condition ($null -ne $ruleEditor) -Message 'The editor and its picker opened for the picker scenario'
+        if ($ruleEditor) {
+            $pickerHandle = $ruleEditor.Picker.Handle
+
+            # Narrow the grouped list to the app that is actually playing: its row is what the
+            # user picks, and the filter is the supported way to reach it deterministically.
+            $filterField = Find-SoundSwitchElement -Handle $pickerHandle -AutomationId 'txtFilter'
+            $filterPattern = $null
+            if ($filterField -and $filterField.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$filterPattern)) {
+                $filterPattern.SetValue('SampleAudioApp')
+                Start-Sleep -Milliseconds 700
+            }
+
+            $grid = Find-SoundSwitchElement -Handle $pickerHandle -AutomationId 'dgvProcesses'
+            Assert-True -Condition ($null -ne $grid) -Message 'The picker grid is present'
+            if ($grid) {
+                $grid.SetFocus()
+                Start-Sleep -Milliseconds 200
+                Add-Type -AssemblyName System.Windows.Forms -ErrorAction SilentlyContinue
+                [System.Windows.Forms.SendKeys]::SendWait('{DOWN}')
+                Start-Sleep -Milliseconds 300
+            }
+
+            # Confirm with the picker's own button (the helper posts BM_CLICK; UIA Invoke would
+            # block on the modal it closes).
+            $confirmButton = Find-SoundSwitchElement -Handle $pickerHandle -AutomationId 'btnSelect'
+            Assert-True -Condition ($null -ne $confirmButton -and $confirmButton.Current.IsEnabled) -Message 'The picker has a selectable row after filtering'
+            if ($confirmButton) { Invoke-SoundSwitchElement -Element $confirmButton }
+            $null = Wait-SoundSwitchWindowGone -Handle $pickerHandle -TimeoutSeconds 10
+
+            $editor = Get-WindowForId -AutomationId 'txtProcessPath' -TimeoutSeconds 10
+            if ($editor) {
+                $processField = Find-SoundSwitchElement -Handle $editor.Handle -AutomationId 'txtProcessPath'
+                $processValue = ''
+                $valuePattern = $null
+                if ($processField -and $processField.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
+                    $processValue = [string]$valuePattern.Current.Value
+                }
+                $selected = "$processValue" -match 'SampleAudioApp'
+                Assert-True -Condition $selected -Message "Selecting the playing app filled the process field ('$processValue')"
+            }
+
+            Close-AppWindow -Handle $ruleEditor.Editor.Handle
+            $null = Wait-SoundSwitchWindowGone -Handle $ruleEditor.Editor.Handle -TimeoutSeconds 10
+            Assert-Equal -Expected $rulesBefore -Actual @((Get-RulesOf (Read-Config))).Count -Message 'Closing without saving created no extra rule'
+        }
+    }
+    catch {
+        Assert-True -Condition $false -Message "Scenario D hit an exception: $($_.Exception.Message)"
+    }
+
+    # ================================================================================
     # Scenario C — deleting the rule restores the default immediately
     # ================================================================================
 

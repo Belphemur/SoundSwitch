@@ -87,12 +87,15 @@ It backs up `%APPDATA%\SoundSwitch\SoundSwitchConfiguration.json`, stages an emp
 while no instance runs, launches with `--disable-updater`, and polls `CLI status` for
 readiness (no guessed sleeps). Asserted:
 
-1. **A** — the editor shows the enforcement pair, dynamic is default, assignment enables
-   with a concrete identity and a title pattern disables it again; closing saves nothing.
-2. **B** — a scratch tone-playing exe gets an Assignment rule with a non-default playback
-   device: config rule + ledger entry, the engine-written store record, and exactly one row
-   in the merged list.
-3. **C** — deleting the rule while the exe is closed removes the rule, deletes the app's
+1. **A** — the editor offers no enforcement control (the radios are gone) and keeps the
+   process path / window title fields; closing saves nothing.
+2. **B** — a scratch tone-playing exe gets a rule with a non-default playback device and,
+   because it is one concrete application, saves as an identity assignment: config rule +
+   ledger entry, the engine-written store record, and exactly one row in the merged list.
+3. **D** — the same exe is *playing*, so the picker lists it under "Using audio now":
+   filtering the grouped list, selecting the row and confirming with **Select** fills the
+   editor's process field. Closing saves nothing.
+4. **C** — deleting the rule while the exe is closed removes the rule, deletes the app's
    store record right away and releases the ledger claim; the relaunched exe carries no
    route.
 
