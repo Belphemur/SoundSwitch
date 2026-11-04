@@ -629,8 +629,12 @@ public sealed partial class SettingsForm : Form
             TextAlign = HorizontalAlignment.Center,
             TabIndex = bannerOptionsGroupBox.Controls.Count
         };
-        _bannerScaleUpDown.DataBindings.Add(nameof(NumericUpDown.Value), AppModel.Instance,
-            nameof(AppModel.BannerScalePercentage), false, DataSourceUpdateMode.OnPropertyChanged);
+        // Deliberately not data-bound. This control sits on the banner tab, so until that tab is opened its
+        // handle does not exist and a binding would be registered but inactive. See BindValue for why the
+        // shared PropertyManager then crashes on a null push into a control with a non-zero Minimum.
+        _bannerScaleUpDown.BindValue(
+            () => AppModel.Instance.BannerScalePercentage,
+            percentage => AppModel.Instance.BannerScalePercentage = percentage);
         bannerOptionsGroupBox.Controls.Add(_bannerScaleUpDown);
 
         _limitMuteBannersCheckBox = new CheckBox
