@@ -493,9 +493,15 @@ namespace SoundSwitch.Services
             // keys the store by exe, not by pid. Requiring every pid would let an idle
             // session-less copy block a clear the playing process already performed, while
             // accepting every no-op would drop the pending clear with the record still in the
-            // store. So: a flow is clear when some running pid accepted it.
+            // store. So: every instance is asked (each also drops its own in-memory override),
+            // and the flow is clear as soon as one with a session accepted it.
             var cleared = flows.All(flow =>
-                runningPids.Any(tuple => _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid)));
+            {
+                var anyAccepted = false;
+                foreach (var tuple in runningPids)
+                    anyAccepted |= _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid);
+                return anyAccepted;
+            });
             if (!cleared)
                 return false; // no pid with a live session yet: stay pending
 
