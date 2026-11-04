@@ -36,6 +36,14 @@ public class MicrophoneMuteBannerManager
     private const int SPACING = 10;
 
     /// <summary>
+    /// Whether the UI-thread synchronization context captured by <see cref="Setup"/> is
+    /// available. <see cref="Setup"/> runs on the UI thread during application start; mute
+    /// events arrive on audio threads and can fire before it, in which case banners must
+    /// simply be skipped instead of crashing the caller.
+    /// </summary>
+    private static bool BannerContextUnavailable => _syncContext == null;
+
+    /// <summary>
     /// Updates or creates a banner when a microphone's mute state changes
     /// </summary>
     /// <param name="microphoneId">Unique identifier for the microphone</param>
@@ -43,6 +51,13 @@ public class MicrophoneMuteBannerManager
     /// <param name="isMuted">True if the microphone is now muted, false if unmuted</param>
     public void UpdateMicrophoneMuteState(string microphoneId, string microphoneName, bool isMuted)
     {
+        if (BannerContextUnavailable)
+        {
+            Log.Warning("Microphone mute banner manager not initialized yet; ignoring mute change of {DeviceName} ({DeviceId}) to {MuteState}",
+                microphoneName, microphoneId, isMuted);
+            return;
+        }
+
         _syncContext.Send(_ =>
         {
             if (isMuted)
@@ -154,6 +169,13 @@ public class MicrophoneMuteBannerManager
     {
         // Live mute events arrive on an audio thread while the tracked banners are only
         // mutated on the UI thread, so marshal the mutation to keep _activeBanners safe.
+        if (BannerContextUnavailable)
+        {
+            Log.Warning("Microphone mute banner manager not initialized yet; ignoring persistent banner removal of {DeviceId}",
+                microphoneId);
+            return;
+        }
+
         _syncContext.Send(_ =>
         {
             if (!_activeBanners.TryGetValue(microphoneId, out var existingBanner)) return;
@@ -170,6 +192,12 @@ public class MicrophoneMuteBannerManager
     /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that may keep a banner</param>
     public void RetainPersistentMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds)
     {
+        if (BannerContextUnavailable)
+        {
+            Log.Warning("Microphone mute banner manager not initialized yet; ignoring persistent banner reconciliation");
+            return;
+        }
+
         _syncContext.Send(_ =>
         {
             var inScope = new HashSet<string>(inScopeMicrophoneIds, StringComparer.OrdinalIgnoreCase);

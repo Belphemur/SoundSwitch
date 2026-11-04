@@ -254,6 +254,16 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
 
     public void NotifyMuteChanged(string deviceId, string microphoneName, bool newMuteState)
     {
+        // Notifications are only built in Init(), but mute events from the device lister
+        // arrive on audio threads and can fire before that. Without a notification, there
+        // is nothing to render, so skip instead of crashing both threads' callers.
+        if (_microphoneMuteNotification == null)
+        {
+            Log.Warning("Microphone mute notification not ready yet; ignoring mute change of {DeviceName} ({DeviceId}) to {MuteState}",
+                microphoneName, deviceId, newMuteState);
+            return;
+        }
+
         _microphoneMuteNotification.NotifyMicrophoneMuteChanged(deviceId, microphoneName, newMuteState);
     }
 
