@@ -121,7 +121,7 @@ Rules store a device identity, not just a device name. If a device gets a new id
 
 ## Resetting per-app routing
 
-If routing gets into a confusing state, open the **Troubleshooting** tab and use **Reset** under **Reset Per App Audio**. This clears all process-level assignments so Windows can reassign applications to their default devices. After the reset, **Automatic** rules re-apply on the next process or window event; **Hotkey** rules wait for you to press their shortcut again.
+If routing gets into a confusing state, open the **Troubleshooting** tab and use **Reset** under **Reset Per App Audio**. This clears every process-level assignment — including the routes Windows remembered for your applications — so everything goes back to the default devices. The reset applies to all applications at once, not just the ones your rules target. Afterwards, an **Automatic** rule applies its device again the next time the application runs (and registers it with Windows again); **Hotkey** rules wait for you to press their shortcut.
 
 ## App Rules vs Profiles
 
