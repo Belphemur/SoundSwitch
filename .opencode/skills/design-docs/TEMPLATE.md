@@ -1,11 +1,11 @@
-# <Title: short, decision-shaped>
+# \<Title: short, decision-shaped>
 
 **Status:** Proposed
-**Author:** <name>
+**Author:** \<name>
 **Branch:** `<branch>` (omit until a branch exists)
 **Base:** `<base ref>` (e.g. `origin/dev`)
-**Issue:** [<project>#<n>](<link>) — <one-line issue title> (omit if none)
-**Related:** PR #<n>, `docs/design/<topic>/<other>.md`, …
+**Issue:** [\<project>#\<n>](\<link>) - \<one-line issue title> (omit if none)
+**Related:** PR #\<n>, `docs/design/<topic>/<other>.md`, ...
 
 ---
 

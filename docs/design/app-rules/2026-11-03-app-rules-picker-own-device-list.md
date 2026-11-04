@@ -86,7 +86,7 @@ A follow-up experiment to answer "do rules still need to wait for the process to
 - No change to rule matching (`AppSoundLockManager.IsMatch`) or to how rules apply devices.
 - No attempt to mirror Windows' pinned-UWP-app heuristics or to display UWP "app ids".
 - No new config setting; the collapsed/expanded toggle is UI state, not persisted.
-- Windows builds pre-1709 (no `IAudioPolicyConfig`) keep today's flat list for the *live* groups; the registry store still lists persisted entries where it exists.
+- Windows builds pre-1709 (no `IAudioPolicyConfig`) gain no *live* classification: the two live groups show only what the registry store still lists, and the picker's group sections render as today (headers stay; ordinary processes remain behind the collapsed "Show all processes" toggle — a flat list is not re-introduced).
 
 ## 5. UX
 
@@ -157,7 +157,7 @@ Rows keep carrying their per-side device names, computed as today (`GetUsedDevic
 ### 6.3 Edge cases
 
 - **Elevated processes** whose path/icon cannot be read today behave as now; their audio data may allow classifying them even when the icon fails.
-- **Pre-1709 / store absent:** older builds have neither per-app persisted defaults nor the `DefaultEndpoint` store; the two highlighted groups come up empty and the picker behaves like today's flat list. No `IAudioPolicyConfig` queries are made in either case (§6.1.1).
+- **Pre-1709 / store absent:** older builds have no per-app persisted defaults and no `DefaultEndpoint` store; the two highlighted groups come up empty (for the store-absent case) and the picker still shows its group sections with ordinary processes behind the collapsed "Show all processes" toggle — the grouping UI is the same, only its sources are empty. No `IAudioPolicyConfig` queries are made in either case (§6.1.1).
 - **Dead pids between enumeration and query:** a pid that exits before the batched query is simply not classified as running; its store record still surfaces it.
 - **Stale records:** uninstalled apps can leave `DefaultEndpoint` records forever (Windows keeps them too). They appear as not-running dimmed rows; creating a rule from such a row is harmless (it just won't match until the app exists again). SoundSwitch **never writes to** the store's open shape outside of its existing `SwitchProcessTo` path.
 - **Pre-existing assignment by Windows Settings:** identical store, identical row; no special-casing (verified: SoundSwitch's `SwitchProcessTo` writes the same record shape Windows' UI writes).
