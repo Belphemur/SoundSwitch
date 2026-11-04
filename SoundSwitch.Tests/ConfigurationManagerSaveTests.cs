@@ -68,12 +68,26 @@ public class ConfigurationManagerSaveTests
         {
             var filePath = Path.Combine(directory, nameof(TestConfiguration) + ".json");
             File.WriteAllText(filePath, "previous");
-            // Another process holds the file without sharing; release it while the save retries.
+            // Another process holds the file without sharing; the retry hook releases it
+            // once the save has observed a failed attempt, so the retry is deterministic.
             var lockedStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            using var releaseLock = new Timer(_ => lockedStream.Dispose(), null,
-                TimeSpan.FromMilliseconds(100), Timeout.InfiniteTimeSpan);
+            try
+            {
+                Exception failedAttempt = null;
+                ConfigurationManager.SaveConfigurationToPath(new TestConfiguration {Value = "updated"}, filePath,
+                    ex =>
+                    {
+                        failedAttempt = ex;
+                        lockedStream.Dispose();
+                    });
 
-            ConfigurationManager.SaveConfigurationToPath(new TestConfiguration {Value = "updated"}, filePath);
+                failedAttempt.Should().NotBeNull();
+            }
+            finally
+            {
+                // Independent of the hook, so a failing test never leaves the directory locked.
+                lockedStream.Dispose();
+            }
 
             File.ReadAllText(filePath).Should().Contain("updated");
         }
@@ -148,6 +162,52 @@ public class ConfigurationManagerSaveTests
         finally
         {
             DeleteDirectoryWithRetries(directory);
+        }
+    }
+
+    [Test]
+    public void SaveConfigurationToPath_PropagatesInterruptedSerializationAndKeepsPreviousConfiguration()
+    {
+        var directory = CreateTempDirectory();
+        var filePath = Path.Combine(directory, nameof(TestConfiguration) + ".json");
+        try
+        {
+            const string previousContent = "previous";
+            File.WriteAllText(filePath, previousContent);
+            // The property getter throws once serialization has started, leaving half-written
+            // content in the temporary file.
+            Action save = () =>
+                ConfigurationManager.SaveConfigurationToPath(new InterruptedSerializationConfiguration(), filePath);
+
+            save.Should().Throw<Exception>();
+
+            // A mid-serialization failure must never corrupt the previous configuration on disk,
+            // nor leave the partial temporary file behind.
+            File.ReadAllText(filePath).Should().Be(previousContent);
+            Directory.GetFiles(directory, "*.tmp").Should().BeEmpty();
+        }
+        finally
+        {
+            DeleteDirectoryWithRetries(directory);
+        }
+    }
+
+    private class InterruptedSerializationConfiguration : IConfiguration
+    {
+        public string Value { get; set; } = "";
+
+        public string FileLocation { get; set; }
+
+        public string Boom => throw new InvalidOperationException("serialization interrupted");
+
+        public void Save()
+        {
+            ConfigurationManager.SaveConfiguration(this);
+        }
+
+        public bool Migrate()
+        {
+            return false;
         }
     }
 

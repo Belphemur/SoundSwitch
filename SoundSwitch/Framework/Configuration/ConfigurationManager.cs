@@ -127,7 +127,9 @@ public static class ConfigurationManager
     /// error is logged. Other failures (e.g. a full disk or denied access) propagate to the
     /// caller.
     /// </summary>
-    internal static void SaveConfigurationToPath<T>(T configuration, string filePath) where T : IConfiguration, new()
+    /// <param name="onTransientLockRetried">Optional hook invoked after an attempt failed on a
+    /// transient lock and the retry was scheduled; used by tests to synchronize on the failure.</param>
+    internal static void SaveConfigurationToPath<T>(T configuration, string filePath, Action<Exception> onTransientLockRetried = null) where T : IConfiguration, new()
     {
         lock (SaveLock)
         {
@@ -155,6 +157,7 @@ public static class ConfigurationManager
                         Log.Warning(ex,
                             "Attempt {attempt}/{maxAttempts} to save configuration to {filePath} failed, retrying",
                             attempt, SaveMaxAttempts, filePath);
+                        onTransientLockRetried?.Invoke(ex);
                         Thread.Sleep(SaveRetryDelay);
                     }
                 }
