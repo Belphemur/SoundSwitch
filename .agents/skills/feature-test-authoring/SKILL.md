@@ -81,9 +81,11 @@ Load the `end-to-end-testing` skill when writing the E2E script, the
      save. Either skip the restore and leave the backup where it is, printing
      its path for the user to reapply after stopping the app, or document the
      limitation in the script's help.
-   - Prefer failing fast when an instance is already running. `-AllowExistingInstance`
-     means your test drives the user's live app; the config restore does not undo
-     in-memory state, so document that trade-off in the script help.
+   - Prefer failing fast when an instance is already running. If
+     `-AllowExistingInstance` attaches to a live app, do not restore the file
+     while that app runs: keep the backup, print its path, and tell the user to
+     reapply it after stopping the app — the app would otherwise write its
+     in-memory state over the restore, which the file restore alone cannot undo.
 6. **Write the `<feature>-testing` skill** from `TEMPLATE.md`, moving per-feature
    facts (real commands, fixture table, automation ids, gotchas) in.
 7. **Register:** add one line for each new script to `tools/README.md`; the
