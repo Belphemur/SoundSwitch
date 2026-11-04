@@ -109,8 +109,10 @@ public partial class ProcessSelectionForm : Form
         else
         {
             dgv.EnableHeadersVisualStyles = true;
-            dgv.BackgroundColor = SystemColors.AppWorkspace;
-            dgv.GridColor = SystemColors.ControlDark;
+            // White "list canvas": the data area and its void read as the list surface
+            // (like the grouped design), not the silver AppWorkspace chrome.
+            dgv.BackgroundColor = SystemColors.Window;
+            dgv.GridColor = SystemColors.ControlLight;
             dgv.DefaultCellStyle.BackColor = SystemColors.Window;
             dgv.DefaultCellStyle.ForeColor = SystemColors.ControlText;
             dgv.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
@@ -138,12 +140,16 @@ public partial class ProcessSelectionForm : Form
                 row.DefaultCellStyle.SelectionBackColor = row.DefaultCellStyle.BackColor;
                 row.DefaultCellStyle.SelectionForeColor = row.DefaultCellStyle.ForeColor;
                 row.DefaultCellStyle.Font = new Font(dgvProcesses.Font, FontStyle.Bold);
+                // Section band: a taller, full-width emphasised row that separates
+                // the groups (the row-level style covers every column at once).
+                row.Height = dgvProcesses.RowTemplate.Height + 6;
                 break;
             }
             case ProcessInfo {IsNotRunning: true}:
             {
                 var isDarkMode = WindowsThemeHelper.IsDarkModeEnabled();
                 row.DefaultCellStyle.ForeColor = isDarkMode ? DarkGridDimmedColor : SystemColors.GrayText;
+                row.DefaultCellStyle.Font = new Font(dgvProcesses.Font, FontStyle.Italic);
                 break;
             }
         }
@@ -178,6 +184,9 @@ public partial class ProcessSelectionForm : Form
         dgvProcesses.AllowUserToResizeRows = false;
         dgvProcesses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         dgvProcesses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        // Crisp single-line outline around the list canvas (the default sunken 3D
+        // border fights the white surface).
+        dgvProcesses.BorderStyle = BorderStyle.FixedSingle;
         if (dgvProcesses.Columns.Contains("colIcon")) dgvProcesses.Columns["colIcon"].Width = 32;
     }
 
@@ -383,10 +392,16 @@ public partial class ProcessSelectionForm : Form
         AddRows(FindRows(_notRunningApps, filter));
         AddGroupHeader(SettingsStrings.appSoundLock_picker_usingAudioNow, isToggle: false);
         AddRows(FindRows(PickerGroup.UsingAudioNow, filter));
-        AddGroupHeader(SettingsStrings.appSoundLock_picker_showAllProcesses, isToggle: true);
+
+        // The toggle band carries a disclosure chevron and the number of rows the
+        // third group adds, e.g. "▸ Show all processes (247)". The count is pure
+        // presentation, composed in code like the rule list's "Hotkey (3)".
+        var allProcesses = FindRows(PickerGroup.AllProcesses, filter).ToList();
+        var chevron = _showAllProcesses ? "▾" : "▸";
+        AddGroupHeader($"{chevron} {SettingsStrings.appSoundLock_picker_showAllProcesses} ({allProcesses.Count})", isToggle: true);
         if (_showAllProcesses)
         {
-            AddRows(FindRows(PickerGroup.AllProcesses, filter));
+            AddRows(allProcesses);
         }
     }
 
