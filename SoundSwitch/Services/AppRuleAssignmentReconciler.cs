@@ -430,9 +430,16 @@ namespace SoundSwitch.Services
             if (!rule.Enabled)
                 return false;
 
-            return rule.Enforcement == AppRuleEnforcement.Assignment
-                ? AppRuleIdentityMatcher.SameApp(IdentityOf(rule, group.NtExePath), group.NtExePath)
-                : AppSoundLockManager.IsMatch(rule, group.RelativePath, group.NtExePath, string.Empty);
+            if (rule.Enforcement == AppRuleEnforcement.Assignment)
+                return AppRuleIdentityMatcher.SameApp(IdentityOf(rule, group.NtExePath), group.NtExePath);
+
+            // The pattern must also see the bare exe name: a rule like "spotify*" or
+            // "^Spotify\.exe$" covers its own store record even though the record only carries
+            // paths (NT and volume-relative). Evaluating just the paths would leave that record
+            // looking Windows-managed: a duplicate row, and never cleaned up on rule deletion.
+            var bareName = Path.GetFileName(group.NtExePath);
+            return AppSoundLockManager.IsMatch(rule, bareName, group.RelativePath, string.Empty) ||
+                   AppSoundLockManager.IsMatch(rule, bareName, group.NtExePath, string.Empty);
         }
 
         /// <summary>Flows the entry's route covered, or both when the entry carries no device.</summary>

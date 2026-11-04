@@ -145,13 +145,19 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
+                // false = the engine's PROCESS_NO_AUDIO: this pid has no audio session, so it
+                // has no live route to detach. That is "nothing to clear", not a failure —
+                // requiring it would keep the pending clear forever whenever an identity has
+                // one session-less copy running next to its playing one.
                 if (!PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceId: null!))
-                    allCleared = false;
+                {
+                    _log.Debug("No audio session for process {ProcessId} [{Flow}] {Role}: nothing to clear", processId, flow, eRole);
+                }
             }
             catch (Exception ex)
             {
-                // A pid without an audio session refuses the write (E_INVALIDARG); the caller
-                // keeps its pending clear and retries at the next sighting.
+                // A genuine write failure (engine rejection, dead COM object) must surface so
+                // the caller keeps its pending clear and retries at the next sighting.
                 _log.Debug(ex, "Can't clear the default endpoint for process {ProcessId}", processId);
                 allCleared = false;
             }

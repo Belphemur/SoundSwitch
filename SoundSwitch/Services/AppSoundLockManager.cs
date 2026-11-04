@@ -95,12 +95,15 @@ namespace SoundSwitch.Services
             if (_configuration.AppSoundRules == null)
                 return;
 
+            var snapshot = SnapshotProcesses();
             foreach (var rule in _configuration.AppSoundRules.ToList().Where(rule =>
                          rule.Enabled && rule.Mode == AppRuleMode.Automatic && rule.Enforcement == AppRuleEnforcement.Assignment))
             {
                 try
                 {
-                    ApplyAssignmentRuleToRunningProcesses(rule);
+                    // A self-healing re-apply is not a user-triggered switch: no banner per
+                    // running instance (the docstring promises silence on this path).
+                    ApplyAssignmentRuleToRunningProcesses(rule, snapshot, notify: false);
                 }
                 catch (Exception ex)
                 {
@@ -185,7 +188,10 @@ namespace SoundSwitch.Services
         /// a Set is authoritative, so this also replaces stale routing from a deleted rule.
         /// Nothing is written while the app is closed — it routes on its next sighting (§6.2).
         /// </summary>
-        private void ApplyAssignmentRuleToRunningProcesses(AppSoundRule rule)
+        private void ApplyAssignmentRuleToRunningProcesses(
+            AppSoundRule rule,
+            IReadOnlyList<ProcessSnapshot>? snapshot = null,
+            bool notify = true)
         {
             var identity = rule.AssignmentExePath ?? rule.ProcessPath;
             var pair = rule.DevicePairs?.FirstOrDefault();
@@ -201,42 +207,28 @@ namespace SoundSwitch.Services
             string? firstMatchPath = null;
             string? firstMatchName = null;
 
-            foreach (var process in Process.GetProcesses())
+            // A device-change burst re-applies every live assignment rule: enumerate the process
+            // table once for all of them instead of once per rule (O(rules x processes)).
+            snapshot ??= SnapshotProcesses();
+
+            foreach (var running in snapshot)
             {
-                using (process)
+                if (!AppRuleIdentityMatcher.SameApp(identity, running.Path))
+                    continue;
+
+                // The process may have exited between enumeration and the switch.
+                try
                 {
-                    if (process.Id <= 4 || process.Id == Environment.ProcessId) continue;
-
-                    string processName;
-                    string processPath;
-                    try
+                    if (ApplyRuleToProcess(rule, pair, running.Pid, running.Name, running.Path, notifiedRules, "assignment", notify, out var flowsWritten))
                     {
-                        processName = process.ProcessName;
-                        processPath = process.MainModule?.FileName ?? string.Empty;
+                        firstMatchPath ??= running.Path;
+                        firstMatchName ??= running.Name;
+                        _assignmentReconciler.EnsureEntry(rule, running.Path, pair, flowsWritten);
                     }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex, "Couldn't inspect process PID {PID} for an assignment rule", process.Id);
-                        continue;
-                    }
-
-                    if (!AppRuleIdentityMatcher.SameApp(identity, processPath))
-                        continue;
-
-                    // The process may have exited between enumeration and the switch.
-                    try
-                    {
-                        if (ApplyRuleToProcess(rule, pair, (uint)process.Id, processName, processPath, notifiedRules, "assignment", true, out var flowsWritten))
-                        {
-                            firstMatchPath ??= processPath;
-                            firstMatchName ??= processName;
-                            _assignmentReconciler.EnsureEntry(rule, processPath, pair, flowsWritten);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Debug(ex, "Couldn't apply assignment rule to process PID {PID}", process.Id);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "Couldn't apply assignment rule to process PID {PID}", running.Pid);
                 }
             }
 
@@ -244,6 +236,36 @@ namespace SoundSwitch.Services
             {
                 TrackRuleActivated("engine", firstMatchPath, firstMatchName);
             }
+        }
+
+        /// <summary>One process of the machine's table, captured once for a batch of rules.</summary>
+        private readonly record struct ProcessSnapshot(uint Pid, string Name, string Path);
+
+        /// <summary>
+        /// Read the process table once. Unreadable/protected processes are skipped: they cannot
+        /// be matched against an identity, so they never receive a switch either way.
+        /// </summary>
+        private List<ProcessSnapshot> SnapshotProcesses()
+        {
+            var snapshot = new List<ProcessSnapshot>();
+            foreach (var process in Process.GetProcesses())
+            {
+                using (process)
+                {
+                    if (process.Id <= 4 || process.Id == Environment.ProcessId) continue;
+
+                    try
+                    {
+                        snapshot.Add(new ProcessSnapshot((uint)process.Id, process.ProcessName, process.MainModule?.FileName ?? string.Empty));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Debug(ex, "Couldn't inspect process PID {PID} for an assignment rule", process.Id);
+                    }
+                }
+            }
+
+            return snapshot;
         }
 
         /// <summary>Reconcile the ownership ledger, persisting it when the pass changed anything.</summary>
