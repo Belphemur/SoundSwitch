@@ -33,17 +33,28 @@ Also, assignments the user makes in **Windows Settings → App volume and device
 
 ## 4. UX
 
-The App Rules list gains a read-only section above the user's rules:
+![App Rules list — merged Windows-assignments section (no duplicates for rule-owned apps)](app-rules-list-windows-assignments.webp)
+
+![Rule editor — Enforced by radio pair for Automatic rules](app-rule-editor-enforcement.webp)
+
+The mockups above are the design artifacts for this document. The App Rules list gains a read-only section above the user's rules — **merged, one identity may appear in only one place**:
 
 | Section | Rows |
 |---|---|
-| **Windows assignments** | One row per exe identity with a persisted route, *not owned by a SoundSwitch rule*: app name + `NameClean` device per side + `(edited in Windows Settings)` hint. No controls; clicking opens the Windows page (§6.5). SoundSwitch rules' own assignments are hidden here (they are shown as the rules below). |
+| **Your rules** | Every SoundSwitch rule, unchanged. A rule owns the persisted route of the app it targets — regardless of enforcement kind (a **Dynamic process rule's** `SwitchProcessTo` writes the same store, so its identity's record belongs to the rule, not to Windows). |
+| **Windows assignments** | Only identities with a persisted route **not owned by any SoundSwitch rule** (user-made Windows Settings assignments): app name + `NameClean` device per side + `(edited in Windows Settings)` hint. No controls; clicking opens the Windows page (§6.5). |
+
+Ownership rules (no duplicates, one source per app):
+
+- A record is *ours* when it is covered by the ledger (§6.4 — which tracks writes from **any** enforcement kind, Dynamic included) **or**, as fallback for records written before the ledger existed, when it matches a Dynamic rule's target pattern (`IsMatch`).
+- An identity managed by a rule never shows a second row in the Windows-assignments section; the rule's row is the single place the app's routing state is shown.
+- When a rule-managed identity's record is edited from Windows' side, the rule **re-asserts** its pair on the next sighting — consistent with `Dynamic` behaviour since v1 (the rule re-applies on every sighting). Windows-side edits for rule-managed apps are therefore transient; deleting the rule is the documented way out (the editor helper text says so).
 
 New control in the rule editor, only for `Automatic` rules (a follow-up to the picker's work, where the picker already knows the exe identity of rows — including the dimmed not-running ones):
 
-- **Enforced by how:** a radio pair in the editor — `Processes (dynamic)` (default, current behaviour) vs. `App assignment (identity)`.
+- **Enforced by:** a radio pair — `Processes (dynamic)` (default, current behaviour) vs. `App assignment (identity)`.
 - The radio's localizable display names come from `SettingsStrings.resx` (§8 keys); the assignment option is disabled for rules with a window-title pattern (§6.4).
-- On save of an assignment rule: acknowledge in the description that Windows will keep routing the app where it will not be re-applied while SoundSwitch is closed, and that deleting the rule at the next launch (the window-title-like fallback) or when the app runs will restore the default.
+- On save of an assignment rule, the helper text (§8 `assignmentDescription`) explains that Windows keeps applying the route even while SoundSwitch is closed and that deleting the rule restores the default (a closed app keeps its route until its next launch).
 
 The rule list's **Mode** column from the modes ADR gains `Assignment` rendering for such rules.
 
@@ -119,8 +130,9 @@ public sealed class AssignmentLedgerEntry
 }
 ```
 
-- Entries are added when SoundSwitch writes a route for a rule; removed when the route is superseded/cleared (rule edit, delete-clear, or sighting-clear).
-- Reconcile distinguishes: a store record matching a ledger entry = *ours* → clear on rule deletion; a store record with no ledger entry = *the user's/Windows'* → display only, never touched.
+- Entries are added whenever SoundSwitch writes a route **for any rule** — Assignment rules at reconciliation time, and Dynamic rules alongside each `SwitchProcessTo` match — so ownership survives enforcement kind; entries are removed when the route is superseded/cleared (rule edit, delete-clear, or sighting-clear).
+- **Adoption (upgrade path):** versions before this ADR already wrote store records for Dynamic rules without any ledger. On first reconcile, a store record that no ledger entry covers but that matches an enabled rule's target (`IsMatch`, enforcement-agnostic) is *adopted*: a ledger entry is created for the owning rule. This keeps the merge rule of §4 (one identity, one row) true on upgrade without writing anything new to Windows' store.
+- Reconcile distinguishes: a store record matching a ledger entry = *ours* → clear on rule deletion (and re-assert on rule-managed Windows-side edits, consistent with `Dynamic` re-apply since v1); a store record with no ledger entry and no matching rule = *the user's/Windows'* → display only, never touched.
 - A ledger entry whose store record disappeared under it (user cleaned it in Windows settings) is dropped silently on reconcile — idempotent convergence.
 
 ### 6.5 Windows assignments section
@@ -171,6 +183,8 @@ The Windows pitfall (mutes/hides apps whose persisted route points at a missing 
 | `SoundSwitch/Localization/SettingsStrings.resx` / `.Designer.cs` | §8 keys |
 | `SoundSwitch.Tests/AppSoundRuleEnforcementTests.cs` | Model round-trip, migration normalization, ledger persistence, reconcile state machine |
 | `docs/design/app-rules/2026-11-03-app-rules-identity-enforcement.md` | This document |
+| `docs/design/app-rules/app-rule-editor-enforcement.webp` | Mockup: enforcement radios in the rule editor (§4) |
+| `docs/design/app-rules/app-rules-list-windows-assignments.webp` | Mockup: list with merged Windows-assignments section (§4) |
 
 ## 10. Test plan
 
@@ -199,8 +213,9 @@ The Windows pitfall (mutes/hides apps whose persisted route points at a missing 
 | 2 | Deletion restores the default; a closed app's route clears on next sighting. | Matches the user expectation ("delete = go back to default"), and a one-launch delay beats either a destructive `ClearAll` or a fragile hand-edit. |
 | 3 | SoundSwitch's written assignments are tracked in a local ledger, not in Windows' store. | The store must stay in the format Windows writes; the ledger keeps ownership side-state minimal and lets reconcile distinguish "ours" (clean it up) from "the user's/Windows'" (leave and just show it). |
 | 4 | Windows-only assignments show as a read-only section; no import in this iteration. | One-way sync is nearly free (store read exists). Import needs conflict semantics (a user-crafted regex can't be reconstructed from an exe identity) and is better as its own decision if the section proves useful. |
-| 5 | Keep `Dynamic` rules untouched; the new capability is additive (`Enforcement` value). | KISS / no crushing migration; all cycling, window-title, notification behaviour keeps its code path. Rules users actually want to persist become Assignments deliberately through a one-click editor option. |
-| 6 | Deep-link to Windows' per-app page is validated at implementation time, else omitted. | Settings deep links are token-sensitive across builds; a wrong guess breaks a visible control. |
+| 5 | **Merge rule: one identity, one row.** A record covered by a SoundSwitch rule (ledger entry of any enforcement kind, or adopted pre-ledger record matching a Dynamic rule) never appears in the Windows-assignments section; the rule's row is its single source of truth. | Avoids showing the same app twice; the rule *is* the user's expression of intent for that app. Windows-side edits to a rule-managed identity are transient (the rule re-asserts on sighting), which keeps `Dynamic` v1 semantics coherent. |
+| 6 | Keep `Dynamic` rules untouched; the new capability is additive (`Enforcement` value). | KISS / no crushing migration; all cycling, window-title, notification behaviour keeps its code path. Rules users actually want to persist become Assignments deliberately through a one-click editor option. |
+| 7 | Deep-link to Windows' per-app page is validated at implementation time, else omitted. | Settings deep links are token-sensitive across builds; a wrong guess breaks a visible control. |
 
 ## 12. Future work
 
