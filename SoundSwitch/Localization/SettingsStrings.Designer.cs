@@ -357,11 +357,11 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SoundSwitch sets this app's audio device once. Windows keeps applying it, even when SoundSwitch is closed. Deleting the rule restores the default (a closed app may briefly keep its route until its next launch)..
+        ///   Looks up a localized string similar to SoundSwitch also registers this app's audio device with Windows, which keeps applying it even when SoundSwitch is closed. Deleting the rule restores the default immediately..
         /// </summary>
-        internal static string appSoundLock_rule_assignmentDescription {
+        internal static string appSoundLock_rule_assignmentNote {
             get {
-                return ResourceManager.GetString("appSoundLock.rule.assignmentDescription", resourceCulture);
+                return ResourceManager.GetString("appSoundLock.rule.assignmentNote", resourceCulture);
             }
         }
         

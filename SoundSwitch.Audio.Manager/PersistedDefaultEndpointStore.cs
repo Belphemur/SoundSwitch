@@ -27,7 +27,10 @@ namespace SoundSwitch.Audio.Manager
     /// the one used here. Values whose name or shape does not match the observed layout are ignored,
     /// and <see cref="ReadAll"/> never throws for ordinary drift (the store format is undocumented).
     ///
-    /// Pure registry read: no COM, no <c>ComThread</c>.
+    /// Writing a route still goes through the audio engine (<c>AudioSwitcher.SwitchProcessTo</c>);
+    /// this class only reads, plus <see cref="DeleteRecords"/>, which removes a record by identity
+    /// to restore the system default (the record key's hash is not reversible, so it is located by
+    /// enumerating instead). No COM, no <c>ComThread</c>.
     /// </summary>
     public sealed class PersistedDefaultEndpointStore
     {
@@ -156,10 +159,117 @@ namespace SoundSwitch.Audio.Manager
         }
 
         /// <summary>
+        /// Remove every record that belongs to <paramref name="exePath"/>, restoring the app to the
+        /// system default — including while the app is closed, which the per-pid engine API cannot
+        /// do (no pid = no call). This is the only operation that makes the app disappear from
+        /// Windows Settings' per-app list as well: clearing through the engine merely empties the
+        /// role values and leaves the record key behind.
+        ///
+        /// The record key's hash is not reversible (measured, see the identity-enforcement design
+        /// doc), so the key is located by enumerating records and matching the identity in the
+        /// key's default value — deletes therefore never need to compute the hash.
+        /// </summary>
+        /// <returns>The number of removed records, or -1 when the store could not be written.</returns>
+        public int DeleteRecords(string? exePath)
+        {
+            if (string.IsNullOrEmpty(exePath))
+                return 0;
+
+            try
+            {
+                using var root = OpenStoreRoot(_storePath, writable: true);
+                if (root == null)
+                    return 0;
+
+                var removed = 0;
+                foreach (var keyName in root.GetSubKeyNames())
+                {
+                    string? recordPath;
+                    try
+                    {
+                        using var key = root.OpenSubKey(keyName);
+                        recordPath = key?.GetValue(null) as string;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Leave a record we cannot read alone: deleting blind could remove a
+                        // different app's assignment.
+                        _logger.Warning(ex, "Couldn't inspect persisted endpoint record {Key} for deletion", keyName);
+                        continue;
+                    }
+
+                    if (!SameIdentity(recordPath, exePath))
+                        continue;
+
+                    try
+                    {
+                        root.DeleteSubKeyTree(keyName, throwOnMissingSubKey: false);
+                        removed++;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warning(ex, "Couldn't delete persisted endpoint record {Key}", keyName);
+                        return -1;
+                    }
+                }
+
+                return removed;
+            }
+            catch (Exception ex)
+            {
+                _logger.Warning(ex, "Failed to delete persisted endpoint records for {ExePath}", exePath);
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Whether a store record's exe path identifies the same application as a process path:
+        /// both are reduced to their volume-relative form and compared case-insensitively on a
+        /// path-component boundary (the store writes NT device paths, processes drive letters).
+        /// </summary>
+        private static bool SameIdentity(string? recordPath, string processPath)
+        {
+            var left = NormalizeIdentity(recordPath);
+            if (left.Length == 0)
+                return false;
+
+            var right = NormalizeIdentity(processPath);
+            if (right.Length == 0)
+                return false;
+
+            return left.Equals(right, StringComparison.OrdinalIgnoreCase) ||
+                   EndsWithAtComponentBoundary(left, right) ||
+                   EndsWithAtComponentBoundary(right, left);
+        }
+
+        private static string NormalizeIdentity(string? path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return string.Empty;
+
+            var relative = GetVolumeRelativePath(path);
+            if (relative.Length > 0)
+                return relative;
+
+            // Drive-letter form "C:\Users\...\app.exe" -> "\Users\...\app.exe"
+            return path.Length > 2 && path[1] == ':' && path[2] == '\\'
+                ? path.Substring(2)
+                : path;
+        }
+
+        private static bool EndsWithAtComponentBoundary(string longer, string shorter)
+        {
+            var index = longer.Length - shorter.Length;
+            return index >= 0 &&
+                   string.Compare(longer, index, shorter, 0, shorter.Length, StringComparison.OrdinalIgnoreCase) == 0 &&
+                   (index == 0 || longer[index - 1] == '\\');
+        }
+
+        /// <summary>
         /// Open a <c>HKEY_CURRENT_USER\...</c> style registry path read-only.
         /// Returns null when the key doesn't exist; other hives are unsupported by design.
         /// </summary>
-        private static RegistryKey? OpenStoreRoot(string storePath)
+        private static RegistryKey? OpenStoreRoot(string storePath, bool writable = false)
         {
             var hiveSeparator = storePath.IndexOf('\\');
             if (hiveSeparator <= 0)
@@ -170,7 +280,7 @@ namespace SoundSwitch.Audio.Manager
 
             var hiveName = storePath.Substring(0, hiveSeparator);
             if (string.Equals(hiveName, "HKEY_CURRENT_USER", StringComparison.OrdinalIgnoreCase))
-                return Registry.CurrentUser.OpenSubKey(storePath.Substring(hiveSeparator + 1));
+                return Registry.CurrentUser.OpenSubKey(storePath.Substring(hiveSeparator + 1), writable);
 
             _logger.Debug("Unsupported registry hive {Hive} for {StorePath}", hiveName, storePath);
             return null;

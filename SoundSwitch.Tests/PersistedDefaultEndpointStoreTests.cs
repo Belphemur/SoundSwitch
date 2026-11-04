@@ -176,6 +176,42 @@ public class PersistedDefaultEndpointStoreTests
     }
 
     [Test]
+    public void DeleteRecords_ShouldRemoveOnlyTheMatchingIdentity()
+    {
+        WriteRecord("mine", @"\Device\HarddiskVolume3\Apps\Spotify\Spotify.exe", ("001_000", RenderToken));
+        WriteRecord("other", @"\Device\HarddiskVolume3\Apps\Teams\Teams.exe", ("001_000", RenderToken));
+
+        var removed = CreateStore().DeleteRecords(@"C:\Apps\Spotify\Spotify.exe");
+
+        // The record is keyed by a hash that is not reversible, so the match happens on the
+        // record's own exe path (NT form) against the process path (drive-letter form).
+        removed.Should().Be(1);
+        _scratchRoot.GetSubKeyNames().Should().Equal("other");
+        CreateStore().ReadAll().Should().ContainSingle(record => record.ExePath.EndsWith("Teams.exe"));
+    }
+
+    [Test]
+    public void DeleteRecords_ShouldNotTouchRecordsWithADifferentNameInASimilarFolder()
+    {
+        WriteRecord("decoy", @"\Device\HarddiskVolume3\MyApps\Setup.exe", ("001_000", RenderToken));
+
+        var removed = CreateStore().DeleteRecords(@"C:\Apps\Setup.exe");
+
+        removed.Should().Be(0, "a suffix match must respect path-component boundaries");
+        _scratchRoot.GetSubKeyNames().Should().Equal("decoy");
+    }
+
+    [Test]
+    public void DeleteRecords_ShouldReturnZeroForAnEmptyOrUnknownPath()
+    {
+        WriteRecord("mine", @"\Device\HarddiskVolume3\Apps\Spotify\Spotify.exe", ("001_000", RenderToken));
+
+        CreateStore().DeleteRecords(null).Should().Be(0);
+        CreateStore().DeleteRecords(string.Empty).Should().Be(0);
+        _scratchRoot.GetSubKeyNames().Should().Equal("mine");
+    }
+
+    [Test]
     public void ReadAll_ShouldReturnRecordsSortedByExecutablePath()
     {
         WriteRecord("b_key", @"\Device\HarddiskVolume3\B\App.exe", ("001_000", RenderToken));

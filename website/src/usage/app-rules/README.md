@@ -16,7 +16,7 @@ Each rule targets an application (and optionally a window title) and owns an ord
 | **Automatic** | Applies the rule's first device pair whenever the application starts or comes to the foreground. | Hands-free routing that should always be active. |
 | **Hotkey** | Does nothing automatically. Pressing the rule's hotkey applies the next device pair to the running application. | Cycling an application between several devices on demand. |
 
-The modes are exclusive. A rule is either Automatic or Hotkey, never both. See [Automatic mode](./automatic.md) and [Hotkey mode](./hotkey.md) for the details. An Automatic rule can additionally be *enforced* as an **App assignment**, which writes the route into Windows' own app audio settings so it survives SoundSwitch being closed — see [Enforced by](./automatic.md#enforced-by).
+The modes are exclusive. A rule is either Automatic or Hotkey, never both. See [Automatic mode](./automatic.md) and [Hotkey mode](./hotkey.md) for the details. An Automatic rule that targets one concrete application is also registered in Windows' own app audio settings, so the route survives SoundSwitch being closed — see [Windows also remembers it](./automatic.md#windows-also-remembers-it).
 
 ## How it works
 
@@ -46,7 +46,7 @@ The App Rules tab lists every rule with these columns:
 | **Window Title** | The window title pattern, or blank for any window. |
 | **Playback** | The first pair's playback device. |
 | **Recording** | The first pair's recording device. |
-| **Mode** | `Automatic`, `Hotkey`, or `Assignment` (an Automatic rule enforced as an [app assignment](./automatic.md#enforced-by)). Hotkey rules with several pairs also show the pair count, for example `Hotkey (3)`. |
+| **Mode** | `Automatic` or `Hotkey`. Hotkey rules with several pairs also show the pair count, for example `Hotkey (3)`. |
 | **Hotkey** | The rule's global shortcut, for Hotkey rules. |
 
 Hover a row to see every device pair in a tooltip.

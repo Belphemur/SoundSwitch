@@ -1,9 +1,34 @@
 # App Rules: identity-based assignment rules synced with Windows
 
-**Status:** Proposed
+**Status:** Implemented on `adr-app-rules-picker` (revised 2026-11-04, see §0)
 **Author:** GLM (OpenCode agent)
 **Issue:** —
 **Related:** `docs/design/app-rules/2026-11-03-app-rules-picker-own-device-list.md` (picker ADR; its §2.5 measured the engine applying persisted defaults by app identity), `docs/design/app-rules/2026-10-22-app-rule-modes.md` (rule modes)
+
+---
+
+## 0. Revision 2026-11-04 — no user-facing choice, both mechanisms together
+
+The first implementation offered the mechanism as a per-rule choice (`Enforced by: Processes (dynamic) | App assignment (identity)`). **That was rejected as bad UX**: the user cannot be expected to know which enforcement model fits their app, and having two rules that look identical but behave differently is a trap. The radio pair is removed.
+
+**The rule of the feature is now:** one rule, both mechanisms, no choice.
+
+- A rule that **can** be an assignment — Automatic mode, one device pair, a concrete exe path, no window-title condition — **always writes the identity route** into Windows' store, so the engine keeps applying it even while SoundSwitch is closed.
+- The **dynamic path stays on top as the fallback**: the process-start/foreground/hotkey triggers continue to apply the rule, which is what self-heals a stale device, covers a rule whose persisted route was removed by the user, and gives the immediate switch the user expects.
+- Rules that **cannot** be an assignment (regex/glob pattern, window-title condition, several device pairs, Hotkey cycling) keep today's dynamic behaviour only. They are not worse off; they simply have no identity to persist.
+
+`AppSoundRule.Enforcement` therefore becomes **derived state**, not a preference: `AppRuleAssignmentValidator.EnforcementFor(rule)` computes it on save and on migration. The editor has no control for it, and the list's Mode column no longer shows `Assignment` (every Automatic rule is the same Automatic rule).
+
+Consequences that fall out of the revision:
+
+| Area | Before (radio) | Now |
+|---|---|---|
+| Editor | "Enforced by" radios + validation errors when assignment was chosen with a bad pattern | no control; a one-line note explains that Windows will also remember the app's device |
+| Save | user's choice persisted | eligibility decides; an ineligible rule silently stays dynamic |
+| Delete | assignment rules restored the default, dynamic ones did not | **any** rule that wrote a route restores the default (§6.3), because every eligible rule owns an identity route |
+| List | Mode showed `Assignment` | `Automatic` / `Hotkey` only |
+
+Everything else in this document stands: the ledger (§6.4), the merge rule (§4), the engine-mediated writes, and the restore-default semantics including immediate deletion of a closed app's record.
 
 ---
 
@@ -18,8 +43,8 @@ Also, assignments the user makes in **Windows Settings → App volume and device
 
 ## 2. Goals
 
-1. Add an **assignment** rule type whose routing is enforced by the audio engine itself: SoundSwitch writes the assignment once; no re-apply-on-process-arrival machinery is needed for it.
-2. Deleting (or disabling) an assignment rule **restores the default**: immediately when the app is running, otherwise on its next sighting.
+1. Every rule that **can** be expressed as an identity assignment **also writes** that assignment once, so the audio engine enforces it — while the existing dynamic path stays in place as the fallback (§0). No user-facing choice.
+2. Deleting (or disabling) an assignment rule **restores the default immediately**, whether the app is running or closed, and removes the app from Windows' own per-app list.
 3. Show assignments that exist in Windows' store as read-only rows in the App Rules list (one-way sync — display, not import).
 4. Reconcile assignment state on device changes so a rule pointing at a dead/plugged device self-heals.
 5. Keep all existing rule behaviours (pair cycling, window-title matching, hotkey rules, notifications) working exactly as today.
@@ -52,11 +77,11 @@ Ownership rules (no duplicates, one source per app):
 
 New control in the rule editor, only for `Automatic` rules (a follow-up to the picker's work, where the picker already knows the exe identity of rows — including the dimmed not-running ones):
 
-- **Enforced by:** a radio pair — `Processes (dynamic)` (default, current behaviour) vs. `App assignment (identity)`.
-- The radio's localizable display names come from `SettingsStrings.resx` (§8 keys); the assignment option is disabled for rules with a window-title pattern (§6.4).
-- On save of an assignment rule, the helper text (§8 `assignmentDescription`) explains that Windows keeps applying the route even while SoundSwitch is closed and that deleting the rule restores the default (a closed app keeps its route until its next launch).
+- **No enforcement control.** The editor keeps Process Path, Window Title, Case sensitive, the mode radios and the device combos. There is no "Enforced by" choice (§0): an Automatic rule with a concrete path and no window title automatically also becomes a Windows assignment.
+- When the rule is eligible, a one-line note under the device combos explains the behaviour: *SoundSwitch also registers this app's audio device with Windows, which keeps applying it even when SoundSwitch is closed.* The note is hidden for hotkey rules and for rules that cannot be an assignment.
+- **No new validation errors.** Eligibility only decides whether the identity route is written; it never blocks saving. A regex or a window-title condition simply keeps that rule dynamic-only.
 
-The rule list's **Mode** column from the modes ADR gains `Assignment` rendering for such rules.
+The rule list's **Mode** column from the modes ADR keeps its existing values: `Automatic` and `Hotkey (N)`. `Assignment` is not a mode the user picks and is no longer rendered.
 
 ## 5. Investigation
 
@@ -64,7 +89,7 @@ The rule list's **Mode** column from the modes ADR gains `Assignment` rendering 
 
 Writing/clearing an assignment for a *closed* app needs the engine API, which takes a pid (picker ADR §2.2/§2.3): `SetPersistedDefaultAudioEndpoint`/`GetPersistedDefaultAudioEndpoint` return `E_INVALIDARG` for a pid without audio. Windows' own page clearly manages closed apps (the store outlives processes, keyed by exe identity), but that capability is not exposed.
 
-The store record's key is `<hash>_<N>` where `hash` plausibly derives from the exe path. A controlled ground-truth batch was written **by the audio engine itself** for nine identities (msedge / powershell / soundpad plus six copies of a scratch exe at different sub-paths and name lengths, so path sensitivity is proven: identical bytes at different directories hash differently), and the corpus was swept against standard 32-bit families — crc32 (plus init/xor variants and CRC-32C), adler32, FNV-1/FNV-1a, djb2, sdbm, MurmurHash3, xxHash32, Jenkins one-at-a-time, ELF/PJW/BKDR/JS/RS/DEK/rot/mul31-class strings, MD5/SHA-1/SHA-256 four-byte prefixes (both endiannesses) — each over ANSI/UTF-16LE bytes (with and without null terminators, lower/upper case, drive-letter and `\??\`/`\\?\` forms, forward slashes, sans-`Device` prefix, `_0`-suffixed inputs): **~1,500 combinations, none reproduces any sample**. The key naming stays un-reversed and offline record writes stay out of scope; if deferred-clear semantics (§6.3) prove insufficient in practice, the next option is probing the policy factory's vtable for a path-oriented write method rather than more hash archaeology.
+The store record's key is `<hash>_<N>` where `hash` plausibly derives from the exe path. A controlled ground-truth batch was written **by the audio engine itself** for nine identities (msedge / powershell / soundpad plus six copies of a scratch exe at different sub-paths and name lengths, so path sensitivity is proven: identical bytes at different directories hash differently), and the corpus was swept against standard 32-bit families — crc32 (plus init/xor variants and CRC-32C), adler32, FNV-1/FNV-1a, djb2, sdbm, MurmurHash3, xxHash32, Jenkins one-at-a-time, ELF/PJW/BKDR/JS/RS/DEK/rot/mul31-class strings, MD5/SHA-1/SHA-256 four-byte prefixes (both endiannesses) — each over ANSI/UTF-16LE bytes (with and without null terminators, lower/upper case, drive-letter and `\??\`/`\\?\` forms, forward slashes, sans-`Device` prefix, `_0`-suffixed inputs): **~1,500 combinations, none reproduces any sample**. The key naming stays un-reversed and offline record *writes* stay out of scope; **deletes do not need it**: the key is found by enumerating records and matching the exe path stored in each key's default value (§6.3), which is what makes restore-default immediate for a closed app. If offline writes ever become necessary, the next option is probing the policy factory's vtable for a path-oriented write method rather than more hash archaeology.
 
 ### 5.2 What the engine guarantees
 
@@ -79,23 +104,24 @@ The store record's key is `<hash>_<N>` where `hash` plausibly derives from the e
 ```csharp
 public enum AppRuleEnforcement
 {
-    Dynamic,     // today's behaviour: applied on process/foreground/hotkey
-    Assignment   // new: identity route written into the persisted store
+    Dynamic,     // process/foreground/hotkey only
+    Assignment   // identity route written into the persisted store, dynamic still applies
 }
 
-// AppSoundRule gains:
+// AppSoundRule keeps the flag, but it is DERIVED state, never a user preference (ADR §0):
 public AppRuleEnforcement Enforcement { get; set; } = AppRuleEnforcement.Dynamic;
 // Only meaningful for Assignment: the exe identity resolved from the process/picker pick.
 public string? AssignmentExePath { get; set; } // full path, e.g. C:\...\Spotify.exe
 ```
 
-Constraints:
+`AppRuleAssignmentValidator.EnforcementFor(rule)` is the single source of truth for the flag: it returns `Assignment` when the rule is eligible (Automatic, one pair, concrete path, no window title) and `Dynamic` otherwise. It runs on save and during migration, so a hand-edited or legacy config converges on the next save.
 
-- `Assignment` requires `Mode == Automatic`, exactly one device pair, and a single `AssignmentExePath` (no glob/regex matching ambition): the store's routing is inherently one-route-per-identity.
-- `Assignment` rules cannot have a window-title pattern (the store is identity-level); validation blocks the combination with a localized message.
-- Dynamic rules exhaust all matching behaviours today (visibility, cycling, window rules).
+Eligibility (computed, not chosen — §0):
 
-Migration: none. All existing rules keep `Dynamic`. No schema break (new enum member serialized by name?? verify the JSON enum handling used by `AppSoundRule` — string persists best; adjust migrator to normalize unknown values to `Dynamic`, mirroring `AppRuleMode` handling).
+- `Assignment` needs `Mode == Automatic`, exactly one device pair, a concrete exe path (no regex/glob) and no window-title pattern. Anything else stays `Dynamic`; nothing is refused.
+- Dynamic rules keep every matching behaviour (visibility, cycling, window rules).
+
+Migration: the flag is normalized on every migration run — `EnforcementFor(rule)` recomputes it, so a config written by the radio-era build (where a user could pick `Assignment` for a regex rule) converges to the truthful value. No schema break: `Enforcement` remains in the JSON, unknown values fall back to `Dynamic` exactly like `AppRuleMode`.
 
 ### 6.2 Write path (assignment rule lifecycle)
 
@@ -112,7 +138,8 @@ Exactly the access pattern the user requested: **put back the default; never lea
 
 - **Delete (or disable) an Assignment rule:**
   - *App is running:* clear the in-memory override via `SetPersistedDefaultAudioEndpoint(pid, …, null)` per pid for the flows the route covered — the live sessions return to the system default immediately.
-  - *App is not running:* the store record still routes the app on its next launch. Record the pending clear in the rule's config? **No** — the rule is already gone; instead a small `AssignmentLedger` in SoundSwitch's configuration (see §6.4) remembers `{ExePath, devices}` entries written by SoundSwitch. On the app's **next sighting** (ProcessMonitor), the engine reports persisted route via `GetDefaultEndPoint` per pid; if it matches the ledger's *stale* entry and the rule no longer exists, clear it with the null-endpoint write (the per-pid lancer in §5.2). This is a *deferred* restore default (at most one launch later).
+  - *Record removal (both cases):* delete the identity's record key(s) from the store via `PersistedDefaultEndpointStore.DeleteRecords(exePath)`. The hash is not reversible, but the key is *located* by enumerating records and matching the exe path in the key's default value, so no hash is needed for a delete. Removing the key is what restores a **closed** app's default immediately (no pid, no engine call) and what makes the app disappear from Windows Settings' per-app list — clearing through the engine only empties the role values and leaves the record behind.
+  - *Store not writable:* the `AssignmentLedger` entry stays and the clear is retried on the next sighting (the pending path is now the failure fallback, not the normal closed-app behaviour).
 - **Delete while Windows made the assignment** (no SoundSwitch fingerprint): leave untouched (Windows owns it); the read-only section remains so the user can see it.
 - The engine's own reconciliation after SoundSwitch's clear is automatic: no record, no route.
 
@@ -158,15 +185,10 @@ The Windows pitfall (mutes/hides apps whose persisted route points at a missing 
 
 | Key | English value |
 |---|---|
-| `appSoundLock.rule.enforcement` | `Enforced by` |
-| `appSoundLock.rule.enforcement.dynamic` | `Processes (dynamic)` |
-| `appSoundLock.rule.enforcement.assignment` | `App assignment` |
+| `appSoundLock.rule.assignmentNote` | `SoundSwitch also registers this app's audio device with Windows, which keeps applying it even when SoundSwitch is closed. Deleting the rule restores the default immediately.` |
 | `appSoundLock.rules.section.windows` | `Windows assignments` |
 | `appSoundLock.rules.section.windowsHint` | `Managed in Windows Settings` |
-| `appSoundLock.rules.list.column.mode.assignment` | `Assignment` |
-| `appSoundLock.rule.error.assignmentNeedsIdentity` | `Assignment rules need a specific application. Use the process picker.` |
-| `appSoundLock.rule.error.assignmentNoWindowTitle` | `Assignment rules don't support window title matching.` |
-| `appSoundLock.rule.assignmentDescription` | `SoundSwitch sets this app's audio device once. Windows keeps applying it, even when SoundSwitch is closed. Deleting the rule restores the default (a closed app may briefly keep its route until its next launch).` |
+The radio labels, the `Assignment` mode label and the two "assignment rule needs…" validation errors are **removed**: with no choice there is nothing to validate and no third mode to name.
 
 ## 9. Files touched
 
@@ -209,8 +231,10 @@ The Windows pitfall (mutes/hides apps whose persisted route points at a missing 
 
 | # | Decision | Rationale |
 |---|---|---|
-| 1 | Assignment enforcement rides the engine; no registry writes. | The engine already applies by identity (picker ADR §2.5). Writing Windows' store by hand was ruled out after the hash crack failed (§5.1) — the deferred-clear semantics (§6.3) are the honest cost of staying inside the supported API. |
-| 2 | Deletion restores the default; a closed app's route clears on next sighting. | Matches the user expectation ("delete = go back to default"), and a one-launch delay beats either a destructive `ClearAll` or a fragile hand-edit. |
+| 1 | **No user-facing enforcement choice: one rule does both** (identity route + dynamic fallback) whenever the rule is eligible. | Recorded in §0. Asking the user to pick an enforcement model is bad UX and creates two rules that look identical but behave differently. Eligibility is derivable from the rule itself, so the choice was never information the user had to supply. Rejected alternative: the per-rule `Enforced by` radio shipped in the first revision. |
+| 1b | Assignment enforcement rides the engine; no registry writes (deletion excepted, §5.1). | The engine already applies by identity (picker ADR §2.5). Writing Windows' store by hand was ruled out after the hash crack failed (§5.1) — the deferred-clear semantics (§6.3) are the honest cost of staying inside the supported API. |
+| 2 | Deletion restores the default **immediately**, closed app included, by deleting the identity's record key (enumerated, not hashed). | Deferring to the next launch left the app routed and still listed in Windows Settings, which is exactly the bug the owner reported. Deleting the key needs no reversible hash. The pending `ClearRequestedAt` entry remains only as the store-unwritable retry path. |
+| 2b | Deletion applies to rules that wrote a route, regardless of how they were classified at the time. | Every eligible rule now writes one; leaving dynamic-era records behind after a delete reproduces the same "delete didn't reset it" complaint. | Matches the user expectation ("delete = go back to default"), and a one-launch delay beats either a destructive `ClearAll` or a fragile hand-edit. |
 | 3 | SoundSwitch's written assignments are tracked in a local ledger, not in Windows' store. | The store must stay in the format Windows writes; the ledger keeps ownership side-state minimal and lets reconcile distinguish "ours" (clean it up) from "the user's/Windows'" (leave and just show it). |
 | 4 | Windows-only assignments show as a read-only section; no import in this iteration. | One-way sync is nearly free (store read exists). Import needs conflict semantics (a user-crafted regex can't be reconstructed from an exe identity) and is better as its own decision if the section proves useful. |
 | 5 | **Merge rule: one identity, one row.** A record covered by a SoundSwitch rule (ledger entry of any enforcement kind, or adopted pre-ledger record matching a Dynamic rule) never appears in the Windows-assignments section; the rule's row is its single source of truth. | Avoids showing the same app twice; the rule *is* the user's expression of intent for that app. Windows-side edits to a rule-managed identity are transient (the rule re-asserts on sighting), which keeps `Dynamic` v1 semantics coherent. |

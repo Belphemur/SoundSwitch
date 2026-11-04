@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -56,7 +56,7 @@ public partial class UpsertAppSoundLockRule : Form
         hotKeyBox.HotKeyChanged += (_, _) => btnHotKeyReset.Visible = hotKeyBox.HotKey != null;
 
         _initializing = false;
-        UpdateEnforcementState();
+        UpdateAssignmentNote();
         ApplyModeLayout();
     }
 
@@ -83,10 +83,7 @@ public partial class UpsertAppSoundLockRule : Form
         btnSave.Text = SettingsStrings.buttonSave;
         btnCancel.Text = SettingsStrings.buttonClose;
 
-        lblEnforcement.Text = SettingsStrings.appSoundLock_rule_enforcement;
-        rdoEnforcementDynamic.Text = SettingsStrings.appSoundLock_rule_enforcement_dynamic;
-        rdoEnforcementAssignment.Text = SettingsStrings.appSoundLock_rule_enforcement_assignment;
-        lblAssignmentHelper.Text = SettingsStrings.appSoundLock_rule_assignmentDescription;
+        lblAssignmentHelper.Text = SettingsStrings.appSoundLock_rule_assignmentNote;
     }
 
     private void InitComboBoxes()
@@ -144,16 +141,13 @@ public partial class UpsertAppSoundLockRule : Form
         rdoAutomatic.Checked = _rule.Mode != AppRuleMode.Hotkey;
         rdoHotkey.Checked = _rule.Mode == AppRuleMode.Hotkey;
 
-        rdoEnforcementDynamic.Checked = _rule.Enforcement != AppRuleEnforcement.Assignment;
-        rdoEnforcementAssignment.Checked = _rule.Enforcement == AppRuleEnforcement.Assignment;
-
-        // Only assignment rules carry a concrete identity. The pattern text of a dynamic rule
-        // must not masquerade as one: it would later be written back over a concrete path the
-        // user types before choosing App assignment.
+        // No enforcement control exists any more (ADR �0): every eligible rule also writes an
+        // identity assignment. Only those rules carry a concrete identity, so only those show
+        // it in the process field instead of their matching pattern.
         if (_rule.Enforcement == AppRuleEnforcement.Assignment)
         {
             _pickedProcessPath = _rule.AssignmentExePath ?? _rule.ProcessPath;
-            // An edited assignment routes by its identity (ADR §6.1): surface that identity in
+            // An edited assignment routes by its identity (ADR �6.1): surface that identity in
             // the process field instead of a stale display value, so an edit that only changes
             // the device cannot quietly change which executable the rule targets.
             if (!string.IsNullOrEmpty(_pickedProcessPath))
@@ -236,7 +230,7 @@ public partial class UpsertAppSoundLockRule : Form
             _handlingModeChange = false;
         }
 
-        UpdateEnforcementState();
+        UpdateAssignmentNote();
         ApplyModeLayout();
     }
 
@@ -255,10 +249,10 @@ public partial class UpsertAppSoundLockRule : Form
         btnRecordingReset.Visible = !hotkeyMode && cmbRecording.SelectedIndex != -1;
         grpHotkey.Visible = hotkeyMode;
 
-        // Assignment enforcement is offered on Automatic rules only (ADR §6.4).
-        lblEnforcement.Visible = !hotkeyMode;
-        pnlEnforcement.Visible = !hotkeyMode;
-        lblAssignmentHelper.Visible = !hotkeyMode && rdoEnforcementAssignment.Checked;
+        // Assignment enforcement is offered on Automatic rules only (ADR �6.4).
+        lblEnforcement.Visible = false;
+        pnlEnforcement.Visible = false;
+        lblAssignmentHelper.Visible = false;
 
         // The design-time coordinates are set by the constructor before the form
         // is shown, and the framework scales them once with AutoScaleMode.Font.
@@ -570,32 +564,26 @@ public partial class UpsertAppSoundLockRule : Form
         if (form.ShowDialog(this) == DialogResult.OK)
         {
             _pickedProcessPath = form.SelectedProcessPath;
-            var isAssignment = rdoEnforcementAssignment.Checked;
 
-            // Always pre-fill all patterns
+            // Always pre-fill the matching pattern; the concrete identity the picker knows is
+            // preferred at save time when the rule qualifies for an identity assignment.
             if (!string.IsNullOrEmpty(form.SelectedProcessPath))
             {
-                // Assignment rules keep the concrete identity the store routes; the match
-                // expression of dynamic rules wraps the basename in an exact pattern.
-                txtProcessPath.Text = isAssignment
-                    ? form.SelectedProcessPath
-                    : EscapeToPattern(Path.GetFileName(form.SelectedProcessPath));
+                txtProcessPath.Text = EscapeToPattern(Path.GetFileName(form.SelectedProcessPath));
             }
             else if (!string.IsNullOrEmpty(form.SelectedProcessName))
             {
                 var name = form.SelectedProcessName;
                 if (!name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) name += ".exe";
-                txtProcessPath.Text = isAssignment
-                    ? name
-                    : EscapeToPattern(name);
+                txtProcessPath.Text = EscapeToPattern(name);
             }
 
-            if (!string.IsNullOrEmpty(form.SelectedWindowTitle) && !isAssignment)
+            if (!string.IsNullOrEmpty(form.SelectedWindowTitle))
             {
                 txtPattern.Text = $".*{Regex.Escape(form.SelectedWindowTitle)}.*";
             }
 
-            UpdateEnforcementState();
+            UpdateAssignmentNote();
         }
     }
 
@@ -606,57 +594,54 @@ public partial class UpsertAppSoundLockRule : Form
     /// <summary>
     /// The assignment option only makes sense where the constraints the persisted store routes
     /// can be honoured: a concrete exe identity (picked or typed), no window-title pattern and
-    /// Automatic mode (ADR §6.4). A just-picked concrete identity counts even while the
-    /// dynamic pattern pre-filled the process field — switching to App assignment writes it in.
+    /// Automatic mode (ADR �6.4). A just-picked concrete identity counts even while the
+    /// dynamic pattern pre-filled the process field � switching to App assignment writes it in.
     /// </summary>
-    private void UpdateEnforcementState()
+    /// <summary>
+    /// Show the "Windows will remember this app" note only while the rule actually qualifies
+    /// for an identity assignment (ADR �0): Automatic mode, no window-title condition and a
+    /// concrete identity (typed, or picked from the process picker). There is no control to
+    /// set: eligibility is derived.
+    /// </summary>
+    private void UpdateAssignmentNote()
     {
-        var typedIdentity =
-            !string.IsNullOrWhiteSpace(txtProcessPath.Text) &&
-            !AppRuleAssignmentValidator.HasPatternSyntax(txtProcessPath.Text.Trim());
-        var pickedIdentity =
-            !string.IsNullOrWhiteSpace(_pickedProcessPath) &&
-            !AppRuleAssignmentValidator.HasPatternSyntax(_pickedProcessPath.Trim());
-
-        rdoEnforcementAssignment.Enabled =
+        lblAssignmentHelper.Visible =
+            !_initializing &&
             rdoAutomatic.Checked &&
             string.IsNullOrWhiteSpace(txtPattern.Text) &&
-            (typedIdentity || pickedIdentity);
+            TryGetConcreteIdentity(out _);
     }
 
-    private void TxtProcessPath_TextChanged(object sender, EventArgs e) => UpdateEnforcementState();
+    private void TxtProcessPath_TextChanged(object sender, EventArgs e) => UpdateAssignmentNote();
 
-    private void TxtPattern_TextChanged(object sender, EventArgs e) => UpdateEnforcementState();
+    private void TxtPattern_TextChanged(object sender, EventArgs e) => UpdateAssignmentNote();
 
-    private void RdoEnforcement_CheckedChanged(object sender, EventArgs e)
+    /// <summary>
+    /// The concrete exe path the rule targets, when the editor knows one: what the user typed
+    /// if it is a path rather than a pattern, otherwise the process picked from the picker
+    /// (whose pattern pre-fill names the same exe).
+    /// </summary>
+    private bool TryGetConcreteIdentity(out string identity)
     {
-        if (_initializing) return;
+        identity = string.Empty;
 
-        // Bring the process field to the enforcement's shape: the identity itself for an
-        // assignment, the basename pattern for dynamic matching. A path the user typed is
-        // theirs: only an empty or pattern-shaped field is replaced by the picked identity.
-        var typed = txtProcessPath.Text.Trim();
-        var typedIsConcrete = !string.IsNullOrWhiteSpace(typed) &&
-                              !AppRuleAssignmentValidator.HasPatternSyntax(typed);
-
-        if (rdoEnforcementAssignment.Checked)
+        var typed = (txtProcessPath.Text ?? string.Empty).Trim();
+        if (typed.Length > 0 && !AppRuleAssignmentValidator.HasPatternSyntax(typed))
         {
-            if (!string.IsNullOrEmpty(_pickedProcessPath) && !typedIsConcrete)
-                txtProcessPath.Text = _pickedProcessPath;
-        }
-        else if (typedIsConcrete)
-        {
-            // A concrete identity must become a pattern for dynamic matching: `IsMatch` reads
-            // the field as a regex, so a raw "C:\Apps\X.exe" would never match anything.
-            txtProcessPath.Text = EscapeToPattern(Path.GetFileName(typed));
-        }
-        else if (!string.IsNullOrEmpty(_pickedProcessPath) && !txtProcessPath.Text.Contains("*"))
-        {
-            txtProcessPath.Text = EscapeToPattern(Path.GetFileName(_pickedProcessPath));
+            identity = typed;
+            return true;
         }
 
-        UpdateEnforcementState();
-        ApplyModeLayout();
+        var picked = (_pickedProcessPath ?? string.Empty).Trim();
+        if (picked.Length > 0 &&
+            !AppRuleAssignmentValidator.HasPatternSyntax(picked) &&
+            (typed.Length == 0 || typed.Contains(Path.GetFileName(picked), StringComparison.OrdinalIgnoreCase)))
+        {
+            identity = picked;
+            return true;
+        }
+
+        return false;
     }
 
     protected override void OnShown(EventArgs e)
@@ -671,7 +656,7 @@ public partial class UpsertAppSoundLockRule : Form
 
     /// <summary>
     /// Preselect the combo box for a stored device: exact id match first, then
-    /// <see cref="DeviceInfo.Equals(DeviceInfo)"/> (NameClean) match — this survives device id changes.
+    /// <see cref="DeviceInfo.Equals(DeviceInfo)"/> (NameClean) match � this survives device id changes.
     /// When nothing matches, the combo is left unselected; the user re-picks the device once.
     /// </summary>
     private static void SelectDevice(ComboBox comboBox, DeviceInfo? stored, IEnumerable<DeviceFullInfo> devices)
@@ -787,23 +772,20 @@ public partial class UpsertAppSoundLockRule : Form
             _rule.Mode = AppRuleMode.Automatic;
             _rule.HotKey = null;
             _rule.DevicePairs = new List<AppSoundRuleDevicePair> { pair };
-            _rule.Enforcement = rdoEnforcementAssignment.Checked ? AppRuleEnforcement.Assignment : AppRuleEnforcement.Dynamic;
+            // No enforcement choice (ADR �0): a rule that can be an identity assignment is one
+            // and keeps the dynamic path as its fallback. A known concrete identity replaces the
+            // picker's basename pattern (that is what makes the rule eligible); a typed pattern
+            // or a window-title condition stays dynamic-only.
+            if (string.IsNullOrWhiteSpace(txtPattern.Text) && TryGetConcreteIdentity(out var identity))
+            {
+                _rule.ProcessPath = identity;
+            }
+
+            _rule.Enforcement = AppRuleAssignmentValidator.EnforcementFor(_rule);
             // The identity is the process field itself for assignment rules; the matching for
-            // them compares it exactly (ADR §6.1).
+            // them compares it exactly (ADR �6.1).
             _rule.AssignmentExePath = _rule.Enforcement == AppRuleEnforcement.Assignment ? _rule.ProcessPath : null;
 
-            var assignmentError = AppRuleAssignmentValidator.Validate(_rule);
-            if (assignmentError == AppRuleAssignmentValidator.Error.NeedsIdentity)
-            {
-                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_assignmentNeedsIdentity, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (assignmentError == AppRuleAssignmentValidator.Error.NoWindowTitle)
-            {
-                MessageBox.Show(SettingsStrings.appSoundLock_rule_error_assignmentNoWindowTitle, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
         }
         else
         {

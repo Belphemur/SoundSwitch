@@ -1989,12 +1989,12 @@ public sealed partial class SettingsForm : Form
             var recordingSubItem = item.SubItems.Add(recordingText);
             recordingSubItem.Tag = recording?.SmallIcon;
 
-            // Mode (with the pair count for Hotkey rules, where the count matters)
+            // Mode (with the pair count for Hotkey rules, where the count matters). Enforcement is
+            // derived state, not a mode the user picks (ADR §0), so Automatic covers both the
+            // dynamic path and the identity assignment it also writes.
             var modeText = rule.Mode == AppRuleMode.Hotkey
                 ? SettingsStrings.appSoundLock_rule_mode_hotkey
-                : rule.Enforcement == AppRuleEnforcement.Assignment
-                    ? SettingsStrings.appSoundLock_rules_list_column_mode_assignment
-                    : SettingsStrings.appSoundLock_rule_mode_automatic;
+                : SettingsStrings.appSoundLock_rule_mode_automatic;
             if (rule.Mode == AppRuleMode.Hotkey && pairs.Count > 1)
             {
                 modeText = $"{modeText} ({pairs.Count})";

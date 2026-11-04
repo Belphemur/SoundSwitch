@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -84,8 +84,8 @@ namespace SoundSwitch.Services
         /// Device arrival/removal can change which device an assigned route resolves to
         /// (replugged/re-enumerated endpoint, device back after it was unavailable at the last
         /// sighting). Reconcile the ledger's convergence and re-apply every live assignment rule
-        /// to the running processes — SwitchRuleDevice resolves the stored device against the
-        /// fresh device list and self-heals the stored info (ADR §6.6). Publishes nothing on
+        /// to the running processes � SwitchRuleDevice resolves the stored device against the
+        /// fresh device list and self-heals the stored info (ADR �6.6). Publishes nothing on
         /// its own.
         /// </summary>
         public void OnDevicesChanged()
@@ -97,7 +97,7 @@ namespace SoundSwitch.Services
 
             List<ProcessSnapshot>? snapshot = null;
             foreach (var rule in _configuration.AppSoundRules.ToList().Where(rule =>
-                         rule.Enabled && rule.Mode == AppRuleMode.Automatic && rule.Enforcement == AppRuleEnforcement.Assignment))
+                         rule.Enabled && AppRuleAssignmentValidator.IsEligible(rule)))
             {
                 try
                 {
@@ -119,7 +119,7 @@ namespace SoundSwitch.Services
 
         /// <summary>
         /// The read-only "Windows assignments" rows for the rule list: persisted per-app routes
-        /// that no SoundSwitch rule owns (ADR §6.5).
+        /// that no SoundSwitch rule owns (ADR �6.5).
         /// </summary>
         public IReadOnlyList<AppRuleAssignmentReconciler.StoreAssignment> GetWindowsAssignments()
         {
@@ -128,10 +128,10 @@ namespace SoundSwitch.Services
 
         /// <summary>
         /// The rules changed in Settings (add/edit/delete/enable/disable): retract the routing
-        /// the change did away with — restoring the default for assignment rules (immediately
+        /// the change did away with � restoring the default for assignment rules (immediately
         /// for running apps, deferred for closed ones), releasing the ledger claim of removed
-        /// dynamic rules — then apply still-live assignment rules to the running apps (ADR
-        /// §6.2, §6.3) and reconcile the ledger.
+        /// dynamic rules � then apply still-live assignment rules to the running apps (ADR
+        /// �6.2, �6.3) and reconcile the ledger.
         /// </summary>
         public void OnRulesChanged()
         {
@@ -145,20 +145,20 @@ namespace SoundSwitch.Services
                 {
                     // Removed: an assignment route gets restored to the default (kept pending
                     // while the app is closed); a dynamic route keeps today's delete behaviour
-                    // and the ledger just releases its claim (ADR §11.5, §11.6).
+                    // and the ledger just releases its claim (ADR �11.5, �11.6).
                     _assignmentReconciler.ClearRuleAssignments(previous);
                     continue;
                 }
 
-                if (previous.Enforcement != AppRuleEnforcement.Assignment)
-                    continue; // Dynamic en/disable keeps the route alive (§11.6)
+                if (!AppRuleAssignmentValidator.IsEligible(previous))
+                    continue; // Dynamic en/disable keeps the route alive (�11.6)
 
                 if (!previous.Enabled)
                     continue; // already retracted when it was disabled
 
                 var stillRoutesTheSame =
                     now.Enabled &&
-                    now.Enforcement == AppRuleEnforcement.Assignment &&
+                    AppRuleAssignmentValidator.IsEligible(now) &&
                     AppRuleIdentityMatcher.SameApp(previous.AssignmentExePath ?? previous.ProcessPath, now.AssignmentExePath ?? now.ProcessPath) &&
                     SameRoute(previous, now);
 
@@ -171,7 +171,7 @@ namespace SoundSwitch.Services
 
             _rulesSnapshot = current;
 
-            foreach (var rule in current.Where(rule => rule.Enabled && rule.Mode == AppRuleMode.Automatic && rule.Enforcement == AppRuleEnforcement.Assignment))
+            foreach (var rule in current.Where(rule => rule.Enabled && AppRuleAssignmentValidator.IsEligible(rule)))
             {
                 ApplyAssignmentRuleToRunningProcesses(rule);
             }
@@ -191,7 +191,7 @@ namespace SoundSwitch.Services
         /// Write the assignment rule's route into every running process of its exe identity
         /// through the existing switch pipeline (device self-heal, notify, telemetry included);
         /// a Set is authoritative, so this also replaces stale routing from a deleted rule.
-        /// Nothing is written while the app is closed — it routes on its next sighting (§6.2).
+        /// Nothing is written while the app is closed � it routes on its next sighting (�6.2).
         /// </summary>
         private void ApplyAssignmentRuleToRunningProcesses(
             AppSoundRule rule,
@@ -482,9 +482,10 @@ namespace SoundSwitch.Services
                 if (pair == null) continue;
 
                 // Assignment rules match one exe identity exactly; other rules keep their
-                // regex/glob/window-title matching (ADR §6.1).
+                // regex/glob/window-title matching (ADR �6.1).
+                var identityRule = AppRuleAssignmentValidator.IsEligible(rule);
                 var identity = rule.AssignmentExePath ?? rule.ProcessPath;
-                var matched = rule.Enforcement == AppRuleEnforcement.Assignment
+                var matched = identityRule
                     ? !string.IsNullOrEmpty(identity) && AppRuleIdentityMatcher.SameApp(identity, processPath)
                     : IsMatch(rule, processName, processPath, windowTitle);
                 if (!matched) continue;
@@ -492,10 +493,10 @@ namespace SoundSwitch.Services
                 if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true, out var flowsWritten))
                 {
                     // An assignment's engine re-applies the route itself after the first write;
-                    // keep that observable in the trigger telemetry (ADR §7).
-                    TrackRuleActivated(rule.Enforcement == AppRuleEnforcement.Assignment ? "engine" : triggerSource, processPath, processName);
+                    // keep that observable in the trigger telemetry (ADR �7).
+                    TrackRuleActivated(identityRule ? "engine" : triggerSource, processPath, processName);
 
-                    // Own the route in the ledger — for any enforcement kind (ADR §6.4). Only
+                    // Own the route in the ledger � for any enforcement kind (ADR �6.4). Only
                     // the flows actually written are claimed; adoption covers pre-existing
                     // records and later successful writes extend the claim.
                     _assignmentReconciler.EnsureEntry(rule, processPath, pair, flowsWritten);
@@ -621,7 +622,7 @@ namespace SoundSwitch.Services
                     // matches writes nothing, and stamping it would create (or blank out) an
                     // entry whose missing devices read as "clear both flows".
                     // Every written route owns its record in the ledger for any enforcement
-                    // kind (ADR §6.4): a hotkey write under a window-title condition could
+                    // kind (ADR �6.4): a hotkey write under a window-title condition could
                     // otherwise never be re-adopted by reconcile (the store carries no titles)
                     // and the app would surface under Windows assignments while its rule lives.
                     if (applied)
@@ -784,7 +785,7 @@ namespace SoundSwitch.Services
         /// <summary>
         /// The full rule match expression (process regex/glob plus optional window pattern).
         /// Internal static so the assignment reconciler can evaluate the same expression for
-        /// adoption/ownership of store records (ADR §6.4).
+        /// adoption/ownership of store records (ADR �6.4).
         /// </summary>
         internal static bool IsMatch(AppSoundRule rule, string processName, string processPath, string windowTitle)
         {

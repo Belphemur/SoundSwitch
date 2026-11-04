@@ -1,13 +1,14 @@
 ---
 name: App Rules testing
-description: Test the App Rules identity-based assignment feature — unit fixtures, a live-app control script, and an end-to-end test that drives the real Settings UI, Windows' per-app endpoint store, and the deferred restore-default. Use this when working on AppRuleEnforcement, the assignment ledger/reconciler, the rule editor's enforcement radios, or reviewing such changes.
+description: Test the App Rules identity-based assignment feature — unit fixtures, a live-app control script, and an end-to-end test that drives the real Settings UI, Windows' per-app endpoint store, and the restore-default. Use this when working on AppRuleEnforcement, the assignment ledger/reconciler, the rule editor's eligibility note, or reviewing such changes.
 ---
 
 # App Rules testing
 
-App Rules can route a program by its process identity instead of a window title. Each rule
-has an **Enforced by** choice: `Dynamic` (default, match the process/title pattern) or
-`Assignment` (route the exe identity through Windows' per-app persisted endpoint store).
+App Rules can route a program by its process identity instead of a window title. There is no
+enforcement choice: a rule that targets one concrete application (no Window Title pattern)
+also writes its route into Windows' per-app persisted endpoint store, and the dynamic
+process/foreground/hotkey path stays on top as the fallback.
 
 Testing has three layers. Use the cheapest layer that can catch your change.
 
@@ -27,12 +28,15 @@ Testing has three layers. Use the cheapest layer that can catch your change.
 2. **Ownership ledger.** `AssignmentLedgerEntry` in the config records every route
    SoundSwitch wrote (any enforcement kind). `AppRuleAssignmentReconciler` adopts
    pre-ledger records, stamps writes (`EnsureEntry`), drops stale entries, and on rule
-   deletion/disable clears the route — immediately while the app is running, deferred to
-   its next sighting while it is closed (`ClearRequestedAt`).
-3. **Windows' store.** `PersistedDefaultEndpointStore` reads (never writes)
-   `HKCU\Software\Microsoft\Multimedia\Audio\DefaultEndpoint`; its `<hash>_<N>` keys are
-   the engine's territory. The App Rules list shows a read-only "Windows assignments"
-   section merged with the rules so one identity appears once.
+   deletion/disable restores the default immediately — it detaches live sessions and
+   deletes the identity's record key (`DeleteRecords`), which also covers a closed app.
+   The pending entry (`ClearRequestedAt`) is now only the retry path when the store
+   cannot be written.
+3. **Windows' store.** `PersistedDefaultEndpointStore` reads
+   `HKCU\Software\Microsoft\Multimedia\Audio\DefaultEndpoint` and deletes a record by
+   identity (enumeration, not the un-reversible hash); writing a route is still the
+   engine's job. The App Rules list shows a read-only "Windows assignments" section
+   merged with the rules so one identity appears once.
 
 ## Layer 1 — unit tests
 
@@ -88,8 +92,9 @@ readiness (no guessed sleeps). Asserted:
 2. **B** — a scratch tone-playing exe gets an Assignment rule with a non-default playback
    device: config rule + ledger entry, the engine-written store record, and exactly one row
    in the merged list.
-3. **C** — deleting the rule while the exe is closed removes the rule and turns its ledger
-   claim pending; relaunching the exe defers-clears the store record and drops the claim.
+3. **C** — deleting the rule while the exe is closed removes the rule, deletes the app's
+   store record right away and releases the ledger claim; the relaunched exe carries no
+   route.
 
 The original config is restored, the scratch exe and only the instance this test launched
 are stopped, and only store records named after the scratch exe are deleted.
@@ -105,9 +110,10 @@ are stopped, and only store records named after the scratch exe are deleted.
 - **The process picker is modal and auto-opens.** Clicking Add opens the editor *and* the
   grouped picker; the editor is disabled until the picker closes. Close it with `WM_CLOSE`
   and only then touch the editor fields.
-- **The guard is inverted from the mockup.** Assignment does *not* grey the Window Title
-  field. It is the assignment radio that disables without a concrete identity, and disables
-  again while a window-title pattern is present.
+- **No enforcement radio exists.** Eligibility is derived (Automatic, one pair, concrete
+  path, no Window Title) and cannot be chosen. Only a cosmetic note differs between an
+  eligible and a dynamic-only rule, and it is not reliably exposed through this MSAA proxy —
+  do not assert it; assert the saved rule instead.
 - **Use `BM_CLICK` for buttons that open a modal.** The UIA `Invoke()` pattern blocks until
   the dialog closes (`Invoke-SoundSwitchElement` already posts `BM_CLICK`).
 - **Native MessageBox buttons are invisible to UIA here.** The delete confirmation exposes
@@ -116,9 +122,10 @@ are stopped, and only store records named after the scratch exe are deleted.
   process that is producing audio: the scratch exe loops a WAV (`SoundPlayer.PlaySync`).
 - **The list always has a "Windows assignments" header row.** Count rows matching the
   identity; never assert the list has one item overall.
-- **Deferred clear keeps a pending ledger entry.** After deleting a rule for a closed app,
-  the entry stays with `ClearRequestedAt` until the next sighting — do not assert an empty
-  ledger immediately.
+- **Deletion is immediate, closed app included.** The record key is deleted by identity, so
+  after deleting a rule the ledger has no claim and the store has no record — assert that
+  straight away. A pending `ClearRequestedAt` entry only means the store could not be
+  written (retry path), so never assert pending as the normal outcome.
 - **The store's key naming is undocumented.** Derive direction from the token's trailing
   interface GUID (render `e6327cad…`, capture `2eef81be…`), never from the key name.
 - **Never delete store keys you did not create.** Clean up only records whose (Default)
@@ -132,7 +139,7 @@ are stopped, and only store records named after the scratch exe are deleted.
 ## Before pushing
 
 - Reconciler, ledger, matcher, store, migration or validator change: `pwsh tools\Test-AppRules.ps1`.
-- Editor radio, enforcement persistence, list merge, delete/restore-default: also
+- Editor eligibility, enforcement persistence, list merge, delete/restore-default: also
   `pwsh tools\Test-AppRulesEndToEnd.ps1` (desktop session + real endpoints).
 - Picker visuals or the "Windows assignments" section layout: capture the screenshot flow.
 - A user-visible setting/flow changed: load `documentation-sync` — website and screenshots

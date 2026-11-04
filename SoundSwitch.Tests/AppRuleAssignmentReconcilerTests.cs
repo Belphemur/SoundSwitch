@@ -75,12 +75,24 @@ public class AppRuleAssignmentReconcilerTests
         ProcessPath = processPattern
     };
 
+    /// <summary>
+    /// A rule that qualifies for an identity assignment: Automatic, one device pair, a concrete
+    /// exe path, no window title. Eligibility is derived from the rule itself (ADR §0), so the
+    /// helper must model a real rule rather than just set the flag.
+    /// </summary>
     private static AppSoundRule AssignmentRule(string exePath) => new()
     {
         Enabled = true,
-        Enforcement = AppRuleEnforcement.Assignment,
+        Mode = AppRuleMode.Automatic,
         ProcessPath = exePath,
-        AssignmentExePath = exePath
+        AssignmentExePath = exePath,
+        DevicePairs = new List<AppSoundRuleDevicePair>
+        {
+            new()
+            {
+                Playback = new DeviceInfo("Speakers", "playback-id", EDataFlow.eRender, false, DateTime.UtcNow)
+            }
+        }
     };
 
     private void WriteStoreRecord(string keyName, string ntExePath)
@@ -367,7 +379,7 @@ public class AppRuleAssignmentReconcilerTests
     }
 
     [Test]
-    public void Reconcile_DeletedAssignmentRuleWithClosedApp_KeepsPendingClear()
+    public void Reconcile_DeletedAssignmentRuleWithClosedApp_RestoresDefault()
     {
         WriteStoreRecordFor(@"C:\Apps\Not Running\RareApp.exe");
         _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
@@ -380,13 +392,13 @@ public class AppRuleAssignmentReconcilerTests
 
         _reconciler.Reconcile();
 
-        _configuration.AssignmentLedger.Should().ContainSingle("a closed app keeps its route until its next sighting (ADR §6.3)");
-        // The pass stamped ClearRequestedAt (persisted — it is what the deferred-clear metric
-        // measures from), so the first pass reports dirty; a second pass is idempotent.
-        _configuration.AssignmentLedger.Single().ClearRequestedAt.Should().NotBeNull();
+        // The record is deleted by identity, so a closed app (no pid, no engine call possible)
+        // is restored to the default right away instead of waiting for its next launch.
+        _configuration.AssignmentLedger.Should().BeEmpty("the deleted rule's route is restored immediately");
+        _scratchRoot.GetSubKeyNames().Should().BeEmpty("Windows' store no longer carries the app either");
         _reconciler.TakeDirty().Should().BeTrue();
         _reconciler.Reconcile();
-        _reconciler.TakeDirty().Should().BeFalse("the stamp is written once");
+        _reconciler.TakeDirty().Should().BeFalse("nothing left to change");
     }
 
     [Test]
@@ -459,9 +471,10 @@ public class AppRuleAssignmentReconcilerTests
     }
 
     [Test]
-    public void ClearRuleAssignments_AssignmentRuleWithClosedApp_KeepsPending()
+    public void ClearRuleAssignments_AssignmentRuleWithClosedApp_RestoresDefault()
     {
         var rule = AssignmentRule(@"C:\Apps\Not Running\RareApp.exe");
+        WriteStoreRecordFor(rule.AssignmentExePath!);
         _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
         {
             RuleId = rule.Id,
@@ -472,7 +485,10 @@ public class AppRuleAssignmentReconcilerTests
 
         _reconciler.ClearRuleAssignments(rule);
 
-        _configuration.AssignmentLedger.Should().ContainSingle();
+        // Deleting a rule restores the Windows assignment immediately, closed app or not: the
+        // record key is removed by identity (no pid needed) and the entry is released.
+        _configuration.AssignmentLedger.Should().BeEmpty();
+        _scratchRoot.GetSubKeyNames().Should().BeEmpty("the app is gone from Windows' per-app store");
     }
 
     // ── ledger claims ───────────────────────────────────────────────

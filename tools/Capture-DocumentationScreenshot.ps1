@@ -127,6 +127,9 @@ param(
 
     [string]$ThenClickRow,
 
+    # Fills a text field in the captured dialog, e.g. 'txtProcessPath=C:\Apps\SampleApp.exe'.
+    [string]$SetText,
+
     [string]$OutputDirectory,
 
     [ValidateSet('Debug', 'Release')]
@@ -824,7 +827,7 @@ try {
         $openedDialogHandles.Add($dialogHandle.ToInt64())
         $captureLabel = "'$($dialog.Title)' dialog"
 
-        if ($Select -or $ThenClick) {
+        if ($Select -or $ThenClick -or $SetText) {
             # Rule editors auto-open their first child dialog as well (the rule editor
             # pops its process picker right after opening). Whichever window the click
             # detection grabbed, the editor is the one carrying the requested controls:
@@ -833,7 +836,7 @@ try {
             Start-Sleep -Milliseconds 600
             foreach ($candidate in @(Get-TopLevelWindows -ProcessId $process.Id)) {
                 if ($candidate.Handle.ToInt64() -in $existingHandles -or $candidate.Handle -eq $dialogHandle) { continue }
-                $target = if ($Select) { Find-VisibleControl -Handle $candidate.Handle -ControlId $Select } else { Find-VisibleButton -Handle $candidate.Handle -ButtonId $ThenClick }
+                $target = if ($Select) { Find-VisibleControl -Handle $candidate.Handle -ControlId $Select } elseif ($ThenClick) { Find-VisibleButton -Handle $candidate.Handle -ButtonId $ThenClick } else { Find-VisibleControl -Handle $candidate.Handle -ControlId ($SetText -split '=', 2)[0] }
                 if ($null -ne $target) {
                     Write-Host "Preferring '$($candidate.Title)' (carries the requested control), closing the extra dialog..." -ForegroundColor Yellow
                     [SoundSwitch.DocCapture.Native]::PostMessage($dialogHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
@@ -854,6 +857,20 @@ try {
             Write-Host "Selecting '$Select'..." -ForegroundColor Cyan
             Select-Element -Element $control
             Start-Sleep -Milliseconds 200
+        }
+
+        if ($SetText) {
+            $parts = $SetText -split '=', 2
+            if ($parts.Count -ne 2) { throw "SetText must be 'AutomationId=value'." }
+            $field = Find-VisibleControl -Handle $dialogHandle -ControlId $parts[0]
+            if ($null -eq $field) { throw "Control '$($parts[0])' was not found for SetText." }
+            $valuePattern = $null
+            if (-not $field.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
+                throw "Control '$($parts[0])' does not accept text."
+            }
+            Write-Host "Typing into '$($parts[0])'..." -ForegroundColor Cyan
+            $valuePattern.SetValue($parts[1])
+            Start-Sleep -Milliseconds 300
         }
 
         if ($ThenClick) {

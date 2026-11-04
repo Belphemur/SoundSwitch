@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using FluentAssertions;
@@ -134,75 +135,60 @@ public class AppRuleEnforcementTests
     // ── Validator ──────────────────────────────────────────────────
 
     [Test]
-    public void Validate_DynamicRule_AlwaysValid()
+    public void EnforcementFor_ConcretePathWithoutWindowPattern_IsAssignment()
     {
         var rule = new AppSoundRule
         {
-            Enforcement = AppRuleEnforcement.Dynamic,
-            ProcessPath = ".*Spotify.*",
-            WindowName = ".*YouTube.*"
-        };
-
-        AppRuleAssignmentValidator.Validate(rule).Should().Be(AppRuleAssignmentValidator.Error.None);
-    }
-
-    [Test]
-    public void Validate_AssignmentWithConcretePath_NoWindowPattern_IsValid()
-    {
-        var rule = new AppSoundRule
-        {
-            Enforcement = AppRuleEnforcement.Assignment,
-            ProcessPath = @"C:\Apps\Spotify\Spotify.exe"
-        };
-
-        AppRuleAssignmentValidator.Validate(rule).Should().Be(AppRuleAssignmentValidator.Error.None);
-    }
-
-    [Test]
-    public void Validate_AssignmentWithRegexPattern_NeedsIdentity()
-    {
-        var rule = new AppSoundRule
-        {
-            Enforcement = AppRuleEnforcement.Assignment,
-            ProcessPath = ".*Spotify.exe.*"
-        };
-
-        AppRuleAssignmentValidator.Validate(rule).Should().Be(AppRuleAssignmentValidator.Error.NeedsIdentity);
-    }
-
-    [Test]
-    public void Validate_AssignmentWithGlobPattern_NeedsIdentity()
-    {
-        var rule = new AppSoundRule
-        {
-            Enforcement = AppRuleEnforcement.Assignment,
-            ProcessPath = @"*\Spotify\*"
-        };
-
-        AppRuleAssignmentValidator.Validate(rule).Should().Be(AppRuleAssignmentValidator.Error.NeedsIdentity);
-    }
-
-    [Test]
-    public void Validate_AssignmentWithEmptyProcess_NeedsIdentity()
-    {
-        var rule = new AppSoundRule { Enforcement = AppRuleEnforcement.Assignment, ProcessPath = "" };
-
-        AppRuleAssignmentValidator.Validate(rule).Should().Be(AppRuleAssignmentValidator.Error.NeedsIdentity);
-    }
-
-    [Test]
-    public void Validate_AssignmentWithWindowPattern_NoWindowTitle()
-    {
-        var rule = new AppSoundRule
-        {
-            Enforcement = AppRuleEnforcement.Assignment,
+            Mode = AppRuleMode.Automatic,
             ProcessPath = @"C:\Apps\Spotify\Spotify.exe",
-            WindowName = ".*Chat.*"
+            DevicePairs = new List<AppSoundRuleDevicePair> { new() { Playback = null, Recording = null } }
         };
 
-        AppRuleAssignmentValidator.Validate(rule).Should().Be(AppRuleAssignmentValidator.Error.NoWindowTitle);
+        AppRuleAssignmentValidator.IsEligible(rule).Should().BeTrue();
+        AppRuleAssignmentValidator.EnforcementFor(rule).Should().Be(AppRuleEnforcement.Assignment);
     }
 
+    [TestCase(".*Spotify.exe.*")]
+    [TestCase(@"*\Spotify\*")]
+    [TestCase("")]
+    public void EnforcementFor_PatternOrEmptyPath_StaysDynamic(string processPath)
+    {
+        var rule = new AppSoundRule
+        {
+            Mode = AppRuleMode.Automatic,
+            ProcessPath = processPath,
+            DevicePairs = new List<AppSoundRuleDevicePair> { new() }
+        };
+
+        AppRuleAssignmentValidator.EnforcementFor(rule).Should().Be(AppRuleEnforcement.Dynamic);
+    }
+
+    [Test]
+    public void EnforcementFor_WindowTitleCondition_StaysDynamic()
+    {
+        var rule = new AppSoundRule
+        {
+            Mode = AppRuleMode.Automatic,
+            ProcessPath = @"C:\Apps\Spotify\Spotify.exe",
+            WindowName = ".*Chat.*",
+            DevicePairs = new List<AppSoundRuleDevicePair> { new() }
+        };
+
+        AppRuleAssignmentValidator.EnforcementFor(rule).Should().Be(AppRuleEnforcement.Dynamic);
+    }
+
+    [Test]
+    public void EnforcementFor_HotkeyRule_StaysDynamic()
+    {
+        var rule = new AppSoundRule
+        {
+            Mode = AppRuleMode.Hotkey,
+            ProcessPath = @"C:\Apps\Spotify\Spotify.exe",
+            DevicePairs = new List<AppSoundRuleDevicePair> { new(), new() }
+        };
+
+        AppRuleAssignmentValidator.EnforcementFor(rule).Should().Be(AppRuleEnforcement.Dynamic);
+    }
     [TestCase(@"C:\Apps\My App (1)\App.exe", false)]
     [TestCase(@"C:\Apps\My [a]\App.exe", true)]
     [TestCase(@".*.exe", true)]

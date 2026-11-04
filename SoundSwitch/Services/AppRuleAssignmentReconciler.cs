@@ -323,7 +323,7 @@ namespace SoundSwitch.Services
 
         private static string IdentityOf(AppSoundRule rule, string seenPath)
         {
-            return rule.Enforcement == AppRuleEnforcement.Assignment
+            return AppRuleAssignmentValidator.IsEligible(rule)
                 ? rule.AssignmentExePath ?? rule.ProcessPath
                 : seenPath;
         }
@@ -430,7 +430,7 @@ namespace SoundSwitch.Services
             if (!rule.Enabled)
                 return false;
 
-            if (rule.Enforcement == AppRuleEnforcement.Assignment)
+            if (AppRuleAssignmentValidator.IsEligible(rule))
                 return AppRuleIdentityMatcher.SameApp(IdentityOf(rule, group.NtExePath), group.NtExePath);
 
             // The pattern must also see the bare exe name: a rule like "spotify*" or
@@ -462,7 +462,7 @@ namespace SoundSwitch.Services
             return rules.Any(other =>
                 other.Id != entry.RuleId &&
                 other.Enabled &&
-                other.Enforcement == AppRuleEnforcement.Assignment &&
+                AppRuleAssignmentValidator.IsEligible(other) &&
                 AppRuleIdentityMatcher.SameApp(IdentityOf(other, entry.ExePath), entry.ExePath));
         }
 
@@ -486,24 +486,27 @@ namespace SoundSwitch.Services
             }
 
             var runningPids = RunningProcessesFor(entry.ExePath);
-            if (runningPids.Count == 0)
-                return false; // stays pending
 
-            // One accepted write per flow removes the identity's persisted record: the engine
-            // keys the store by exe, not by pid. Requiring every pid would let an idle
-            // session-less copy block a clear the playing process already performed, while
-            // accepting every no-op would drop the pending clear with the record still in the
-            // store. So: every instance is asked (each also drops its own in-memory override),
-            // and the flow is clear as soon as one with a session accepted it.
-            var cleared = flows.All(flow =>
+            // 1. Detach the live sessions. This does not touch the store record, so a running app
+            //    needs it to leave the route immediately; a session-less pid is a no-op.
+            var cleared = runningPids.Count == 0 || flows.All(flow =>
             {
                 var anyAccepted = false;
                 foreach (var tuple in runningPids)
                     anyAccepted |= _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid);
                 return anyAccepted;
             });
-            if (!cleared)
-                return false; // no pid with a live session yet: stay pending
+
+            // 2. Delete the identity's persisted record. This is what restores the default for a
+            //    closed app (no pid, so no engine call is possible) and what makes the app
+            //    disappear from Windows Settings' per-app list instead of lingering with empty
+            //    role values.
+            var removed = _store.DeleteRecords(entry.ExePath);
+            if (removed < 0)
+                return false; // store not writable right now: keep the claim and retry
+
+            if (!cleared && removed == 0)
+                return false; // live session refused and nothing matched: retry next sighting
 
             _configuration.AssignmentLedger.Remove(entry);
             TrackDeferredClear(entry);

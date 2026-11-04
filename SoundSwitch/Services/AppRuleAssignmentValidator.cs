@@ -8,35 +8,43 @@ using SoundSwitch.Model;
 namespace SoundSwitch.Services
 {
     /// <summary>
-    /// Validation of the constraints an <see cref="AppRuleEnforcement.Assignment"/> rule must
-    /// satisfy before it can be saved: it needs a single concrete exe identity (no regex or
-    /// glob — the persisted store routes one exe identity, and the editor's matching for it is
-    /// exact) and must not carry a window-title pattern (the store keys on identities, not on
-    /// windows). Mode and single-pair constraints are enforced by the editor itself, which only
-    /// offers assignment in Automatic mode and builds exactly one pair there.
+    /// Whether a rule can also be registered as a Windows app assignment (its route written into
+    /// the per-app store so the engine keeps applying it, even while SoundSwitch is closed).
+    ///
+    /// There is no user-facing choice: a rule that <em>can</em> be an assignment always is one,
+    /// and it keeps its dynamic enforcement on top as the fallback (process start, foreground,
+    /// hotkey). The identity route only needs a single concrete exe path — the store routes one
+    /// exe identity, so a regex/glob or a window-title condition cannot be expressed there and
+    /// those rules stay dynamic-only.
     /// </summary>
     public static class AppRuleAssignmentValidator
     {
-        public enum Error
+        /// <summary>
+        /// Whether the rule is eligible to also write an identity assignment: Automatic mode,
+        /// one device pair, a concrete exe path and no window-title condition.
+        /// </summary>
+        public static bool IsEligible(AppSoundRule rule)
         {
-            None,
-            NeedsIdentity,
-            NoWindowTitle
-        }
+            if (rule.Mode != AppRuleMode.Automatic)
+                return false;
 
-        public static Error Validate(AppSoundRule rule)
-        {
-            if (rule.Enforcement != AppRuleEnforcement.Assignment)
-                return Error.None;
+            if (rule.DevicePairs == null || rule.DevicePairs.Count != 1)
+                return false;
 
             if (string.IsNullOrWhiteSpace(rule.ProcessPath) || HasPatternSyntax(rule.ProcessPath))
-                return Error.NeedsIdentity;
+                return false;
 
-            if (!string.IsNullOrWhiteSpace(rule.WindowName))
-                return Error.NoWindowTitle;
-
-            return Error.None;
+            return string.IsNullOrWhiteSpace(rule.WindowName);
         }
+
+        /// <summary>
+        /// Keep <see cref="AppSoundRule.Enforcement"/> in sync with eligibility. Called on save
+        /// and on migration: the flag is derived state, never a user preference (the editor no
+        /// longer offers a choice).
+        /// </summary>
+        /// <returns>The value the flag should hold.</returns>
+        public static AppRuleEnforcement EnforcementFor(AppSoundRule rule) =>
+            IsEligible(rule) ? AppRuleEnforcement.Assignment : AppRuleEnforcement.Dynamic;
 
         /// <summary>
         /// Whether the process field carries regex or glob syntax instead of a concrete exe

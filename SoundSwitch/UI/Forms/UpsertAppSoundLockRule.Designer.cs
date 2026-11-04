@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.UI.Forms
+namespace SoundSwitch.UI.Forms
 {
     partial class UpsertAppSoundLockRule
     {
@@ -443,8 +443,7 @@
             this.rdoEnforcementDynamic.TabStop = true;
             this.rdoEnforcementDynamic.Text = string.Empty;
             this.rdoEnforcementDynamic.UseVisualStyleBackColor = true;
-            this.rdoEnforcementDynamic.CheckedChanged += new System.EventHandler(this.RdoEnforcement_CheckedChanged);
-            // 
+                        // 
             // rdoEnforcementAssignment
             // 
             this.rdoEnforcementAssignment.AutoSize = true;
@@ -452,8 +451,7 @@
             this.rdoEnforcementAssignment.Name = "rdoEnforcementAssignment";
             this.rdoEnforcementAssignment.Text = string.Empty;
             this.rdoEnforcementAssignment.UseVisualStyleBackColor = true;
-            this.rdoEnforcementAssignment.CheckedChanged += new System.EventHandler(this.RdoEnforcement_CheckedChanged);
-            // 
+                        // 
             // lblAssignmentHelper
             // 
             this.lblAssignmentHelper.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
