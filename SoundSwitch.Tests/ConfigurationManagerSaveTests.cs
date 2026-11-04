@@ -106,10 +106,12 @@ public class ConfigurationManagerSaveTests
             var filePath = Path.Combine(directory, nameof(TestConfiguration) + ".json");
             File.WriteAllText(filePath, "previous");
             // A handle scheduled for delete on close (OneDrive/AV style replacement) keeps the
-            // destination delete-pending; the retry hook releases it once the save has observed
-            // the failure, so the retry is deterministic and must succeed.
-            var deletePendingStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None,
-                bufferSize: 1, FileOptions.DeleteOnClose);
+            // destination delete-pending; the write/delete shares keep the sharing check out of
+            // the way, so the save genuinely hits the delete-pending state. The retry hook
+            // releases it once the save has observed the failure, so the retry is deterministic
+            // and must succeed.
+            var deletePendingStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite,
+                FileShare.ReadWrite | FileShare.Delete, bufferSize: 1, FileOptions.DeleteOnClose);
             try
             {
                 Exception failedAttempt = null;
