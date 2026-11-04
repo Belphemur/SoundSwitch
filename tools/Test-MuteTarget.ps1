@@ -14,10 +14,11 @@
     -All to run the entire SoundSwitch.Tests suite, or -Audio to also run the
     SoundSwitch.Audio.Manager.Tests project (COM/hardware dependent, Windows only).
 
-    RefreshDeviceTests.TestMultipleRefresh is excluded: it is a timing-sensitive
-    COM refresh race that CI also skips (Assert.Ignore) and fails intermittently
-    on fast local machines regardless of code changes. The other tests in the
-    fixture (refresh disposal/reconcile) still run.
+    RefreshDeviceTests.TestMultipleRefresh is excluded on every run mode
+    (including -All): it is a timing-sensitive COM refresh race that CI also
+    skips (Assert.Ignore) and fails intermittently on fast local machines
+    regardless of code changes. The other tests in the fixture (refresh
+    disposal/reconcile) still run.
 
     To verify the feature end-to-end against a running SoundSwitch instance, use
     the CLI: `SoundSwitch.CLI.exe mute` reports the mute state of the configured
@@ -80,6 +81,13 @@ $featureFixtures = @(
     'DeviceCyclerTests'                    # device cycling across missing/present devices
 )
 
+# Known-flaky tests, excluded on every run mode (documented above). This list is
+# the single place the exclusion lives; it composes into the one filter used by
+# the feature path AND -All, so the documented exclusion actually applies.
+$flakyExclusions = @(
+    'Name!=TestMultipleRefresh'   # timing-sensitive COM refresh race; CI ignores it (Assert.Ignore)
+)
+
 if ($List) {
     Write-Host 'Feature test fixtures:'
     $featureFixtures | ForEach-Object { Write-Host "  $_" }
@@ -125,14 +133,16 @@ if (-not $NoBuild) {
     $NoBuild = $true
 }
 
+# One filter for every run mode: fixture selection (if any) + flaky exclusions,
+# so the documented exclusion applies on -All too.
 if ($All) {
-    Invoke-TestProject -Project $testProject -Filter $null -Label 'SoundSwitch.Tests (full suite)'
+    $testFilter = $flakyExclusions -join '&'
+    Invoke-TestProject -Project $testProject -Filter $testFilter -Label 'SoundSwitch.Tests (full suite)'
 }
 else {
-    $featureFilter = ($featureFixtures | ForEach-Object { "FullyQualifiedName~$_" }) -join '|'
-    # Skip the timing-sensitive COM race test; CI ignores it for the same reason.
-    $featureFilter = "($featureFilter)&Name!=TestMultipleRefresh"
-    Invoke-TestProject -Project $testProject -Filter $featureFilter -Label 'Mute target + banner scope feature tests'
+    $fixtureFilter = ($featureFixtures | ForEach-Object { "FullyQualifiedName~$_" }) -join '|'
+    $testFilter = "($fixtureFilter)&$($flakyExclusions -join '&')"
+    Invoke-TestProject -Project $testProject -Filter $testFilter -Label 'Mute target + banner scope feature tests'
 }
 
 if ($Audio) {
