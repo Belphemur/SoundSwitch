@@ -37,16 +37,18 @@ namespace SoundSwitch.Framework.Audio.Lister;
 public class CachedAudioDeviceLister : IAudioDeviceLister
 {
     // Dedicated .NET 9 lock serializing the two mutation paths (Refresh's wholesale publish and
-    // ProcessDeviceUpdates' incremental edits). It is held ONLY for the immutable-dictionary
-    // reference swaps (microseconds) — never during COM enumeration, event subscription, or
-    // device disposal. Readers never take it: they read the published snapshot, which is safe
-    // to enumerate only if it is materialized while the lock blocks mutation — the published
-    // Dictionary instances stay live and mutable (see SOUNDSWITCH-49X).
+    // ProcessDeviceUpdates' incremental edits). It is held ONLY for the reference swaps and for
+    // materializing reader snapshots (microseconds) — never during COM enumeration, event
+    // subscription, or device disposal. The published Dictionary instances are live objects the
+    // mutator edits IN PLACE, so any enumeration of them (Refresh's retained-id capture,
+    // GetDevices' filtered snapshot) MUST happen while the lock blocks those edits
+    // (see SOUNDSWITCH-49X).
     private readonly Lock _cacheLock = new Lock();
 
-    // Volatile backing fields give the lock-free readers (GetDevices, DefaultChanged lookup) acquire
-    // semantics on every read, so a reference published inside Refresh's/ProcessDeviceUpdates' lock
-    // is always seen as the latest snapshot. The properties are thin wrappers over these fields.
+    // Volatile backing fields keep reference reads coherent: a reference published inside
+    // Refresh's/ProcessDeviceUpdates' lock is always seen as the latest snapshot. All other
+    // reads are single-reference or single-entry lookups and stay lock-free. The properties are
+    // thin wrappers over these fields.
     private Dictionary<string, DeviceFullInfo> _playbackDevices = new();
     private Dictionary<string, DeviceFullInfo> _recordingDevices = new();
 
@@ -79,14 +81,20 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public DeviceReadOnlyCollection<DeviceFullInfo> GetDevices(EDataFlow type, EDeviceState state)
     {
-        // Lock-free read: the published dictionaries are immutable, so enumerating a snapshot
-        // can never throw "Collection was modified" even while another thread swaps the reference.
-        return type switch
+        // Materialize the filtered snapshot while _cacheLock blocks ProcessDeviceUpdates: the
+        // published Dictionary instances are edited in place under that same lock, so letting
+        // DeviceReadOnlyCollection's constructor enumerate the lazy Values enumeration outside
+        // the lock would throw "Collection was modified" again (SOUNDSWITCH-49X). The resulting
+        // collection is a detached copy, safe to enumerate at any point afterwards.
+        lock (_cacheLock)
         {
-            EDataFlow.eRender => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Values.Where(info => state.HasFlag(info.State)), type),
-            EDataFlow.eCapture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Values.Where(info => state.HasFlag(info.State)), type),
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
+            return type switch
+            {
+                EDataFlow.eRender => new DeviceReadOnlyCollection<DeviceFullInfo>(PlaybackDevices.Values.Where(info => state.HasFlag(info.State)).ToArray(), type),
+                EDataFlow.eCapture => new DeviceReadOnlyCollection<DeviceFullInfo>(RecordingDevices.Values.Where(info => state.HasFlag(info.State)).ToArray(), type),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+        }
     }
 
     private readonly EDeviceState _state;
@@ -372,96 +380,15 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
                     throw;
                 }
 
-                // Reconcile atomically under _cacheLock (this is the only place that reads the
-                // published caches for the reuse decision, so it is immune to concurrent mutation):
-                //  - for each id, keep the EXISTING instance if still alive (preserves its COM
-                //    endpoint + volume subscription); otherwise keep the freshly enumerated one;
-                //  - a freshly enumerated instance that is NOT chosen (existing won), is disposed
-                //    here so its AudioDevice COM reference is released;
-                //  - an old instance absent from the new enumeration is disposed (genuinely removed).
-                // The dispose lists are materialized and disposal itself happens AFTER the swap,
-                // outside the lock (COM-heavy). Readers see the fresh cache during disposal.
-                DeviceFullInfo[] oldDevices;
-                List<DeviceFullInfo> rejectedFresh;
-                List<DeviceFullInfo> newlyPublished;
-                // Ids retained in the caches being published, collected at publication time.
-                // MUST be built here, under _cacheLock: the published dictionaries are live
-                // mutable Dictionary instances (ProcessDeviceUpdates edits them in place under
-                // the same lock), so enumerating their Keys outside the lock races with that
-                // mutation and throws "Collection was modified" (Sentry SOUNDSWITCH-49X).
-                HashSet<string> retainedIds;
-                lock (_cacheLock)
-                {
-                    oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
-
-                    // Choose the surviving instance per id (reuse existing when alive).
-                    var mergedPlayback = new Dictionary<string, DeviceFullInfo>(playbackDevices.Count);
-                    var mergedRecording = new Dictionary<string, DeviceFullInfo>(recordingDevices.Count);
-                    rejectedFresh = new List<DeviceFullInfo>();
-                    // Instances we actually publish fresh (vs. reuse an existing one). Used to
-                    // subscribe ONLY the new devices after publishing, so reused instances keep
-                    // their existing volume subscription instead of being re-subscribed.
-                    newlyPublished = new List<DeviceFullInfo>();
-
-                    foreach (var kvp in playbackDevices)
-                    {
-                        DeviceFullInfo chosen;
-                        if (PlaybackDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
-                        {
-                            chosen = existing;
-                        }
-                        else
-                        {
-                            chosen = kvp.Value; // fresh wins
-                        }
-
-                        mergedPlayback[kvp.Key] = chosen;
-
-                        if (!newIds.Contains(kvp.Key)) continue; // not fresh, no reject/subscribe possible
-                        if (!ReferenceEquals(chosen, kvp.Value))
-                        {
-                            rejectedFresh.Add(kvp.Value); // fresh instance lost the race
-                        }
-                        else
-                        {
-                            newlyPublished.Add(chosen); // fresh instance published
-                        }
-                    }
-
-                    foreach (var kvp in recordingDevices)
-                    {
-                        DeviceFullInfo chosen;
-                        if (RecordingDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
-                        {
-                            chosen = existing;
-                        }
-                        else
-                        {
-                            chosen = kvp.Value; // fresh wins
-                        }
-
-                        mergedRecording[kvp.Key] = chosen;
-
-                        if (!newIds.Contains(kvp.Key)) continue;
-                        if (!ReferenceEquals(chosen, kvp.Value))
-                        {
-                            rejectedFresh.Add(kvp.Value);
-                        }
-                        else
-                        {
-                            newlyPublished.Add(chosen);
-                        }
-                    }
-
-                    _playbackDevices = mergedPlayback;
-                    _recordingDevices = mergedRecording;
-
-                    // Snapshot the retained ids from the merging locals while still under the
-                    // lock: the shared lock blocks any concurrent ProcessDeviceUpdates edit, and
-                    // the resulting HashSet is a detached copy no later mutation can affect.
-                    retainedIds = new HashSet<string>(
-                        mergedPlayback.Keys.Concat(mergedRecording.Keys));
-                }
+                // Reconcile & publish atomically under _cacheLock (this is the only place that
+                // reads the published caches for the reuse decision, so it is immune to concurrent
+                // mutation): for each id, keep the EXISTING instance if still alive (preserves its
+                // COM endpoint + volume subscription); otherwise keep the freshly enumerated one,
+                // and reject (dispose afterwards) the fresh instance that lost the race. All
+                // post-lock work (disposal, subscription) uses the detached data returned and
+                // happens AFTER the lock is released (COM-heavy), so readers see the fresh cache.
+                var (oldDevices, retainedIds, rejectedFresh, newlyPublished) =
+                    PublishRefreshedDevices(playbackDevices, recordingDevices, newIds);
 
                 // Dispose freshly enumerated instances that were not published (rejected in favour
                 // of a still-alive existing instance), then dispose old instances absent from the
@@ -514,6 +441,100 @@ public class CachedAudioDeviceLister : IAudioDeviceLister
         {
             Refreshing = false;
             stopWatch.Stop();
+        }
+    }
+
+    /// <summary>
+    /// Reconciles freshly enumerated devices with the currently published caches and publishes the
+    /// merged result, all under <see cref="_cacheLock"/>. This is <see cref="Refresh"/>'s
+    /// publication step, extracted verbatim so tests can drive the real publication and
+    /// retained-id capture path COM-free.
+    /// Returns what the caller needs AFTER the lock is released, all detached from the live
+    /// caches: the materialized pre-refresh <paramref name="playbackDevices"/>-vs-published
+    /// <c>oldDevices</c>; <c>retainedIds</c>, the ids retained in the caches being published,
+    /// captured from the merging locals while STILL under the lock (the published Dictionary
+    /// instances are live: <see cref="ProcessDeviceUpdates"/> edits them in place under this same
+    /// lock, so enumerating their keys outside it races with that mutation and throws
+    /// "Collection was modified" — Sentry SOUNDSWITCH-49X); <c>rejectedFresh</c>, the freshly
+    /// enumerated instances that lost the reuse race; and <c>newlyPublished</c>, the fresh
+    /// instances that now sit in the cache.
+    /// </summary>
+    private (DeviceFullInfo[] oldDevices, HashSet<string> retainedIds, List<DeviceFullInfo> rejectedFresh, List<DeviceFullInfo> newlyPublished)
+        PublishRefreshedDevices(Dictionary<string, DeviceFullInfo> playbackDevices,
+            Dictionary<string, DeviceFullInfo> recordingDevices, HashSet<string> newIds)
+    {
+        lock (_cacheLock)
+        {
+            var oldDevices = PlaybackDevices.Values.Concat(RecordingDevices.Values).ToArray();
+
+            // Choose the surviving instance per id (reuse existing when alive).
+            var mergedPlayback = new Dictionary<string, DeviceFullInfo>(playbackDevices.Count);
+            var mergedRecording = new Dictionary<string, DeviceFullInfo>(recordingDevices.Count);
+            var rejectedFresh = new List<DeviceFullInfo>();
+            // Instances we actually publish fresh (vs. reuse an existing one). Used to subscribe
+            // ONLY the new devices after publishing, so reused instances keep their existing
+            // volume subscription instead of being re-subscribed.
+            var newlyPublished = new List<DeviceFullInfo>();
+
+            foreach (var kvp in playbackDevices)
+            {
+                DeviceFullInfo chosen;
+                if (PlaybackDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
+                {
+                    chosen = existing;
+                }
+                else
+                {
+                    chosen = kvp.Value; // fresh wins
+                }
+
+                mergedPlayback[kvp.Key] = chosen;
+
+                if (!newIds.Contains(kvp.Key)) continue; // not fresh, no reject/subscribe possible
+                if (!ReferenceEquals(chosen, kvp.Value))
+                {
+                    rejectedFresh.Add(kvp.Value); // fresh instance lost the race
+                }
+                else
+                {
+                    newlyPublished.Add(chosen); // fresh instance published
+                }
+            }
+
+            foreach (var kvp in recordingDevices)
+            {
+                DeviceFullInfo chosen;
+                if (RecordingDevices.TryGetValue(kvp.Key, out var existing) && !existing.IsDisposed)
+                {
+                    chosen = existing;
+                }
+                else
+                {
+                    chosen = kvp.Value; // fresh wins
+                }
+
+                mergedRecording[kvp.Key] = chosen;
+
+                if (!newIds.Contains(kvp.Key)) continue;
+                if (!ReferenceEquals(chosen, kvp.Value))
+                {
+                    rejectedFresh.Add(kvp.Value);
+                }
+                else
+                {
+                    newlyPublished.Add(chosen);
+                }
+            }
+
+            _playbackDevices = mergedPlayback;
+            _recordingDevices = mergedRecording;
+
+            // Snapshot the retained ids from the merging locals while still under the lock: the
+            // shared lock blocks any concurrent ProcessDeviceUpdates edit, and the resulting
+            // HashSet is a detached copy no later mutation can affect.
+            var retainedIds = new HashSet<string>(mergedPlayback.Keys.Concat(mergedRecording.Keys));
+
+            return (oldDevices, retainedIds, rejectedFresh, newlyPublished);
         }
     }
 
