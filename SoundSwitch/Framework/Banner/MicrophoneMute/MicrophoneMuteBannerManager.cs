@@ -112,9 +112,34 @@ public class MicrophoneMuteBannerManager
             var newBanner = new BannerForm();
             newBanner.SetData(data);
             // Arrange existing banners vertically
-            _activeBanners.Add(microphoneId, newBanner);
+            TrackBanner(microphoneId, newBanner);
             RearrangeBanners();
         }
+    }
+
+    /// <summary>
+    /// Tracks the banner for a microphone and clears the tracked reference when the form is
+    /// disposed, whatever path disposes it (manager call, fade-out after a click, ...). Without
+    /// this, a form dying outside the manager would leave a stale disposed entry behind and the
+    /// next rearrange pass would dereference it (Sentry SOUNDSWITCH-40H). Surviving banners are
+    /// pulled up so the vacated spot does not leave a gap.
+    /// </summary>
+    private void TrackBanner(string microphoneId, BannerForm banner)
+    {
+        _activeBanners[microphoneId] = banner;
+        banner.Disposed += (_, _) =>
+        {
+            // Only clear the entry while it still points at this banner: the temporary
+            // unmute notification removes its own entry before disposing the form, and
+            // that path already rearranges the survivors on Disposed.
+            if (!_activeBanners.TryGetValue(microphoneId, out var tracked) || !ReferenceEquals(tracked, banner))
+                return;
+
+            _activeBanners.Remove(microphoneId);
+            // The form died on its own, without going through the manager: run a layout
+            // pass so the surviving banners move up into the vacated spot.
+            RearrangeBanners();
+        };
     }
 
     /// <summary>
@@ -223,8 +248,22 @@ public class MicrophoneMuteBannerManager
     {
         var offset = 0;
 
-        foreach (var banner in _activeBanners.Values)
+        // Snapshot the tracked banners before iterating: a rearrange pass can be triggered from
+        // a banner's Disposed event (asynchronous fade-out after a click), so the dictionary can
+        // change between the moment this pass is scheduled and its execution.
+        foreach (var (microphoneId, banner) in _activeBanners.ToArray())
         {
+            // Expected stale-banner condition: the form died without going through the manager.
+            // Drop the tracked reference instead of dereferencing it; not an error.
+            if (banner == null || banner.IsDisposed)
+            {
+                Log.Debug("Rearranging mute banners: dropping stale banner for {MicrophoneId}", microphoneId);
+                // Identity-checked: the dictionary may have changed while this pass ran.
+                if (_activeBanners.TryGetValue(microphoneId, out var tracked) && ReferenceEquals(tracked, banner))
+                    _activeBanners.Remove(microphoneId);
+                continue;
+            }
+
             banner.UpdatePosition(offset);
             offset += banner.Height + SPACING;
         }
