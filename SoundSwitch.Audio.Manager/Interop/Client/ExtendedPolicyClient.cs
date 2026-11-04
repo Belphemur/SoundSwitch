@@ -145,7 +145,7 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
-                if (!PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, null))
+                if (!PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceId: null!))
                     allCleared = false;
             }
             catch (Exception ex)
