@@ -161,7 +161,7 @@ public static class TelemetryService
     public static void TrackAppRuleAssignmentDeferredClear(double seconds)
     {
         if (!AppConfigs.Configuration.Telemetry) return;
-        SentrySdk.Metrics.EmitGauge("soundswitch.apprule.assignment_deferred_clear", seconds, (string?)null);
+        SentrySdk.Metrics.EmitGauge("soundswitch.apprule.assignment_deferred_clear", seconds, MeasurementUnit.None);
     }
 
     public static void TrackProfileActivationFailed(string reason)
