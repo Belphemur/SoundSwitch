@@ -8,9 +8,9 @@ namespace SoundSwitch.Services
     /// Case-insensitive exe identity matching between the paths Windows writes into its per-app
     /// persisted endpoint store (NT device form <c>\Device\HarddiskVolume&lt;N&gt;\...</c>) and
     /// drive-letter process paths. Windows resolves a record's key by exact exe identity; two
-    /// paths identify the same app when one is a suffix of the other after both are reduced to
-    /// their volume-relative form (the letter path of the same exe equals the NT path's
-    /// remainder). Used by <see cref="AppSoundLockManager"/>, the
+    /// paths identify the same app when one is a <em>path-component-boundary</em> suffix of the
+    /// other after both are reduced to their volume-relative form (the letter path of the same
+    /// exe equals the NT path's remainder). Used by <see cref="AppSoundLockManager"/>, the
     /// <see cref="AppRuleAssignmentReconciler"/> and the owner query for the rule list.
     /// </summary>
     public static class AppRuleIdentityMatcher
@@ -23,8 +23,22 @@ namespace SoundSwitch.Services
             var l = Normalize(left);
             var r = Normalize(right);
             return l.Length > 0 && r.Length > 0 &&
-                   (l.EndsWith(r, StringComparison.OrdinalIgnoreCase) ||
-                    r.EndsWith(l, StringComparison.OrdinalIgnoreCase));
+                   (EndsWithAtComponentBoundary(l, r) || EndsWithAtComponentBoundary(r, l));
+        }
+
+        /// <summary>
+        /// Whether <paramref name="shorter"/> prefixes-end-matches <paramref name="longer"/> —
+        /// a case-insensitive suffix match that additionally requires the tail to begin at a
+        /// path-component boundary: a stored relative path may not match inside a longer
+        /// directory name (<c>MyApps\Setup.exe</c> is not <c>Apps\Setup.exe</c>). Offset 0
+        /// counts as a boundary (the whole path is the final component).
+        /// </summary>
+        public static bool EndsWithAtComponentBoundary(string longer, string shorter)
+        {
+            var index = longer.Length - shorter.Length;
+            return index >= 0 &&
+                   string.Compare(longer, index, shorter, 0, shorter.Length, StringComparison.OrdinalIgnoreCase) == 0 &&
+                   (index == 0 || longer[index - 1] == '\\');
         }
 
         /// <summary>

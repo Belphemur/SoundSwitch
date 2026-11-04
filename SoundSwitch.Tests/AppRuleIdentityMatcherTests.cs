@@ -19,12 +19,25 @@ public class AppRuleIdentityMatcherTests
     [TestCase(@"C:\Apps\Spotify\Spotify.exe", @"C:\Apps\Spotify\Spotify.exe", true)]
     [TestCase(@"C:\Apps\Spotify\Spotify.exe", "Different.exe", false)]
     [TestCase(@"Spotify.exe", @"C:\Any\Where\Spotify.exe", true)]
+    // A suffix that continues a longer directory/component name is a different app:
+    [TestCase(@"\Device\HarddiskVolume2\Tools\MyApps\Setup.exe", @"C:\Apps\Setup.exe", false)]
+    [TestCase(@"C:\Tools\MyApps\Setup.exe", @"\Device\HarddiskVolume2\Apps\Setup.exe", false)]
+    [TestCase(@"Spotify.exe", @"C:\Any\Where\MySpotify.exe", false)]
     [TestCase("", @"C:\Apps\Spotify\Spotify.exe", false)]
     [TestCase(null, @"C:\Apps\Spotify\Spotify.exe", false)]
     [TestCase(@"C:\Apps\Spotify\Spotify.exe", null, false)]
     public void SameApp_MatchesVolumeRelatively(string left, string right, bool expected)
     {
         AppRuleIdentityMatcher.SameApp(left, right).Should().Be(expected);
+    }
+
+    [Test]
+    public void EndsWithAtComponentBoundary_RequiresSeparator()
+    {
+        AppRuleIdentityMatcher.EndsWithAtComponentBoundary(@"C:\Tools\MyApps\Setup.exe", @"Apps\Setup.exe").Should().BeFalse();
+        AppRuleIdentityMatcher.EndsWithAtComponentBoundary(@"C:\Tools\Apps\Setup.exe", @"Apps\Setup.exe").Should().BeTrue();
+        AppRuleIdentityMatcher.EndsWithAtComponentBoundary(@"MySpotify.exe", "Spotify.exe").Should().BeFalse();
+        AppRuleIdentityMatcher.EndsWithAtComponentBoundary("Spotify.exe", "Spotify.exe").Should().BeTrue("the whole path is the final component");
     }
 
     [Test]

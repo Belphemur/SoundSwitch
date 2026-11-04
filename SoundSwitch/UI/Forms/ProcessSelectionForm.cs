@@ -12,6 +12,7 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
+using SoundSwitch.Services;
 using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.UI.Forms;
@@ -63,6 +64,7 @@ public partial class ProcessSelectionForm : Form
     protected override void OnHandleDestroyed(EventArgs e)
     {
         WindowsAPIAdapter.SystemThemeChanged -= OnSystemThemeChanged;
+        DisposeRowFonts();
         base.OnHandleDestroyed(e);
     }
 
@@ -86,6 +88,10 @@ public partial class ProcessSelectionForm : Form
     internal void ApplyTheme()
     {
         ApplyTheme(dgvProcesses, WindowsThemeHelper.IsDarkModeEnabled());
+        // The per-row fonts hang off the theme and current font: drop them so the restyle
+        // below recreates them against the new theme instead of styling new rows with a
+        // stale GDI object (they are disposed with the form in OnHandleDestroyed).
+        DisposeRowFonts();
         foreach (DataGridViewRow row in dgvProcesses.Rows)
         {
             StyleRow(row);
@@ -140,7 +146,9 @@ public partial class ProcessSelectionForm : Form
                 row.DefaultCellStyle.ForeColor = isDarkMode ? DarkGridForegroundColor : SystemColors.ControlText;
                 row.DefaultCellStyle.SelectionBackColor = row.DefaultCellStyle.BackColor;
                 row.DefaultCellStyle.SelectionForeColor = row.DefaultCellStyle.ForeColor;
-                row.DefaultCellStyle.Font = new Font(dgvProcesses.Font, FontStyle.Bold);
+                // Cached fonts: one GDI object for every header/not-running row instead of a
+                // fresh one per row per rebuild (the grid restyles on every filter change).
+                row.DefaultCellStyle.Font = _headerFont ??= new Font(dgvProcesses.Font, FontStyle.Bold);
                 // Section band: a taller, full-width emphasised row that separates
                 // the groups (the row-level style covers every column at once).
                 row.Height = dgvProcesses.RowTemplate.Height + 6;
@@ -150,10 +158,21 @@ public partial class ProcessSelectionForm : Form
             {
                 var isDarkMode = WindowsThemeHelper.IsDarkModeEnabled();
                 row.DefaultCellStyle.ForeColor = isDarkMode ? DarkGridDimmedColor : SystemColors.GrayText;
-                row.DefaultCellStyle.Font = new Font(dgvProcesses.Font, FontStyle.Italic);
+                row.DefaultCellStyle.Font = _notRunningFont ??= new Font(dgvProcesses.Font, FontStyle.Italic);
                 break;
             }
         }
+    }
+
+    private Font? _headerFont;
+    private Font? _notRunningFont;
+
+    private void DisposeRowFonts()
+    {
+        _headerFont?.Dispose();
+        _headerFont = null;
+        _notRunningFont?.Dispose();
+        _notRunningFont = null;
     }
 
     private void LocalizeForm()
@@ -307,8 +326,10 @@ public partial class ProcessSelectionForm : Form
             return false;
 
         // Volume-prefix-insensitive suffix match (design doc §6.1): the store keeps NT device
-        // paths, so compare on the remainder after the \Device\HarddiskVolume<N>\ prefix.
-        return persistedRelativePaths.Any(relative => processPath.EndsWith(relative, StringComparison.OrdinalIgnoreCase));
+        // paths, so compare on the remainder after the \Device\HarddiskVolume<N>\ prefix —
+        // aligned on a path-component boundary so a stored "Apps\Setup.exe" does not match a
+        // running "C:\Tools\MyApps\Setup.exe".
+        return persistedRelativePaths.Any(relative => AppRuleIdentityMatcher.SameApp(processPath, relative));
     }
 
     private static string GetVolumeRelativePath(string ntPath)
@@ -341,7 +362,7 @@ public partial class ProcessSelectionForm : Form
                      .GroupBy(record => GetVolumeRelativePath(record.ExePath), StringComparer.OrdinalIgnoreCase)
                      .Where(group => group.Key.Length > 0))
         {
-            if (_allProcesses.Any(info => info.Path.Length > 0 && info.Path.EndsWith(records.Key, StringComparison.OrdinalIgnoreCase)))
+            if (_allProcesses.Any(info => info.Path.Length > 0 && AppRuleIdentityMatcher.SameApp(info.Path, records.Key)))
                 continue; // covered by the running row(s)
 
             var outputDevice = defaultPlaybackName;
@@ -457,23 +478,16 @@ public partial class ProcessSelectionForm : Form
 
     private void TxtFilter_TextChanged(object sender, EventArgs e)
     {
-        // A text change can arrive while the grid is still initialising (the list is
-        // built synchronously in the constructor, but not yet run); UpdateGrid simply
-        // has nothing to filter yet.
-        if (_allProcesses != null)
-        {
-            // The third group stays collapsed until the filter gives a reason to show
-            // it: any filter expands it so its matches are visible; clearing returns
-            // to the state the toggle row controls (manual expansions stick).
-            if (txtFilter.Text.Length > 0)
-            {
-                _showAllProcesses = true;
-            }
-            else
-            {
-                _showAllProcesses = _allProcessesExpandedManually;
-            }
-        }
+        // A text change can arrive while the grid is still initialising (the list is built
+        // synchronously in the constructor, but not yet run); neither process list exists to
+        // filter yet.
+        if (_allProcesses == null || _notRunningApps == null)
+            return;
+
+        // The third group stays collapsed until the filter gives a reason to show
+        // it: any filter expands it so its matches are visible; clearing returns
+        // to the state the toggle row controls (manual expansions stick).
+        _showAllProcesses = txtFilter.Text.Length > 0 || _allProcessesExpandedManually;
 
         UpdateGrid();
     }
