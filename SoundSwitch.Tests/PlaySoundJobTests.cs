@@ -59,7 +59,11 @@ public class PlaySoundJobTests
             new AudioDeviceDisconnectedException(unchecked((int)0x80070490)),
             new AudioDeviceInUseException(unchecked((int)0x8889000A)),
             new AudioFormatNotSupportedException(unchecked((int)0x88890058)),
-            new AudioExclusiveModeNotAllowedException(unchecked((int)0x88890073))
+            new AudioExclusiveModeNotAllowedException(unchecked((int)0x88890073)),
+            // A plain E_NOTFOUND wraps the "no default endpoint exists" answer (the last render
+            // endpoint vanished between resolution and player creation — WasapiPlayerBuilder
+            // fallback)
+            new CoreAudioException(unchecked((int)0x80070490))
         };
 
         foreach (var exception in exceptions)
@@ -106,6 +110,80 @@ public class PlaySoundJobTests
             "because a missing endpoint for notification playback is expected, not an error");
     }
 
+    [Test]
+    public async Task PlayToCompletionAsync_LostCompletionSignal_IsAbandonedWithoutBlockingTheJob()
+    {
+        // Deterministic stand-in for the failure mode of issue #2557: the endpoint died
+        // mid-playback and PlaybackStopped was never raised. The bounded wait must end the
+        // job (return once, at Warning), and the teardown must be handed to the background:
+        // WasapiPlayer joins its render thread synchronously on Stop()/Dispose(), and that
+        // thread can be wedged inside a driver call, so releasing it here would turn the
+        // bounded wait into an unbounded join again.
+        var job = new PlaySoundJob(null, MakeSilentSound()) { PlaybackCompletionTimeout = TimeSpan.FromMilliseconds(150) };
+        var player = new PlayerNeverCompleting();
+
+        await job.PlayToCompletionAsync(player, CancellationToken.None).WaitAsync(Timeout);
+
+        player.Played.Should().BeTrue("because the abandon path runs after playback started");
+        (await player.DisposalStarted.Task.WaitAsync(Timeout)).Should()
+            .BeTrue("because the teardown of the abandoned playback must be detached from the job, not awaited by it");
+
+        EventsFor(LogEventLevel.Error).Should().BeEmpty("because losing the completion signal is expected after a disconnect (issue #2557)");
+        EventsFor(LogEventLevel.Warning).Should().Contain(e => e.RenderMessage().Contains("abandoning it"));
+    }
+
+    /// <summary>
+    /// A player double that starts but never raises <c>PlaybackStopped</c>, and whose
+    /// <c>DisposeAsync</c> records that teardown was (detached) started but never returns
+    /// until released — mimicking NAudio parking the render-thread join.
+    /// </summary>
+    private sealed class PlayerNeverCompleting : IWavePlayer, IAsyncDisposable
+    {
+        private readonly TaskCompletionSource<bool> _disposalStarted = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly TaskCompletionSource<bool> _disposalReleased = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        public bool Played { get; private set; }
+        public TaskCompletionSource<bool> DisposalStarted => _disposalStarted;
+
+        public event EventHandler<StoppedEventArgs>? PlaybackStopped;
+
+        public PlaybackState PlaybackState { get; private set; }
+        public WaveFormat OutputWaveFormat { get; } = new WaveFormat(8000, 16, 1);
+        public float Volume { get; set; }
+
+        public void Init(IWaveProvider waveStream)
+        {
+            PlaybackState = PlaybackState.Stopped;
+        }
+
+        public void Play()
+        {
+            Played = true;
+            PlaybackState = PlaybackState.Playing;
+        }
+
+        public void Pause()
+        {
+        }
+
+        public void Stop()
+        {
+            // Not called on the abandon path any more: teardown is detached.
+            PlaybackState = PlaybackState.Stopped;
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            _disposalStarted.TrySetResult(true);
+            return new ValueTask(_disposalReleased.Task);
+        }
+
+        public void Dispose()
+        {
+            PlaybackState = PlaybackState.Stopped;
+        }
+    }
+
     private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(30);
     private const BindingFlags NonPublicInstance = BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -123,7 +201,9 @@ public class PlaySoundJobTests
     private IReadOnlyList<LogEvent> EventsFor(LogEventLevel level)
     {
         _sink!.Should().NotBeNull();
-        lock (_sink)
+        // Same monitor as InMemorySink.Emit, or this enumeration races the writes coming from
+        // the playback thread while the job runs.
+        lock (_sink.Events)
         {
             return _sink.Events.FindAll(e => e.Level == level);
         }
