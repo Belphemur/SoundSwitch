@@ -170,8 +170,9 @@ public static class ConfigurationManager
                     // Best effort: no-op if the temp file has been moved to the destination already.
                     File.Delete(tempPath);
                 }
-                catch (IOException ex)
+                catch (Exception ex)
                 {
+                    // A leaked temporary file is harmless: the next save overwrites or deletes it.
                     Log.Debug(ex, "Could not delete temporary configuration save file {tempPath}", tempPath);
                 }
             }
