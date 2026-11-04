@@ -33,6 +33,10 @@ This file defines repository-wide guidance for the SoundSwitch workspace. More s
 
 Apply **DRY > SOLID > KISS** in that priority order when they conflict. The detailed guidance lives in the repo skill [`.opencode/skills/dry-solid-kiss/SKILL.md`](./.opencode/skills/dry-solid-kiss/SKILL.md); load the `dry-solid-kiss` skill when implementing, refactoring, or reviewing code.
 
+## Design Docs and ADRs
+
+Significant changes (new/reworked user-facing features, cross-project changes, schema migrations, or changes with real design alternatives) get an ADR under `docs/design/<topic>/<YYYY-MM-DD>-<slug>.md` **before** implementation. Load the `design-docs` skill ([`.opencode/skills/design-docs/SKILL.md`](./.opencode/skills/design-docs/SKILL.md); template at [`TEMPLATE.md`](./.opencode/skills/design-docs/TEMPLATE.md)) when the user asks for an ADR or when planning such a change. When implementing a change that already has an ADR, read the ADR first and keep it current in the same PR.
+
 ## Pull Request Reviews
 
 To answer and close out GitHub review threads (CodeRabbit, Kody, or human), load the `answer-pull-request-reviews` skill ([`.agents/skills/answer-pull-request-reviews/SKILL.md`](./.agents/skills/answer-pull-request-reviews/SKILL.md)); it drives `tools/Review-Threads.ps1` to list threads via the gh CLI, decide fix-vs-push-back per thread, then reply and resolve until zero remain.
