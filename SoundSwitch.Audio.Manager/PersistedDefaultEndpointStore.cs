@@ -114,6 +114,30 @@ namespace SoundSwitch.Audio.Manager
         }
 
         /// <summary>
+        /// Strip the NT device volume prefix (<c>\Device\HarddiskVolume&lt;N&gt;\</c>) off a store
+        /// exe path, leaving the volume-relative remainder that both the picker and the
+        /// app-rules reconciler compare case-insensitively. Empty when the path has no
+        /// recognizable volume prefix.
+        /// </summary>
+        public static string GetVolumeRelativePath(string? ntPath)
+        {
+            const string volumePrefix = @"\Device\HarddiskVolume";
+            if (string.IsNullOrEmpty(ntPath) || !ntPath.StartsWith(volumePrefix, StringComparison.OrdinalIgnoreCase))
+                return string.Empty;
+
+            var index = volumePrefix.Length;
+            while (index < ntPath.Length && char.IsDigit(ntPath[index]))
+            {
+                index++;
+            }
+
+            if (index < ntPath.Length && ntPath[index] == '\\')
+                return ntPath.Substring(index + 1);
+
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Open a <c>HKEY_CURRENT_USER\...</c> style registry path read-only.
         /// Returns null when the key doesn't exist; other hives are unsupported by design.
         /// </summary>
@@ -197,7 +221,9 @@ namespace SoundSwitch.Audio.Manager
             if (interfaceIndex < 0)
                 return false;
 
-            var interfaceId = token.Substring(interfaceIndex + 1);
+            // The engine writes the trailing interface id brace-wrapped
+            // (<token>#<interface with braces>); normalize so both shapes compare.
+            var interfaceId = token.Substring(interfaceIndex + 1).Trim('{', '}');
             if (string.Equals(interfaceId, RenderInterfaceId, StringComparison.OrdinalIgnoreCase))
             {
                 flow = EDataFlow.eRender;
