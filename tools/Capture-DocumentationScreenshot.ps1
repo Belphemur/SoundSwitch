@@ -51,6 +51,12 @@
     second-level dialog, e.g. the "Select a process" picker opened from the
     "Add Rule" dialog) is captured instead. Requires -Click.
 
+.PARAMETER ThenClickRow
+    Text of a cell in a row to click inside the dialog opened by -Click, after
+    -ThenClick is applied (e.g. the collapsible "Show all processes" band of the
+    process picker, which has no button to click). The first row with a cell
+    containing the text is activated with a simulated mouse click. Requires -Click.
+
 .PARAMETER OutputDirectory
     Directory the PNG is written to when -Name is not rooted.
     Defaults to <repo>\img\Documentation.
@@ -96,6 +102,10 @@
     Opens the "Add Rule" dialog, then the "Select a process" picker inside it, and captures the picker.
 
 .EXAMPLE
+    .\tools\Capture-DocumentationScreenshot.ps1 -Name "AppRules Process Picker" -Tab "App Rules" -Click addAppSoundRuleButton -ThenClick btnSelectProcess -ThenClickRow "Show all processes"
+    Same as above, and additionally activates the collapsible "Show all processes" band so the full process list is visible in the capture.
+
+.EXAMPLE
     .\tools\Capture-DocumentationScreenshot.ps1 -Name Playback -Tab Playback -NoBuild -KeepOpen
     Captures the Playback tab with the existing build and leaves the window open for review.
 
@@ -114,6 +124,8 @@ param(
     [string]$Select,
 
     [string]$ThenClick,
+
+    [string]$ThenClickRow,
 
     [string]$OutputDirectory,
 
@@ -151,6 +163,10 @@ if (-not $ListWindows -and [string]::IsNullOrWhiteSpace($Name)) {
 
 if ($ThenClick -and -not $Click) {
     throw '-ThenClick requires -Click: it opens a second-level dialog from that dialog.'
+}
+
+if ($ThenClickRow -and -not $Click) {
+    throw '-ThenClickRow requires -Click: it activates a row inside that dialog.'
 }
 
 # --- Win32 interop -----------------------------------------------------------------
@@ -208,6 +224,24 @@ namespace SoundSwitch.DocCapture
 
         [DllImport("user32.dll")]
         public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetCursorPos(int x, int y);
+
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(uint dwFlags, int dx, int dy, uint dwData, UIntPtr dwExtraInfo);
+
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref POINT point);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
     }
 }
 '@
@@ -467,7 +501,9 @@ function Invoke-ButtonAndFindDialog {
         [AllowEmptyCollection()]
         [long[]]$KnownHandles,
 
-        [int]$TimeoutSeconds = 60
+        [int]$TimeoutSeconds = 60,
+
+        [int]$WaitSeconds = 0
     )
 
     Write-Host "Clicking '$ButtonId'..." -ForegroundColor Cyan
@@ -475,7 +511,8 @@ function Invoke-ButtonAndFindDialog {
 
     $dialogHandle = [IntPtr]::Zero
     $dialogTitle = $null
-    $dialogDeadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $waitSeconds = if ($WaitSeconds -gt 0) { $WaitSeconds } else { $TimeoutSeconds }
+    $dialogDeadline = (Get-Date).AddSeconds($waitSeconds)
     while ((Get-Date) -lt $dialogDeadline -and $dialogHandle -eq [IntPtr]::Zero) {
         foreach ($candidate in @(Get-TopLevelWindows -ProcessId $ProcessId)) {
             if ($KnownHandles -notcontains $candidate.Handle.ToInt64()) {
@@ -491,10 +528,74 @@ function Invoke-ButtonAndFindDialog {
     }
 
     if ($dialogHandle -eq [IntPtr]::Zero) {
-        throw "No window opened after clicking '$ButtonId' within $TimeoutSeconds seconds."
+        throw "No window opened after clicking '$ButtonId' within $waitSeconds seconds."
     }
 
     return [pscustomobject]@{ Handle = $dialogHandle; Title = $dialogTitle }
+}
+
+function Select-DialogRow {
+    <#
+        Activates the row whose cell text contains the given text inside the
+        window (e.g. the picker's collapsible "Show all processes" band, which
+        has no button whose BM_CLICK can be posted). The grid exposes rows as
+        custom elements whose cells ("DataItem") carry their display text in
+        the Value pattern.
+
+        The dialog is pushed to the top of the z-order first: modal sub-dialogs
+        of a non-foreground Settings window stay behind whichever window covers
+        them, and a cursor click would land on that window instead of the row.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$RowText
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    # HWND_TOPMOST; topmost is temporary (the app is closed right after the capture).
+    [SoundSwitch.DocCapture.Native]::SetWindowPos($Handle, [IntPtr](-1), 0, 0, 0, 0, 0x0043) | Out-Null # SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW
+    [SoundSwitch.DocCapture.Native]::SetForegroundWindow($Handle) | Out-Null
+    Start-Sleep -Milliseconds 200
+
+    $window = [System.Windows.Automation.AutomationElement]::FromHandle($Handle)
+    if ($null -eq $window) {
+        throw "Window is not reachable through UI Automation."
+    }
+
+    $rowCondition = [System.Windows.Automation.PropertyCondition]::new(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+        [System.Windows.Automation.ControlType]::Custom)
+    $rows = $window.FindAll([System.Windows.Automation.TreeScope]::Descendants, $rowCondition)
+    foreach ($row in $rows) {
+        $cells = $row.FindAll([System.Windows.Automation.TreeScope]::Children, [System.Windows.Automation.Condition]::TrueCondition)
+        foreach ($cell in $cells) {
+            $valuePattern = $null
+            if (-not $cell.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
+                continue
+            }
+
+            $text = $valuePattern.Current.Value
+            if ([string]::IsNullOrEmpty($text) -or $text.IndexOf($RowText, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
+                continue
+            }
+
+            $rect = $row.Current.BoundingRectangle
+            [SoundSwitch.DocCapture.Native]::SetCursorPos([int]($rect.X + $rect.Width / 2), [int]($rect.Y + $rect.Height / 2)) | Out-Null
+            Start-Sleep -Milliseconds 150
+            [SoundSwitch.DocCapture.Native]::mouse_event(0x0002, 0, 0, 0, [UIntPtr]::Zero) # left down
+            Start-Sleep -Milliseconds 60
+            [SoundSwitch.DocCapture.Native]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero) # left up
+            Write-Host "Clicked row with cell text '$text'..." -ForegroundColor Cyan
+            return
+        }
+    }
+
+    throw "No row with cell text '$RowText' was found in the dialog."
 }
 
 function Save-WindowScreenshot {
@@ -714,9 +815,33 @@ try {
                 throw "Button '$ThenClick' was not found in the dialog opened by '$Click'."
             }
 
-            $innerDialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $innerButton -ButtonId $ThenClick -KnownHandles $existingDialogHandles -TimeoutSeconds $TimeoutSeconds
+            try {
+                $innerDialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $innerButton -ButtonId $ThenClick -KnownHandles $existingDialogHandles -TimeoutSeconds $TimeoutSeconds -WaitSeconds 10
+            }
+            catch {
+                # The dialog may already be open (the Add-rule flow auto-opens its process
+                # picker from OnShown, and the editor refuses to stack a second one) —
+                # reuse the already-open dialog instead of waiting for a new window.
+                $knownSecondLevel = @(Get-TopLevelWindows -ProcessId $process.Id | Where-Object {
+                    $_.Handle.ToInt64() -in $existingDialogHandles -and
+                    $_.Handle.ToInt64() -ne $dialogHandle -and
+                    $_.Handle.ToInt64() -ne $settingsHandle
+                })
+                if ($knownSecondLevel.Count -eq 0) {
+                    throw "No window opened after clicking '$ThenClick' and none were already open: $_"
+                }
+
+                $innerDialog = [pscustomobject]@{ Handle = $knownSecondLevel[0].Handle; Title = $knownSecondLevel[0].Title }
+                Write-Host "Reusing the already-open dialog '$($knownSecondLevel[0].Title)'..." -ForegroundColor Yellow
+            }
+
             $dialogHandle = $innerDialog.Handle
             $captureLabel = "'$($innerDialog.Title)' dialog"
+        }
+
+        if ($ThenClickRow) {
+            Select-DialogRow -Handle $dialogHandle -RowText $ThenClickRow
+            Start-Sleep -Milliseconds 300
         }
 
         $captureHandle = $dialogHandle

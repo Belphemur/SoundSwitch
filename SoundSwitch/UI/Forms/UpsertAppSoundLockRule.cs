@@ -529,7 +529,30 @@ public partial class UpsertAppSoundLockRule : Form
         cmbRecording.SelectedIndex = -1;
     }
 
+    /// <summary>True while a process picker is open. The Add flow auto-opens it from
+    /// <see cref="OnShown"/>; a click on the ... button while it is up (or another re-entry)
+    /// must not stack a second modal picker.</summary>
+    private bool _processPickerOpen;
+
     private void SelectProcess()
+    {
+        if (_processPickerOpen)
+        {
+            return;
+        }
+
+        _processPickerOpen = true;
+        try
+        {
+            OpenProcessPickerCore();
+        }
+        finally
+        {
+            _processPickerOpen = false;
+        }
+    }
+
+    private void OpenProcessPickerCore()
     {
         using var form = new ProcessSelectionForm();
         if (form.ShowDialog(this) == DialogResult.OK)
