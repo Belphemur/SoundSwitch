@@ -169,6 +169,14 @@ if ($ThenClickRow -and -not $Click) {
     throw '-ThenClickRow requires -Click: it activates a row inside that dialog.'
 }
 
+if ($ThenClickRow -and -not $ThenClick) {
+    # Without -ThenClick the flow never resolves the picker's window handle ($dialogHandle
+    # stays on the rule editor, or the auto-opened picker is never identified), so the row
+    # search would run against the wrong dialog. Give the correction logic the inner dialog
+    # it needs.
+    throw '-ThenClickRow requires -ThenClick: the row is activated inside the dialog that -ThenClick opens.'
+}
+
 # --- Win32 interop -----------------------------------------------------------------
 
 if (-not ('SoundSwitch.DocCapture.Native' -as [type])) {
@@ -538,9 +546,14 @@ function Select-DialogRow {
     <#
         Activates the row whose cell text contains the given text inside the
         window (e.g. the picker's collapsible "Show all processes" band, which
-        has no button whose BM_CLICK can be posted). The grid exposes rows as
-        custom elements whose cells ("DataItem") carry their display text in
-        the Value pattern.
+        has no button whose BM_CLICK can be posted). WinForms surfaces the
+        DataGridView rows with evolving control types (Custom/DataItem, and
+        even Pane on other framework builds), so the search is deliberately
+        type-agnostic: every descendant element whose value carries the text is
+        a candidate.
+
+        The click only happens when the row is inside the dialog's visible
+        bounds — an off-viewport row would silently take the click elsewhere.
 
         The dialog is pushed to the top of the z-order first: modal sub-dialogs
         of a non-foreground Settings window stay behind whichever window covers
@@ -557,7 +570,9 @@ function Select-DialogRow {
     Add-Type -AssemblyName UIAutomationClient
     Add-Type -AssemblyName UIAutomationTypes
 
-    # HWND_TOPMOST; topmost is temporary (the app is closed right after the capture).
+    # HWND_TOPMOST; cleared again after the capture (see the SetWindowPos call below),
+    # because when the picker is kept open (-KeepOpen/-KeepRunning) it would otherwise
+    # remain above every other window.
     [SoundSwitch.DocCapture.Native]::SetWindowPos($Handle, [IntPtr](-1), 0, 0, 0, 0, 0x0043) | Out-Null # SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW
     [SoundSwitch.DocCapture.Native]::SetForegroundWindow($Handle) | Out-Null
     Start-Sleep -Milliseconds 200
@@ -567,32 +582,43 @@ function Select-DialogRow {
         throw "Window is not reachable through UI Automation."
     }
 
-    $rowCondition = [System.Windows.Automation.PropertyCondition]::new(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
-        [System.Windows.Automation.ControlType]::Custom)
-    $rows = $window.FindAll([System.Windows.Automation.TreeScope]::Descendants, $rowCondition)
-    foreach ($row in $rows) {
-        $cells = $row.FindAll([System.Windows.Automation.TreeScope]::Children, [System.Windows.Automation.Condition]::TrueCondition)
-        foreach ($cell in $cells) {
-            $valuePattern = $null
-            if (-not $cell.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
-                continue
-            }
+    $windowRect = [SoundSwitch.DocCapture.Native+RECT]::new()
+    if (-not [SoundSwitch.DocCapture.Native]::GetWindowRect($Handle, [ref]$windowRect)) {
+        throw 'GetWindowRect failed for the dialog.'
+    }
 
-            $text = $valuePattern.Current.Value
-            if ([string]::IsNullOrEmpty($text) -or $text.IndexOf($RowText, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
-                continue
-            }
-
-            $rect = $row.Current.BoundingRectangle
-            [SoundSwitch.DocCapture.Native]::SetCursorPos([int]($rect.X + $rect.Width / 2), [int]($rect.Y + $rect.Height / 2)) | Out-Null
-            Start-Sleep -Milliseconds 150
-            [SoundSwitch.DocCapture.Native]::mouse_event(0x0002, 0, 0, 0, [UIntPtr]::Zero) # left down
-            Start-Sleep -Milliseconds 60
-            [SoundSwitch.DocCapture.Native]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero) # left up
-            Write-Host "Clicked row with cell text '$text'..." -ForegroundColor Cyan
-            return
+    $candidates = $window.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)
+    foreach ($element in $candidates) {
+        $valuePattern = $null
+        if (-not $element.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$valuePattern)) {
+            continue
         }
+
+        $text = $valuePattern.Current.Value
+        if ([string]::IsNullOrEmpty($text) -or $text.IndexOf($RowText, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
+            continue
+        }
+
+        $rect = $element.Current.BoundingRectangle
+        $clickX = [int]($rect.X + $rect.Width / 2)
+        $clickY = [int]($rect.Y + $rect.Height / 2)
+        if ($rect.IsEmpty -or
+            $clickX -lt $windowRect.Left -or $clickX -ge $windowRect.Right -or
+            $clickY -lt $windowRect.Top -or $clickY -ge $windowRect.Bottom)
+        {
+            # The row is off the dialog's viewport (e.g. a counterpart band on
+            # an underlying screen): clicking it would miss. Fail loudly instead
+            # of logging success and saving the collapsed state.
+            throw "Row with cell text '$text' is outside the dialog's visible bounds; scroll it into view first."
+        }
+
+        [SoundSwitch.DocCapture.Native]::SetCursorPos($clickX, $clickY) | Out-Null
+        Start-Sleep -Milliseconds 150
+        [SoundSwitch.DocCapture.Native]::mouse_event(0x0002, 0, 0, 0, [UIntPtr]::Zero) # left down
+        Start-Sleep -Milliseconds 60
+        [SoundSwitch.DocCapture.Native]::mouse_event(0x0004, 0, 0, 0, [UIntPtr]::Zero) # left up
+        Write-Host "Clicked row with cell text '$text'..." -ForegroundColor Cyan
+        return
     }
 
     throw "No row with cell text '$RowText' was found in the dialog."
@@ -779,6 +805,8 @@ try {
 
     $captureHandle = $settingsHandle
     $captureLabel = if ($Tab) { "the '$Tab' tab" } else { 'the Settings window' }
+    # Second-level dialog handles opened along the way, closed during cleanup (inner first).
+    $openedDialogHandles = [System.Collections.Generic.List[long]]::new()
 
     if ($Click) {
         # Remember what is already on screen so the dialog opened by the click can be
@@ -792,6 +820,7 @@ try {
 
         $dialog = Invoke-ButtonAndFindDialog -ProcessId $process.Id -Button $button -ButtonId $Click -KnownHandles $existingHandles -TimeoutSeconds $TimeoutSeconds
         $dialogHandle = $dialog.Handle
+        $openedDialogHandles.Add($dialogHandle.ToInt64())
         $captureLabel = "'$($dialog.Title)' dialog"
 
         if ($Select -or $ThenClick) {
@@ -841,13 +870,18 @@ try {
             }
             catch {
                 # The dialog may already be open (the Add-rule flow auto-opens its process
-                # picker from OnShown, and the editor refuses to stack a second one) —
-                # reuse the already-open dialog instead of waiting for a new window.
+                # picker from OnShown, and the editor refuses to stack a second one) =>
+                # reuse the already-open dialog instead of waiting for a new window. Only a
+                # candidate that is not the just-clicked editor (which still carries the
+                # '$ThenClick' button) and not Settings qualifies; anything else is another
+                # unrelated window that must not be captured.
                 $knownSecondLevel = @(Get-TopLevelWindows -ProcessId $process.Id | Where-Object {
                     $_.Handle.ToInt64() -in $existingDialogHandles -and
                     $_.Handle.ToInt64() -ne $dialogHandle -and
-                    $_.Handle.ToInt64() -ne $settingsHandle
+                    $_.Handle.ToInt64() -ne $settingsHandle.ToInt64() -and
+                    $null -eq (Find-VisibleButton -Handle $_.Handle -ButtonId $ThenClick)
                 })
+                # Nothing usable was already open.
                 if ($knownSecondLevel.Count -eq 0) {
                     throw "No window opened after clicking '$ThenClick' and none were already open: $_"
                 }
@@ -857,6 +891,7 @@ try {
             }
 
             $dialogHandle = $innerDialog.Handle
+            $openedDialogHandles.Add($dialogHandle.ToInt64())
             $captureLabel = "'$($innerDialog.Title)' dialog"
         }
 
@@ -882,10 +917,21 @@ try {
     $result = Save-WindowScreenshot -Handle $captureHandle -Path $targetPath
     Write-Host "Saved $($result.Path) ($($result.Width)x$($result.Height))." -ForegroundColor Green
 
+    if ($ThenClickRow) {
+        # Select-DialogRow pushed the dialog to HWND_TOPMOST to make the click land on the
+        # row. Clear that state so a picker that stays open (-KeepOpen, -KeepRunning or an
+        # existing instance) returns to the normal z-order.
+        [SoundSwitch.DocCapture.Native]::SetWindowPos($captureHandle, [IntPtr](-2), 0, 0, 0, 0, 0x0043) | Out-Null # HWND_NOTOPMOST
+    }
+
     if (-not $KeepOpen) {
-        if ($captureHandle -ne $settingsHandle) {
-            [SoundSwitch.DocCapture.Native]::PostMessage($captureHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
-            Start-Sleep -Milliseconds 300
+        # Close the captured dialog and every intermediate second-level dialog (e.g. a rule
+        # editor left between Settings and the picker), inner first, so a modal opener does
+        # not keep Settings from closing.
+        foreach ($openHandle in $openedDialogHandles) {
+            if ($openHandle -eq $settingsHandle.ToInt64()) { continue }
+            [SoundSwitch.DocCapture.Native]::PostMessage([IntPtr]$openHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+            Start-Sleep -Milliseconds 200
         }
 
         [SoundSwitch.DocCapture.Native]::PostMessage($settingsHandle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
