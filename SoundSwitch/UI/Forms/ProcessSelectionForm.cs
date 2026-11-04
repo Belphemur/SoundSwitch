@@ -418,8 +418,10 @@ public partial class ProcessSelectionForm : Form
     {
         var rowIndex = dgvProcesses.Rows.Add();
         var row = dgvProcesses.Rows[rowIndex];
-        row.Cells[0].Value = text;
-        row.Cells[1].Value = string.Empty;
+        // The first column is the icon column: a text value there would raise a
+        // DataGridView DataError (formatting a string as an image) when the row is
+        // painted. The label therefore goes into the process-name column.
+        row.Cells[1].Value = text;
         row.Cells[2].Value = string.Empty;
         row.Cells[3].Value = string.Empty;
         row.Cells[4].Value = string.Empty;
