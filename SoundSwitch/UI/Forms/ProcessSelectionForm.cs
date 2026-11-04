@@ -264,13 +264,11 @@ public partial class ProcessSelectionForm : Form
                         !string.IsNullOrEmpty(outputId) ||
                         !string.IsNullOrEmpty(inputId);
 
-                    // 2. Fallback to active sessions
-                    if (string.IsNullOrEmpty(outputId)) playbackMap.TryGetValue(pid, out outputId);
-                    if (string.IsNullOrEmpty(inputId)) recordingMap.TryGetValue(pid, out inputId);
-
-                    // 2b. Fallback to the persisted store (design doc §6.1): an app running
-                    // without a live audio session still carries Windows' persisted route, and
-                    // its row sits in "Has own device" — show that device, not the default.
+                    // 2. Fallback to the persisted store (design doc §6.1). Windows' persisted
+                    // route is the source of truth for "this app has a device assignment", so it
+                    // outranks the session map: an app running without a live audio session still
+                    // carries it, and its row sits in "Has own device" — show that device, not the
+                    // session's, still less the system default.
                     if (string.IsNullOrEmpty(outputId) || string.IsNullOrEmpty(inputId))
                     {
                         var persisted = persistedRecords
@@ -292,6 +290,10 @@ public partial class ProcessSelectionForm : Form
                                 .FirstOrDefault(id => id != null);
                         }
                     }
+
+                    // 3. Fallback to active sessions
+                    if (string.IsNullOrEmpty(outputId)) playbackMap.TryGetValue(pid, out outputId);
+                    if (string.IsNullOrEmpty(inputId)) recordingMap.TryGetValue(pid, out inputId);
 
                     // 3. Resolve names or fallback to system default
                     var outputName = string.IsNullOrEmpty(outputId) ? defaultPlaybackName : (audioSwitcher.GetAudioEndpoint(outputId)?.NameClean ?? outputId);

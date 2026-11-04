@@ -221,6 +221,12 @@ namespace SoundSwitch.Services
                 if (!AppRuleIdentityMatcher.SameApp(identity, running.Path))
                     continue;
 
+                // The snapshot can be a moment old and the engine writes by pid: re-read the
+                // path so a recycled pid is not switched as the identity of a process that
+                // exited since the enumeration.
+                if (!StillSameApp(identity, running.Pid))
+                    continue;
+
                 // The process may have exited between enumeration and the switch.
                 try
                 {
@@ -240,6 +246,25 @@ namespace SoundSwitch.Services
             if (firstMatchPath != null)
             {
                 TrackRuleActivated("engine", firstMatchPath, firstMatchName);
+            }
+        }
+
+        /// <summary>
+        /// Whether the pid still runs the expected exe. A pid captured earlier can be recycled by
+        /// another process, and the policy engine writes by pid; unreadable/protected processes
+        /// are treated as no longer matching (they cannot be switched meaningfully anyway).
+        /// </summary>
+        private bool StillSameApp(string identity, uint pid)
+        {
+            try
+            {
+                using var process = Process.GetProcessById((int)pid);
+                return AppRuleIdentityMatcher.SameApp(identity, process.MainModule?.FileName ?? string.Empty);
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Couldn't recheck process PID {PID} before switching it", pid);
+                return false;
             }
         }
 
@@ -608,6 +633,10 @@ namespace SoundSwitch.Services
                     _logger.Debug(ex, "Couldn't apply app rule hotkey to process PID {PID}", match.ProcessId);
                 }
             }
+
+            // Persist the claims this press stamped: nothing later in the hotkey flow saves, so
+            // a restart would otherwise load a ledger that does not own the route in the store.
+            SaveLedgerIfDirty("hotkey");
 
             // Notify even when the endpoint already matched: the hotkey did apply this pair,
             // and the banner is the feedback that tells the user which pair is now active.
