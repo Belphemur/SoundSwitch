@@ -20,6 +20,26 @@ public class ConfigurationManagerSaveTests
         return path;
     }
 
+    /// <summary>
+    /// Deleting a tree right after writing files inside it can collide with a short-lived
+    /// external handle (e.g. an antivirus scanning the fresh files); wait it out.
+    /// </summary>
+    private static void DeleteDirectoryWithRetries(string path)
+    {
+        for (var attempt = 1; ; attempt++)
+        {
+            try
+            {
+                Directory.Delete(path, true);
+                return;
+            }
+            catch (Exception ex) when (attempt < 8 && ex is IOException or UnauthorizedAccessException)
+            {
+                Thread.Sleep(250);
+            }
+        }
+    }
+
     [Test]
     public void SaveConfigurationToPath_SwapsConfigurationAtomicallyAndLeavesNoTempFile()
     {
@@ -36,7 +56,7 @@ public class ConfigurationManagerSaveTests
         }
         finally
         {
-            Directory.Delete(directory, true);
+            DeleteDirectoryWithRetries(directory);
         }
     }
 
@@ -59,7 +79,7 @@ public class ConfigurationManagerSaveTests
         }
         finally
         {
-            Directory.Delete(directory, true);
+            DeleteDirectoryWithRetries(directory);
         }
     }
 
@@ -91,7 +111,43 @@ public class ConfigurationManagerSaveTests
         }
         finally
         {
-            Directory.Delete(directory, true);
+            DeleteDirectoryWithRetries(directory);
+        }
+    }
+
+    [Test]
+    public void SaveConfigurationToPath_PropagatesPermanentDestinationErrorsWithoutLeavingTempFile()
+    {
+        var directory = CreateTempDirectory();
+        var filePath = Path.Combine(directory, nameof(TestConfiguration) + ".json");
+        try
+        {
+            const string previousContent = "previous";
+            File.WriteAllText(filePath, previousContent);
+            try
+            {
+                // Access denied on a read-only destination is permanent, not a lock another
+                // process could release: it must surface to the caller instead of being
+                // silently retried and swallowed.
+                File.SetAttributes(filePath, FileAttributes.ReadOnly);
+
+                Action save = () =>
+                    ConfigurationManager.SaveConfigurationToPath(new TestConfiguration {Value = "updated"}, filePath);
+
+                save.Should().Throw<Exception>();
+            }
+            finally
+            {
+                File.SetAttributes(filePath, FileAttributes.Normal);
+            }
+
+            // The failed save must not have replaced the previous configuration, nor left a temp file behind.
+            File.ReadAllText(filePath).Should().Be(previousContent);
+            Directory.GetFiles(directory, "*.tmp").Should().BeEmpty();
+        }
+        finally
+        {
+            DeleteDirectoryWithRetries(directory);
         }
     }
 

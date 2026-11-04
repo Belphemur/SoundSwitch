@@ -122,8 +122,10 @@ public static class ConfigurationManager
     /// <summary>
     /// Serializes the configuration to a temporary file next to <paramref name="filePath"/>,
     /// then atomically replaces it, so readers only ever see a complete JSON document.
-    /// Transient locks held by other processes on the destination are retried briefly;
-    /// if the save still fails, the previous configuration on disk is kept and the error is logged.
+    /// Transient locks held by other processes on the files are retried briefly; if the save
+    /// still fails because of such a lock, the previous configuration on disk is kept and the
+    /// error is logged. Other failures (e.g. a full disk or denied access) propagate to the
+    /// caller.
     /// </summary>
     internal static void SaveConfigurationToPath<T>(T configuration, string filePath) where T : IConfiguration, new()
     {
@@ -148,7 +150,7 @@ public static class ConfigurationManager
                         File.Move(tempPath, filePath, overwrite: true);
                         return;
                     }
-                    catch (Exception ex) when (IsTransientFileLockError(ex) && attempt < SaveMaxAttempts)
+                    catch (Exception ex) when (IsTransientFileLockError(ex, filePath) && attempt < SaveMaxAttempts)
                     {
                         Log.Warning(ex,
                             "Attempt {attempt}/{maxAttempts} to save configuration to {filePath} failed, retrying",
@@ -157,7 +159,7 @@ public static class ConfigurationManager
                     }
                 }
             }
-            catch (Exception ex) when (IsTransientFileLockError(ex))
+            catch (Exception ex) when (IsTransientFileLockError(ex, filePath))
             {
                 Log.Error(ex,
                     "Unable to save configuration to {filePath} after {maxAttempts} attempts: {message}. The previous configuration on disk is kept",
@@ -180,10 +182,36 @@ public static class ConfigurationManager
     }
 
     /// <summary>
-    /// Is this error caused by another process holding the file, worth retrying?
+    /// Is this error caused by another process holding the files, worth retrying?
     /// </summary>
-    private static bool IsTransientFileLockError(Exception exception)
+    /// <remarks>
+    /// Locks surface in two shapes: sharing or lock violations while opening a file, and
+    /// plain access denied when replacing a destination that another process holds open
+    /// without any share flags. Other failures, e.g. a full disk or denied permissions,
+    /// are permanent and must not be retried or swallowed.
+    /// </remarks>
+    private static bool IsTransientFileLockError(Exception exception, string destinationPath)
     {
-        return exception is IOException or UnauthorizedAccessException;
+        const int ErrorSharingViolation = 32;
+        const int ErrorLockViolation = 33;
+
+        switch (exception)
+        {
+            case IOException ioException when (ioException.HResult & 0xFFFF) is ErrorSharingViolation or ErrorLockViolation:
+                return true;
+            case UnauthorizedAccessException:
+                try
+                {
+                    return File.Exists(destinationPath) &&
+                           !File.GetAttributes(destinationPath).HasFlag(FileAttributes.ReadOnly);
+                }
+                catch (FileNotFoundException)
+                {
+                    // The destination vanished; that is not a permission verdict, let the retry decide.
+                    return false;
+                }
+            default:
+                return false;
+        }
     }
 }
