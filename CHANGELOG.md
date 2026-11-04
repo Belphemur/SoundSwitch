@@ -1,3 +1,14 @@
+## [7.4.1](https://github.com/Belphemur/SoundSwitch/compare/v7.4.0...v7.4.1) (2026-11-04)
+
+### Bug Fixes
+
+* **audio:** serialize retained-id snapshot with cache publication ([#2561](https://github.com/Belphemur/SoundSwitch/issues/2561)) ([b682764](https://github.com/Belphemur/SoundSwitch/commit/b6827641fd83c74f5ee65ad0c8f65c3699b90b69)), closes [#2554](https://github.com/Belphemur/SoundSwitch/issues/2554)
+* **audio:** tolerate endpoint disconnect during notification playback ([#2564](https://github.com/Belphemur/SoundSwitch/issues/2564)) ([23549e2](https://github.com/Belphemur/SoundSwitch/commit/23549e284a3d2b82386467049ad66b12755d8613)), closes [#2557](https://github.com/Belphemur/SoundSwitch/issues/2557)
+* **banner:** tolerate disposed banners in mute banner rearrangement ([#2563](https://github.com/Belphemur/SoundSwitch/issues/2563)) ([0943e9e](https://github.com/Belphemur/SoundSwitch/commit/0943e9eacfeb3e4b1ec02c0da9fb7c46753bb858)), closes [#2559](https://github.com/Belphemur/SoundSwitch/issues/2559)
+* **configuration:** atomically persist config save with transient-lock retry ([#2560](https://github.com/Belphemur/SoundSwitch/issues/2560)) ([a297fcf](https://github.com/Belphemur/SoundSwitch/commit/a297fcf3c10379df931d15e611239dc4e5ed9bc2)), closes [#2556](https://github.com/Belphemur/SoundSwitch/issues/2556)
+* **notification:** guard mute-change notifications against uninitialized state ([#2562](https://github.com/Belphemur/SoundSwitch/issues/2562)) ([49e48ad](https://github.com/Belphemur/SoundSwitch/commit/49e48ad8c62ccf1fe33c88cb7a56c3469c3676a5)), closes [#2555](https://github.com/Belphemur/SoundSwitch/issues/2555)
+* **settings:** stop the crash on the banner scale numeric ([e2425a3](https://github.com/Belphemur/SoundSwitch/commit/e2425a327aa7d5eb2f95c8dfc7f59b761ebff29f)), closes [#2558](https://github.com/Belphemur/SoundSwitch/issues/2558)
+
 ## [7.4.0](https://github.com/Belphemur/SoundSwitch/compare/v7.3.3...v7.4.0) (2026-11-03)
 
 ### Features
