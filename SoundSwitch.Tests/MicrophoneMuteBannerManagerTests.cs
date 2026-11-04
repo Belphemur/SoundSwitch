@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 using FluentAssertions;
 
@@ -17,6 +18,9 @@ namespace SoundSwitch.Tests;
 /// SOUNDSWITCH-40H). The pass must tolerate stale tracked banners — forms that were
 /// disposed without going through the manager — instead of crashing on them.
 /// </summary>
+// BannerForm (a WinForms form) is constructed, disposed and Screen-pinned here; it requires an STA thread.
+[TestFixture]
+[Apartment(ApartmentState.STA)]
 public class MicrophoneMuteBannerManagerTests
 {
     private static Dictionary<string, BannerForm> GetTrackedBanners(MicrophoneMuteBannerManager manager) =>
