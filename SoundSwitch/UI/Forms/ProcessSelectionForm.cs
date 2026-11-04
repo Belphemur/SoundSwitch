@@ -35,6 +35,7 @@ public partial class ProcessSelectionForm : Form
     private List<ProcessInfo> _allProcesses;
     private List<ProcessInfo> _notRunningApps;
     private bool _showAllProcesses;
+    private bool _allProcessesExpandedManually;
 
     public ProcessSelectionForm()
     {
@@ -456,6 +457,18 @@ public partial class ProcessSelectionForm : Form
 
     private void TxtFilter_TextChanged(object sender, EventArgs e)
     {
+        // The third group stays collapsed until the filter gives a reason to show
+        // it: any filter expands it so its matches are visible; clearing returns
+        // to the state the toggle row controls (manual expansions stick).
+        if (txtFilter.Text.Length > 0)
+        {
+            _showAllProcesses = true;
+        }
+        else
+        {
+            _showAllProcesses = _allProcessesExpandedManually;
+        }
+
         UpdateGrid();
     }
 
@@ -465,6 +478,7 @@ public partial class ProcessSelectionForm : Form
             return;
 
         _showAllProcesses = !_showAllProcesses;
+        _allProcessesExpandedManually = _showAllProcesses;
         UpdateGrid();
     }
 
