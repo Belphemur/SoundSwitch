@@ -485,10 +485,12 @@ public class AppRuleAssignmentReconcilerTests
     }
 
     [Test]
-    public void ClearDefaultEndPoint_FailsForPidWithoutSession()
+    public void ClearDefaultEndPoint_TreatsSessionlessPidAsNothingToClear()
     {
-        // A pid without an audio session refuses the write (E_INVALIDARG) — nothing cleared.
-        AudioSwitcher.Instance.ClearProcessDefaultEndpoint(EDataFlow.eRender, uint.MaxValue).Should().BeFalse();
+        // A pid without an audio session reports PROCESS_NO_AUDIO (E_INVALIDARG): it has no
+        // route to detach, so the clear succeeded trivially. Treating it as a failure would
+        // keep an identity's pending clear alive forever while a session-less copy runs.
+        AudioSwitcher.Instance.ClearProcessDefaultEndpoint(EDataFlow.eRender, uint.MaxValue).Should().BeTrue();
     }
 
     /// <summary>
