@@ -72,8 +72,9 @@ public class RefreshDeviceTests
     /// Regression test for Sentry SOUNDSWITCH-49X / GitHub #2554: Refresh must capture the
     /// retained-id set while _cacheLock blocks ProcessDeviceUpdates' in-place edits. Drives the
     /// REAL publication block (<c>PublishRefreshedDevices</c>, reflected, seeded with a cache via
-    /// <see cref="SetCache"/>) while a mutator thread mirrors <c>ProcessDeviceUpdates</c>: it
-    /// reads the CURRENT published dictionary and does indexer-set + Remove edits under the SAME
+    /// <see cref="SetCache"/>) while a mutator thread mirrors <c>ProcessDeviceUpdates</c>:
+    /// triggered the instant the publication swaps the caches in (the sync point), it reads the
+    /// CURRENT published dictionary and does indexer-set + Remove edits under the SAME
     /// publication lock.
     /// If the capture is ever moved back outside the lock (the pre-fix pattern), the live
     /// Dictionary's version bumps during the capture and its ctor throws
@@ -100,9 +101,8 @@ public class RefreshDeviceTests
         // the new enumeration no longer contains (so the disposal decision must dispose it).
         var surviving = new TrackedDevice("Speaker", "survive", EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
         var removed = new TrackedDevice("Headphones", "gone", EDataFlow.eRender, string.Empty, EDeviceState.Active, false);
-        SetCache(lister,
-            new Dictionary<string, DeviceFullInfo> { ["survive"] = surviving, ["gone"] = removed },
-            new Dictionary<string, DeviceFullInfo>());
+        var seededPlayback = new Dictionary<string, DeviceFullInfo> { ["survive"] = surviving, ["gone"] = removed };
+        SetCache(lister, seededPlayback, new Dictionary<string, DeviceFullInfo>());
 
         // Freshly enumerated candidates to publish; all values share one COM-free instance:
         // only the keys feed the merge and the retained set, so values need not be distinct.
@@ -122,12 +122,22 @@ public class RefreshDeviceTests
         var publishTask = Task.Run(() => publish!.Invoke(lister,
             new object[] { freshPlayback, freshRecording, newIds }));
 
-        // Mutator mirrors ProcessDeviceUpdates: read the CURRENT published instance (the
-        // publication swaps it mid-test), then indexer-set + Remove under the SAME publication
-        // lock — churns the Dictionary version on every iteration.
+        // Mutator mirrors ProcessDeviceUpdates: triggered the instant the publication swaps the
+        // caches in (the sync point), it reads the CURRENT published instance and then does
+        // indexer-set + Remove edits of it under the SAME publication lock. In the fixed code the
+        // capture is inside the same lock critical section, so every edit waits for it; if the
+        // capture is ever moved outside the lock (the pre-fix pattern), it runs for milliseconds
+        // over the 200k published ids while these consecutive edits churn the Dictionary version,
+        // and the capture's ctor throws "Collection was modified".
         var mutator = Task.Run(() =>
         {
-            publishTask.Wait(); // edits start with the caches already swapped in
+            if (!SpinWait.SpinUntil(
+                    () => !ReferenceEquals(playbackField.GetValue(lister), seededPlayback),
+                    30_000))
+            {
+                Assert.Fail("the publication never swapped the caches; the mutator had nothing to race");
+            }
+
             for (var i = 0; i < 50_000; i++)
             {
                 lock (cacheLock)
