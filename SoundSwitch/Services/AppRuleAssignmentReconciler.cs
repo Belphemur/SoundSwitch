@@ -300,7 +300,19 @@ namespace SoundSwitch.Services
             }
         }
 
-        /// <summary>Whether any ledger change happened since the previous drain.</summary>
+        /// <summary>Whether a pass changed the ledger since the last successful save.</summary>
+        public bool IsDirty
+        {
+            get
+            {
+                lock (_sync)
+                {
+                    return _dirty;
+                }
+            }
+        }
+
+        /// <summary>Consume the dirty flag. Call only after the ledger was saved successfully.</summary>
         public bool TakeDirty()
         {
             lock (_sync)

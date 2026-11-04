@@ -320,13 +320,16 @@ namespace SoundSwitch.Services
         /// <summary>Persist the ledger when a pass changed it.</summary>
         private void SaveLedgerIfDirty(string trigger)
         {
-            if (!_assignmentReconciler.TakeDirty())
+            if (!_assignmentReconciler.IsDirty)
                 return;
 
             _logger.Debug("Assignment ledger changed ({Trigger}), saving", trigger);
             try
             {
                 _configuration.Save();
+                // Only a successful save may consume the flag: a failed one must keep the
+                // ledger dirty so the next pass retries instead of losing ownership edits.
+                _assignmentReconciler.TakeDirty();
             }
             catch (Exception ex)
             {
