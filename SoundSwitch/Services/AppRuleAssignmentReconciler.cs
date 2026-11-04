@@ -469,9 +469,11 @@ namespace SoundSwitch.Services
         /// <summary>
         /// Clear a pending assignment route right away where the engine accepts the write (only
         /// for a pid with a live audio session) — for every running instance of the identity, so
-        /// zero-pid copies keep no leftover route. Returns whether every running pid accepted
-        /// the clear of every claimed flow — a closed app (or a pid without a session yet)
-        /// keeps the entry pending for its next sighting (ADR §6.3).
+        /// zero-pid copies keep no leftover route. A claimed flow is cleared as soon as one
+        /// running pid accepts the write: the engine drops the identity's record, and the
+        /// session-less copies that no-op'd no longer hold the entry hostage. Only when no pid of
+        /// a claimed flow accepts (the app is running but has no audio session yet) does the
+        /// entry stay pending for its next sighting (ADR §6.3).
         /// </summary>
         private bool ClearAssignmentRoute(AssignmentLedgerEntry entry)
         {
@@ -487,10 +489,15 @@ namespace SoundSwitch.Services
             if (runningPids.Count == 0)
                 return false; // stays pending
 
-            var allCleared = flows.All(flow =>
-                runningPids.All(tuple => _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid)));
-            if (!allCleared)
-                return false; // a pid without a live session refused the write: stay pending
+            // One accepted write per flow removes the identity's persisted record: the engine
+            // keys the store by exe, not by pid. Requiring every pid would let an idle
+            // session-less copy block a clear the playing process already performed, while
+            // accepting every no-op would drop the pending clear with the record still in the
+            // store. So: a flow is clear when some running pid accepted it.
+            var cleared = flows.All(flow =>
+                runningPids.Any(tuple => _audioSwitcher.ClearProcessDefaultEndpoint(flow, tuple.Pid)));
+            if (!cleared)
+                return false; // no pid with a live session yet: stay pending
 
             _configuration.AssignmentLedger.Remove(entry);
             TrackDeferredClear(entry);

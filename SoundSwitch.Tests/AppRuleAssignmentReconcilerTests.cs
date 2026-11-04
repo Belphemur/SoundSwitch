@@ -412,6 +412,53 @@ public class AppRuleAssignmentReconcilerTests
     }
 
     [Test]
+    public void ClearRuleAssignments_SessionlessCopyDoesNotBlockTheClear()
+    {
+        var (path, pid) = LaunchSleeper();
+        var (copyPath, copyPid) = LaunchSleeper();
+        copyPath.Should().Be(path, "both sleepers are the same exe identity");
+        copyPid.Should().NotBe(pid);
+        _policy.SetDevice(pid, EDataFlow.eRender, RenderToken); // only this copy has an audio session
+
+        var rule = AssignmentRule(path);
+        _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
+        {
+            RuleId = rule.Id,
+            ExePath = path,
+            Enforcement = AppRuleEnforcement.Assignment,
+            PlaybackDeviceId = "playback-id"
+        });
+
+        _reconciler.ClearRuleAssignments(rule);
+
+        _policy.GetDevice(pid, EDataFlow.eRender).Should().BeNull();
+        _configuration.AssignmentLedger.Should().BeEmpty(
+            "the playing copy cleared the identity's record; the session-less copy must not hold it pending");
+    }
+
+    [Test]
+    public void ClearRuleAssignments_OnlySessionlessCopies_KeepsPendingClear()
+    {
+        var (path, _) = LaunchSleeper();
+
+        var rule = AssignmentRule(path);
+        _configuration.AssignmentLedger.Add(new AssignmentLedgerEntry
+        {
+            RuleId = rule.Id,
+            ExePath = path,
+            Enforcement = AppRuleEnforcement.Assignment,
+            PlaybackDeviceId = "playback-id"
+        });
+
+        _reconciler.ClearRuleAssignments(rule);
+
+        // The engine no-ops for a pid without a session, so the record is still in Windows'
+        // store: dropping the entry here would lose the restore when the app opens a session.
+        _configuration.AssignmentLedger.Should().ContainSingle(
+            "a running app without an audio session keeps its restore pending for the next sighting");
+    }
+
+    [Test]
     public void ClearRuleAssignments_AssignmentRuleWithClosedApp_KeepsPending()
     {
         var rule = AssignmentRule(@"C:\Apps\Not Running\RareApp.exe");
@@ -485,12 +532,12 @@ public class AppRuleAssignmentReconcilerTests
     }
 
     [Test]
-    public void ClearDefaultEndPoint_TreatsSessionlessPidAsNothingToClear()
+    public void ClearDefaultEndPoint_FailsForPidWithoutSession()
     {
-        // A pid without an audio session reports PROCESS_NO_AUDIO (E_INVALIDARG): it has no
-        // route to detach, so the clear succeeded trivially. Treating it as a failure would
-        // keep an identity's pending clear alive forever while a session-less copy runs.
-        AudioSwitcher.Instance.ClearProcessDefaultEndpoint(EDataFlow.eRender, uint.MaxValue).Should().BeTrue();
+        // A pid without an audio session reports PROCESS_NO_AUDIO (E_INVALIDARG) and the record
+        // is not touched, so the client reports the no-op. The reconciler aggregates an
+        // identity's pids and only needs one with a session to actually clear it.
+        AudioSwitcher.Instance.ClearProcessDefaultEndpoint(EDataFlow.eRender, uint.MaxValue).Should().BeFalse();
     }
 
     /// <summary>

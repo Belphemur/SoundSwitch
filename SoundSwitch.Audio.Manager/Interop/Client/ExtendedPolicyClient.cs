@@ -145,13 +145,15 @@ namespace SoundSwitch.Audio.Manager.Interop.Client
         {
             try
             {
-                // false = the engine's PROCESS_NO_AUDIO: this pid has no audio session, so it
-                // has no live route to detach. That is "nothing to clear", not a failure —
-                // requiring it would keep the pending clear forever whenever an identity has
-                // one session-less copy running next to its playing one.
+                // false = the engine's PROCESS_NO_AUDIO: this pid has no audio session, so the
+                // clear was a no-op and the identity's record is untouched. Report it: the
+                // caller aggregates the identity's pids and only needs one to accept, so a
+                // session-less copy no longer blocks the clear while its playing sibling is
+                // the one that removes the record (AppRuleAssignmentReconciler).
                 if (!PolicyConfig.SetPersistedDefaultAudioEndpoint(processId, flow, eRole, deviceId: null!))
                 {
-                    _log.Debug("No audio session for process {ProcessId} [{Flow}] {Role}: nothing to clear", processId, flow, eRole);
+                    _log.Debug("No audio session for process {ProcessId} [{Flow}] {Role}: clear not applied", processId, flow, eRole);
+                    allCleared = false;
                 }
             }
             catch (Exception ex)
