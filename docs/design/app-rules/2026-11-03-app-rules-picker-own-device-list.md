@@ -61,6 +61,18 @@ So one getter call per pid doubles as a *session liveness* probe — but only co
 
 `SetPersistedDefaultAudioEndpoint` (and any extended-policy call, including per-pid Get) must run under the audio COM apartment discipline: the same call that `E_INVALIDARG`s when issued from a bare thread succeeds through `AudioSwitcher`'s `ComThread.Invoke` on this build. This design's picker path issues **no** extended-policy calls at all (§6.1.1); the constraint applies to the Future-work fallback and to rule application, which already rides `ComThread`.
 
+### 2.5 The engine applies persisted defaults by app identity (measured)
+
+A follow-up experiment to answer "do rules still need to wait for the process to appear?": a scratch `soundpad.exe` was launched, its persisted default set to Line 1 via `AudioSwitcher.SwitchProcessTo`, it was killed, and launched again with **no SoundSwitch involvement**:
+
+- The fresh process' render session was already on Line 1 (`AudioSwitcher.GetSessionDeviceId` — the real session, not just policy state), and `GetPersistedDefaultAudioEndpoint` reports the persisted device for the fresh pid. The audio engine resolves the pid → exe identity and **re-applies the persisted default itself at session creation**, without any external caller, exactly like plain "App volume and device preferences" assignments behave.
+- Implication: for a plain, always-active Automatic assignment, SoundSwitch's process-arrival/foreground triggers are redundant — the OS does the enforcement natively, at higher priority (before the first audio session is created), and even when SoundSwitch isn't running.
+- Why this design still keeps process-triggered application (KISS, no semantic break inside this iteration):
+  1. **Disabling/unclearing a rule would need identity-level clears.** The public `IAudioPolicyConfig` surface can only Set/Get/ClearAll per pid — with the app not running there is no pid, so an identity-enforcing rule could not be reliably disabled again via supported API (a live record persists until manually cleared or overridden). Rules must remain uninstallable-by-user; process-applied overrides stay session-scoped on the SoundSwitch side.
+  2. The other rule behaviours are live-only: pair cycling (one route at a time per rule), window-title matching, "isn't running" feedback, notifications, and disable semantics.
+  3. Enforcing at identity level makes SoundSwitch's state *permanently* visible-and-alive in Windows Settings even after "disable", which is a user-visible semantic jump.
+  Identity-level enforcement is therefore a candidate follow-up ADR ("App Rules write the persisted store at save time; engine applies; rules become identity-based"), not a silent change inside this iteration (§10, Future work).
+
 ## 3. Goals
 
 1. Show the apps that already **have their own audio device set** (render or capture) as the first, highlighted group in the picker — the same apps Windows Settings lists with a device assignment. The persisted store outlives processes, so this group must also include apps that are **not running** (shown dimmed), exactly like Windows Settings does.
@@ -196,6 +208,7 @@ Rows keep carrying their per-side device names, computed as today (`GetUsedDevic
 
 - If the registry store proves stale or unreliable in the field, add a batched per-pid `GetDefaultEndPoint` sweep through `ComThread.Invoke` as a re-confirmation pass (§6.1.1); the `ComThread` apartment constraint (§2.4) applies.
 - Derive the store's `<hash>_<N>` key naming from the record contents if a reverse-engineered, stable hash emerges (useful for targeted writes; reading only needs the current enumerate-all approach).
+- **Identity-level rule enforcement** (candidate follow-up ADR): when a rule is saved/enabled, write its device pair to the persisted store once and let the audio engine apply it at session creation (measured: §2.5). The App Rules process monitor, foreground trigger, and "isn't running" paths stop being needed for plain Automatic assignments; cycling/window-title rules keep the process path. Gate: a supported way to clear a not-running app's rule (endpoint with clear-by-identity or accepted use of `ClearAll`).
 - Add a "Check Windows settings" deep-link label on the **Has own device** group header, jumping users to the Windows page that shows the same list.
 - Propagate group classification into the hotkey-mode flow (`ApplyRuleToRunningProcesses` logs) for diagnostics parity.
 - Consider flagging rows whose persisted device is not currently resolvable (device unplugged) in the **Has own device** group, so the rule's self-heal (`AppRuleDeviceResolver`) is visible before save.
