@@ -165,8 +165,13 @@ public class UpsertAppSoundLockRuleLayoutTests
             form.FormBorderStyle.Should().Be(FormBorderStyle.Sizable);
             form.MaximizeBox.Should().BeFalse();
             form.MinimizeBox.Should().BeFalse();
-            form.MinimumSize.Width.Should().BeGreaterThanOrEqualTo(form.Width);
-            form.MinimumSize.Height.Should().BeGreaterThanOrEqualTo(form.Height);
+            // The guarantee to test is "the designed client stays visible at the minimum":
+            // measure the host's actual chrome frame instead of comparing against the outer
+            // form size, whose frame metrics are theme- and host-dependent.
+            var frameWidth = Math.Max(0, form.Width - form.ClientSize.Width);
+            var frameHeight = Math.Max(0, form.Height - form.ClientSize.Height);
+            form.MinimumSize.Width.Should().BeGreaterThanOrEqualTo(560 + frameWidth);
+            form.MinimumSize.Height.Should().BeGreaterThanOrEqualTo(372 + frameHeight);
         });
     }
 

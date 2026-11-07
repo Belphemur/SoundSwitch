@@ -158,6 +158,12 @@ The `#if NETCORE` block keeps `SetColorMode(System)` only.
   user resize inside Hotkey mode cannot squeeze the pair list below its
   design size, and switching back to Automatic can actually shrink again
   (the framework clamps against the still-external minimum).
+- Lifecycle: `OnShown` and (post-load) DPI changes re-run `ApplyModeLayout`
+  once the framework has applied its own scaling (`OnDpiChanged` after
+  `base`), so `_appliedClientHeight` and the mode `MinimumSize` are never
+  left in pre-scale or stale-scale terms — otherwise the first mode switch
+  after a scale change would treat the rescaled height as user-chosen and
+  keep it.
 - `lvPairs` keeps the "first column fixed, two variable columns" layout: on
   the group's resize, redistribute the playback/recording column widths
   proportionally to the design widths (`30 / 235 / 235`). The pair-row

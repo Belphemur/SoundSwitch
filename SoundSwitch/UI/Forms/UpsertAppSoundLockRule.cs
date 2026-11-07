@@ -779,9 +779,29 @@ public partial class UpsertAppSoundLockRule : Form
     {
         base.OnShown(e);
         _formLoaded = true;
+        // Re-derive the bottom-region geometry now that the framework has applied the initial
+        // DPI scaling to the designer coordinates: _appliedClientHeight was recorded in the
+        // constructor at 100% scale, and the first mode change must treat the scaled height as
+        // framework-chosen, not user-chosen. This also refreshes MinimumSize from the real
+        // chrome frame (docs/design/ui/2026-11-06-dpi-awareness-scalable-dialogs.md).
+        ApplyModeLayout();
         if (!_editing)
         {
             BeginInvoke(new Action(SelectProcess));
+        }
+    }
+
+    /// <summary>
+    /// Re-derive the bottom-region geometry after a DPI change rescales the form: the height
+    /// baseline and MinimumSize must both follow the new scale, or the next mode switch treats
+    /// the rescaled height as a user choice and keeps it.
+    /// </summary>
+    protected override void OnDpiChanged(DpiChangedEventArgs e)
+    {
+        base.OnDpiChanged(e);
+        if (_formLoaded)
+        {
+            ApplyModeLayout();
         }
     }
 
