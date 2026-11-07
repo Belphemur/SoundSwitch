@@ -5,6 +5,7 @@
 **Branch:** `fix/2570-app-rules-dialog-scaling`
 **Base:** `origin/dev`
 **Issue:** [Belphemur/SoundSwitch#2570](https://github.com/Belphemur/SoundSwitch/issues/2570) - App rules dialog does not properly scale
+**PR:** [#2572](https://github.com/Belphemur/SoundSwitch/pull/2572)
 **Related:** `docs/design/ui/2026-09-14-startup-order-setcolormode-fix.md` (startup order; partially superseded — see 6.1), `docs/design/app-rules/2026-11-03-app-rules-picker-own-device-list.md`
 
 ---
