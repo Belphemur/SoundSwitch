@@ -355,6 +355,7 @@ namespace SoundSwitch.UI.Forms
             this.btnNewPair.Text = string.Empty;
             this.btnNewPair.UseVisualStyleBackColor = true;
             this.btnNewPair.Click += new System.EventHandler(this.BtnNewPair_Click);
+            this.btnNewPair.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lvPairs
             // 

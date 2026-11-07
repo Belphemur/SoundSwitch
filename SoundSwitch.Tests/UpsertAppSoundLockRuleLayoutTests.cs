@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -41,12 +42,13 @@ public class UpsertAppSoundLockRuleLayoutTests
     private static int Scale(double value, double scale) =>
         (int)Math.Round(value * scale, MidpointRounding.AwayFromZero);
 
-    private static UpsertAppSoundLockRule.AppRuleDialogLayout Compute(bool hotkeyMode, double scale, int clientWidth) =>
+    private static UpsertAppSoundLockRule.AppRuleDialogLayout Compute(bool hotkeyMode, double scale, int clientWidth, bool heightWasUserChosen = false) =>
         UpsertAppSoundLockRule.ComputeModeLayout(
             hotkeyMode,
             scale,
             clientWidth,
             hotkeyMode ? Scale(470, scale) : Scale(372, scale),
+            heightWasUserChosen,
             Scale(75, scale),
             Scale(75, scale));
 
@@ -123,6 +125,34 @@ public class UpsertAppSoundLockRuleLayoutTests
             .Should().Be(new Size(Scale(560, scale), Scale(470, scale)));
     }
 
+    [TestCaseSource(nameof(Scales))]
+    public void HotkeyHeightWithoutUserResizeIsNotCarriedBackToAutomatic(double scale)
+    {
+        // An untouched window in Hotkey mode is at the Hotkey baseline (470); leaving that mode
+        // must restore Automatic's design height, not keep the stage height Hotkey mode added.
+        UpsertAppSoundLockRule.ComputeModeLayout(
+                hotkeyMode: false, scale,
+                Scale(560, scale), Scale(470, scale), // untouched window still at Hotkey height
+                heightWasUserChosen: false,
+                Scale(75, scale), Scale(75, scale))
+            .ClientSize.Height.Should().Be(Scale(372, scale));
+    }
+
+    [TestCaseSource(nameof(Scales))]
+    public void UserChosenHeightAlwaysWins(double scale)
+    {
+        var userHeight = Scale(600, scale);
+        CalculateLayout(hotkeyMode: true, scale, userHeight).ClientSize.Height.Should().Be(userHeight);
+        CalculateLayout(hotkeyMode: false, scale, userHeight).ClientSize.Height.Should().Be(userHeight);
+
+        UpsertAppSoundLockRule.AppRuleDialogLayout CalculateLayout(bool hotkeyMode, double s, int height) =>
+            UpsertAppSoundLockRule.ComputeModeLayout(
+                hotkeyMode, s,
+                Scale(560, s), height,
+                heightWasUserChosen: true,
+                Scale(75, s), Scale(75, s));
+    }
+
     [Test]
     public void FormIsDpiScaledResizableAndWithinItsMinimum()
     {
@@ -166,6 +196,9 @@ public class UpsertAppSoundLockRuleLayoutTests
             form.HotkeyModeRadio.Checked = true;
             form.ApplyModeLayout();
 
+            form.AutomaticModeRadio.Checked = true;
+            form.ApplyModeLayout();
+
             form.ClientSize.Width.Should().Be(760);
 
             // Cancel stays 26 design px from the right edge; group spans the width.
@@ -179,11 +212,42 @@ public class UpsertAppSoundLockRuleLayoutTests
             form.ApplyModeLayout();
 
             form.ClientSize.Width.Should().Be(760);
+            form.ClientSize.Height.Should().Be(372, "the untouched Automatic↔Hotkey journey must return to the Automatic baseline");
             form.CancelButtonControl.Location.X.Should().Be(
                 form.ClientSize.Width - 26 - form.CancelButtonControl.Width);
         });
     }
 
+    [Test]
+    public void EnlargedHotkeyModeKeepsThePairControlsClear()
+    {
+        RunSta(() =>
+        {
+            using var form = CreateRuleDialog();
+
+            form.HotkeyModeRadio.Checked = true;
+            form.ApplyModeLayout();
+
+            // The user enlarges the window with plain anchors (no mode switch involved).
+            form.ClientSize = new Size(860, 620);
+            form.PerformLayout();
+
+            var newPair = form.NewPairButton;
+            var pairs = form.PairList;
+
+            pairs.Bottom.Should().BeLessThan(newPair.Top,
+                "a grown pair list must never cover the New pair button");
+            (form.HotkeyGroup.Height - newPair.Bottom).Should().Be(9);
+            (form.HotkeyGroup.Width - newPair.Right).Should().Be(42);
+            (form.HotkeyGroup.Height - form.RemovePairButton.Bottom).Should().Be(9);
+        });
+    }
+
+    // A live-form mode-switch test at 175% DPI is not possible in a unit test assembly:
+    // .NET 10 WinForms has no injectable per-control DPI (the old _deviceDpi field is gone;
+    // DeviceDpiInternal/OriginalDeviceDpiInternal do not drive DeviceDpi and s_deviceDpiInternal
+    // is initonly). The scaled geometry therefore lives in the pure ComputeModeLayout tests above
+    // (runs at 100%-200%), and the end-to-end plumbing is covered by the real-form tests at 96 DPI.
     private static UpsertAppSoundLockRule CreateRuleDialog(Size? formSize = null)
     {
         var form = new UpsertAppSoundLockRule(
@@ -200,9 +264,16 @@ public class UpsertAppSoundLockRuleLayoutTests
 
     private static void RunSta(Action action)
     {
-        var thread = new Thread(action.Invoke) { IsBackground = true };
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            try { action(); }
+            catch (Exception ex) { failure = ex; }
+        });
+        thread.IsBackground = true;
         thread.SetApartmentState(ApartmentState.STA);
         thread.Start();
         thread.Join();
+        if (failure != null) throw failure;
     }
 }

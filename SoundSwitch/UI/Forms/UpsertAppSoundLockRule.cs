@@ -49,6 +49,11 @@ public partial class UpsertAppSoundLockRule : Form
     internal Button PlaybackResetButton => btnPlaybackReset;
     internal Button RecordingResetButton => btnRecordingReset;
     internal Button HotKeyResetButton => btnHotKeyReset;
+    internal ListView PairList => lvPairs;
+    internal Button NewPairButton => btnNewPair;
+    internal Button RemovePairButton => btnRemovePair;
+    internal CheckBox EnabledCheckbox => chkEnabled;
+    internal Label AssignmentHelperLabel => lblAssignmentHelper;
 
     public UpsertAppSoundLockRule(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, bool editing = false)
     {
@@ -293,13 +298,16 @@ public partial class UpsertAppSoundLockRule : Form
         lblAssignmentHelper.Size = new Size((int)Math.Round(438 * factor), (int)Math.Round(46 * factor));
 
         // The bottom region toggles between the device combos (Automatic) and the hotkey
-        // group. ComputeModeLayout derives the client size from the design size without
-        // shrinking a window the user made larger, and pins the bottom rows relative to the
-        // client edges so the anchors (Bottom|Left / Bottom|Right) stay coherent on
-        // further resizes.
+        // group. ComputeModeLayout derives the client size from the design size, pins the
+        // bottom rows relative to the client edges so the anchors (Bottom|Left / Bottom|Right)
+        // stay coherent on further resizes, and — unless the user resized the window — drops
+        // back to the design baseline when leaving Hotkey mode (its extra height is stage
+        // space, not a user preference).
+        var untouchedHeight = _appliedClientHeight > 0 && ClientSize.Height == _appliedClientHeight;
         var layout = ComputeModeLayout(hotkeyMode, factor, ClientSize.Width, ClientSize.Height,
-            btnCancel.Width, btnSave.Width);
+            !untouchedHeight, btnCancel.Width, btnSave.Width);
         ClientSize = layout.ClientSize;
+        _appliedClientHeight = layout.ClientSize.Height;
 
         if (hotkeyMode)
         {
@@ -314,22 +322,30 @@ public partial class UpsertAppSoundLockRule : Form
         btnSave.Location = layout.SaveButtonLocation;
     }
 
+    /// <summary>The client height <see cref="ApplyModeLayout"/> last set; a current height equal to
+    /// it means the user has not resized the window since (see <see cref="ComputeModeLayout"/>).</summary>
+    private int _appliedClientHeight;
+
     /// <summary>
     /// Pure geometry for one bottom-region mode, in runtime pixels: the designer coordinates of
     /// <see cref="UpsertAppSoundLockRule"/> at their 96-DPI baseline scaled by <paramref name="factor"/>,
     /// clamped so a user-enlarged window keeps its size. The bottom rows are expressed as offsets from
     /// the client's bottom/right edges because their controls are bottom/right anchored.
     /// </summary>
+    /// <param name="heightWasUserChosen">False when the current height is just the height this
+    /// mode last set; the returned <see cref="AppRuleDialogLayout.ClientSize"/> then uses the
+    /// mode's <paramref name="factor"/>-scaled design height instead of keeping it.</param>
     /// <remarks>
     /// Testable without a live form; see UpsertAppSoundLockRuleLayoutTests.
     /// </remarks>
     internal static AppRuleDialogLayout ComputeModeLayout(bool hotkeyMode, double factor,
-        int currentClientWidth, int currentClientHeight, int cancelButtonWidth, int saveButtonWidth)
+        int currentClientWidth, int currentClientHeight, bool heightWasUserChosen,
+        int cancelButtonWidth, int saveButtonWidth)
     {
         int Scale(int design) => (int)Math.Round(design * factor, MidpointRounding.AwayFromZero);
 
         var width = Math.Max(currentClientWidth, Scale(560));
-        var height = Math.Max(currentClientHeight, Scale(hotkeyMode ? 470 : 372));
+        var height = Math.Max(heightWasUserChosen ? currentClientHeight : 0, Scale(hotkeyMode ? 470 : 372));
 
         var cancelButtonX = width - Scale(26) - cancelButtonWidth;
         var buttonsY = height - Scale(hotkeyMode ? 40 : 38);
@@ -359,18 +375,17 @@ public partial class UpsertAppSoundLockRule : Form
         Point CancelButtonLocation);
 
     /// <summary>
-    /// Ratio between the runtime DPI scale and the form's design-time 96-DPI baseline. The
-    /// framework auto-scales the designer layout by this factor on the first
-    /// <see cref="Form.AutoScaleMode.Dpi"/> pass; mode switches performed after
-    /// the form is shown apply it here so the two layouts line up.
+    /// Ratio between the runtime DPI scale and the form's 96-DPI design baseline. Mode switches
+    /// performed after the form has been autoscaled apply it so the moved controls land at
+    /// scaled, not 96-DPI, positions. It must come from <see cref="Control.DeviceDpi"/> rather
+    /// than <see cref="ContainerControl.AutoScaleDimensions"/>: WinForms rewrites the auto-scale
+    /// dimensions to the current ones after each autoscale pass, which would make a
+    /// current-vs-design ratio read as 1 at any DPI after the form is shown.
     /// </summary>
     private float FontScaleFactor()
     {
-        var designHeight = AutoScaleDimensions.Height;
-        if (designHeight <= 0) return 1f;
-        var currentHeight = CurrentAutoScaleDimensions.Height;
-        if (currentHeight <= 0) return 1f;
-        return currentHeight / designHeight;
+        const float designDpi = 96f;
+        return DeviceDpi <= 0 ? 1f : DeviceDpi / designDpi;
     }
 
     private void PopulatePairList()
