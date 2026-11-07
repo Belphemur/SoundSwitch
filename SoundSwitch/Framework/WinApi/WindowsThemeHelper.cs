@@ -62,7 +62,10 @@ public static class WindowsThemeHelper
     private static bool ReadDarkModeEnabled()
     {
         return ThemeResolver.ResolveIsDarkMode(
-            ThemeResolver.ThemeModeProvider(),
+            // The theme selection captured at process start, not the current config
+            // value: a selection that was not followed by a restart must not flip the
+            // custom paint while the WinForms palette keeps the startup colour mode.
+            ThemeResolver.EffectiveThemeMode,
             ReadOsAppDarkMode(),
             ThemeResolver.DarkModeSupported());
     }

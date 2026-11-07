@@ -35,6 +35,7 @@ public class ThemeResolverTests
         // Implicit values regressed in a test are caught by TearDown; keep each test explicit anyway.
         ThemeResolver.ThemeModeProvider = _originalThemeModeProvider;
         ThemeResolver.DarkModeSupported = _originalDarkModeSupported;
+        ThemeResolver.ResetEffectiveThemeModeForTests();
         WindowsThemeHelper.DarkModeProvider = null;
     }
 
@@ -43,6 +44,7 @@ public class ThemeResolverTests
     {
         ThemeResolver.ThemeModeProvider = _originalThemeModeProvider;
         ThemeResolver.DarkModeSupported = _originalDarkModeSupported;
+        ThemeResolver.ResetEffectiveThemeModeForTests();
         WindowsThemeHelper.DarkModeProvider = null;
     }
 
@@ -84,5 +86,44 @@ public class ThemeResolverTests
         UseTheme(mode, darkModeSupported: true);
 
         return WindowsThemeHelper.IsDarkModeEnabled();
+    }
+
+    [Test]
+    public void IsDarkModeEnabled_KeepsTheStartupThemeWhenRestartIsDeclined()
+    {
+        // At "startup" the user asked for Light; custom paint uses the captured selection.
+        UseTheme(ThemeMode.Light, darkModeSupported: true);
+        Assert.That(WindowsThemeHelper.IsDarkModeEnabled(), Is.False);
+
+        // The user then picks Dark and declines the restart prompt: the setting is
+        // persisted, but the process keeps rendering the startup theme so the custom
+        // paint never disagrees with the WinForms palette until the next launch.
+        UseTheme(ThemeMode.Dark, darkModeSupported: true);
+
+        Assert.That(ThemeResolver.EffectiveThemeMode, Is.EqualTo(ThemeMode.Light));
+        Assert.That(WindowsThemeHelper.IsDarkModeEnabled(), Is.False);
+    }
+
+    [Test]
+    public void EffectiveThemeMode_CapturesTheSelectionOncePerProcess()
+    {
+        UseTheme(ThemeMode.Light, darkModeSupported: true);
+        var firstRead = ThemeResolver.EffectiveThemeMode;
+
+        // Later configuration changes (saved setting after a restart prompt was
+        // declined) must not change what the process renders.
+        UseTheme(ThemeMode.Dark, darkModeSupported: true);
+
+        Assert.That(firstRead, Is.EqualTo(ThemeMode.Light));
+        Assert.That(ThemeResolver.EffectiveThemeMode, Is.EqualTo(ThemeMode.Light));
+    }
+
+    [Test]
+    public void EffectiveThemeMode_SystemKeepsConsultingTheOsAppMode()
+    {
+        // ResolveIsDarkMode(System, osDark) mirrors the live OS read: the System
+        // selection stays dynamic even though the selection itself is captured.
+        Assert.That(ThemeResolver.ResolveIsDarkMode(ThemeMode.System, osDarkMode: true, darkModeSupported: true), Is.True);
+        Assert.That(ThemeResolver.ResolveIsDarkMode(ThemeMode.System, osDarkMode: false, darkModeSupported: true), Is.False);
     }
 }

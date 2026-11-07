@@ -35,6 +35,26 @@ public static class ThemeResolver
     internal static Func<ThemeMode> ThemeModeProvider { get; set; } = () => AppConfigs.Configuration.ThemeMode;
 
     /// <summary>
+    /// The theme selection this process was started with, captured on first use
+    /// (at startup, when <see cref="System.Windows.Forms.Application.SetColorMode"/>
+    /// resolves the colour mode). The written setting only takes effect after the
+    /// user accepts a restart, so a later configuration change must not flip
+    /// custom paint while the WinForms palette keeps the startup one — that would
+    /// recreate the mixed rendering of issue #2567. The System selection
+    /// intentionally keeps following the live Windows app mode.
+    /// Test seam below clears the capture; production captures once per process.
+    /// </summary>
+    internal static ThemeMode EffectiveThemeMode => _startupThemeMode ??= ThemeModeProvider();
+
+    private static ThemeMode? _startupThemeMode;
+
+    /// <summary>
+    /// Clears the captured startup theme. Test-only; production captures once per
+    /// process at startup and keeps it until the process exits (which is a restart).
+    /// </summary>
+    internal static void ResetEffectiveThemeModeForTests() => _startupThemeMode = null;
+
+    /// <summary>
     /// WinForms renders dark mode correctly only on Windows 11 (build 22000+).
     /// Microsoft docs state: "the dark color mode is only available from Windows 11
     /// on or later versions". On an incomplete host everything resolves to light so
@@ -72,7 +92,7 @@ public static class ThemeResolver
         if (!DarkModeSupported())
             return SystemColorMode.Classic;
 
-        return ThemeModeProvider() switch
+        return EffectiveThemeMode switch
         {
             ThemeMode.Light => SystemColorMode.Classic,
             ThemeMode.Dark => SystemColorMode.Dark,
