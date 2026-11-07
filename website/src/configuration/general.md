@@ -1,6 +1,6 @@
 ---
 title: General Settings
-description: Configure SoundSwitch startup behavior, device cycling, foreground app switching, system tray icon and update preferences from the General tab.
+description: Configure SoundSwitch startup behavior, device cycling, foreground app switching, system tray icon, theme, language and update preferences from the General tab.
 ---
 
 # General Settings
@@ -79,7 +79,7 @@ Controls which devices are included when cycling through audio devices via hotke
 | **All audio devices** | Cycle through every detected device on the system. |
 | **Only selected audio devices** | Cycle through only the devices you have checked on the **Playback** and **Recording** tabs. This is the recommended option for most users. |
 
-## Right Column: Update & Language Settings
+## Right Column: Update, Language & Theme Settings
 
 ### Update Settings
 
@@ -102,3 +102,19 @@ Allows SoundSwitch to send usage metrics and crash-report context to Sentry to h
 ### Language
 
 Sets the display language for the SoundSwitch interface. Changing this requires restarting the application for the new language to take effect.
+
+### Theme
+
+Controls whether SoundSwitch follows the Windows light/dark app mode or forces its own palette.
+
+| Option | Behavior |
+|--------|----------|
+| **Follow Windows** | SoundSwitch follows the Windows **Apps use light/dark theme** setting (the default). |
+| **Light** | Force the light palette, regardless of the Windows setting. |
+| **Dark** | Force the dark palette *(Windows 11)*. |
+
+::: tip Windows 10 users
+On Windows 10, Windows Forms applications cannot render the dark palette completely — the theme previously appeared as a broken mix of light and dark areas ([issue #2567](https://github.com/Belphemur/SoundSwitch/issues/2567)). SoundSwitch now falls back to a consistent light palette on Windows 10. If you want a predictable look, pick **Light** (or keep **Follow Windows**).
+:::
+
+Changing the theme requires restarting the application for the new palette to apply; SoundSwitch asks whether to restart when you pick a different value.
