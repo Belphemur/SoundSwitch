@@ -38,6 +38,18 @@ public partial class UpsertAppSoundLockRule : Form
 
     public AppSoundRule Rule => _rule;
 
+    // Designer fields are private; these expose the pieces SoundSwitch.Tests drives to assert the
+    // layout and accessibility contract (see UpsertAppSoundLockRuleLayoutTests).
+    internal RadioButton AutomaticModeRadio => rdoAutomatic;
+    internal RadioButton HotkeyModeRadio => rdoHotkey;
+    // "CancelButton" is taken by Form.CancelButton, which the designer assigns.
+    internal Button CancelButtonControl => btnCancel;
+    internal GroupBox HotkeyGroup => grpHotkey;
+    internal Button SelectProcessButton => btnSelectProcess;
+    internal Button PlaybackResetButton => btnPlaybackReset;
+    internal Button RecordingResetButton => btnRecordingReset;
+    internal Button HotKeyResetButton => btnHotKeyReset;
+
     public UpsertAppSoundLockRule(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, bool editing = false)
     {
         _initializing = true;
@@ -49,11 +61,13 @@ public partial class UpsertAppSoundLockRule : Form
 
         InitializeComponent();
         LocalizeForm();
+        InitAccessibleNames();
         InitComboBoxes();
         InitializeFromRule();
 
         hotKeyBox.ListenToHotkey = true;
         hotKeyBox.HotKeyChanged += (_, _) => btnHotKeyReset.Visible = hotKeyBox.HotKey != null;
+        lvPairs.Resize += (_, _) => RedistributePairColumns();
 
         _initializing = false;
         UpdateAssignmentNote();
@@ -84,6 +98,15 @@ public partial class UpsertAppSoundLockRule : Form
         btnCancel.Text = SettingsStrings.buttonClose;
 
         lblAssignmentHelper.Text = SettingsStrings.appSoundLock_rule_assignmentNote;
+    }
+
+    private void InitAccessibleNames()
+    {
+        // Image-only controls have no visible label a screen reader could read out.
+        btnSelectProcess.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_selectProcess;
+        btnPlaybackReset.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_resetPlayback;
+        btnRecordingReset.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_resetRecording;
+        btnHotKeyReset.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_resetHotkey;
     }
 
     private void InitComboBoxes()
@@ -234,7 +257,7 @@ public partial class UpsertAppSoundLockRule : Form
         ApplyModeLayout();
     }
 
-    private void ApplyModeLayout()
+    internal void ApplyModeLayout()
     {
         var hotkeyMode = rdoHotkey.Checked;
         lblDescription.Text = hotkeyMode
@@ -252,23 +275,14 @@ public partial class UpsertAppSoundLockRule : Form
         // Assignment enforcement is offered on Automatic rules only (ADR �6.4).
         lblEnforcement.Visible = false;
         pnlEnforcement.Visible = false;
-        lblAssignmentHelper.Visible = false;
+        lblAssignmentHelper.Visible = lblAssignmentHelper.Visible && !hotkeyMode;
 
         // The design-time coordinates are set by the constructor before the form
-        // is shown, and the framework scales them once with AutoScaleMode.Font.
-        // Mode changes after the form is loaded must apply that same font factor
-        // themselves, otherwise the moved controls land at DPI-scaled, not
-        // font-scaled, positions at 125%+ text scaling.
+        // is shown, and the framework scales them once with AutoScaleMode.Dpi.
+        // Mode changes after the form is loaded must apply that same DPI factor
+        // themselves, otherwise the moved controls land at 96-DPI, not scaled,
+        // positions on a >100% display.
         var factor = _formLoaded ? FontScaleFactor() : 1f;
-
-        var checkboxY = (int)Math.Round((hotkeyMode ? 398 : 302) * factor);
-        chkEnabled.Location = new Point((int)Math.Round(110 * factor), checkboxY);
-        chkCaseSensitive.Location = new Point((int)Math.Round(210 * factor), checkboxY);
-        chkNotify.Location = new Point((int)Math.Round(340 * factor), checkboxY);
-
-        var buttonY = (int)Math.Round((hotkeyMode ? 430 : 334) * factor);
-        btnSave.Location = new Point((int)Math.Round(378 * factor), buttonY);
-        btnCancel.Location = new Point((int)Math.Round(459 * factor), buttonY);
 
         // The enforcement row sits between the device combos and the checkboxes; scale it the
         // same way so a mode switch after the form is shown keeps the layout aligned.
@@ -278,13 +292,76 @@ public partial class UpsertAppSoundLockRule : Form
         lblAssignmentHelper.Location = new Point((int)Math.Round(110 * factor), (int)Math.Round(252 * factor));
         lblAssignmentHelper.Size = new Size((int)Math.Round(438 * factor), (int)Math.Round(46 * factor));
 
-        ClientSize = new Size((int)Math.Round(560 * factor), (int)Math.Round((hotkeyMode ? 470 : 372) * factor));
+        // The bottom region toggles between the device combos (Automatic) and the hotkey
+        // group. ComputeModeLayout derives the client size from the design size without
+        // shrinking a window the user made larger, and pins the bottom rows relative to the
+        // client edges so the anchors (Bottom|Left / Bottom|Right) stay coherent on
+        // further resizes.
+        var layout = ComputeModeLayout(hotkeyMode, factor, ClientSize.Width, ClientSize.Height,
+            btnCancel.Width, btnSave.Width);
+        ClientSize = layout.ClientSize;
+
+        if (hotkeyMode)
+        {
+            grpHotkey.Location = layout.GrpHotkeyLocation;
+            grpHotkey.Size = layout.GrpHotkeySize;
+        }
+
+        chkEnabled.Location = new Point(layout.CheckboxLeft, layout.CheckboxY);
+        chkCaseSensitive.Location = new Point(layout.CheckboxMid, layout.CheckboxY);
+        chkNotify.Location = new Point(layout.CheckboxRight, layout.CheckboxY);
+        btnCancel.Location = layout.CancelButtonLocation;
+        btnSave.Location = layout.SaveButtonLocation;
     }
 
     /// <summary>
-    /// Ratio between the runtime font metrics and the form's design-time font. The
+    /// Pure geometry for one bottom-region mode, in runtime pixels: the designer coordinates of
+    /// <see cref="UpsertAppSoundLockRule"/> at their 96-DPI baseline scaled by <paramref name="factor"/>,
+    /// clamped so a user-enlarged window keeps its size. The bottom rows are expressed as offsets from
+    /// the client's bottom/right edges because their controls are bottom/right anchored.
+    /// </summary>
+    /// <remarks>
+    /// Testable without a live form; see UpsertAppSoundLockRuleLayoutTests.
+    /// </remarks>
+    internal static AppRuleDialogLayout ComputeModeLayout(bool hotkeyMode, double factor,
+        int currentClientWidth, int currentClientHeight, int cancelButtonWidth, int saveButtonWidth)
+    {
+        int Scale(int design) => (int)Math.Round(design * factor, MidpointRounding.AwayFromZero);
+
+        var width = Math.Max(currentClientWidth, Scale(560));
+        var height = Math.Max(currentClientHeight, Scale(hotkeyMode ? 470 : 372));
+
+        var cancelButtonX = width - Scale(26) - cancelButtonWidth;
+        var buttonsY = height - Scale(hotkeyMode ? 40 : 38);
+
+        return new AppRuleDialogLayout(
+            ClientSize: new Size(width, height),
+            GrpHotkeyLocation: new Point(Scale(12), Scale(168)),
+            GrpHotkeySize: new Size(width - Scale(24), height - Scale(252)),
+            CheckboxY: height - Scale(hotkeyMode ? 72 : 70),
+            CheckboxLeft: Scale(110),
+            CheckboxMid: Scale(210),
+            CheckboxRight: Scale(340),
+            SaveButtonLocation: new Point(cancelButtonX - Scale(6) - saveButtonWidth, buttonsY),
+            CancelButtonLocation: new Point(cancelButtonX, buttonsY));
+    }
+
+    /// <summary>The runtime-pixel result of <see cref="ComputeModeLayout"/>.</summary>
+    internal sealed record AppRuleDialogLayout(
+        Size ClientSize,
+        Point GrpHotkeyLocation,
+        Size GrpHotkeySize,
+        int CheckboxY,
+        int CheckboxLeft,
+        int CheckboxMid,
+        int CheckboxRight,
+        Point SaveButtonLocation,
+        Point CancelButtonLocation);
+
+    /// <summary>
+    /// Ratio between the runtime DPI scale and the form's design-time 96-DPI baseline. The
     /// framework auto-scales the designer layout by this factor on the first
-    /// <see cref="Form.AutoScaleMode.Font"/> pass; mode switches performed after
+    /// <see cref="Form.AutoScaleMode.Dpi"/> pass; mode switches performed after
     /// the form is shown apply it here so the two layouts line up.
     /// </summary>
     private float FontScaleFactor()
@@ -303,9 +380,13 @@ public partial class UpsertAppSoundLockRule : Form
         {
             lvPairs.Items.Clear();
             lvPairs.Columns.Clear();
-            lvPairs.Columns.Add("#", 30);
-            lvPairs.Columns.Add(SettingsStrings.playback, 235);
-            lvPairs.Columns.Add(SettingsStrings.recording, 235);
+            // The first column keeps a fixed index width; the two device columns follow the
+            // current list width via RedistributePairColumns instead of hard 96-DPI pixels.
+            // Before the form is shown the design coordinates are unscaled (the framework
+            // scales them on the first autoscale pass), so the factor is only applied after load.
+            lvPairs.Columns.Add("#", (int)Math.Round(30 * (_formLoaded ? FontScaleFactor() : 1f)));
+            lvPairs.Columns.Add(SettingsStrings.playback, 0);
+            lvPairs.Columns.Add(SettingsStrings.recording, 0);
 
             for (var index = 0; index < _pairs.Count; index++)
             {
@@ -326,8 +407,25 @@ public partial class UpsertAppSoundLockRule : Form
             lvPairs.EndUpdate();
         }
 
+        RedistributePairColumns();
         UpdatePairCount();
         UpdatePairButtons();
+    }
+
+    /// <summary>
+    /// Split the space left of the fixed index column evenly between the playback and
+    /// recording columns, so the pair list tracks the dialog's resizable width instead of
+    /// staying at 96-DPI pixel widths.
+    /// </summary>
+    private void RedistributePairColumns()
+    {
+        if (lvPairs.Columns.Count < 3) return;
+
+        var available = lvPairs.ClientSize.Width - lvPairs.Columns[0].Width - 4;
+        if (available <= 80) return;
+        var half = available / 2;
+        lvPairs.Columns[1].Width = half;
+        lvPairs.Columns[2].Width = available - half;
     }
 
     private static string DeviceLabel(DeviceInfo? device)

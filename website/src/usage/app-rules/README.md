@@ -97,6 +97,8 @@ The filter box searches all three groups.
 6. Adjust **Enabled**, **Case Sensitive**, and **Notify when triggered** as needed.
 7. Click **Save**.
 
+The rule editor window can be resized; every panel follows the new size. It scales with Windows display scaling (125%–200%), so on a large display nothing becomes too small to read.
+
 ![App Rules list](/images/AppRules.png)
 
 ![Add an App Rule in Automatic mode](/images/AppRules%20Add.png)

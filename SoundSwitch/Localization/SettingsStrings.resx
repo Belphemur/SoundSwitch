@@ -870,6 +870,18 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.assignmentNote" xml:space="preserve">
     <value>SoundSwitch also registers this app's audio device with Windows, which keeps applying it even when SoundSwitch is closed. Deleting the rule restores the default immediately.</value>
   </data>
+  <data name="appSoundLock.rule.accessible.selectProcess" xml:space="preserve">
+    <value>Select process</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.resetPlayback" xml:space="preserve">
+    <value>Reset playback device</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.resetRecording" xml:space="preserve">
+    <value>Reset recording device</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.resetHotkey" xml:space="preserve">
+    <value>Reset shortcut</value>
+  </data>
   <data name="appSoundLock.rule.shortcut" xml:space="preserve">
     <value>Shortcut</value>
   </data>

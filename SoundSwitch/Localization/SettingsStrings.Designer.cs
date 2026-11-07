@@ -366,6 +366,42 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select process.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_selectProcess {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.selectProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset playback device.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_resetPlayback {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.resetPlayback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset recording device.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_resetRecording {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.resetRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset shortcut.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_resetHotkey {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.resetHotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shortcut.
         /// </summary>
         internal static string appSoundLock_rule_shortcut {

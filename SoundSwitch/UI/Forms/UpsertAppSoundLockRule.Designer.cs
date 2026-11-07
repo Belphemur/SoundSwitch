@@ -79,6 +79,7 @@ namespace SoundSwitch.UI.Forms
             this.lblDescription.Size = new System.Drawing.Size(536, 34);
             this.lblDescription.TabIndex = 18;
             this.lblDescription.Text = string.Empty;
+            this.lblDescription.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblProcessPath
             // 
@@ -96,6 +97,7 @@ namespace SoundSwitch.UI.Forms
             this.txtProcessPath.Size = new System.Drawing.Size(380, 23);
             this.txtProcessPath.TabIndex = 3;
             this.txtProcessPath.TextChanged += new System.EventHandler(this.TxtProcessPath_TextChanged);
+            this.txtProcessPath.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnSelectProcess
             // 
@@ -106,6 +108,7 @@ namespace SoundSwitch.UI.Forms
             this.btnSelectProcess.Text = "...";
             this.btnSelectProcess.UseVisualStyleBackColor = true;
             this.btnSelectProcess.Click += new System.EventHandler(this.BtnSelectProcess_Click);
+            this.btnSelectProcess.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblPattern
             // 
@@ -123,6 +126,7 @@ namespace SoundSwitch.UI.Forms
             this.txtPattern.Size = new System.Drawing.Size(380, 23);
             this.txtPattern.TabIndex = 5;
             this.txtPattern.TextChanged += new System.EventHandler(this.TxtPattern_TextChanged);
+            this.txtPattern.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblRegexNotice
             // 
@@ -189,6 +193,7 @@ namespace SoundSwitch.UI.Forms
             this.cmbPlayback.TabIndex = 12;
             this.cmbPlayback.ValueMember = "Tag";
             this.cmbPlayback.SelectedIndexChanged += new System.EventHandler(this.CmbPlayback_SelectedIndexChanged);
+            this.cmbPlayback.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnPlaybackReset
             // 
@@ -200,6 +205,7 @@ namespace SoundSwitch.UI.Forms
             this.btnPlaybackReset.UseVisualStyleBackColor = true;
             this.btnPlaybackReset.Visible = false;
             this.btnPlaybackReset.Click += new System.EventHandler(this.BtnPlaybackReset_Click);
+            this.btnPlaybackReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblRecording
             // 
@@ -223,6 +229,7 @@ namespace SoundSwitch.UI.Forms
             this.cmbRecording.TabIndex = 15;
             this.cmbRecording.ValueMember = "Tag";
             this.cmbRecording.SelectedIndexChanged += new System.EventHandler(this.CmbRecording_SelectedIndexChanged);
+            this.cmbRecording.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnRecordingReset
             // 
@@ -234,6 +241,7 @@ namespace SoundSwitch.UI.Forms
             this.btnRecordingReset.UseVisualStyleBackColor = true;
             this.btnRecordingReset.Visible = false;
             this.btnRecordingReset.Click += new System.EventHandler(this.BtnRecordingReset_Click);
+            this.btnRecordingReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // grpHotkey
             // 
@@ -256,6 +264,7 @@ namespace SoundSwitch.UI.Forms
             this.grpHotkey.TabStop = false;
             this.grpHotkey.Text = string.Empty;
             this.grpHotkey.Visible = false;
+            this.grpHotkey.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblHotKey
             // 
@@ -272,6 +281,7 @@ namespace SoundSwitch.UI.Forms
             this.hotKeyBox.Name = "hotKeyBox";
             this.hotKeyBox.Size = new System.Drawing.Size(340, 23);
             this.hotKeyBox.TabIndex = 1;
+            this.hotKeyBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnHotKeyReset
             // 
@@ -283,6 +293,7 @@ namespace SoundSwitch.UI.Forms
             this.btnHotKeyReset.UseVisualStyleBackColor = true;
             this.btnHotKeyReset.Visible = false;
             this.btnHotKeyReset.Click += new System.EventHandler(this.BtnHotKeyReset_Click);
+            this.btnHotKeyReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblPairCount
             // 
@@ -322,6 +333,7 @@ namespace SoundSwitch.UI.Forms
             this.cmbPairRecording.TabIndex = 5;
             this.cmbPairRecording.ValueMember = "Tag";
             this.cmbPairRecording.SelectedIndexChanged += new System.EventHandler(this.CmbPairRecording_SelectedIndexChanged);
+            this.cmbPairRecording.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnAddPair
             // 
@@ -332,6 +344,7 @@ namespace SoundSwitch.UI.Forms
             this.btnAddPair.Text = string.Empty;
             this.btnAddPair.UseVisualStyleBackColor = true;
             this.btnAddPair.Click += new System.EventHandler(this.BtnAddPair_Click);
+            this.btnAddPair.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnNewPair
             // 
@@ -357,6 +370,7 @@ namespace SoundSwitch.UI.Forms
             this.lvPairs.UseCompatibleStateImageBehavior = false;
             this.lvPairs.View = System.Windows.Forms.View.Details;
             this.lvPairs.SelectedIndexChanged += new System.EventHandler(this.LvPairs_SelectedIndexChanged);
+            this.lvPairs.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnRemovePair
             // 
@@ -367,6 +381,7 @@ namespace SoundSwitch.UI.Forms
             this.btnRemovePair.Text = string.Empty;
             this.btnRemovePair.UseVisualStyleBackColor = true;
             this.btnRemovePair.Click += new System.EventHandler(this.BtnRemovePair_Click);
+            this.btnRemovePair.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // btnMoveUp
             // 
@@ -377,6 +392,7 @@ namespace SoundSwitch.UI.Forms
             this.btnMoveUp.Text = string.Empty;
             this.btnMoveUp.UseVisualStyleBackColor = true;
             this.btnMoveUp.Click += new System.EventHandler(this.BtnMoveUp_Click);
+            this.btnMoveUp.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // btnMoveDown
             // 
@@ -387,6 +403,7 @@ namespace SoundSwitch.UI.Forms
             this.btnMoveDown.Text = string.Empty;
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.BtnMoveDown_Click);
+            this.btnMoveDown.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // chkEnabled
             // 
@@ -397,6 +414,7 @@ namespace SoundSwitch.UI.Forms
             this.chkEnabled.TabIndex = 19;
             this.chkEnabled.Text = string.Empty;
             this.chkEnabled.UseVisualStyleBackColor = true;
+            this.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // chkCaseSensitive
             // 
@@ -407,6 +425,7 @@ namespace SoundSwitch.UI.Forms
             this.chkCaseSensitive.TabIndex = 20;
             this.chkCaseSensitive.Text = string.Empty;
             this.chkCaseSensitive.UseVisualStyleBackColor = true;
+            this.chkCaseSensitive.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // chkNotify
             // 
@@ -417,6 +436,7 @@ namespace SoundSwitch.UI.Forms
             this.chkNotify.TabIndex = 21;
             this.chkNotify.Text = string.Empty;
             this.chkNotify.UseVisualStyleBackColor = true;
+            this.chkNotify.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // lblEnforcement
             // 
@@ -433,6 +453,7 @@ namespace SoundSwitch.UI.Forms
             this.pnlEnforcement.Location = new System.Drawing.Point(110, 228);
             this.pnlEnforcement.Name = "pnlEnforcement";
             this.pnlEnforcement.TabIndex = 25;
+            this.pnlEnforcement.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // rdoEnforcementDynamic
             // 
@@ -461,6 +482,7 @@ namespace SoundSwitch.UI.Forms
             this.lblAssignmentHelper.TabIndex = 26;
             this.lblAssignmentHelper.Text = string.Empty;
             this.lblAssignmentHelper.Visible = false;
+            this.lblAssignmentHelper.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnSave
             // 
@@ -471,6 +493,7 @@ namespace SoundSwitch.UI.Forms
             this.btnSave.Text = string.Empty;
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnCancel
             // 
@@ -481,14 +504,16 @@ namespace SoundSwitch.UI.Forms
             this.btnCancel.TabIndex = 23;
             this.btnCancel.Text = string.Empty;
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             // 
             // UpsertAppSoundLockRule
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(560, 372);
+            this.MinimumSize = new System.Drawing.Size(576, 411);
             this.Controls.Add(this.lblAssignmentHelper);
             this.Controls.Add(this.pnlEnforcement);
             this.Controls.Add(this.lblEnforcement);
@@ -514,7 +539,7 @@ namespace SoundSwitch.UI.Forms
             this.Controls.Add(this.lblPattern);
             this.Controls.Add(this.txtProcessPath);
             this.Controls.Add(this.lblProcessPath);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UpsertAppSoundLockRule";
