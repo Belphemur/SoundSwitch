@@ -25,6 +25,7 @@ using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -73,6 +74,11 @@ public interface ISoundSwitchConfiguration : IConfiguration
     string CustomNotificationFilePath { get; set; }
     UpdateMode UpdateMode { get; set; }
     Language Language { get; set; }
+
+    /// <summary>
+    /// Which theme the application follows: the Windows app mode, or forced light/dark.
+    /// </summary>
+    ThemeMode ThemeMode { get; set; }
     TooltipInfoType TooltipInfo { get; set; }
     DeviceCyclerType CyclerType { get; set; }
     bool KeepSystrayIcon { get; set; }

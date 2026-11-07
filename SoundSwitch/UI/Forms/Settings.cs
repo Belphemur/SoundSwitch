@@ -49,6 +49,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -356,6 +357,10 @@ public sealed partial class SettingsForm : Form
         // Settings - Language
         new LanguageFactory().ConfigureListControl(languageComboBox);
         languageComboBox.SelectedValue = AppModel.Instance.Language;
+
+        // Settings - Theme
+        new ThemeFactory().ConfigureListControl(themeComboBox);
+        themeComboBox.SelectedValue = AppConfigs.Configuration.ThemeMode;
 
         muteHotKey.Visible = false;
         muteHotKeyCheckBox.Visible = false;
@@ -990,6 +995,9 @@ public sealed partial class SettingsForm : Form
         // Settings - Language
         languageGroupBox.Text = SettingsStrings.language;
 
+        // Settings - Theme
+        themeGroupBox.Text = SettingsStrings.theme;
+
         // Settings - Notification
         notificationsGroupBox.Text = SettingsStrings.notification_type;
         customSoundFileGroupBox.Text = SettingsStrings.customSoundFile;
@@ -1512,6 +1520,25 @@ public sealed partial class SettingsForm : Form
             AppModel.Instance.Language = selectedItem.Enum;
 
             if (MessageBox.Show(SettingsStrings.languageRestartRequired,
+                    SettingsStrings.restartRequired_caption,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) != DialogResult.Yes) return;
+            Program.RestartApp();
+        });
+    }
+
+    #endregion
+
+    #region Theme
+
+    private void ThemeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        SetComboBoxValue<ThemeMode>(sender, selectedItem =>
+        {
+            if (AppModel.Instance.ThemeMode == selectedItem.Enum) return;
+            AppModel.Instance.ThemeMode = selectedItem.Enum;
+
+            if (MessageBox.Show(SettingsStrings.themeRestartRequired,
                     SettingsStrings.restartRequired_caption,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) != DialogResult.Yes) return;

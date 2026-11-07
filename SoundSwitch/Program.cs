@@ -31,6 +31,7 @@ using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
@@ -130,9 +131,14 @@ internal static class Program
         Application.EnableVisualStyles();
 #if NETCORE
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-        // Follow the OS light/dark app-mode so every form created afterwards
-        // honours the Windows "Apps use light/dark theme" setting.
-        Application.SetColorMode(SystemColorMode.System);
+        // Follow the user-selected theme (General tab): System follows the OS light/dark
+        // app-mode so every form created afterwards honours the Windows "Apps use
+        // light/dark theme" setting; Light/Dark force it. On Windows 10 WinForms renders
+        // dark only partially (Microsoft: "the dark color mode is only available from
+        // Windows 11 on or later versions"), so the resolver keeps a coherent light
+        // palette there instead of the half-broken mix (#2567).
+        // See docs/design/ui/2026-11-06-app-theme-setting.md.
+        Application.SetColorMode(ThemeResolver.ResolveColorMode());
 #endif
         // Manage the Closing events send by Windows
         // Since this app don't use a Form as "main window" the app doesn't close

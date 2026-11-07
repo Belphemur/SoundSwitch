@@ -271,6 +271,22 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>The language will change after restarting SoundSwitch.
 Do you want to restart now?</value>
   </data>
+  <data name="theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="themeSystem" xml:space="preserve">
+    <value>Follow Windows</value>
+  </data>
+  <data name="themeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="themeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="themeRestartRequired" xml:space="preserve">
+    <value>The theme will change after restarting SoundSwitch.
+Do you want to restart now?</value>
+  </data>
   <data name="restartRequired.caption" xml:space="preserve">
     <value>Need a restart</value>
   </data>

@@ -53,6 +53,8 @@ sealed partial class SettingsForm
         appSettingTabPage = new System.Windows.Forms.TabPage();
         languageGroupBox = new System.Windows.Forms.GroupBox();
         languageComboBox = new System.Windows.Forms.ComboBox();
+        themeGroupBox = new System.Windows.Forms.GroupBox();
+        themeComboBox = new System.Windows.Forms.ComboBox();
         updateSettingsGroupBox = new System.Windows.Forms.GroupBox();
         telemetryCheckbox = new System.Windows.Forms.CheckBox();
         updateNeverRadioButton = new System.Windows.Forms.RadioButton();
@@ -146,6 +148,7 @@ sealed partial class SettingsForm
         profilesPanel.SuspendLayout();
         appSettingTabPage.SuspendLayout();
         languageGroupBox.SuspendLayout();
+        themeGroupBox.SuspendLayout();
         updateSettingsGroupBox.SuspendLayout();
         audioSettingsGroupBox.SuspendLayout();
         basicSettingsGroupBox.SuspendLayout();
@@ -369,6 +372,7 @@ sealed partial class SettingsForm
         // appSettingTabPage
         // 
         appSettingTabPage.Controls.Add(languageGroupBox);
+        appSettingTabPage.Controls.Add(themeGroupBox);
         appSettingTabPage.Controls.Add(updateSettingsGroupBox);
         appSettingTabPage.Controls.Add(audioSettingsGroupBox);
         appSettingTabPage.Controls.Add(basicSettingsGroupBox);
@@ -399,6 +403,27 @@ sealed partial class SettingsForm
         languageComboBox.Size = new System.Drawing.Size(294, 23);
         languageComboBox.TabIndex = 17;
         languageComboBox.SelectedIndexChanged += LanguageComboBox_SelectedIndexChanged;
+        //
+        // themeGroupBox
+        //
+        themeGroupBox.Controls.Add(themeComboBox);
+        themeGroupBox.Location = new System.Drawing.Point(359, 246);
+        themeGroupBox.Name = "themeGroupBox";
+        themeGroupBox.Size = new System.Drawing.Size(300, 55);
+        themeGroupBox.TabIndex = 30;
+        themeGroupBox.TabStop = false;
+        themeGroupBox.Text = "Theme";
+        //
+        // themeComboBox
+        //
+        themeComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        themeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        themeComboBox.FormattingEnabled = true;
+        themeComboBox.Location = new System.Drawing.Point(3, 19);
+        themeComboBox.Name = "themeComboBox";
+        themeComboBox.Size = new System.Drawing.Size(294, 23);
+        themeComboBox.TabIndex = 31;
+        themeComboBox.SelectedIndexChanged += ThemeComboBox_SelectedIndexChanged;
         // 
         // updateSettingsGroupBox
         // 
@@ -1426,6 +1451,7 @@ sealed partial class SettingsForm
         profilesPanel.PerformLayout();
         appSettingTabPage.ResumeLayout(false);
         languageGroupBox.ResumeLayout(false);
+        themeGroupBox.ResumeLayout(false);
         updateSettingsGroupBox.ResumeLayout(false);
         updateSettingsGroupBox.PerformLayout();
         audioSettingsGroupBox.ResumeLayout(false);
@@ -1514,6 +1540,8 @@ sealed partial class SettingsForm
     private System.Windows.Forms.CheckBox includeBetaVersionsCheckBox;
     private System.Windows.Forms.ComboBox languageComboBox;
     private System.Windows.Forms.GroupBox languageGroupBox;
+    private System.Windows.Forms.GroupBox themeGroupBox;
+    private System.Windows.Forms.ComboBox themeComboBox;
     private System.Windows.Forms.ComboBox switchDeviceNotificationComboBox;
     private SoundSwitch.UI.Component.ListView.ListViewExtended playbackListView;
     private System.Windows.Forms.TabPage playbackTabPage;
