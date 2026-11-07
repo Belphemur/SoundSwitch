@@ -152,9 +152,17 @@ The `#if NETCORE` block keeps `SetColorMode(System)` only.
   `ClientSize`), not absolute design points, so anchors and the mode switch
   stay coherent when the user resized the window first. `FontScaleFactor()`
   remains the factor source — in `Dpi` mode it equals `DeviceDpi / 96`.
+- `ApplyModeLayout()` also refreshes `MinimumSize` from the active mode
+  (client `560×(hotkey ? 470 : 372)` scaled by the DPI factor plus the
+  current chrome frame) **before** the `ClientSize` assignment, so a plain
+  user resize inside Hotkey mode cannot squeeze the pair list below its
+  design size, and switching back to Automatic can actually shrink again
+  (the framework clamps against the still-external minimum).
 - `lvPairs` keeps the "first column fixed, two variable columns" layout: on
   the group's resize, redistribute the playback/recording column widths
-  proportionally to the design widths (`30 / 235 / 235`).
+  proportionally to the design widths (`30 / 235 / 235`). The pair-row
+  buttons (`btnRemovePair`/`btnMoveUp`/`btnMoveDown`/`btnNewPair`) anchor to
+  the group's bottom edge so a taller pair list never covers them.
 
 ### 6.3 Accessibility minimums
 

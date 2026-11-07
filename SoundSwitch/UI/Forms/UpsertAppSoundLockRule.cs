@@ -306,6 +306,21 @@ public partial class UpsertAppSoundLockRule : Form
         var untouchedHeight = _appliedClientHeight > 0 && ClientSize.Height == _appliedClientHeight;
         var layout = ComputeModeLayout(hotkeyMode, factor, ClientSize.Width, ClientSize.Height,
             !untouchedHeight, btnCancel.Width, btnSave.Width);
+
+        // Enforce the mode's minimum while the user resizes, not only when the mode changes:
+        // in Hotkey mode the window must not shrink below the design client (the pair list
+        // would collapse and overlap the pair buttons). Set it BEFORE the client size or the
+        // framework clamps the client-size change against the raised minimum, keeping the
+        // hotkey height when switching back to Automatic. Only after the handle exists:
+        // before that there is no chrome, so the frame delta is meaningless and the
+        // designer's MinimumSize stands (it scales with the designer pass).
+        if (IsHandleCreated)
+        {
+            var frameWidth = Math.Max(0, Size.Width - ClientSize.Width);
+            var frameHeight = Math.Max(0, Size.Height - ClientSize.Height);
+            MinimumSize = new Size(ScaleClientWidth() + frameWidth, ScaleClientBaseHeight() + frameHeight);
+        }
+
         ClientSize = layout.ClientSize;
         _appliedClientHeight = layout.ClientSize.Height;
 
@@ -320,6 +335,9 @@ public partial class UpsertAppSoundLockRule : Form
         chkNotify.Location = new Point(layout.CheckboxRight, layout.CheckboxY);
         btnCancel.Location = layout.CancelButtonLocation;
         btnSave.Location = layout.SaveButtonLocation;
+
+        int ScaleClientWidth() => (int)Math.Round(560 * factor, MidpointRounding.AwayFromZero);
+        int ScaleClientBaseHeight() => (int)Math.Round((hotkeyMode ? 470 : 372) * factor, MidpointRounding.AwayFromZero);
     }
 
     /// <summary>The client height <see cref="ApplyModeLayout"/> last set; a current height equal to

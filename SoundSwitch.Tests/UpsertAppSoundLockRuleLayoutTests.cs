@@ -248,6 +248,28 @@ public class UpsertAppSoundLockRuleLayoutTests
     // DeviceDpiInternal/OriginalDeviceDpiInternal do not drive DeviceDpi and s_deviceDpiInternal
     // is initonly). The scaled geometry therefore lives in the pure ComputeModeLayout tests above
     // (runs at 100%-200%), and the end-to-end plumbing is covered by the real-form tests at 96 DPI.
+    [Test]
+    public void MinimumSizeFollowsTheActiveMode()
+    {
+        RunSta(() =>
+        {
+            using var form = CreateRuleDialog();
+            form.Show(); // creates the handle so the chrome frame is measured, as when shown
+
+            form.HotkeyModeRadio.Checked = true;
+            form.ApplyModeLayout();
+
+            var frameWidth = form.Width - form.ClientSize.Width;
+            var frameHeight = form.Height - form.ClientSize.Height;
+            form.MinimumSize.Should().Be(new Size(560 + frameWidth, 470 + frameHeight),
+                "the hotkey pair region must stay usable; the window cannot shrink below the hotkey baseline");
+
+            form.AutomaticModeRadio.Checked = true;
+            form.ApplyModeLayout();
+            form.MinimumSize.Height.Should().Be(372 + frameHeight);
+        });
+    }
+
     private static UpsertAppSoundLockRule CreateRuleDialog(Size? formSize = null)
     {
         var form = new UpsertAppSoundLockRule(
