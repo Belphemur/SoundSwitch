@@ -360,7 +360,14 @@ public sealed partial class SettingsForm : Form
 
         // Settings - Theme
         new ThemeFactory().ConfigureListControl(themeComboBox);
-        themeComboBox.SelectedValue = AppConfigs.Configuration.ThemeMode;
+        // An out-of-range persisted value (older config formats) resolves to System
+        // behaviour; show the matching entry instead of a blank selector.
+        themeComboBox.SelectedValue = AppConfigs.Configuration.ThemeMode switch
+        {
+            ThemeMode.Light => ThemeMode.Light,
+            ThemeMode.Dark => ThemeMode.Dark,
+            _ => ThemeMode.System
+        };
 
         muteHotKey.Visible = false;
         muteHotKeyCheckBox.Visible = false;
