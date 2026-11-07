@@ -62,21 +62,24 @@
     "SITE_HOSTNAME": "https://soundswitch.aaflalo.me",
     "PAYPAL_IPN_MODE": "live"
   },
-  // Cloudflare Workers Previews (`wrangler preview`). A Preview never talks to production:
-  // the vars are placeholders, the KV id is a dummy (Previews only need a format-valid id;
-  // donations are not exercised there), and the Durable Object binding is declared so each
-  // Preview gets its own automatically-provisioned namespace and storage.
+  // Cloudflare Workers Previews (`wrangler preview`, needs Wrangler >= 4.135). A Preview
+  // never talks to production: the vars are placeholders and the Durable Object binding
+  // is declared because the code reads it from `env` (each Preview still gets its own
+  // automatically-provisioned namespace and storage).
+  //
+  // The IPN_DEDUPE KV is intentionally NOT bound here: Previews bind KV by a real
+  // namespace id (Cloudflare error 10041 when it does not exist) and auto-provisioning
+  // only covers Durable Objects and Containers — a placeholder id would fail the whole
+  // preview deploy ("KV namespace '…' not found", Cloudflare error code 10041). Donations are
+  // not exercised on Previews; the endpoint degrades gracefully
+  // ("IPN_DEDUPE KV binding is not configured" in donations.ts). To re-enable it one
+  // day, create a dedicated `soundswitch-preview` KV namespace and reference its real
+  // id under `previews.kv_namespaces`.
   "previews": {
     "vars": {
       "SITE_HOSTNAME": "https://preview.example.com",
       "PAYPAL_IPN_MODE": "sandbox"
     },
-    "kv_namespaces": [
-      {
-        "binding": "IPN_DEDUPE",
-        "id": "00000000000000000000000000000000"
-      }
-    ],
     "durable_objects": {
       "bindings": [
         {
