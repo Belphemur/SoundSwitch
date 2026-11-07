@@ -1,3 +1,14 @@
+## [7.5.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.4.1...v7.5.0-beta.1) (2026-11-07)
+
+### Features
+
+* **app-rules:** group the process picker and sync rules with Windows app assignments ([#2566](https://github.com/Belphemur/SoundSwitch/issues/2566)) ([3c197a9](https://github.com/Belphemur/SoundSwitch/commit/3c197a995769d87d94efeb45ade857922e2c083d))
+* **ui:** add app theme setting - follow Windows, light or dark ([#2571](https://github.com/Belphemur/SoundSwitch/issues/2571)) ([04d041c](https://github.com/Belphemur/SoundSwitch/commit/04d041c2568c8119f76f92919da222ba6c49d0f8)), closes [#2567](https://github.com/Belphemur/SoundSwitch/issues/2567) [#2567](https://github.com/Belphemur/SoundSwitch/issues/2567) [#2567](https://github.com/Belphemur/SoundSwitch/issues/2567) [#2567](https://github.com/Belphemur/SoundSwitch/issues/2567)
+
+### Bug Fixes
+
+* **app-rules:** scale the rule editor for per-monitor displays and make it resizable ([d2c1461](https://github.com/Belphemur/SoundSwitch/commit/d2c14613f0406edf270b530cfc08ef63565b8742)), closes [#2570](https://github.com/Belphemur/SoundSwitch/issues/2570)
+
 ## [7.4.1](https://github.com/Belphemur/SoundSwitch/compare/v7.4.0...v7.4.1) (2026-11-04)
 
 ### Bug Fixes
