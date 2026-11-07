@@ -45,7 +45,7 @@ The SoundSwitch tray icon supports several actions:
 
 Now that SoundSwitch is up and running, dive into the configuration to tailor it to your workflow:
 
-- [General Settings](./configuration/general.md) — Startup, tray behavior, hotkeys, and language.
+- [General Settings](./configuration/general/) — Startup, tray behavior, hotkeys, and language.
 - [Playback Devices](./configuration/playback.md) — Pick which output devices to cycle through.
 - [Recording Devices](./configuration/recording.md) — Pick which input devices to cycle through.
 - [Notifications](./configuration/notifications.md) — Customize banners, sounds, and Windows toast notifications.

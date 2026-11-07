@@ -36,6 +36,7 @@ using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
@@ -82,6 +83,12 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
 
     // Language Settings
     public Language Language { get; set; } = new LanguageFactory().GetWindowsLanguage();
+
+    // Appearance Settings
+    /// <summary>
+    /// Which theme the application follows: the Windows app mode, or forced light/dark.
+    /// </summary>
+    public ThemeMode ThemeMode { get; set; } = ThemeMode.System;
 
     // Notification Settings
     public bool NotificationAdvancedMode { get; set; }

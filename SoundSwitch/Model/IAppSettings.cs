@@ -16,6 +16,7 @@
 using System;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi.Keyboard;
@@ -66,6 +67,12 @@ public interface IAppSettings
     /// Specifies how the application searches for updates and installs them.
     /// </summary>
     UpdateMode UpdateMode { get; set; }
+
+    /// <summary>
+    /// Which theme the application follows: the Windows app mode, or forced light/dark.
+    /// Takes effect after the next application start.
+    /// </summary>
+    ThemeMode ThemeMode { get; set; }
 
     /// <summary>
     /// Sets the hotkey combination

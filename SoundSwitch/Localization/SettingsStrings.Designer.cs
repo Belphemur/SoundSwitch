@@ -2126,6 +2126,52 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        internal static string theme {
+            get {
+                return ResourceManager.GetString("theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        internal static string themeDark {
+            get {
+                return ResourceManager.GetString("themeDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        internal static string themeLight {
+            get {
+                return ResourceManager.GetString("themeLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The theme will change after restarting SoundSwitch.
+        ///Do you want to restart now?.
+        /// </summary>
+        internal static string themeRestartRequired {
+            get {
+                return ResourceManager.GetString("themeRestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow Windows.
+        /// </summary>
+        internal static string themeSystem {
+            get {
+                return ResourceManager.GetString("themeSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toggle microphone mute.
         /// </summary>
         internal static string toggleMicrophoneMute {

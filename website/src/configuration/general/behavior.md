@@ -1,15 +1,13 @@
 ---
-title: General Settings
-description: Configure SoundSwitch startup behavior, device cycling, foreground app switching, system tray icon and update preferences from the General tab.
+title: Behavior and audio settings
+description: Startup with Windows, Systray Icon, double-click action, default communication device, foreground app switching, volume keeping, Quick Menu, tooltip on hover and device cycling on the General tab.
 ---
 
-# General Settings
+# Behavior and audio settings
 
-The **General** tab controls how SoundSwitch behaves at the application level — from startup behavior and device cycling to notifications and updates.
+The left column of the **General** tab groups the tray and audio-specific preferences. They cover how SoundSwitch shows itself in the system tray, which extra defaults are switched alongside the main playback device, and how device cycling picks its candidates.
 
-![General Settings](/images/General.png)
-
-## Left Column: Behavior Settings
+## Basic Settings
 
 ### Start automatically with Windows
 
@@ -43,6 +41,8 @@ Sets what happens when you double-click the tray icon.
 ::: tip Faster tray menu
 When a double-click action is configured, SoundSwitch waits up to **250 ms** after each click to decide whether a second click is coming. Setting the action to **Disabled** removes that wait completely, so right-clicking or left-clicking the tray icon opens the menu with zero delay.
 :::
+
+## Audio Settings
 
 ### Switch Default Communication Device
 
@@ -78,27 +78,3 @@ Controls which devices are included when cycling through audio devices via hotke
 |--------|----------|
 | **All audio devices** | Cycle through every detected device on the system. |
 | **Only selected audio devices** | Cycle through only the devices you have checked on the **Playback** and **Recording** tabs. This is the recommended option for most users. |
-
-## Right Column: Update & Language Settings
-
-### Update Settings
-
-Controls how SoundSwitch checks for and applies new versions.
-
-| Option | Behavior |
-|--------|----------|
-| **Install updates automatically** | Download and apply updates without prompting. |
-| **Notify me when updates are available** | Show a notification when a new version is available, allowing you to choose when to update. |
-| **Never check for updates** | Disable automatic update checking entirely. |
-
-### Include Beta versions
-
-When enabled, SoundSwitch considers pre-release (beta) versions as available updates. Useful for testing upcoming features, but may introduce instability.
-
-### Telemetry
-
-Allows SoundSwitch to send usage metrics and crash-report context to Sentry to help improve the application. See [Telemetry and Privacy](/legal/telemetry.md) for a full explanation of what is collected, why, and how to disable it.
-
-### Language
-
-Sets the display language for the SoundSwitch interface. Changing this requires restarting the application for the new language to take effect.
