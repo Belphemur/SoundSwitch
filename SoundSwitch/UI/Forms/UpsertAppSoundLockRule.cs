@@ -38,6 +38,23 @@ public partial class UpsertAppSoundLockRule : Form
 
     public AppSoundRule Rule => _rule;
 
+    // Designer fields are private; these expose the pieces SoundSwitch.Tests drives to assert the
+    // layout and accessibility contract (see UpsertAppSoundLockRuleLayoutTests).
+    internal RadioButton AutomaticModeRadio => rdoAutomatic;
+    internal RadioButton HotkeyModeRadio => rdoHotkey;
+    // "CancelButton" is taken by Form.CancelButton, which the designer assigns.
+    internal Button CancelButtonControl => btnCancel;
+    internal GroupBox HotkeyGroup => grpHotkey;
+    internal Button SelectProcessButton => btnSelectProcess;
+    internal Button PlaybackResetButton => btnPlaybackReset;
+    internal Button RecordingResetButton => btnRecordingReset;
+    internal Button HotKeyResetButton => btnHotKeyReset;
+    internal ListView PairList => lvPairs;
+    internal Button NewPairButton => btnNewPair;
+    internal Button RemovePairButton => btnRemovePair;
+    internal CheckBox EnabledCheckbox => chkEnabled;
+    internal Label AssignmentHelperLabel => lblAssignmentHelper;
+
     public UpsertAppSoundLockRule(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, bool editing = false)
     {
         _initializing = true;
@@ -49,11 +66,13 @@ public partial class UpsertAppSoundLockRule : Form
 
         InitializeComponent();
         LocalizeForm();
+        InitAccessibleNames();
         InitComboBoxes();
         InitializeFromRule();
 
         hotKeyBox.ListenToHotkey = true;
         hotKeyBox.HotKeyChanged += (_, _) => btnHotKeyReset.Visible = hotKeyBox.HotKey != null;
+        lvPairs.Resize += (_, _) => RedistributePairColumns();
 
         _initializing = false;
         UpdateAssignmentNote();
@@ -84,6 +103,15 @@ public partial class UpsertAppSoundLockRule : Form
         btnCancel.Text = SettingsStrings.buttonClose;
 
         lblAssignmentHelper.Text = SettingsStrings.appSoundLock_rule_assignmentNote;
+    }
+
+    private void InitAccessibleNames()
+    {
+        // Image-only controls have no visible label a screen reader could read out.
+        btnSelectProcess.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_selectProcess;
+        btnPlaybackReset.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_resetPlayback;
+        btnRecordingReset.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_resetRecording;
+        btnHotKeyReset.AccessibleName = SettingsStrings.appSoundLock_rule_accessible_resetHotkey;
     }
 
     private void InitComboBoxes()
@@ -234,7 +262,7 @@ public partial class UpsertAppSoundLockRule : Form
         ApplyModeLayout();
     }
 
-    private void ApplyModeLayout()
+    internal void ApplyModeLayout()
     {
         var hotkeyMode = rdoHotkey.Checked;
         lblDescription.Text = hotkeyMode
@@ -252,23 +280,14 @@ public partial class UpsertAppSoundLockRule : Form
         // Assignment enforcement is offered on Automatic rules only (ADR �6.4).
         lblEnforcement.Visible = false;
         pnlEnforcement.Visible = false;
-        lblAssignmentHelper.Visible = false;
+        lblAssignmentHelper.Visible = lblAssignmentHelper.Visible && !hotkeyMode;
 
         // The design-time coordinates are set by the constructor before the form
-        // is shown, and the framework scales them once with AutoScaleMode.Font.
-        // Mode changes after the form is loaded must apply that same font factor
-        // themselves, otherwise the moved controls land at DPI-scaled, not
-        // font-scaled, positions at 125%+ text scaling.
+        // is shown, and the framework scales them once with AutoScaleMode.Dpi.
+        // Mode changes after the form is loaded must apply that same DPI factor
+        // themselves, otherwise the moved controls land at 96-DPI, not scaled,
+        // positions on a >100% display.
         var factor = _formLoaded ? FontScaleFactor() : 1f;
-
-        var checkboxY = (int)Math.Round((hotkeyMode ? 398 : 302) * factor);
-        chkEnabled.Location = new Point((int)Math.Round(110 * factor), checkboxY);
-        chkCaseSensitive.Location = new Point((int)Math.Round(210 * factor), checkboxY);
-        chkNotify.Location = new Point((int)Math.Round(340 * factor), checkboxY);
-
-        var buttonY = (int)Math.Round((hotkeyMode ? 430 : 334) * factor);
-        btnSave.Location = new Point((int)Math.Round(378 * factor), buttonY);
-        btnCancel.Location = new Point((int)Math.Round(459 * factor), buttonY);
 
         // The enforcement row sits between the device combos and the checkboxes; scale it the
         // same way so a mode switch after the form is shown keeps the layout aligned.
@@ -278,22 +297,113 @@ public partial class UpsertAppSoundLockRule : Form
         lblAssignmentHelper.Location = new Point((int)Math.Round(110 * factor), (int)Math.Round(252 * factor));
         lblAssignmentHelper.Size = new Size((int)Math.Round(438 * factor), (int)Math.Round(46 * factor));
 
-        ClientSize = new Size((int)Math.Round(560 * factor), (int)Math.Round((hotkeyMode ? 470 : 372) * factor));
+        // The bottom region toggles between the device combos (Automatic) and the hotkey
+        // group. ComputeModeLayout derives the client size from the design size, pins the
+        // bottom rows relative to the client edges so the anchors (Bottom|Left / Bottom|Right)
+        // stay coherent on further resizes, and — unless the user resized the window — drops
+        // back to the design baseline when leaving Hotkey mode (its extra height is stage
+        // space, not a user preference).
+        var untouchedHeight = _appliedClientHeight > 0 && ClientSize.Height == _appliedClientHeight;
+        var layout = ComputeModeLayout(hotkeyMode, factor, ClientSize.Width, ClientSize.Height,
+            !untouchedHeight, btnCancel.Width, btnSave.Width);
+
+        // Enforce the mode's minimum while the user resizes, not only when the mode changes:
+        // in Hotkey mode the window must not shrink below the design client (the pair list
+        // would collapse and overlap the pair buttons). Set it BEFORE the client size or the
+        // framework clamps the client-size change against the raised minimum, keeping the
+        // hotkey height when switching back to Automatic. Only after the handle exists:
+        // before that there is no chrome, so the frame delta is meaningless and the
+        // designer's MinimumSize stands (it scales with the designer pass).
+        if (IsHandleCreated)
+        {
+            var frameWidth = Math.Max(0, Size.Width - ClientSize.Width);
+            var frameHeight = Math.Max(0, Size.Height - ClientSize.Height);
+            MinimumSize = new Size(ScaleClientWidth() + frameWidth, ScaleClientBaseHeight() + frameHeight);
+        }
+
+        ClientSize = layout.ClientSize;
+        _appliedClientHeight = layout.ClientSize.Height;
+
+        if (hotkeyMode)
+        {
+            grpHotkey.Location = layout.GrpHotkeyLocation;
+            grpHotkey.Size = layout.GrpHotkeySize;
+        }
+
+        chkEnabled.Location = new Point(layout.CheckboxLeft, layout.CheckboxY);
+        chkCaseSensitive.Location = new Point(layout.CheckboxMid, layout.CheckboxY);
+        chkNotify.Location = new Point(layout.CheckboxRight, layout.CheckboxY);
+        btnCancel.Location = layout.CancelButtonLocation;
+        btnSave.Location = layout.SaveButtonLocation;
+
+        int ScaleClientWidth() => (int)Math.Round(560 * factor, MidpointRounding.AwayFromZero);
+        int ScaleClientBaseHeight() => (int)Math.Round((hotkeyMode ? 470 : 372) * factor, MidpointRounding.AwayFromZero);
     }
 
+    /// <summary>The client height <see cref="ApplyModeLayout"/> last set; a current height equal to
+    /// it means the user has not resized the window since (see <see cref="ComputeModeLayout"/>).</summary>
+    private int _appliedClientHeight;
+
     /// <summary>
-    /// Ratio between the runtime font metrics and the form's design-time font. The
-    /// framework auto-scales the designer layout by this factor on the first
-    /// <see cref="Form.AutoScaleMode.Font"/> pass; mode switches performed after
-    /// the form is shown apply it here so the two layouts line up.
+    /// Pure geometry for one bottom-region mode, in runtime pixels: the designer coordinates of
+    /// <see cref="UpsertAppSoundLockRule"/> at their 96-DPI baseline scaled by <paramref name="factor"/>,
+    /// clamped so a user-enlarged window keeps its size. The bottom rows are expressed as offsets from
+    /// the client's bottom/right edges because their controls are bottom/right anchored.
+    /// </summary>
+    /// <param name="heightWasUserChosen">False when the current height is just the height this
+    /// mode last set; the returned <see cref="AppRuleDialogLayout.ClientSize"/> then uses the
+    /// mode's <paramref name="factor"/>-scaled design height instead of keeping it.</param>
+    /// <remarks>
+    /// Testable without a live form; see UpsertAppSoundLockRuleLayoutTests.
+    /// </remarks>
+    internal static AppRuleDialogLayout ComputeModeLayout(bool hotkeyMode, double factor,
+        int currentClientWidth, int currentClientHeight, bool heightWasUserChosen,
+        int cancelButtonWidth, int saveButtonWidth)
+    {
+        int Scale(int design) => (int)Math.Round(design * factor, MidpointRounding.AwayFromZero);
+
+        var width = Math.Max(currentClientWidth, Scale(560));
+        var height = Math.Max(heightWasUserChosen ? currentClientHeight : 0, Scale(hotkeyMode ? 470 : 372));
+
+        var cancelButtonX = width - Scale(26) - cancelButtonWidth;
+        var buttonsY = height - Scale(hotkeyMode ? 40 : 38);
+
+        return new AppRuleDialogLayout(
+            ClientSize: new Size(width, height),
+            GrpHotkeyLocation: new Point(Scale(12), Scale(168)),
+            GrpHotkeySize: new Size(width - Scale(24), height - Scale(252)),
+            CheckboxY: height - Scale(hotkeyMode ? 72 : 70),
+            CheckboxLeft: Scale(110),
+            CheckboxMid: Scale(210),
+            CheckboxRight: Scale(340),
+            SaveButtonLocation: new Point(cancelButtonX - Scale(6) - saveButtonWidth, buttonsY),
+            CancelButtonLocation: new Point(cancelButtonX, buttonsY));
+    }
+
+    /// <summary>The runtime-pixel result of <see cref="ComputeModeLayout"/>.</summary>
+    internal sealed record AppRuleDialogLayout(
+        Size ClientSize,
+        Point GrpHotkeyLocation,
+        Size GrpHotkeySize,
+        int CheckboxY,
+        int CheckboxLeft,
+        int CheckboxMid,
+        int CheckboxRight,
+        Point SaveButtonLocation,
+        Point CancelButtonLocation);
+
+    /// <summary>
+    /// Ratio between the runtime DPI scale and the form's 96-DPI design baseline. Mode switches
+    /// performed after the form has been autoscaled apply it so the moved controls land at
+    /// scaled, not 96-DPI, positions. It must come from <see cref="Control.DeviceDpi"/> rather
+    /// than <see cref="ContainerControl.AutoScaleDimensions"/>: WinForms rewrites the auto-scale
+    /// dimensions to the current ones after each autoscale pass, which would make a
+    /// current-vs-design ratio read as 1 at any DPI after the form is shown.
     /// </summary>
     private float FontScaleFactor()
     {
-        var designHeight = AutoScaleDimensions.Height;
-        if (designHeight <= 0) return 1f;
-        var currentHeight = CurrentAutoScaleDimensions.Height;
-        if (currentHeight <= 0) return 1f;
-        return currentHeight / designHeight;
+        const float designDpi = 96f;
+        return DeviceDpi <= 0 ? 1f : DeviceDpi / designDpi;
     }
 
     private void PopulatePairList()
@@ -303,9 +413,13 @@ public partial class UpsertAppSoundLockRule : Form
         {
             lvPairs.Items.Clear();
             lvPairs.Columns.Clear();
-            lvPairs.Columns.Add("#", 30);
-            lvPairs.Columns.Add(SettingsStrings.playback, 235);
-            lvPairs.Columns.Add(SettingsStrings.recording, 235);
+            // The first column keeps a fixed index width; the two device columns follow the
+            // current list width via RedistributePairColumns instead of hard 96-DPI pixels.
+            // Before the form is shown the design coordinates are unscaled (the framework
+            // scales them on the first autoscale pass), so the factor is only applied after load.
+            lvPairs.Columns.Add("#", (int)Math.Round(30 * (_formLoaded ? FontScaleFactor() : 1f)));
+            lvPairs.Columns.Add(SettingsStrings.playback, 0);
+            lvPairs.Columns.Add(SettingsStrings.recording, 0);
 
             for (var index = 0; index < _pairs.Count; index++)
             {
@@ -326,8 +440,25 @@ public partial class UpsertAppSoundLockRule : Form
             lvPairs.EndUpdate();
         }
 
+        RedistributePairColumns();
         UpdatePairCount();
         UpdatePairButtons();
+    }
+
+    /// <summary>
+    /// Split the space left of the fixed index column evenly between the playback and
+    /// recording columns, so the pair list tracks the dialog's resizable width instead of
+    /// staying at 96-DPI pixel widths.
+    /// </summary>
+    private void RedistributePairColumns()
+    {
+        if (lvPairs.Columns.Count < 3) return;
+
+        var available = lvPairs.ClientSize.Width - lvPairs.Columns[0].Width - 4;
+        if (available <= 80) return;
+        var half = available / 2;
+        lvPairs.Columns[1].Width = half;
+        lvPairs.Columns[2].Width = available - half;
     }
 
     private static string DeviceLabel(DeviceInfo? device)
@@ -648,9 +779,29 @@ public partial class UpsertAppSoundLockRule : Form
     {
         base.OnShown(e);
         _formLoaded = true;
+        // Re-derive the bottom-region geometry now that the framework has applied the initial
+        // DPI scaling to the designer coordinates: _appliedClientHeight was recorded in the
+        // constructor at 100% scale, and the first mode change must treat the scaled height as
+        // framework-chosen, not user-chosen. This also refreshes MinimumSize from the real
+        // chrome frame (docs/design/ui/2026-11-06-dpi-awareness-scalable-dialogs.md).
+        ApplyModeLayout();
         if (!_editing)
         {
             BeginInvoke(new Action(SelectProcess));
+        }
+    }
+
+    /// <summary>
+    /// Re-derive the bottom-region geometry after a DPI change rescales the form: the height
+    /// baseline and MinimumSize must both follow the new scale, or the next mode switch treats
+    /// the rescaled height as a user choice and keeps it.
+    /// </summary>
+    protected override void OnDpiChanged(DpiChangedEventArgs e)
+    {
+        base.OnDpiChanged(e);
+        if (_formLoaded)
+        {
+            ApplyModeLayout();
         }
     }
 
