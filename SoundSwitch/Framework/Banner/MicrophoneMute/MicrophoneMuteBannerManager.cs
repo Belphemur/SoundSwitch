@@ -88,6 +88,7 @@ public class MicrophoneMuteBannerManager
             Text = microphoneName,
             Title = SettingsStrings.microphone_off,
             Position = AppModel.Instance.BannerPositionImpl,
+            Opacity = AppModel.Instance.BannerOpacityPercentage,
             Ttl = TimeSpan.MaxValue, // Effectively "infinite" until explicitly dismissed
             CompactMode = true,
             OnClick = (sender, args) =>
@@ -157,6 +158,7 @@ public class MicrophoneMuteBannerManager
             Text = microphoneName,
             Title = SettingsStrings.microphone_on,
             Position = AppModel.Instance.BannerPositionImpl,
+            Opacity = AppModel.Instance.BannerOpacityPercentage,
             Ttl = TimeSpan.FromMilliseconds(1500),
             OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, true),
             CompactMode = true
