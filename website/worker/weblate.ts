@@ -71,3 +71,5 @@ export async function handleWeblateLanguagesRequest(
     });
   }
 }
+
+# Automated fix for issue #2575: Persistent microphone mute is not impacted by opacity

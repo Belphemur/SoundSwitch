@@ -271,6 +271,22 @@ Banner: Uses a custom always-on-top frame, useful for in-game usage.</value>
     <value>The language will change after restarting SoundSwitch.
 Do you want to restart now?</value>
   </data>
+  <data name="theme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="themeSystem" xml:space="preserve">
+    <value>Follow Windows</value>
+  </data>
+  <data name="themeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="themeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="themeRestartRequired" xml:space="preserve">
+    <value>The theme will change after restarting SoundSwitch.
+Do you want to restart now?</value>
+  </data>
   <data name="restartRequired.caption" xml:space="preserve">
     <value>Need a restart</value>
   </data>
@@ -800,6 +816,18 @@ Press Esc to close.</value>
   <data name="appSoundLock.filter" xml:space="preserve">
     <value>Filter:</value>
   </data>
+  <data name="appSoundLock.picker.hasOwnDevice" xml:space="preserve">
+    <value>Has own device</value>
+  </data>
+  <data name="appSoundLock.picker.notRunningSuffix" xml:space="preserve">
+    <value>(not running)</value>
+  </data>
+  <data name="appSoundLock.picker.showAllProcesses" xml:space="preserve">
+    <value>Show all processes</value>
+  </data>
+  <data name="appSoundLock.picker.usingAudioNow" xml:space="preserve">
+    <value>Using audio now</value>
+  </data>
   <data name="appSoundLock.rule.description" xml:space="preserve">
     <value>Select the process of the application whose audio you want to control. The selected devices will be automatically applied whenever that application is running.</value>
   </data>
@@ -814,6 +842,45 @@ Press Esc to close.</value>
   </data>
   <data name="appSoundLock.rule.mode.hotkey" xml:space="preserve">
     <value>Hotkey</value>
+  </data>
+  <data name="appSoundLock.rule.enforcement" xml:space="preserve">
+    <value>Enforced by</value>
+  </data>
+  <data name="appSoundLock.rule.enforcement.dynamic" xml:space="preserve">
+    <value>Processes (dynamic)</value>
+  </data>
+  <data name="appSoundLock.rule.enforcement.assignment" xml:space="preserve">
+    <value>App assignment</value>
+  </data>
+  <data name="appSoundLock.rules.section.windows" xml:space="preserve">
+    <value>Windows assignments</value>
+  </data>
+  <data name="appSoundLock.rules.section.windowsHint" xml:space="preserve">
+    <value>Managed in Windows Settings</value>
+  </data>
+  <data name="appSoundLock.rules.list.column.mode.assignment" xml:space="preserve">
+    <value>Assignment</value>
+  </data>
+  <data name="appSoundLock.rule.error.assignmentNeedsIdentity" xml:space="preserve">
+    <value>Assignment rules need a specific application. Use the process picker.</value>
+  </data>
+  <data name="appSoundLock.rule.error.assignmentNoWindowTitle" xml:space="preserve">
+    <value>Assignment rules don't support window title matching.</value>
+  </data>
+  <data name="appSoundLock.rule.assignmentNote" xml:space="preserve">
+    <value>SoundSwitch also registers this app's audio device with Windows, which keeps applying it even when SoundSwitch is closed. Deleting the rule restores the default immediately.</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.selectProcess" xml:space="preserve">
+    <value>Select process</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.resetPlayback" xml:space="preserve">
+    <value>Reset playback device</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.resetRecording" xml:space="preserve">
+    <value>Reset recording device</value>
+  </data>
+  <data name="appSoundLock.rule.accessible.resetHotkey" xml:space="preserve">
+    <value>Reset shortcut</value>
   </data>
   <data name="appSoundLock.rule.shortcut" xml:space="preserve">
     <value>Shortcut</value>

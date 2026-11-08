@@ -69,7 +69,7 @@ export default defineUserConfig({
       {
         text: "Configuration",
         children: [
-          { text: "General", link: "/configuration/general.md" },
+          { text: "General", link: "/configuration/general/" },
           { text: "Playback", link: "/configuration/playback.md" },
           { text: "Recording", link: "/configuration/recording.md" },
           { text: "Notifications", link: "/configuration/notifications.md" },
@@ -113,7 +113,16 @@ export default defineUserConfig({
           text: "Configuration",
           children: [
             { text: "Overview", link: "/configuration/README.md" },
-            { text: "General", link: "/configuration/general.md" },
+            {
+              text: "General",
+              collapsible: true,
+              children: [
+                { text: "Overview", link: "/configuration/general/" },
+                { text: "Behavior and audio", link: "/configuration/general/behavior.md" },
+                { text: "Update settings", link: "/configuration/general/updates.md" },
+                { text: "Language and theme", link: "/configuration/general/language-theme.md" },
+              ],
+            },
             { text: "Playback", link: "/configuration/playback.md" },
             { text: "Recording", link: "/configuration/recording.md" },
             { text: "Notifications", link: "/configuration/notifications.md" },

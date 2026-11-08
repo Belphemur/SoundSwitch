@@ -131,5 +131,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(TargetFramework)', '^net\d'))">
     <DefineConstants>NETCORE</DefineConstants>
+    <!-- DPI awareness is declared in app.manifest (PerMonitorV2) and applied at process creation.
+         The WinForms analyzer asks for Application.SetHighDpiMode / ApplicationHighDpiMode instead
+         (WFO0003), but both would be too late: SetHighDpiMode silently degrades to SystemAware once
+         SetProcessDPIAware or any window beat it, and the MSBuild property only surfaces through
+         ApplicationConfiguration.Initialize, which this app does not call.
+         docs/design/ui/2026-11-06-dpi-awareness-scalable-dialogs.md -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
   </PropertyGroup>
 </Project>

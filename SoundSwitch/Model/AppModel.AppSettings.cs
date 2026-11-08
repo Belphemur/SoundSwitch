@@ -22,6 +22,7 @@ using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Job;
@@ -156,6 +157,17 @@ public partial class AppModel
         set
         {
             AppConfigs.Configuration.Language = value;
+            AppConfigs.Configuration.Save();
+        }
+    }
+
+    public ThemeMode ThemeMode
+    {
+        get => AppConfigs.Configuration.ThemeMode;
+        set
+        {
+            if (AppConfigs.Configuration.ThemeMode == value) return;
+            AppConfigs.Configuration.ThemeMode = value;
             AppConfigs.Configuration.Save();
         }
     }

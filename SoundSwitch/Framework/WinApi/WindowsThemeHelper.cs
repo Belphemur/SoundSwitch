@@ -15,10 +15,14 @@
 using System;
 using Microsoft.Win32;
 
+using SoundSwitch.Framework.Theme;
+
 namespace SoundSwitch.Framework.WinApi;
 
 /// <summary>
-/// Helper that reports whether Windows is currently using a light or dark application mode.
+/// Helper that reports whether the application is currently rendering in a light or
+/// darkmode, honouring the user-selected theme (General tab) on top of the Windows
+/// app mode.
 /// </summary>
 public static class WindowsThemeHelper
 {
@@ -32,9 +36,14 @@ public static class WindowsThemeHelper
     private const string AppsUseLightThemeValue = "AppsUseLightTheme";
 
     /// <summary>
-    /// Returns true when Windows is currently using a dark application mode
-    /// (the default for dark mode; this is the registry value WinForms reads via
-    /// Application.SetColorMode / Application.IsDarkModeEnabled).
+    /// Returns true when the application currently renders dark: either the user
+    /// forced Dark in the theme setting (General tab), or the setting is System and
+    /// Windows is using a dark application mode. The decision — including the clamp
+    /// to light on Windows 10 where WinForms dark mode is incomplete (issue #2567) —
+    /// is made by <see cref="ThemeResolver.ResolveIsDarkMode"/>, shared with
+    /// Application.SetColorMode so the two never disagree.
+    /// (This is the registry value WinForms reads via Application.SetColorMode /
+    /// Application.IsDarkModeEnabled.)
     /// </summary>
     public static bool IsDarkModeEnabled() => _darkModeProvider();
 
@@ -51,6 +60,17 @@ public static class WindowsThemeHelper
     private static Func<bool> _darkModeProvider = ReadDarkModeEnabled;
 
     private static bool ReadDarkModeEnabled()
+    {
+        return ThemeResolver.ResolveIsDarkMode(
+            // The theme selection captured at process start, not the current config
+            // value: a selection that was not followed by a restart must not flip the
+            // custom paint while the WinForms palette keeps the startup colour mode.
+            ThemeResolver.EffectiveThemeMode,
+            ReadOsAppDarkMode(),
+            ThemeResolver.DarkModeSupported());
+    }
+
+    private static bool ReadOsAppDarkMode()
     {
         using var key = Registry.CurrentUser.OpenSubKey(PersonalizeKey);
         if (key?.GetValue(AppsUseLightThemeValue) is int value)

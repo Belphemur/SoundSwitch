@@ -16,7 +16,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,6 +30,7 @@ using SoundSwitch.Framework.Logger.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
+using SoundSwitch.Framework.Theme;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
@@ -47,9 +47,6 @@ internal static class Program
     private const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
     private static WindowsFormsSynchronizationContext _synchronizationContext;
 
-    [DllImport("user32.dll")]
-    private static extern bool SetProcessDPIAware();
-        
     [STAThread]
     private static void Main(string[] args) => OldMain(args).GetAwaiter().GetResult();
  
@@ -125,14 +122,21 @@ internal static class Program
         }
 
 
-        SetProcessDPIAware();
+        // DPI awareness is declared in app.manifest (PerMonitorV2) and applied at process
+        // creation. Do not call SetProcessDPIAware() or Application.SetHighDpiMode here: they run
+        // too late to take effect and would silently downgrade the manifest declaration
+        // (docs/design/ui/2026-11-06-dpi-awareness-scalable-dialogs.md).
 
         Application.EnableVisualStyles();
 #if NETCORE
-        Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-        // Follow the OS light/dark app-mode so every form created afterwards
-        // honours the Windows "Apps use light/dark theme" setting.
-        Application.SetColorMode(SystemColorMode.System);
+        // Follow the user-selected theme (General tab): System follows the OS light/dark
+        // app-mode so every form created afterwards honours the Windows "Apps use
+        // light/dark theme" setting; Light/Dark force it. On Windows 10 WinForms renders
+        // dark only partially (Microsoft: "the dark color mode is only available from
+        // Windows 11 on or later versions"), so the resolver keeps a coherent light
+        // palette there instead of the half-broken mix (#2567).
+        // See docs/design/ui/2026-11-06-app-theme-setting.md.
+        Application.SetColorMode(ThemeResolver.ResolveColorMode());
 #endif
         // Manage the Closing events send by Windows
         // Since this app don't use a Form as "main window" the app doesn't close

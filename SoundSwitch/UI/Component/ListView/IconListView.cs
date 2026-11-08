@@ -43,6 +43,17 @@ public class IconListView : ListViewExtended
 
     protected override void OnDrawSubItem(DrawListViewSubItemEventArgs e)
     {
+        // Read-only rows (the Windows-assignments section) dim their cells through a Color tag
+        // instead of an icon; they carry no interactivity.
+        if (e.SubItem.Tag is Color overrideColor)
+        {
+            e.DrawBackground();
+            TextRenderer.DrawText(e.Graphics, e.SubItem.Text, e.SubItem.Font, e.Bounds, overrideColor,
+                TextFormatFlags.VerticalCenter | TextFormatFlags.Left | TextFormatFlags.EndEllipsis |
+                TextFormatFlags.PreserveGraphicsClipping);
+            return;
+        }
+
         // Resolve an IconHandle or a raw Icon stored in the sub-item Tag.
         System.Drawing.Icon icon = e.SubItem.Tag switch
         {

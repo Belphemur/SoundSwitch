@@ -61,5 +61,42 @@
   "vars": {
     "SITE_HOSTNAME": "https://soundswitch.aaflalo.me",
     "PAYPAL_IPN_MODE": "live"
+  },
+  // Cloudflare Workers Previews (`wrangler preview`, needs Wrangler >= 4.135). A Preview
+  // gets no production settings: vars are placeholders and each Preview gets its own
+  // automatically-provisioned Durable Object namespace and storage (the binding is
+  // declared because the code reads it from `env`).
+  //
+  // Attention: this isolation covers the Worker only. Pages served from a Preview keep
+  // the same bundled front-end, whose donate links (HomeHero.buildDonateUrl) point at
+  // the LIVE PayPal donate URL and post the IPN to the PRODUCTION notify_url — so a
+  // donation started from a Preview page is a real payment and reaches the production
+  // Worker, dedupe KV and Postmark. PAYPAL_IPN_MODE=sandbox below does not affect that
+  // path.
+  //
+  // The IPN_DEDUPE KV is intentionally NOT bound here: Previews bind KV by a real
+  // namespace id (Cloudflare error 10041 when it does not exist) and auto-provisioning
+  // only covers Durable Objects and Containers — a placeholder id would fail the whole
+  // preview deploy ("KV namespace '…' not found", Cloudflare error code 10041). The
+  // Preview's own /api/paypal-ipn endpoint degrades gracefully without the binding
+  // ("IPN_DEDUPE KV binding is not configured" in donations.ts). To re-enable it one
+  // day, create a dedicated `soundswitch-preview` KV namespace and reference its real
+  // id under `previews.kv_namespaces`.
+  "previews": {
+    "vars": {
+      "SITE_HOSTNAME": "https://preview.example.com",
+      "PAYPAL_IPN_MODE": "sandbox"
+    },
+    "durable_objects": {
+      "bindings": [
+        {
+          "name": "DOWNLOADS_TRACKER",
+          "class_name": "DownloadsTracker"
+        }
+      ]
+    },
+    "placement": {
+      "mode": "smart"
+    }
   }
 }

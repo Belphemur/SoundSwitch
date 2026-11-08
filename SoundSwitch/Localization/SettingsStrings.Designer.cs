@@ -123,6 +123,42 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has own device.
+        /// </summary>
+        internal static string appSoundLock_picker_hasOwnDevice {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.hasOwnDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (not running).
+        /// </summary>
+        internal static string appSoundLock_picker_notRunningSuffix {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.notRunningSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show all processes.
+        /// </summary>
+        internal static string appSoundLock_picker_showAllProcesses {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.showAllProcesses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using audio now.
+        /// </summary>
+        internal static string appSoundLock_picker_usingAudioNow {
+            get {
+                return ResourceManager.GetString("appSoundLock.picker.usingAudioNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Case Sensitive.
         /// </summary>
         internal static string appSoundLock_rule_caseSensitive {
@@ -245,6 +281,123 @@ namespace SoundSwitch.Localization {
         internal static string appSoundLock_rule_mode_hotkey {
             get {
                 return ResourceManager.GetString("appSoundLock.rule.mode.hotkey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enforced by.
+        /// </summary>
+        internal static string appSoundLock_rule_enforcement {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.enforcement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processes (dynamic).
+        /// </summary>
+        internal static string appSoundLock_rule_enforcement_dynamic {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.enforcement.dynamic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to App assignment.
+        /// </summary>
+        internal static string appSoundLock_rule_enforcement_assignment {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.enforcement.assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows assignments.
+        /// </summary>
+        internal static string appSoundLock_rules_section_windows {
+            get {
+                return ResourceManager.GetString("appSoundLock.rules.section.windows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Managed in Windows Settings.
+        /// </summary>
+        internal static string appSoundLock_rules_section_windowsHint {
+            get {
+                return ResourceManager.GetString("appSoundLock.rules.section.windowsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment.
+        /// </summary>
+        internal static string appSoundLock_rules_list_column_mode_assignment {
+            get {
+                return ResourceManager.GetString("appSoundLock.rules.list.column.mode.assignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment rules need a specific application. Use the process picker..
+        /// </summary>
+        internal static string appSoundLock_rule_error_assignmentNeedsIdentity {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.assignmentNeedsIdentity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assignment rules don't support window title matching..
+        /// </summary>
+        internal static string appSoundLock_rule_error_assignmentNoWindowTitle {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.error.assignmentNoWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoundSwitch also registers this app's audio device with Windows, which keeps applying it even when SoundSwitch is closed. Deleting the rule restores the default immediately..
+        /// </summary>
+        internal static string appSoundLock_rule_assignmentNote {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.assignmentNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select process.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_selectProcess {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.selectProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset playback device.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_resetPlayback {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.resetPlayback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset recording device.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_resetRecording {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.resetRecording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset shortcut.
+        /// </summary>
+        internal static string appSoundLock_rule_accessible_resetHotkey {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.accessible.resetHotkey", resourceCulture);
             }
         }
         
@@ -2005,6 +2158,52 @@ namespace SoundSwitch.Localization {
         internal static string telemetry_tooltip {
             get {
                 return ResourceManager.GetString("telemetry.tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        internal static string theme {
+            get {
+                return ResourceManager.GetString("theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        internal static string themeDark {
+            get {
+                return ResourceManager.GetString("themeDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        internal static string themeLight {
+            get {
+                return ResourceManager.GetString("themeLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The theme will change after restarting SoundSwitch.
+        ///Do you want to restart now?.
+        /// </summary>
+        internal static string themeRestartRequired {
+            get {
+                return ResourceManager.GetString("themeRestartRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Follow Windows.
+        /// </summary>
+        internal static string themeSystem {
+            get {
+                return ResourceManager.GetString("themeSystem", resourceCulture);
             }
         }
         

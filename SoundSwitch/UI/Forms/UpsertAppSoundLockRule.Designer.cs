@@ -1,4 +1,4 @@
-﻿namespace SoundSwitch.UI.Forms
+namespace SoundSwitch.UI.Forms
 {
     partial class UpsertAppSoundLockRule
     {
@@ -60,9 +60,15 @@
             this.chkEnabled = new System.Windows.Forms.CheckBox();
             this.chkCaseSensitive = new System.Windows.Forms.CheckBox();
             this.chkNotify = new System.Windows.Forms.CheckBox();
+            this.lblEnforcement = new System.Windows.Forms.Label();
+            this.pnlEnforcement = new System.Windows.Forms.Panel();
+            this.rdoEnforcementDynamic = new System.Windows.Forms.RadioButton();
+            this.rdoEnforcementAssignment = new System.Windows.Forms.RadioButton();
+            this.lblAssignmentHelper = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.grpHotkey.SuspendLayout();
+            this.pnlEnforcement.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblDescription
@@ -73,6 +79,7 @@
             this.lblDescription.Size = new System.Drawing.Size(536, 34);
             this.lblDescription.TabIndex = 18;
             this.lblDescription.Text = string.Empty;
+            this.lblDescription.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblProcessPath
             // 
@@ -89,6 +96,8 @@
             this.txtProcessPath.Name = "txtProcessPath";
             this.txtProcessPath.Size = new System.Drawing.Size(380, 23);
             this.txtProcessPath.TabIndex = 3;
+            this.txtProcessPath.TextChanged += new System.EventHandler(this.TxtProcessPath_TextChanged);
+            this.txtProcessPath.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnSelectProcess
             // 
@@ -99,6 +108,7 @@
             this.btnSelectProcess.Text = "...";
             this.btnSelectProcess.UseVisualStyleBackColor = true;
             this.btnSelectProcess.Click += new System.EventHandler(this.BtnSelectProcess_Click);
+            this.btnSelectProcess.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblPattern
             // 
@@ -115,6 +125,8 @@
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(380, 23);
             this.txtPattern.TabIndex = 5;
+            this.txtPattern.TextChanged += new System.EventHandler(this.TxtPattern_TextChanged);
+            this.txtPattern.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblRegexNotice
             // 
@@ -181,6 +193,7 @@
             this.cmbPlayback.TabIndex = 12;
             this.cmbPlayback.ValueMember = "Tag";
             this.cmbPlayback.SelectedIndexChanged += new System.EventHandler(this.CmbPlayback_SelectedIndexChanged);
+            this.cmbPlayback.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnPlaybackReset
             // 
@@ -192,6 +205,7 @@
             this.btnPlaybackReset.UseVisualStyleBackColor = true;
             this.btnPlaybackReset.Visible = false;
             this.btnPlaybackReset.Click += new System.EventHandler(this.BtnPlaybackReset_Click);
+            this.btnPlaybackReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblRecording
             // 
@@ -215,6 +229,7 @@
             this.cmbRecording.TabIndex = 15;
             this.cmbRecording.ValueMember = "Tag";
             this.cmbRecording.SelectedIndexChanged += new System.EventHandler(this.CmbRecording_SelectedIndexChanged);
+            this.cmbRecording.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnRecordingReset
             // 
@@ -226,6 +241,7 @@
             this.btnRecordingReset.UseVisualStyleBackColor = true;
             this.btnRecordingReset.Visible = false;
             this.btnRecordingReset.Click += new System.EventHandler(this.BtnRecordingReset_Click);
+            this.btnRecordingReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // grpHotkey
             // 
@@ -248,6 +264,7 @@
             this.grpHotkey.TabStop = false;
             this.grpHotkey.Text = string.Empty;
             this.grpHotkey.Visible = false;
+            this.grpHotkey.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblHotKey
             // 
@@ -264,6 +281,7 @@
             this.hotKeyBox.Name = "hotKeyBox";
             this.hotKeyBox.Size = new System.Drawing.Size(340, 23);
             this.hotKeyBox.TabIndex = 1;
+            this.hotKeyBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnHotKeyReset
             // 
@@ -275,6 +293,7 @@
             this.btnHotKeyReset.UseVisualStyleBackColor = true;
             this.btnHotKeyReset.Visible = false;
             this.btnHotKeyReset.Click += new System.EventHandler(this.BtnHotKeyReset_Click);
+            this.btnHotKeyReset.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lblPairCount
             // 
@@ -314,6 +333,7 @@
             this.cmbPairRecording.TabIndex = 5;
             this.cmbPairRecording.ValueMember = "Tag";
             this.cmbPairRecording.SelectedIndexChanged += new System.EventHandler(this.CmbPairRecording_SelectedIndexChanged);
+            this.cmbPairRecording.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnAddPair
             // 
@@ -324,6 +344,7 @@
             this.btnAddPair.Text = string.Empty;
             this.btnAddPair.UseVisualStyleBackColor = true;
             this.btnAddPair.Click += new System.EventHandler(this.BtnAddPair_Click);
+            this.btnAddPair.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnNewPair
             // 
@@ -334,6 +355,7 @@
             this.btnNewPair.Text = string.Empty;
             this.btnNewPair.UseVisualStyleBackColor = true;
             this.btnNewPair.Click += new System.EventHandler(this.BtnNewPair_Click);
+            this.btnNewPair.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             // 
             // lvPairs
             // 
@@ -349,6 +371,7 @@
             this.lvPairs.UseCompatibleStateImageBehavior = false;
             this.lvPairs.View = System.Windows.Forms.View.Details;
             this.lvPairs.SelectedIndexChanged += new System.EventHandler(this.LvPairs_SelectedIndexChanged);
+            this.lvPairs.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnRemovePair
             // 
@@ -359,6 +382,7 @@
             this.btnRemovePair.Text = string.Empty;
             this.btnRemovePair.UseVisualStyleBackColor = true;
             this.btnRemovePair.Click += new System.EventHandler(this.BtnRemovePair_Click);
+            this.btnRemovePair.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // btnMoveUp
             // 
@@ -369,6 +393,7 @@
             this.btnMoveUp.Text = string.Empty;
             this.btnMoveUp.UseVisualStyleBackColor = true;
             this.btnMoveUp.Click += new System.EventHandler(this.BtnMoveUp_Click);
+            this.btnMoveUp.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // btnMoveDown
             // 
@@ -379,64 +404,120 @@
             this.btnMoveDown.Text = string.Empty;
             this.btnMoveDown.UseVisualStyleBackColor = true;
             this.btnMoveDown.Click += new System.EventHandler(this.BtnMoveDown_Click);
+            this.btnMoveDown.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // chkEnabled
             // 
             this.chkEnabled.AutoSize = true;
-            this.chkEnabled.Location = new System.Drawing.Point(110, 240);
+            this.chkEnabled.Location = new System.Drawing.Point(110, 302);
             this.chkEnabled.Name = "chkEnabled";
             this.chkEnabled.Size = new System.Drawing.Size(68, 19);
             this.chkEnabled.TabIndex = 19;
             this.chkEnabled.Text = string.Empty;
             this.chkEnabled.UseVisualStyleBackColor = true;
+            this.chkEnabled.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // chkCaseSensitive
             // 
             this.chkCaseSensitive.AutoSize = true;
-            this.chkCaseSensitive.Location = new System.Drawing.Point(210, 240);
+            this.chkCaseSensitive.Location = new System.Drawing.Point(210, 302);
             this.chkCaseSensitive.Name = "chkCaseSensitive";
             this.chkCaseSensitive.Size = new System.Drawing.Size(102, 19);
             this.chkCaseSensitive.TabIndex = 20;
             this.chkCaseSensitive.Text = string.Empty;
             this.chkCaseSensitive.UseVisualStyleBackColor = true;
+            this.chkCaseSensitive.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             // 
             // chkNotify
             // 
             this.chkNotify.AutoSize = true;
-            this.chkNotify.Location = new System.Drawing.Point(340, 240);
+            this.chkNotify.Location = new System.Drawing.Point(340, 302);
             this.chkNotify.Name = "chkNotify";
             this.chkNotify.Size = new System.Drawing.Size(138, 19);
             this.chkNotify.TabIndex = 21;
             this.chkNotify.Text = string.Empty;
             this.chkNotify.UseVisualStyleBackColor = true;
+            this.chkNotify.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            // 
+            // lblEnforcement
+            // 
+            this.lblEnforcement.AutoSize = true;
+            this.lblEnforcement.Location = new System.Drawing.Point(12, 233);
+            this.lblEnforcement.Name = "lblEnforcement";
+            this.lblEnforcement.TabIndex = 24;
+            this.lblEnforcement.Text = string.Empty;
+            // 
+            // pnlEnforcement
+            // 
+            this.pnlEnforcement.Controls.Add(this.rdoEnforcementDynamic);
+            this.pnlEnforcement.Controls.Add(this.rdoEnforcementAssignment);
+            this.pnlEnforcement.Location = new System.Drawing.Point(110, 228);
+            this.pnlEnforcement.Name = "pnlEnforcement";
+            this.pnlEnforcement.TabIndex = 25;
+            this.pnlEnforcement.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            // 
+            // rdoEnforcementDynamic
+            // 
+            this.rdoEnforcementDynamic.AutoSize = true;
+            this.rdoEnforcementDynamic.Checked = true;
+            this.rdoEnforcementDynamic.Location = new System.Drawing.Point(0, 0);
+            this.rdoEnforcementDynamic.Name = "rdoEnforcementDynamic";
+            this.rdoEnforcementDynamic.TabStop = true;
+            this.rdoEnforcementDynamic.Text = string.Empty;
+            this.rdoEnforcementDynamic.UseVisualStyleBackColor = true;
+                        // 
+            // rdoEnforcementAssignment
+            // 
+            this.rdoEnforcementAssignment.AutoSize = true;
+            this.rdoEnforcementAssignment.Location = new System.Drawing.Point(150, 0);
+            this.rdoEnforcementAssignment.Name = "rdoEnforcementAssignment";
+            this.rdoEnforcementAssignment.Text = string.Empty;
+            this.rdoEnforcementAssignment.UseVisualStyleBackColor = true;
+                        // 
+            // lblAssignmentHelper
+            // 
+            this.lblAssignmentHelper.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
+            this.lblAssignmentHelper.Location = new System.Drawing.Point(110, 252);
+            this.lblAssignmentHelper.Name = "lblAssignmentHelper";
+            this.lblAssignmentHelper.Size = new System.Drawing.Size(438, 46);
+            this.lblAssignmentHelper.TabIndex = 26;
+            this.lblAssignmentHelper.Text = string.Empty;
+            this.lblAssignmentHelper.Visible = false;
+            this.lblAssignmentHelper.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(378, 272);
+            this.btnSave.Location = new System.Drawing.Point(378, 334);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 25);
             this.btnSave.TabIndex = 22;
             this.btnSave.Text = string.Empty;
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(459, 272);
+            this.btnCancel.Location = new System.Drawing.Point(459, 334);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.TabIndex = 23;
             this.btnCancel.Text = string.Empty;
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             // 
             // UpsertAppSoundLockRule
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(560, 470);
+            this.ClientSize = new System.Drawing.Size(560, 372);
+            this.MinimumSize = new System.Drawing.Size(576, 411);
+            this.Controls.Add(this.lblAssignmentHelper);
+            this.Controls.Add(this.pnlEnforcement);
+            this.Controls.Add(this.lblEnforcement);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
@@ -459,7 +540,7 @@
             this.Controls.Add(this.lblPattern);
             this.Controls.Add(this.txtProcessPath);
             this.Controls.Add(this.lblProcessPath);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UpsertAppSoundLockRule";
@@ -467,6 +548,8 @@
             this.Text = string.Empty;
             this.grpHotkey.ResumeLayout(false);
             this.grpHotkey.PerformLayout();
+            this.pnlEnforcement.ResumeLayout(false);
+            this.pnlEnforcement.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -506,6 +589,11 @@
         private System.Windows.Forms.CheckBox chkEnabled;
         private System.Windows.Forms.CheckBox chkCaseSensitive;
         private System.Windows.Forms.CheckBox chkNotify;
+        private System.Windows.Forms.Label lblEnforcement;
+        private System.Windows.Forms.Panel pnlEnforcement;
+        private System.Windows.Forms.RadioButton rdoEnforcementDynamic;
+        private System.Windows.Forms.RadioButton rdoEnforcementAssignment;
+        private System.Windows.Forms.Label lblAssignmentHelper;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
     }

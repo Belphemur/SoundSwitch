@@ -24,6 +24,13 @@
         Open-SoundSwitchSettings
         Select-SoundSwitchTab 'Recording'
 
+    The dot-sourced surface also covers form controls and modal dialogs, so an
+    end-to-end test never re-implements UI Automation or Win32 interop:
+    Find-SoundSwitchElement, Set-SoundSwitchText, Select-SoundSwitchRadio,
+    Get-SoundSwitchRadioState, Set-SoundSwitchComboBoxItem, Confirm-SoundSwitchDialog
+    (answers a MessageBox/custom Yes/No prompt without blocking), Wait-SoundSwitchWindowGone
+    and Write-SoundSwitchDiagnostics (dumps window titles and automation ids).
+
 .PARAMETER Start
     Build (unless -NoBuild), launch a fresh instance and wait until its IPC pipe
     answers. Refuses to run while another instance is active (one named pipe and
@@ -206,12 +213,21 @@ namespace SoundSwitch.AppControl
 
         [DllImport("user32.dll")]
         public static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool IsWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int GetClassName(IntPtr hWnd, StringBuilder className, int maxCount);
     }
 }
 '@
 }
 
 $Script:WmClose = 0x0010
+$Script:WmCommand = 0x0111
+$Script:IdYes = 6
+$Script:IdNo = 7
 $Script:BmClick = 0x00F5
 $Script:SwRestore = 9
 $Script:PwRenderFullContent = 0x00000002
@@ -532,6 +548,415 @@ function Invoke-SoundSwitchElement {
     }
 
     throw "The control '$($Element.Current.Name)' cannot be invoked."
+}
+
+function Get-SoundSwitchDescendantElements {
+    <#
+        Every descendant of an element, discovered one child level at a time. The MSAA
+        proxy in some environments misses elements in a single deep Descendants query, so
+        the condition-based helpers fall back to this walk.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        $Element
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $result = [System.Collections.Generic.List[object]]::new()
+    $stack = [System.Collections.Generic.Stack[object]]::new()
+    $stack.Push($Element)
+    while ($stack.Count -gt 0) {
+        $current = $stack.Pop()
+        try {
+            $children = @($current.FindAll(
+                    [System.Windows.Automation.TreeScope]::Children,
+                    [System.Windows.Automation.Condition]::TrueCondition))
+        }
+        catch {
+            continue
+        }
+        foreach ($child in $children) {
+            $result.Add($child)
+            $stack.Push($child)
+        }
+    }
+
+    return $result
+}
+
+function Get-SoundSwitchElementName {
+    <# Safe read of an element's Name (stale elements throw). #>
+    param([Parameter(Mandatory = $true)]$Element)
+
+    try { return [string]$Element.Current.Name } catch { return '' }
+}
+
+function Find-SoundSwitchElement {
+    <#
+        Finds a descendant of a window by automation id (the WinForms designer Name, which
+        localization never changes). Tries one Descendants query first, then a child-hop
+        walk because the automation proxy can miss deep matches in a single query.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$AutomationId
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $root = [System.Windows.Automation.AutomationElement]::FromHandle($Handle)
+    if ($null -eq $root) {
+        return $null
+    }
+
+    $condition = [System.Windows.Automation.PropertyCondition]::new(
+        [System.Windows.Automation.AutomationElement]::AutomationIdProperty, $AutomationId)
+    $found = $root.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $condition)
+    if ($null -ne $found) {
+        return $found
+    }
+
+    foreach ($element in @(Get-SoundSwitchDescendantElements -Element $root)) {
+        try {
+            if ($element.Current.AutomationId -eq $AutomationId) {
+                return $element
+            }
+        }
+        catch {
+            # A control that vanished mid-walk is simply not the one we want.
+        }
+    }
+
+    return $null
+}
+
+function Set-SoundSwitchText {
+    <# Sets a text field's value through UI Automation (no synthetic keystrokes). #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$WindowHandle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$AutomationId,
+
+        [AllowEmptyString()]
+        [string]$Value = ''
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $element = Find-SoundSwitchElement -Handle $WindowHandle -AutomationId $AutomationId
+    if ($null -eq $element) {
+        throw "Text field '$AutomationId' was not found."
+    }
+
+    $pattern = $null
+    if (-not $element.TryGetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern, [ref]$pattern)) {
+        throw "The text field '$AutomationId' does not expose a ValuePattern."
+    }
+
+    $pattern.SetValue($Value)
+    Start-Sleep -Milliseconds 150
+    return $element
+}
+
+function Get-SoundSwitchRadioState {
+    <#
+        Whether a radio button is selected. WinForms radios expose SelectionItemPattern
+        (they are grouped), so TogglePattern is only a fallback.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$WindowHandle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$AutomationId
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $element = Find-SoundSwitchElement -Handle $WindowHandle -AutomationId $AutomationId
+    if ($null -eq $element) {
+        return $null
+    }
+
+    $selection = $null
+    if ($element.TryGetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern, [ref]$selection)) {
+        return [bool]$selection.Current.IsSelected
+    }
+
+    $toggle = $null
+    if ($element.TryGetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern, [ref]$toggle)) {
+        return $toggle.Current.ToggleState -eq [System.Windows.Automation.ToggleState]::On
+    }
+
+    return $null
+}
+
+function Select-SoundSwitchRadio {
+    <# Selects a radio button without clicking it (no synthetic mouse input). #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$WindowHandle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$AutomationId
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $element = Find-SoundSwitchElement -Handle $WindowHandle -AutomationId $AutomationId
+    if ($null -eq $element) {
+        throw "Radio button '$AutomationId' was not found."
+    }
+
+    $selection = $null
+    if ($element.TryGetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern, [ref]$selection)) {
+        $selection.Select()
+        Start-Sleep -Milliseconds 150
+        return $element
+    }
+
+    $toggle = $null
+    if ($element.TryGetCurrentPattern([System.Windows.Automation.TogglePattern]::Pattern, [ref]$toggle)) {
+        $toggle.Toggle()
+        Start-Sleep -Milliseconds 150
+        return $element
+    }
+
+    throw "The radio button '$AutomationId' is not selectable."
+}
+
+function Set-SoundSwitchComboBoxItem {
+    <#
+        Selects an entry in a drop-down list combo box by its visible label (exact,
+        case-insensitive). Expands the list, waits for its items with a deadline, selects
+        the entry and collapses the list.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$WindowHandle,
+
+        [Parameter(Mandatory = $true)]
+        [string]$AutomationId,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Target,
+
+        [int]$TimeoutSeconds = 20
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    $combo = Find-SoundSwitchElement -Handle $WindowHandle -AutomationId $AutomationId
+    if ($null -eq $combo) {
+        throw "Combo box '$AutomationId' was not found."
+    }
+
+    $expand = [System.Windows.Automation.ExpandCollapsePattern]$combo.GetCurrentPattern(
+        [System.Windows.Automation.ExpandCollapsePattern]::Pattern)
+    $expand.Expand()
+    try {
+        $itemCondition = [System.Windows.Automation.PropertyCondition]::new(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty,
+            [System.Windows.Automation.ControlType]::ListItem)
+
+        $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+        $items = @()
+        while ((Get-Date) -lt $deadline) {
+            $items = @($combo.FindAll([System.Windows.Automation.TreeScope]::Descendants, $itemCondition))
+            if ($items.Count -eq 0) {
+                $items = @(Get-SoundSwitchDescendantElements -Element $combo | Where-Object {
+                        try { $_.Current.ControlType -eq [System.Windows.Automation.ControlType]::ListItem } catch { $false }
+                    })
+            }
+            if ($items.Count -gt 0) {
+                break
+            }
+            Start-Sleep -Milliseconds 100
+        }
+
+        if ($items.Count -eq 0) {
+            throw "The '$AutomationId' list did not open within $TimeoutSeconds seconds."
+        }
+
+        $chosen = $items |
+            Where-Object { (Get-SoundSwitchElementName $_) -ieq $Target.Trim() } |
+            Select-Object -First 1
+        if ($null -eq $chosen) {
+            $available = ($items | ForEach-Object { Get-SoundSwitchElementName $_ } | Where-Object { $_ }) -join ' | '
+            throw "Item '$Target' was not found in '$AutomationId'. Available: $available"
+        }
+
+        $chosen.GetCurrentPattern([System.Windows.Automation.SelectionItemPattern]::Pattern).Select()
+        Start-Sleep -Milliseconds 150
+        return (Get-SoundSwitchElementName $chosen).Trim()
+    }
+    finally {
+        try { $expand.Collapse() } catch { }
+    }
+}
+
+# --- Modal dialogs ------------------------------------------------------------------
+
+function Get-SoundSwitchWindowClass {
+    <# Win32 window class name; '#32770' identifies a stock MessageBox. #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle
+    )
+
+    $className = [System.Text.StringBuilder]::new(256)
+    [SoundSwitch.AppControl.Native]::GetClassName($Handle, $className, $className.Capacity) | Out-Null
+    return $className.ToString()
+}
+
+function Wait-SoundSwitchWindowGone {
+    <# Waits (with a deadline) for a window handle to be destroyed. #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [IntPtr]$Handle,
+
+        [int]$TimeoutSeconds = 10
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $deadline) {
+        if (-not [SoundSwitch.AppControl.Native]::IsWindow($Handle)) {
+            return $true
+        }
+        Start-Sleep -Milliseconds 150
+    }
+
+    return -not [SoundSwitch.AppControl.Native]::IsWindow($Handle)
+}
+
+function Write-SoundSwitchDiagnostics {
+    <#
+        Prints the process's visible top-level windows with their class and automation
+        ids, so a failed UI interaction is diagnosable from the log alone.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [int]$ProcessId
+    )
+
+    Add-Type -AssemblyName UIAutomationClient
+    Add-Type -AssemblyName UIAutomationTypes
+
+    Write-Host 'Visible SoundSwitch windows:' -ForegroundColor DarkYellow
+    foreach ($window in @(Get-SoundSwitchWindows -ProcessId $ProcessId)) {
+        $className = Get-SoundSwitchWindowClass -Handle $window.Handle
+        Write-Host ("  '{0}' (0x{1:X}, class '{2}')" -f $window.Title, $window.Handle.ToInt64(), $className) -ForegroundColor DarkYellow
+
+        $root = [System.Windows.Automation.AutomationElement]::FromHandle($window.Handle)
+        if ($null -eq $root) {
+            continue
+        }
+
+        $ids = [System.Collections.Generic.List[string]]::new()
+        foreach ($element in @(Get-SoundSwitchDescendantElements -Element $root)) {
+            try {
+                if (-not $element.Current.AutomationId) {
+                    continue
+                }
+                $state = if ($element.Current.IsEnabled) { '' } else { ' disabled' }
+                $ids.Add(('{0} [{1}] "{2}"{3}' -f $element.Current.AutomationId,
+                        $element.Current.ControlType.ProgrammaticName, $element.Current.Name, $state))
+                if ($ids.Count -ge 80) {
+                    $ids.Add('...')
+                    break
+                }
+            }
+            catch {
+                # Element vanished mid-walk; nothing to report for it.
+            }
+        }
+
+        if ($ids.Count -gt 0) {
+            Write-Host "    $($ids -join '; ')" -ForegroundColor DarkYellow
+        }
+    }
+}
+
+function Confirm-SoundSwitchDialog {
+    <#
+        Answers the modal dialog a click opens and returns its window info.
+
+        Waits for a top-level window that was not in $KnownHandles (snapshot it before the
+        click), then answers it the repo way:
+
+          - a stock MessageBox (class '#32770') is answered with
+            PostMessage(WM_COMMAND, IDYES/IDNO), which its dialog proc handles immediately;
+          - a custom form is answered by finding its Yes/No button and posting BM_CLICK
+            to it. A UI Automation Invoke() would block until the dialog closes.
+
+        If the window survives the answer, WM_CLOSE is posted so a second prompt can never
+        hang the caller. On timeout the visible windows and automation ids are dumped and
+        the error names what was expected ("delete confirmation dialog not found").
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [int]$ProcessId,
+
+        [Parameter(Mandatory = $true)]
+        [long[]]$KnownHandles,
+
+        [ValidateSet('Yes', 'No')]
+        [string]$Result = 'Yes',
+
+        [string]$Description = 'dialog',
+
+        [int]$TimeoutSeconds = 20
+    )
+
+    try {
+        $dialog = Wait-SoundSwitchNewWindow -ProcessId $ProcessId -KnownHandles $KnownHandles -TimeoutSeconds $TimeoutSeconds
+    }
+    catch {
+        Write-SoundSwitchDiagnostics -ProcessId $ProcessId
+        throw "$Description not found within $TimeoutSeconds seconds (no new top-level window)."
+    }
+
+    $className = Get-SoundSwitchWindowClass -Handle $dialog.Handle
+    Write-Host "  Answering '$($dialog.Title)' with $Result (class '$className')" -ForegroundColor DarkGray
+
+    if ($className -eq '#32770') {
+        $buttonId = if ($Result -eq 'Yes') { $Script:IdYes } else { $Script:IdNo }
+        [SoundSwitch.AppControl.Native]::PostMessage(
+            $dialog.Handle, $Script:WmCommand, [IntPtr]$buttonId, [IntPtr]::Zero) | Out-Null
+    }
+    else {
+        $button = Find-SoundSwitchButton -Handle $dialog.Handle -ButtonId $Result
+        if ($null -eq $button) {
+            Write-SoundSwitchDiagnostics -ProcessId $ProcessId
+            throw "$Description '$($dialog.Title)' has no '$Result' button."
+        }
+        Invoke-SoundSwitchElement -Element $button
+    }
+
+    if (Wait-SoundSwitchWindowGone -Handle $dialog.Handle -TimeoutSeconds 10) {
+        return $dialog
+    }
+
+    [SoundSwitch.AppControl.Native]::PostMessage(
+        $dialog.Handle, $Script:WmClose, [IntPtr]::Zero, [IntPtr]::Zero) | Out-Null
+    if (-not (Wait-SoundSwitchWindowGone -Handle $dialog.Handle -TimeoutSeconds 5)) {
+        Write-SoundSwitchDiagnostics -ProcessId $ProcessId
+        throw "$Description '$($dialog.Title)' did not close after $Result (WM_CLOSE also sent)."
+    }
+
+    throw "$Description '$($dialog.Title)' opened a second prompt; it was closed with WM_CLOSE."
 }
 
 function Set-SoundSwitchMuteTarget {

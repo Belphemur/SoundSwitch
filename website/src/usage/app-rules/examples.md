@@ -120,7 +120,7 @@ The system default stays wherever it was. Each application is routed independent
 
 ## Tips
 
-- Use the process picker instead of typing patterns when possible. It fills in escaped file names and, when available, the current window title.
+- Use the process picker instead of typing patterns when possible. It fills in escaped file names and, when available, the current window title. Applications that already have their own audio device — including ones that are not running — are listed first.
 - Keep **Window Title** blank unless you need to distinguish windows of the same process.
 - Start with **Notify when triggered** enabled while setting up a rule. Turn it off once the routing works.
 - For a Hotkey rule, press the hotkey with the application closed once to confirm the "isn't running" message, then start the application and press again.

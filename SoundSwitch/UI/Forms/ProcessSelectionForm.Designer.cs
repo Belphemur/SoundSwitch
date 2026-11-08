@@ -61,6 +61,7 @@
             this.dgvProcesses.Size = new System.Drawing.Size(606, 360);
             this.dgvProcesses.TabIndex = 0;
             this.dgvProcesses.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProcesses_CellDoubleClick);
+            this.dgvProcesses.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvProcesses_CellClick);
             // 
             // colName
             // 

@@ -27,6 +27,23 @@ Use Automatic mode when an application should **always** use the same audio devi
 
 ![Add an App Rule in Automatic mode](/images/AppRules%20Add.png)
 
+## Windows also remembers it
+
+There is nothing extra to configure. When the rule names **one concrete application** — picked with **...**, or typed as a full path — with no Window Title pattern, SoundSwitch does **both**:
+
+- it keeps watching for the application and applying the device pair while SoundSwitch runs (the immediate switch you expect), and
+- it registers the same route in **Windows' own per-app audio settings**, so Windows keeps applying it from then on, **even while SoundSwitch is closed**.
+
+![The rule editor notes when Windows will also remember the application's device](/images/AppRules%20Add%20Assignment.png)
+
+A rule editor shows a one-line note when the rule qualifies. Rules that match several applications — a `*.exe` or regex pattern, or a Window Title condition — still work exactly as before; they simply have no single application identity for Windows to remember.
+
+Behaviour worth knowing:
+
+- The remembered assignment is stored **per application, not per process**: it uses the exact executable you pick, not a pattern.
+- **Deleting or disabling the rule restores the default.** The application returns to the system default immediately, whether it is running or closed — and it disappears from Windows' own per-app device list as well.
+- Editing the rule's device pair updates the assignment the next time the application is seen (immediately if it is running).
+
 ## Example
 
 | Field | Value |
