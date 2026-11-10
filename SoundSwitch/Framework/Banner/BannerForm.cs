@@ -151,34 +151,44 @@ public partial class BannerForm : Form
     /// Re-apply the appearance settings and the selected monitor to every banner currently on
     /// screen, so changing them in Settings does not have to wait for the next notification.
     /// </summary>
-    public static void RefreshVisibleBanners()
+    public static void RefreshVisibleBanners(bool refreshNotificationSettings = false)
     {
         var context = _uiContext;
         if (context == null) return;
 
         if (SynchronizationContext.Current == context)
         {
-            RefreshVisibleBannersCore();
+            RefreshVisibleBannersCore(refreshNotificationSettings);
             return;
         }
 
-        context.Send(_ => RefreshVisibleBannersCore(), null);
+        context.Send(_ => RefreshVisibleBannersCore(refreshNotificationSettings), null);
     }
 
-    private static void RefreshVisibleBannersCore()
+    private static void RefreshVisibleBannersCore(bool refreshNotificationSettings)
     {
         // Snapshot the list: resizing a banner can make it disappear and dispose itself.
         foreach (var banner in ActiveBanners.ToArray())
-            banner.RefreshAppearance();
+            banner.RefreshAppearance(refreshNotificationSettings);
     }
 
     /// <summary>
     /// Re-read the banner appearance settings and move this banner back onto the configured
     /// monitor. The refresh is idempotent, so it is safe to call on banners that are being hidden.
     /// </summary>
-    public void RefreshAppearance()
+    public void RefreshAppearance(bool refreshNotificationSettings = false)
     {
         if (IsDisposed || _currentData?.Position == null) return;
+
+        if (refreshNotificationSettings)
+        {
+            var opacity = AppModel.Instance.BannerOpacityPercentage;
+            // Keep the opacity reduction applied by stacking, and never brighten a fade-out.
+            if (!_hiding)
+                Opacity = Math.Clamp(Opacity + (opacity - _currentData.Opacity) / 100.0, 0.0, 1.0);
+            _currentData.Opacity = opacity;
+            _currentData.DisplayInfo = AppModel.Instance.BannerDisplayInfo;
+        }
 
         ApplyColors();
         ApplyPresentation(_currentData);

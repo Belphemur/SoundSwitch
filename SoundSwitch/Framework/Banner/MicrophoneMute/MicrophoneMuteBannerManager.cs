@@ -43,6 +43,23 @@ public class MicrophoneMuteBannerManager
     private static bool BannerContextUnavailable => _syncContext == null;
 
     /// <summary>
+    /// Runs a complete microphone banner operation on the UI thread, including state lookup.
+    /// </summary>
+    internal void RunOnUiThread(Action action)
+    {
+        if (BannerContextUnavailable)
+        {
+            Log.Warning("Microphone mute banner manager not initialized yet; ignoring banner operation");
+            return;
+        }
+
+        if (System.Threading.SynchronizationContext.Current == _syncContext)
+            action();
+        else
+            _syncContext.Send(_ => action(), null);
+    }
+
+    /// <summary>
     /// Updates or creates a banner when a microphone's mute state changes
     /// </summary>
     /// <param name="microphoneId">Unique identifier for the microphone</param>

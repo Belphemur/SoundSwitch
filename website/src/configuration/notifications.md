@@ -56,7 +56,7 @@ When using banner notifications, you can customize their appearance and behavior
 - **Scale** — Scales the banner between **50%** and **200%** (default 100%), so it stays readable on high-DPI displays.
 - **Show mute banners only for selected input** — When checked (default), mute banners appear only for the microphone selected in **Mute microphone** on the Recording tab. Uncheck it to show a banner for every microphone's mute changes.
 
-Changing any of these options refreshes banners that are already on screen instead of waiting for the next notification.
+Changing **Style**, **Display Info**, **Opacity**, **Background color**, or **Scale** refreshes banners that are already on screen, including persistent microphone banners, without restarting their timers. **On-screen time** applies to subsequent fading notifications.
 
 ## Microphone Mute
 
