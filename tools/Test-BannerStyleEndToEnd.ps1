@@ -123,6 +123,44 @@ function Wait-Banner([bool]$Visible) {
     } while ((Get-Date) -lt $deadline)
     throw "Banner visibility did not become $Visible"
 }
+function Get-ExpectedMicrophoneTitle([string]$Style, [bool]$Muted, [string]$MicrophoneName) {
+    if ($Style -eq 'Compact') {
+        if ($Muted) { return 'Microphone Off' }
+        return 'Microphone On'
+    }
+    if ($Muted) { return "$MicrophoneName is now muted." }
+    return "$MicrophoneName is now unmuted."
+}
+function Wait-ExpectedBanner([string]$ExpectedTitle, [string]$Context, [string]$ExpectedDescription,
+    [int]$WaitSeconds = 10) {
+    # Endpoint writes complete before the app's asynchronous volume event is rendered.
+    # A visible persistent window is not proof that it has adopted the new state.
+    $deadline = (Get-Date).AddSeconds($WaitSeconds)
+    $lastTitle = '<no banner>'
+    $lastError = '<none>'
+    do {
+        try {
+            foreach ($candidate in @(Get-Banners)) {
+                $label = Get-BannerElementSnapshot $candidate.Handle 'lblTop' $Context
+                $lastTitle = $label.Name
+                if ($label.Name -ne $ExpectedTitle) { continue }
+                $description = $null
+                if (-not [string]::IsNullOrEmpty($ExpectedDescription)) {
+                    $description = Get-BannerElementSnapshot $candidate.Handle 'lblTitle' $Context
+                    if ($description.Name -ne $ExpectedDescription) { continue }
+                }
+                return [pscustomobject]@{ Handle = $candidate.Handle; Label = $label; Description = $description }
+            }
+        }
+        catch {
+            # A form/control can disappear between discovery and reading Current.
+            $lastError = $_.Exception.Message
+        }
+        if ((Get-Date) -ge $deadline) { break }
+        Start-Sleep -Milliseconds 100
+    } while ($true)
+    throw "Timed out waiting for $Context banner title '$ExpectedTitle' and description '$ExpectedDescription'. Last title: '$lastTitle'. Last lookup error: $lastError"
+}
 function Assert-BannerRemains([double]$Seconds, [bool]$Visible) {
     $deadline = (Get-Date).AddSeconds($Seconds)
     do {
@@ -176,23 +214,24 @@ try {
                 $microphoneName = $match.Groups['name'].Value
             }
             foreach ($muted in @($true, $false)) {
+                $expectedDescription = if ($style -eq 'Compact') { $microphoneName } else { $null }
                 Set-MicrophoneState (-not $muted)
-                if ($mode -eq 'Fading') { Wait-Banner $false }
+                if ($mode -eq 'Persistent') {
+                    # Observe the intermediate state too: the old title might already match
+                    # the final state while both audio events are still waiting to render.
+                    $oppositeTitle = Get-ExpectedMicrophoneTitle $style (-not $muted) $microphoneName
+                    Wait-ExpectedBanner $oppositeTitle "$style/$mode/opposite muted=$(-not $muted)" $expectedDescription | Out-Null
+                }
+                elseif ($mode -eq 'Fading') { Wait-Banner $false }
                 Set-MicrophoneState $muted
                 if ($mode -eq 'None') { Assert-BannerRemains 2 $false; continue }
-                Wait-Banner $true
                 $context = "$style/$mode/muted=$muted"
-                $banner = Get-RequiredBanner $context
-                $label = Get-BannerElementSnapshot $banner.Handle 'lblTop' $context
-                $expectedTitle = if ($style -eq 'Compact') {
-                    if ($muted) { 'Microphone Off' } else { 'Microphone On' }
-                }
-                else {
-                    if ($muted) { "$microphoneName is now muted." } else { "$microphoneName is now unmuted." }
-                }
+                $expectedTitle = Get-ExpectedMicrophoneTitle $style $muted $microphoneName
+                $banner = Wait-ExpectedBanner $expectedTitle $context $expectedDescription
+                $label = $banner.Label
                 Assert-True ($label.Name -eq $expectedTitle) "$style/$mode shows the original style-specific microphone presentation"
                 if ($style -eq 'Compact') {
-                    $description = Get-BannerElementSnapshot $banner.Handle 'lblTitle' $context
+                    $description = $banner.Description
                     Assert-True ($description.Name -eq $microphoneName) 'Microphone names match Settings and live notifications'
                 }
                 if ($mode -eq 'Persistent') {
