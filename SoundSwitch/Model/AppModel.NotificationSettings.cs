@@ -167,6 +167,7 @@ public partial class AppModel
                 new NotificationSettingsUpdatedEvent(previousSwitchDeviceNotification, AppConfigs.Configuration.SwitchDeviceNotification,
                     previousSwitchProfileNotification, AppConfigs.Configuration.SwitchProfileNotification,
                     previousMicrophoneMuteNotification, AppConfigs.Configuration.MicrophoneMuteNotification));
+            RefreshMicrophoneMuteBanners();
         }
     }
 
@@ -193,6 +194,7 @@ public partial class AppModel
                 new NotificationSettingsUpdatedEvent(previousSwitchDeviceNotification, AppConfigs.Configuration.SwitchDeviceNotification,
                     previousSwitchProfileNotification, AppConfigs.Configuration.SwitchProfileNotification,
                     previousMicrophoneMuteNotification, AppConfigs.Configuration.MicrophoneMuteNotification));
+            RefreshMicrophoneMuteBanners();
         }
     }
 
@@ -232,6 +234,7 @@ public partial class AppModel
             NotificationSettingsChanged?.Invoke(this,
                 new NotificationSettingsUpdatedEvent(SwitchDeviceNotification, SwitchDeviceNotification,
                     SwitchProfileNotification, SwitchProfileNotification, preValue, value));
+            RefreshMicrophoneMuteBanners();
         }
     }
 
@@ -287,6 +290,7 @@ public partial class AppModel
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
                     BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
                     prevValue, value, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
+            RefreshMicrophoneMuteBanners();
         }
     }
 
@@ -302,6 +306,7 @@ public partial class AppModel
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
                     BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, prevValue, value));
+            RefreshMicrophoneMuteBanners();
         }
     }
 
@@ -354,6 +359,19 @@ public partial class AppModel
         set
         {
             AppConfigs.Configuration.BannerBackgroundArgb = value.ToArgb();
+            AppConfigs.Configuration.Save();
+            BannerForm.RefreshVisibleBanners();
+        }
+    }
+
+    public BannerStyle BannerStyle
+    {
+        get => Enum.IsDefined(AppConfigs.Configuration.BannerStyle)
+            ? AppConfigs.Configuration.BannerStyle : BannerStyle.Normal;
+        set
+        {
+            if (!Enum.IsDefined(value)) return;
+            AppConfigs.Configuration.BannerStyle = value;
             AppConfigs.Configuration.Save();
             BannerForm.RefreshVisibleBanners();
         }

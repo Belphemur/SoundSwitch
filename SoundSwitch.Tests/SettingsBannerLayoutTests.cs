@@ -75,7 +75,7 @@ public class SettingsBannerLayoutTests
         };
     }
 
-    /// <summary>Where the two appended rows land, using the form's own derivation.</summary>
+    /// <summary>Where the appended appearance rows land, using the form's own derivation.</summary>
     private static (int ColorRowTop, int ScaleRowTop, int RowHeight, int RowPitch, int RowGap,
         int OptionsHeight, int PositionHeight, int ExtraHeight) Layout(Design d)
     {
@@ -83,12 +83,14 @@ public class SettingsBannerLayoutTests
         var rowHeight = d.RowHeight;
         var rowGap = rowPitch - rowHeight;
 
-        var colorRowTop = d.LastRowBottom + rowGap;
+        // Style occupies the designer's original Display Info row; Display Info moves down.
+        var colorRowTop = d.LastRowBottom + rowPitch + rowGap;
         var scaleRowTop = colorRowTop + rowPitch;
+        var muteScopeRowTop = scaleRowTop + rowPitch;
 
         var positionRowTop = SettingsForm.AppendedRowTop(d.PositionHeight, d.PositionContentBottom);
 
-        var optionsHeight = SettingsForm.HeightForRow(d.OptionsHeight, d.ReferenceContentBottom, scaleRowTop + rowHeight);
+        var optionsHeight = SettingsForm.HeightForRow(d.OptionsHeight, d.ReferenceContentBottom, muteScopeRowTop + rowHeight);
         var positionHeight = SettingsForm.HeightForRow(d.PositionHeight, d.PositionContentBottom, positionRowTop + rowHeight);
 
         return (colorRowTop, scaleRowTop, rowHeight, rowPitch, rowGap, optionsHeight, positionHeight,
@@ -118,7 +120,7 @@ public class SettingsBannerLayoutTests
         // Reusing the designer's pitch is what makes the new rows line up with the existing ones at
         // any scaling instead of drifting by a constant pixel amount.
         rowPitch.Should().Be(d.RowTwoTop - d.RowOneTop);
-        (scaleRowTop - d.LastRowBottom).Should().Be(rowGap + rowPitch);
+        (scaleRowTop - d.LastRowBottom).Should().Be(rowGap + 2 * rowPitch);
     }
 
     [TestCaseSource(nameof(Scales))]
@@ -139,15 +141,29 @@ public class SettingsBannerLayoutTests
     }
 
     [TestCaseSource(nameof(Scales))]
-    public void FormGrowsByExactlyTheExtraRowHeight(double scale)
+    public void AppendedRowsPreserveTheOptionsBottomMargin(double scale)
     {
-        var (_, _, _, _, _, _, _, extraHeight) = Layout(ScaledBy(scale));
-
-        // tabControl and ClientSize grow by the same amount the options group box did, so the
-        // notifications tab keeps the same slack it had before the rows were added.
-        extraHeight.Should().BeGreaterThan(0);
         var d = ScaledBy(scale);
-        (d.TabHeight + extraHeight).Should().BeLessThanOrEqualTo(d.ClientHeight);
+        var (_, scaleTop, rowHeight, pitch, _, optionsHeight, _, extraHeight) = Layout(d);
+        var scopeRowBottom = scaleTop + pitch + rowHeight;
+
+        extraHeight.Should().BeGreaterThan(0);
+        (optionsHeight - scopeRowBottom).Should().Be(d.OptionsHeight - d.ReferenceContentBottom);
+    }
+
+    [TestCaseSource(nameof(Scales))]
+    public void StylePrecedesDisplayInfoAndScopeRemainsBelowScale(double scale)
+    {
+        var d = ScaledBy(scale);
+        var (colorTop, scaleTop, rowHeight, pitch, _, optionsHeight, _, _) = Layout(d);
+        var styleTop = d.LastRowBottom - rowHeight;
+        var displayInfoTop = styleTop + pitch;
+        var scopeTop = scaleTop + pitch;
+        styleTop.Should().BeGreaterThanOrEqualTo(d.RowTwoTop + rowHeight);
+        displayInfoTop.Should().BeGreaterThanOrEqualTo(styleTop + rowHeight);
+        colorTop.Should().BeGreaterThanOrEqualTo(displayInfoTop + rowHeight);
+        scopeTop.Should().BeGreaterThanOrEqualTo(scaleTop + rowHeight);
+        optionsHeight.Should().BeGreaterThanOrEqualTo(scopeTop + rowHeight);
     }
 
     [TestCaseSource(nameof(Scales))]

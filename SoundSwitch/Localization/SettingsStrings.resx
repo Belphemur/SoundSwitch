@@ -457,6 +457,15 @@ Both: Change when any type of device is switched.</value>
   <data name="banner.monitor.screen" xml:space="preserve">
     <value>Monitor {0} ({1})</value>
   </data>
+  <data name="banner.style" xml:space="preserve">
+    <value>Style</value>
+  </data>
+  <data name="banner.style.normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="banner.style.compact" xml:space="preserve">
+    <value>Compact</value>
+  </data>
   <data name="banner.backgroundColor" xml:space="preserve">
     <value>Background color</value>
   </data>
@@ -625,7 +634,7 @@ Restore the state of the system when the application is closed.</value>
     <value>Microphone muted</value>
   </data>
   <data name="banner.mute.tooltip" xml:space="preserve">
-    <value>Show banner when the microphone is muted or unmuted. Persistent will mean it's always visible on the screen when muted</value>
+    <value>Show a banner when the microphone is muted or unmuted. Fading uses On-screen time. Persistent stays visible until the microphone changes state. The selected style applies to both modes.</value>
   </data>
   <data name="banner.mute.option.fading" xml:space="preserve">
     <value>Fading</value>

@@ -127,7 +127,14 @@ public partial class AppModel
             payload.Device.NameClean, payload.WasMuted, payload.IsMuted);
 
         // Notify about the mute state change
-        _notificationManager.NotifyMuteChanged(payload.Device.Id, payload.Device.FriendlyName, payload.IsMuted);
+        _notificationManager.NotifyMuteChanged(payload.Device.Id, GetMicrophoneBannerName(payload.Device), payload.IsMuted);
+    }
+
+    internal static string GetMicrophoneBannerName(DeviceInfo device)
+    {
+        // FriendlyName is populated when NameClean parses the endpoint name.
+        _ = device.NameClean;
+        return device.FriendlyName;
     }
 
     /// <summary>
@@ -214,7 +221,7 @@ public partial class AppModel
     /// <summary>
     /// Reconciles the persistent mute banners with the current mute target and banner scope:
     /// banners for microphones that left the scope are dismissed and in-scope microphones
-    /// that are currently muted get their banner back.
+    /// whose current state uses Persistent get their banner back.
     /// </summary>
     private void RefreshMicrophoneMuteBanners()
     {
@@ -227,12 +234,11 @@ public partial class AppModel
 
         // The lister already tracks each device's mute state from its volume notifications,
         // so reuse it instead of opening every endpoint through COM on the caller's thread.
-        var mutedInScope = inScope
-            .Where(device => device.IsMuted)
-            .Select(device => (device.Id, device.NameClean))
+        var statesInScope = inScope
+            .Select(device => (device.Id, GetMicrophoneBannerName(device), device.IsMuted))
             .ToList();
 
-        _notificationManager.SyncMuteBanners(inScope.Select(device => device.Id).ToList(), mutedInScope);
+        _notificationManager.SyncMuteBanners(inScope.Select(device => device.Id).ToList(), statesInScope);
     }
 
     #region Microphone control

@@ -534,7 +534,7 @@ public sealed partial class SettingsForm : Form
 #pragma warning restore CS0618 // Type or member is obsolete
 
     /// <summary>
-    /// Builds the banner monitor, background colour and scale controls and grows the form just
+    /// Builds the banner monitor, background colour, scale, style and scope controls and grows the form just
     /// enough to fit them.
     /// </summary>
     /// <remarks>
@@ -554,6 +554,11 @@ public sealed partial class SettingsForm : Form
         var rowPitch = Math.Max(1, opacityUpDown.Top - onScreenUpDown.Top);
         var rowHeight = Math.Max(opacityUpDown.Height, opacityLabel.Height);
         var rowGap = rowPitch - rowHeight;
+        var styleRowTop = bannerDisplayComboBox.Top;
+        var styleTabIndex = bannerDisplayComboBox.TabIndex;
+        bannerDisplayComboBox.Top += rowPitch;
+        displayInfoLabel.Top += rowPitch;
+        bannerDisplayComboBox.TabIndex++;
         var colorRowTop = bannerDisplayComboBox.Bottom + rowGap;
         var scaleRowTop = colorRowTop + rowPitch;
         var muteBannerRowTop = scaleRowTop + rowPitch;
@@ -573,6 +578,34 @@ public sealed partial class SettingsForm : Form
         _bannerMonitorComboBox.SelectedIndexChanged += (_, _) => BannerMonitorSelectionChanged();
         positionGroupBox.Controls.Add(_bannerMonitorComboBox);
         PopulateBannerMonitorChoices();
+
+        bannerOptionsGroupBox.Controls.Add(new Label
+        {
+            Name = "bannerStyleLabel",
+            Text = GetBannerString("banner.style"),
+            Location = new Point(displayInfoLabel.Left, styleRowTop),
+            Size = new Size(displayInfoLabel.Width, displayInfoLabel.Height),
+            TextAlign = ContentAlignment.MiddleRight
+        });
+        var styleComboBox = new ComboBox
+        {
+            Name = "bannerStyleComboBox",
+            DropDownStyle = ComboBoxStyle.DropDownList,
+            Location = new Point(bannerDisplayComboBox.Left, styleRowTop),
+            Size = bannerDisplayComboBox.Size,
+            TabIndex = styleTabIndex
+        };
+        styleComboBox.Items.AddRange(new object[]
+        {
+            GetBannerString("banner.style.normal"), GetBannerString("banner.style.compact")
+        });
+        styleComboBox.SelectedIndex = (int)AppModel.Instance.BannerStyle;
+        styleComboBox.SelectedIndexChanged += (_, _) =>
+        {
+            if (styleComboBox.SelectedIndex >= 0)
+                AppModel.Instance.BannerStyle = (BannerStyle)styleComboBox.SelectedIndex;
+        };
+        bannerOptionsGroupBox.Controls.Add(styleComboBox);
 
         // Every other row on this tab is "label on the left, control on the right"; the colour picker
         // follows that instead of doubling as its own caption.

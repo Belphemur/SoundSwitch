@@ -108,6 +108,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public string BannerMonitorDeviceName { get; set; }
     public int BannerBackgroundArgb { get; set; } = Color.Black.ToArgb();
     public int BannerScalePercentage { get; set; } = 100;
+    public BannerStyle BannerStyle { get; set; } = BannerStyle.Normal;
     public BannerDisplayInfo BannerDisplayInfo { get; set; } = BannerDisplayInfo.FullDisplay;
 
     [Obsolete("Replaced by " + nameof(MicrophoneMutePersistent))]
@@ -174,6 +175,12 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public bool Migrate()
     {
         var migrated = false;
+
+        if (!Enum.IsDefined(BannerStyle))
+        {
+            BannerStyle = BannerStyle.Normal;
+            migrated = true;
+        }
 
         if (SelectedPlaybackDeviceListId.Count > 0)
         {

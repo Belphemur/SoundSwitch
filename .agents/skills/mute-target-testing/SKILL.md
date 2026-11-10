@@ -1,6 +1,6 @@
 ---
 name: Mute target testing
-description: Test the microphone mute targeting and banner scope feature — unit tests, a live-app control script, and an end-to-end test that drives the real Settings UI and CLI. Use this when working on mute target selection, mute banner scoping, device identity resolution, or banner reconciliation, or when reviewing such changes.
+description: Test microphone mute targeting, banner scope, global banner style, and notification lifetimes through unit tests and real Settings UI/CLI workflows. Use when working on mute targets, device identity resolution, banner rendering, timing, or reconciliation.
 ---
 
 # Mute target testing
@@ -37,7 +37,7 @@ banner scope, or device resolution.
    is unavailable). Sound and toast notifications keep reporting every microphone.
 4. **Banner reconciliation.** When the target, default input, mute style, or device
    list changes, persistent banners are reconciled: out-of-scope banners are
-   dismissed, in-scope muted devices get their banner back, all updated in place
+   dismissed, in-scope devices whose current On/Off mode is Persistent get their banner back, all updated in place
    (no flicker).
 
 ## Layer 1 — unit tests
@@ -63,6 +63,9 @@ fast machines regardless of code changes. The rest of the fixture still runs.
 | Snapshot serialization | `DeviceInfoSerializationTests` |
 | Banner pinning | `BannerMonitorTests` |
 | Banner appearance | `BannerAppearanceTests` |
+| Global style and persistent On/Off reconciliation | `BannerStyleTests` |
+| Persistent banner disposal and stacking | `MicrophoneMuteBannerManagerTests` |
+| Notification initialization | `NotificationManagerMuteTests` |
 | Banner position | `BannerPositionTests`, `BannerPositionMigrationTests` |
 | Mute notification content | `NotificationContentBuilderTests` |
 | Settings layout | `SettingsBannerLayoutTests` |
@@ -139,6 +142,27 @@ even when a check fails.
 
 This script is the reference implementation for the `end-to-end-testing` skill; load
 that skill when writing a similar test for another feature.
+
+### Banner style and lifetime
+
+```powershell
+pwsh tools\Test-BannerStyle.ps1            # focused appearance/lifetime fixtures
+pwsh tools\Test-BannerStyle.ps1 -All       # full app suite, excluding the known-flaky refresh test
+pwsh tools\Test-BannerStyleEndToEnd.ps1    # real Settings UI, both styles/states/modes
+```
+
+`BannerStyleTests` covers configuration, shared compact layout, microphone names,
+timer reuse, mixed-mode transitions, targeted cleanup, and stack reflow. See the
+[ADR](../../../docs/design/ui/2026-11-10-banner-style-and-lifetime.md).
+
+The style E2E script requires a desktop session and a default microphone. Close
+SoundSwitch first. It stages a minimal English configuration, restores the microphone
+state, stops its own app, then restores the configuration. Its disk backup remains at
+`%TEMP%/SoundSwitchControl/BannerStyleConfiguration.backup.json`.
+
+Automation IDs: `bannerStyleComboBox`, `microphoneMuteBannerComboBox`,
+`microphoneUnmuteBannerComboBox`, and banner title `lblTop`. Use
+`Get-SoundSwitchWindows -IncludeUntitled` to discover banner windows.
 
 ## Before pushing
 
