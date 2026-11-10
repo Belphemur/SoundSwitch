@@ -48,10 +48,33 @@ function Invoke-MicrophoneControl([string[]]$Arguments) {
 }
 function Find-SoundSwitchElement {
     param($Handle, $AutomationId)
+    if ($script:elementScenario -eq 'transition') {
+        if ($script:pollCount -eq 2) { throw 'Element is no longer available.' }
+        $name = if ($AutomationId -eq 'lblTop') {
+            if ($script:pollCount -ge 4) { 'Microphone On' } else { 'Microphone Off' }
+        }
+        else {
+            if ($script:pollCount -ge 5) { 'Test microphone' } else { 'Old microphone' }
+        }
+        return [pscustomobject]@{ Current = [pscustomobject]@{
+            Name = $name; BoundingRectangle = [pscustomobject]@{ Height = 20 }
+        } }
+    }
+    if ($script:elementScenario -eq 'stale') {
+        return [pscustomobject]@{ Current = [pscustomobject]@{
+            Name = 'Microphone Off'; BoundingRectangle = [pscustomobject]@{ Height = 20 }
+        } }
+    }
     if ($script:vanishedElement) { throw 'Element is no longer available.' }
     return $null
 }
-function Get-Banners { return @() }
+function Get-Banners {
+    $script:pollCount++
+    if ($script:elementScenario -eq 'stale' -or ($script:elementScenario -eq 'transition' -and $script:pollCount -gt 1)) {
+        return [pscustomobject]@{ Handle = [IntPtr]123 }
+    }
+    return @()
+}
 
 try {
     $microphone = [pscustomobject]@{ id = 'original-endpoint' }
@@ -59,6 +82,8 @@ try {
     $hadConfig = $true
     $failRestore = $false
     $lastEndpointArguments = @()
+    $elementScenario = 'missing'
+    $pollCount = 0
     $instance = [pscustomobject]@{ Id = 12345; HasExited = $true }
     Set-Content $backupPath 'original configuration'
     Set-Content $configPath 'scratch configuration'
@@ -90,6 +115,23 @@ try {
     $vanishedElement = $true
     Expect-Error { Get-BannerElementSnapshot ([IntPtr]123) 'lblTitle' 'Normal/Persistent' } '*Normal/Persistent*lblTitle*no longer available*'
     Expect-Error { Get-RequiredBanner 'Compact/Fading' } '*No banner was found for Compact/Fading*'
+
+    $elementScenario = 'transition'
+    $pollCount = 0
+    $matching = Wait-ExpectedBanner 'Microphone On' 'Compact/Persistent/muted=False' 'Test microphone'
+    Check ($pollCount -eq 5) 'Title wait retries missing controls, disappearing elements, stale titles, and stale descriptions'
+    Check ($matching.Label.Name -eq 'Microphone On' -and $matching.Description.Name -eq 'Test microphone') 'Title and description snapshots come from the matching banner'
+
+    $elementScenario = 'stale'
+    Expect-Error { Wait-ExpectedBanner 'Microphone On' 'Compact/Persistent/muted=False' 'Test microphone' -WaitSeconds 0 } '*Compact/Persistent/muted=False*Microphone On*Last title:*Microphone Off*'
+    $elementScenario = 'missing'
+    $vanishedElement = $false
+    Expect-Error { Wait-ExpectedBanner 'Expected title' 'Normal/Fading' -WaitSeconds 0 } '*Normal/Fading*Expected title*Last title:*<no banner>*'
+
+    Check ((Get-ExpectedMicrophoneTitle 'Normal' $true 'Test microphone') -eq 'Test microphone is now muted.') 'Normal mute title is state-specific'
+    Check ((Get-ExpectedMicrophoneTitle 'Normal' $false 'Test microphone') -eq 'Test microphone is now unmuted.') 'Normal unmute title is state-specific'
+    Check ((Get-ExpectedMicrophoneTitle 'Compact' $true 'Test microphone') -eq 'Microphone Off') 'Compact mute title is state-specific'
+    Check ((Get-ExpectedMicrophoneTitle 'Compact' $false 'Test microphone') -eq 'Microphone On') 'Compact unmute title is state-specific'
 
     Write-Host "TOOLING PASSED: $checks checks." -ForegroundColor Green
 }
