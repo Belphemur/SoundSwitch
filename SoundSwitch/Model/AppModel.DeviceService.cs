@@ -227,18 +227,16 @@ public partial class AppModel
     {
         if (!_initialized || AudioDeviceLister == null) return;
 
-        var targetId = LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
-        var inScope = AudioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
-            .Where(device => IsMuteBannerInScope(device.Id, targetId))
-            .ToList();
-
-        // The lister already tracks each device's mute state from its volume notifications,
-        // so reuse it instead of opening every endpoint through COM on the caller's thread.
-        var statesInScope = inScope
-            .Select(device => (device.Id, GetMicrophoneBannerName(device), device.IsMuted))
-            .ToList();
-
-        _notificationManager.SyncMuteBanners(inScope.Select(device => device.Id).ToList(), statesInScope);
+        _notificationManager.SyncMuteBanners(() =>
+        {
+            var targetId = LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
+            // Read the lister's cached states on the UI thread when applying the refresh.
+            // Capturing them before dispatch could overwrite a newer live mute event.
+            return AudioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
+                .Where(device => IsMuteBannerInScope(device.Id, targetId))
+                .Select(device => (device.Id, GetMicrophoneBannerName(device), device.IsMuted))
+                .ToList();
+        });
     }
 
     #region Microphone control

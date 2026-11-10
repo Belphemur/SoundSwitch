@@ -273,16 +273,12 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     /// <summary>
     /// Reconciles the persistent mute banners after the mute target or banner scope changed.
     /// </summary>
-    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
-    /// <param name="inScopeMicrophones">Current states of in-scope microphones</param>
-    public void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
-        IReadOnlyCollection<(string Id, string Name, bool IsMuted)> inScopeMicrophones)
+    /// <param name="getInScopeMicrophones">Reads current scoped states when the UI thread applies the refresh</param>
+    public void SyncMuteBanners(Func<IReadOnlyCollection<(string Id, string Name, bool IsMuted)>> getInScopeMicrophones)
     {
         var banner = (NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification);
-        if (MicrophoneMuteNotificationIsBanner)
-            banner.SyncMuteBanners(inScopeMicrophoneIds, inScopeMicrophones);
-        else
-            banner.ClearPersistentMuteBanners();
+        // The notification type may also change before a background refresh reaches the UI.
+        banner.SyncMuteBanners(() => MicrophoneMuteNotificationIsBanner ? getInScopeMicrophones() : []);
     }
 
     public void Dispose()

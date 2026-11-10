@@ -12,6 +12,7 @@ using NUnit.Framework;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Banner;
+using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
 using SoundSwitch.Framework.Configuration;
@@ -409,7 +410,7 @@ public class BannerStyleTests
                 var previous = fading[2];
 
                 notification.Configuration.MicrophoneUnmuteBanner = MicrophoneMute.Persistent;
-                notification.SyncMuteBanners(["mic"], [("mic", "Test microphone", false)]);
+                notification.SyncMuteBanners(() => [("mic", "Test microphone", false)]);
 
                 previous.IsDisposed.Should().BeTrue();
                 deviceBanner.IsDisposed.Should().BeFalse();
@@ -508,18 +509,136 @@ public class BannerStyleTests
             var tracked = Field<Dictionary<string, BannerForm>>(manager, "_activeBanners");
             try
             {
-                notification.SyncMuteBanners(["on", "off"], [("on", "On microphone", false), ("off", "Off microphone", true)]);
+                notification.SyncMuteBanners(() => [("on", "On microphone", false), ("off", "Off microphone", true)]);
                 tracked.Keys.Should().BeEquivalentTo("on", "off");
                 var onBanner = tracked["on"];
                 notification.Configuration.MicrophoneMuteBanner = MicrophoneMute.Fading;
-                notification.SyncMuteBanners(["on", "off"], [("on", "On microphone", false), ("off", "Off microphone", true)]);
+                notification.SyncMuteBanners(() => [("on", "On microphone", false), ("off", "Off microphone", true)]);
                 tracked.Keys.Should().BeEquivalentTo("on");
                 tracked["on"].Should().BeSameAs(onBanner);
-                notification.SyncMuteBanners([], []);
+                notification.SyncMuteBanners(() => []);
                 tracked.Should().BeEmpty();
                 onBanner.IsDisposed.Should().BeTrue();
             }
             finally { manager.ClearPersistentMuteBanners(); }
+        });
+    }
+
+    [TestCase(MicrophoneMute.Persistent)]
+    [TestCase(MicrophoneMute.None)]
+    [TestCase(MicrophoneMute.Fading)]
+    public void ReconcileReadsCurrentStateAfterANewerLiveEvent(MicrophoneMute unmuteMode)
+    {
+        WithBannerContext(() =>
+        {
+            var notification = CreateNotification();
+            notification.Configuration.MicrophoneUnmuteBanner = unmuteMode;
+            var manager = Field<MicrophoneMuteBannerManager>(notification, "_microphoneMuteBannerManager");
+            var regular = Field<BannerManager>(notification, "_bannerManager");
+            var tracked = Field<Dictionary<string, BannerForm>>(manager, "_activeBanners");
+            var contextField = typeof(MicrophoneMuteBannerManager).GetField("_syncContext", BindingFlags.Static | BindingFlags.NonPublic)!;
+            var previous = contextField.GetValue(null);
+            var isMuted = true;
+            var reads = 0;
+            try
+            {
+                notification.NotifyMicrophoneMuteChanged("mic", "Test microphone", true);
+                var context = new BeforeDispatchContext(() =>
+                {
+                    reads.Should().Be(0, "state lookup must wait until UI dispatch");
+                    isMuted = false;
+                    notification.NotifyMicrophoneMuteChanged("mic", "Test microphone", false);
+                });
+                contextField.SetValue(null, context);
+                notification.SyncMuteBanners(() =>
+                {
+                    SynchronizationContext.Current.Should().BeSameAs(context);
+                    reads++;
+                    return [("mic", "Test microphone", isMuted)];
+                });
+
+                reads.Should().Be(1);
+                if (unmuteMode == MicrophoneMute.Persistent)
+                    Field<BannerData>(tracked["mic"], "_currentData").Title.Should().Be(
+                        NotificationContentBuilder.BuildMicrophoneBanner("Test microphone", false).Title);
+                else
+                    tracked.Should().BeEmpty("an old muted snapshot must not recreate the persistent banner");
+                var fading = Field<BannerForm>(regular, "_singleBanner");
+                if (unmuteMode == MicrophoneMute.Fading)
+                    fading.Should().NotBeNull("reconciliation must not remove the newer fading notification");
+                else
+                    fading.Should().BeNull();
+            }
+            finally
+            {
+                contextField.SetValue(null, previous);
+                manager.ClearPersistentMuteBanners();
+                Field<BannerForm>(regular, "_singleBanner")?.Dispose();
+            }
+        });
+    }
+
+    private sealed class BeforeDispatchContext(Action beforeDispatch) : SynchronizationContext
+    {
+        private Action _beforeDispatch = beforeDispatch;
+
+        public override void Send(SendOrPostCallback callback, object state)
+        {
+            var previous = Current;
+            SetSynchronizationContext(this);
+            try
+            {
+                var before = _beforeDispatch;
+                _beforeDispatch = null;
+                before?.Invoke();
+                callback(state);
+            }
+            finally { SetSynchronizationContext(previous); }
+        }
+    }
+
+    [TestCase(true, false)]
+    [TestCase(false, false)]
+    [TestCase(true, true)]
+    [TestCase(false, true)]
+    public void LiveAppearanceRefreshUpdatesDisplayAndPreservesLifetimeAndDimming(bool persistent, bool hiding)
+    {
+        WithBannerContext(() =>
+        {
+            var data = NotificationContentBuilder.BuildMicrophoneBanner("Test microphone", true);
+            data.Position = new PositionTopLeft();
+            data.Ttl = persistent ? TimeSpan.MaxValue : TimeSpan.FromSeconds(7);
+            data.Opacity = 80;
+            data.OnClick = (_, _) => { };
+            var action = data.OnClick;
+            using var banner = new BannerForm();
+            banner.SetData(data);
+            banner.UpdateLocationOpacity(0, 0.10, 0);
+            var timer = Field<System.Windows.Forms.Timer>(banner, "_timerHide");
+            typeof(BannerForm).GetField("_hiding", BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(banner, hiding);
+
+            AppConfigs.Configuration.BannerOpacityPercentage = 50;
+            AppConfigs.Configuration.BannerDisplayInfo = BannerDisplayInfo.IconOnly;
+            BannerForm.RefreshVisibleBanners(refreshNotificationSettings: true);
+
+            banner.Opacity.Should().BeApproximately(hiding ? 0.70 : 0.40, 0.01,
+                "refresh must preserve stack dimming and must not brighten a fade-out");
+            Field<Label>(banner, "lblTop").Visible.Should().BeFalse();
+            Field<Label>(banner, "lblTitle").Visible.Should().BeFalse();
+            Field<PictureBox>(banner, "pbxLogo").Visible.Should().BeTrue();
+            Field<BannerData>(banner, "_currentData").Should().BeSameAs(data);
+            data.Opacity.Should().Be(50);
+            data.OnClick.Should().BeSameAs(action);
+            data.Ttl.Should().Be(persistent ? TimeSpan.MaxValue : TimeSpan.FromSeconds(7));
+            Field<bool>(banner, "_hiding").Should().Be(hiding);
+            Field<System.Windows.Forms.Timer>(banner, "_timerHide").Should().BeSameAs(timer);
+            if (persistent)
+                timer.Should().BeNull();
+            else
+            {
+                timer.Enabled.Should().BeTrue();
+                timer.Interval.Should().Be(7000);
+            }
         });
     }
 
@@ -540,6 +659,8 @@ public class BannerStyleTests
         var style = AppConfigs.Configuration.BannerStyle;
         var count = AppConfigs.Configuration.MaxNumberNotification;
         var scale = AppConfigs.Configuration.BannerScalePercentage;
+        var opacity = AppConfigs.Configuration.BannerOpacityPercentage;
+        var displayInfo = AppConfigs.Configuration.BannerDisplayInfo;
         var bannerContext = typeof(BannerManager).GetField("_syncContext", BindingFlags.Static | BindingFlags.NonPublic)!;
         var microphoneContext = typeof(MicrophoneMuteBannerManager).GetField("_syncContext", BindingFlags.Static | BindingFlags.NonPublic)!;
         var oldBannerContext = bannerContext.GetValue(null);
@@ -561,6 +682,8 @@ public class BannerStyleTests
             AppConfigs.Configuration.BannerStyle = style;
             AppConfigs.Configuration.MaxNumberNotification = count;
             AppConfigs.Configuration.BannerScalePercentage = scale;
+            AppConfigs.Configuration.BannerOpacityPercentage = opacity;
+            AppConfigs.Configuration.BannerDisplayInfo = displayInfo;
             bannerContext.SetValue(null, oldBannerContext);
             microphoneContext.SetValue(null, oldMicrophoneContext);
             formContext.SetValue(null, oldFormContext);

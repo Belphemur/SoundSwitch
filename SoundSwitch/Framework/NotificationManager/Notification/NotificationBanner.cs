@@ -50,26 +50,27 @@ internal class NotificationBanner : INotification
     /// banners for microphones that left the scope are dismissed and in-scope microphones
     /// whose current state uses Persistent get their banner back.
     /// </summary>
-    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
-    /// <param name="inScopeMicrophones">Current states of in-scope microphones</param>
-    internal void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
-        IReadOnlyCollection<(string Id, string Name, bool IsMuted)> inScopeMicrophones)
+    /// <param name="getInScopeMicrophones">Reads current scoped states on the UI thread, not before dispatch</param>
+    internal void SyncMuteBanners(Func<IReadOnlyCollection<(string Id, string Name, bool IsMuted)>> getInScopeMicrophones)
     {
-        var persistentMicrophones = new List<(string Id, string Name, bool IsMuted)>();
-        foreach (var microphone in inScopeMicrophones)
+        _microphoneMuteBannerManager.RunOnUiThread(() =>
         {
-            if (!inScopeMicrophoneIds.Contains(microphone.Id, StringComparer.OrdinalIgnoreCase)) continue;
+            // Capture only after dispatch: a live event may have changed the state or scope
+            // while this refresh waited for the UI thread. Do not interleave retention and updates.
+            var persistentMicrophones = new List<(string Id, string Name, bool IsMuted)>();
+            foreach (var microphone in getInScopeMicrophones())
+            {
+                var mode = GetMicrophoneMode(microphone.IsMuted);
+                if (mode != MicrophoneMute.Fading)
+                    _bannerManager.RemoveMicrophoneNotifications(microphone.Id);
+                if (mode == MicrophoneMute.Persistent)
+                    persistentMicrophones.Add(microphone);
+            }
 
-            var mode = GetMicrophoneMode(microphone.IsMuted);
-            if (mode != MicrophoneMute.Fading)
-                _bannerManager.RemoveMicrophoneNotifications(microphone.Id);
-            if (mode == MicrophoneMute.Persistent)
-                persistentMicrophones.Add(microphone);
-        }
-
-        _microphoneMuteBannerManager.RetainPersistentMuteBanners(persistentMicrophones.Select(mic => mic.Id).ToArray());
-        foreach (var (id, name, isMuted) in persistentMicrophones)
-            _microphoneMuteBannerManager.UpdateMicrophoneMuteState(id, name, isMuted);
+            _microphoneMuteBannerManager.RetainPersistentMuteBanners(persistentMicrophones.Select(mic => mic.Id).ToArray());
+            foreach (var (id, name, isMuted) in persistentMicrophones)
+                _microphoneMuteBannerManager.UpdateMicrophoneMuteState(id, name, isMuted);
+        });
     }
 
     private IPosition BannerPosition => _bannerPositionFactory.Get(Configuration.BannerPosition);
@@ -136,6 +137,12 @@ internal class NotificationBanner : INotification
     }
 
     public void NotifyMicrophoneMuteChanged(string deviceId, string microphoneName, bool newMuteState)
+    {
+        _microphoneMuteBannerManager.RunOnUiThread(() =>
+            NotifyMicrophoneMuteChangedCore(deviceId, microphoneName, newMuteState));
+    }
+
+    private void NotifyMicrophoneMuteChangedCore(string deviceId, string microphoneName, bool newMuteState)
     {
         var microphoneMuteBanner = GetMicrophoneMode(newMuteState);
 

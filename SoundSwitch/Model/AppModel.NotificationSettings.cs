@@ -73,6 +73,7 @@ public partial class AppModel
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
                     preValue, value, BannerDisplayInfo, BannerDisplayInfo,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
+            BannerForm.RefreshVisibleBanners(refreshNotificationSettings: true);
         }
     }
 
@@ -141,6 +142,7 @@ public partial class AppModel
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
                     BannerOpacityPercentage, BannerOpacityPercentage, preValue, value,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
+            BannerForm.RefreshVisibleBanners(refreshNotificationSettings: true);
         }
     }
 

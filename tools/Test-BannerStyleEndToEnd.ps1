@@ -6,8 +6,9 @@
     Requires an interactive Windows desktop and a usable default microphone. Refuses
     to touch an existing SoundSwitch instance. Backs up configuration, uses English
     UI, drives style and mode combo boxes through UI Automation, and checks banner
-    presence/lifetime for both microphone states. Restores the microphone state,
-    stops only its own process, then restores configuration even on failure.
+    presence/lifetime for both microphone states. Pins the test to one endpoint and
+    restores it independently of the app, even after an app crash. Stops only its
+    own process, clears its ownership record, then restores configuration.
 .PARAMETER NoBuild
     Reuse Debug binaries.
 .PARAMETER TimeoutSeconds
@@ -32,22 +33,81 @@ $backupPath = Join-Path $env:TEMP 'SoundSwitchControl/BannerStyleConfiguration.b
 $hadConfig = Test-Path $configPath
 $instance = $null
 $originalMute = $null
+$microphone = $null
 $checks = 0
+$microphoneProject = Join-Path $PSScriptRoot 'TestMicrophoneControl/TestMicrophoneControl.csproj'
+# Build the independent cleanup tool even with -NoBuild: that switch reuses app binaries.
+& dotnet build $microphoneProject -c Debug --nologo -v minimal
+if ($LASTEXITCODE -ne 0) { throw 'Microphone control helper build failed.' }
+$microphoneHelper = Join-Path $PSScriptRoot 'TestMicrophoneControl/bin/Debug/net10.0-windows/TestMicrophoneControl.dll'
 
 function Assert-True([bool]$Condition, [string]$Message) {
     if (-not $Condition) { throw "FAIL: $Message" }
     $script:checks++
     Write-Host "PASS: $Message" -ForegroundColor Green
 }
-function Get-MicrophoneState {
-    $output = & $cliExe mute --json
-    if ($LASTEXITCODE -ne 0) { throw "Cannot query default microphone: $output" }
+function Invoke-MicrophoneControl([string[]]$Arguments) {
+    $output = & dotnet $microphoneHelper @Arguments
+    if ($LASTEXITCODE -ne 0) { throw "Microphone control failed: $Arguments" }
     return ($output | Out-String | ConvertFrom-Json)
 }
 function Set-MicrophoneState([bool]$Muted) {
+    if ($null -eq $microphone) { throw 'No microphone endpoint was captured for this test.' }
     $state = $Muted.ToString().ToLowerInvariant()
-    $code = Invoke-SoundSwitchCli -CliExe $cliExe -Command "mute --state $state --json" -Quiet
-    if ($code -ne 0) { throw "Cannot set microphone state to $state" }
+    $result = Invoke-MicrophoneControl -Arguments @('set', $microphone.id, $state)
+    if ($result.id -ne $microphone.id -or $result.isMuted -ne $Muted) {
+        throw "Could not set microphone '$($microphone.id)' to $state. No default-device fallback is allowed."
+    }
+}
+function Get-BannerElementSnapshot([IntPtr]$Handle, [string]$AutomationId, [string]$Context) {
+    try {
+        $element = Find-SoundSwitchElement -Handle $Handle -AutomationId $AutomationId
+        if ($null -eq $element) { throw "Control '$AutomationId' was not found." }
+        $current = $element.Current
+        return [pscustomobject]@{ Name = $current.Name; Height = $current.BoundingRectangle.Height }
+    }
+    catch {
+        throw "Cannot inspect $Context banner (handle $Handle), control '$AutomationId': $($_.Exception.Message)"
+    }
+}
+function Get-RequiredBanner([string]$Context) {
+    $banners = @(Get-Banners)
+    if ($banners.Count -eq 0) { throw "No banner was found for $Context; it may have closed during lookup." }
+    return $banners[0]
+}
+function Stop-BannerStyleTestInstance {
+    try {
+        if ($null -ne $instance -and -not $instance.HasExited) {
+            $instance.Kill()
+            $instance.WaitForExit()
+        }
+    }
+    finally {
+        # Do not erase another control invocation's ownership record.
+        if ($null -ne $instance -and $instance.HasExited -and (Read-SoundSwitchControlPid) -eq $instance.Id) {
+            Remove-Item -LiteralPath $Script:PidFile -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+function Restore-BannerStyleTestState {
+    try {
+        if ($null -ne $originalMute) {
+            Set-MicrophoneState $originalMute
+        }
+    }
+    finally {
+        # Stop before restoring the file: an app holding scratch config must not overwrite it.
+        try {
+            Stop-BannerStyleTestInstance
+        }
+        finally {
+            if ($null -ne $instance -and -not $instance.HasExited) {
+                throw "Test instance could not be stopped. Restore configuration from '$backupPath' after stopping it."
+            }
+            if ($hadConfig) { Copy-Item $backupPath $configPath -Force }
+            elseif (Test-Path $configPath) { Remove-Item $configPath -Force }
+        }
+    }
 }
 function Get-Banners {
     foreach ($window in @(Get-SoundSwitchWindows -ProcessId $instance.Id -IncludeUntitled)) {
@@ -77,6 +137,8 @@ if ($hadConfig) {
     Write-Host "Backed up the configuration to $backupPath" -ForegroundColor DarkGray
 }
 try {
+    $microphone = Invoke-MicrophoneControl -Arguments @('snapshot')
+    $originalMute = [bool]$microphone.isMuted
     # A minimal scratch config avoids activating user profiles/rules during the test.
     $config = @{
         FirstRun = $false; Language = 0; Telemetry = $false; NotificationAdvancedMode = $true
@@ -84,13 +146,16 @@ try {
         MicrophoneMuteBanner = 0; MicrophoneUnmuteBanner = 0; BannerOnScreenTime = '00:00:04'
         BannerDisplayInfo = 0; BannerScalePercentage = 100; BannerStyle = 0
         LimitMuteBannersToTarget = $true; MaxNumberNotification = 1
+        MuteRecordingDevice = @{
+            Name = $microphone.name; Id = $microphone.id; Type = 1; IsUsb = $microphone.isUsb
+            DiscoveredAt = [DateTime]::UtcNow.ToString('o')
+        }
         # Do not replay the legacy Windows per-app endpoint reset on the test machine.
         MigratedFields = @('PersistentMuteNotification', 'SplitNotificationSettings', 'SwitchForegroundProgram_cleanup')
     }
     New-Item (Split-Path -Parent $configPath) -ItemType Directory -Force | Out-Null
     $config | ConvertTo-Json -Depth 20 | Set-Content $configPath -Encoding utf8
     $instance = Start-SoundSwitchApp -AppExe $appExe -CliExe $cliExe -TimeoutSeconds $TimeoutSeconds
-    $originalMute = [bool](Get-MicrophoneState).isMuted
     $settings = Open-SoundSwitchSettings -CliExe $cliExe -ProcessId $instance.Id -TimeoutSeconds $TimeoutSeconds
     Assert-True (Select-SoundSwitchTab -Handle $settings.Handle -TabName Notifications) 'Notifications tab opens'
 
@@ -104,8 +169,8 @@ try {
             }
             if ($style -eq 'Normal' -and $mode -eq 'Persistent') {
                 Wait-Banner $true
-                $initialBanner = @(Get-Banners)[0]
-                $initialTitle = (Find-SoundSwitchElement -Handle $initialBanner.Handle -AutomationId lblTop).Current.Name
+                $initialBanner = Get-RequiredBanner "$style/$mode initial state"
+                $initialTitle = (Get-BannerElementSnapshot $initialBanner.Handle 'lblTop' "$style/$mode initial state").Name
                 $match = [regex]::Match($initialTitle, '^(?<name>.+) is now (?:muted|unmuted)\.$')
                 if (-not $match.Success) { throw "Unexpected microphone banner title: $initialTitle" }
                 $microphoneName = $match.Groups['name'].Value
@@ -116,25 +181,26 @@ try {
                 Set-MicrophoneState $muted
                 if ($mode -eq 'None') { Assert-BannerRemains 2 $false; continue }
                 Wait-Banner $true
-                $banner = @(Get-Banners)[0]
-                $label = Find-SoundSwitchElement -Handle $banner.Handle -AutomationId lblTop
+                $context = "$style/$mode/muted=$muted"
+                $banner = Get-RequiredBanner $context
+                $label = Get-BannerElementSnapshot $banner.Handle 'lblTop' $context
                 $expectedTitle = if ($style -eq 'Compact') {
                     if ($muted) { 'Microphone Off' } else { 'Microphone On' }
                 }
                 else {
                     if ($muted) { "$microphoneName is now muted." } else { "$microphoneName is now unmuted." }
                 }
-                Assert-True ($label.Current.Name -eq $expectedTitle) "$style/$mode shows the original style-specific microphone presentation"
+                Assert-True ($label.Name -eq $expectedTitle) "$style/$mode shows the original style-specific microphone presentation"
                 if ($style -eq 'Compact') {
-                    $description = Find-SoundSwitchElement -Handle $banner.Handle -AutomationId lblTitle
-                    Assert-True ($description.Current.Name -eq $microphoneName) 'Microphone names match Settings and live notifications'
+                    $description = Get-BannerElementSnapshot $banner.Handle 'lblTitle' $context
+                    Assert-True ($description.Name -eq $microphoneName) 'Microphone names match Settings and live notifications'
                 }
                 if ($mode -eq 'Persistent') {
                     Assert-BannerRemains 5 $true # exceeds both the old 1.5s exception and configured TTL
                     if (-not $muted) {
-                        if ($style -eq 'Normal') { $normalTextHeight = $label.Current.BoundingRectangle.Height }
+                        if ($style -eq 'Normal') { $normalTextHeight = $label.Height }
                         else {
-                            Assert-True ($label.Current.BoundingRectangle.Height -lt $normalTextHeight) 'Compact uses smaller text than Normal'
+                            Assert-True ($label.Height -lt $normalTextHeight) 'Compact uses smaller text than Normal'
                         }
                     }
                 }
@@ -149,18 +215,5 @@ try {
     Write-Host "END-TO-END PASSED: $checks checks." -ForegroundColor Green
 }
 finally {
-    try {
-        if ($null -ne $instance -and -not $instance.HasExited -and $null -ne $originalMute) {
-            Set-MicrophoneState $originalMute
-        }
-    }
-    finally {
-        # Stop before restoring the file: an app holding scratch config must not overwrite it.
-        if ($null -ne $instance -and -not $instance.HasExited) {
-            $instance.Kill()
-            $instance.WaitForExit()
-        }
-        if ($hadConfig) { Copy-Item $backupPath $configPath -Force }
-        elseif (Test-Path $configPath) { Remove-Item $configPath -Force }
-    }
+    Restore-BannerStyleTestState
 }

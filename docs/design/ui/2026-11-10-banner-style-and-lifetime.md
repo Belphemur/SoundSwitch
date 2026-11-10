@@ -80,6 +80,15 @@ Recompute stacked offsets after an appearance change. `BannerManager` keeps temp
 banners in arrival order so removals and subsequent additions cannot reorder the stack.
 Keep all form work on the UI thread.
 
+Read the current scoped microphone states only after dispatching reconciliation to
+the UI thread. Apply mode selection, fading-banner removal, persistent retention,
+and updates in that same operation, serialized with live mute notifications. Do
+not queue a caller-thread state snapshot that could overwrite a newer live event.
+
+Opacity and Display Info changes refresh existing forms directly, without calling
+`SetData`, restarting timers, or replacing click actions. Preserve any stacking
+opacity reduction, and never increase the opacity of a form already fading out.
+
 Fading banners are tracked by microphone ID so state changes can replace them without
 affecting unrelated notifications.
 
@@ -150,6 +159,20 @@ fall back to English for new keys until translated.
 - `pwsh tools/Test-MuteTarget.ps1` and `pwsh tools/Test-MuteTargetEndToEnd.ps1`.
 - Capture Notifications using `tools/Capture-DocumentationScreenshot.ps1`.
 - Run `npm run docs:build` in `website/`.
+- Cover a newer live event arriving before reconciliation dispatch, including
+  Persistent/None/Fading outcomes, and live opacity/display refresh with finite and
+  infinite lifetimes, stacking dimming, and an in-progress fade-out.
+- `pwsh tools/Test-BannerStyleTooling.ps1`: use fake endpoint/UI/process operations
+  to check cleanup after app exit and restoration failure, preservation of another
+  invocation's PID record, and contextual errors for disappearing UI elements.
+
+The banner-style E2E pins its scratch configuration to one captured microphone ID.
+`tools/TestMicrophoneControl` reuses the audio-manager library in an independent
+process to read/set that exact endpoint (never falling back to the default), so
+cleanup can restore its original mute state even if SoundSwitch has exited. Stop
+the owned app before restoring configuration, and clear only its matching PID
+ownership record. If the captured endpoint disconnects, fail explicitly while
+still completing process/configuration cleanup.
 
 ### Live checks
 
@@ -168,9 +191,12 @@ fall back to English for new keys until translated.
 
 ### Validation status
 
-Debug solution build, 491 app tests, banner-style E2E (32 checks), mute-target E2E
-(14 checks), and website build passed. The known-flaky refresh test is excluded.
+Debug solution build, 498 app tests, banner-style E2E (32 checks), tooling
+cleanup tests (11 checks), and the website build passed after review fixes. The
+known-flaky refresh test is excluded. The original feature validation also passed
+mute-target E2E (14 checks).
 Notifications screenshot updated at 100% display scaling.
+No screenshot layout or control labels changed in these review fixes.
 
 ## 11. Decisions
 
