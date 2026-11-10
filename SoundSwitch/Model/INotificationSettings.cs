@@ -16,6 +16,7 @@
 using System;
 using System.Drawing;
 
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
@@ -94,6 +95,7 @@ public interface INotificationSettings
     string BannerMonitorDeviceName { get; set; }
     Color BannerBackgroundColor { get; set; }
     int BannerScalePercentage { get; set; }
+    BannerStyle BannerStyle { get; set; }
 
     /// <summary>
     /// Selects the display the banner is shown on, applying the monitor and the primary-screen

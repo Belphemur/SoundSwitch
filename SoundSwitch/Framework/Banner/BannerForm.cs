@@ -112,6 +112,8 @@ public partial class BannerForm : Form
 
     public Guid Id { get; } = Guid.NewGuid();
 
+    internal string MicrophoneId => _currentData?.MicrophoneId;
+
     /// <summary>
     /// Immutable description of a control's design-time font, so scaling always derives from the
     /// pristine values instead of compounding the previous scale.
@@ -179,7 +181,7 @@ public partial class BannerForm : Form
         if (IsDisposed || _currentData?.Position == null) return;
 
         ApplyColors();
-        ApplyBannerScale(_currentData.CompactMode);
+        ApplyPresentation(_currentData);
         UpdateRegion();
         Location = _currentData.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
     }
@@ -417,6 +419,7 @@ public partial class BannerForm : Form
         _currentData = data;
         ApplyColors();
 
+        _timerHide?.Stop();
         if (data.Ttl != TimeSpan.MaxValue)
         {
             if (_timerHide == null)
@@ -426,13 +429,9 @@ public partial class BannerForm : Form
             }
             else
             {
-                _timerHide.Enabled = false;
+                _timerHide.Interval = (int)data.Ttl.TotalMilliseconds;
             }
         }
-
-        // Assign unconditionally: banner forms are reused, so a null image must
-        // clear the previous notification's image instead of leaving it stale.
-        pbxLogo.Image = data.Image;
 
         if (data.SoundFile != null)
         {
@@ -442,9 +441,6 @@ public partial class BannerForm : Form
 
         _hiding = false;
         Opacity = (double)data.Opacity / 100;
-        lblTitle.Text = data.Text;
-        lblTop.Text = data.Title;
-        ApplyDisplayInfo(data);
 
         if (data.CustomPositionMode)
         {
@@ -457,7 +453,7 @@ public partial class BannerForm : Form
             _customPositionMessageFilter = null;
         }
 
-        ApplyBannerScale(data.CompactMode);
+        ApplyPresentation(data);
 
         UpdateRegion();
         Location = data.Position.GetScreenPosition(GetScreen(), Height, Width, _currentOffset);
@@ -465,7 +461,7 @@ public partial class BannerForm : Form
         // C# 14 null-conditional assignment: only assigns when a timer exists
         // (none is created when Ttl == TimeSpan.MaxValue). RHS is evaluated
         // only if _timerHide is non-null.
-        _timerHide?.Enabled = true;
+        _timerHide?.Enabled = data.Ttl != TimeSpan.MaxValue;
 
         Show();
         EnsureTopMostWithoutActivation();
@@ -532,9 +528,9 @@ public partial class BannerForm : Form
     /// by toggling control visibility. Must run before Region/Location are computed
     /// so the auto-sized form reflects the final layout.
     /// </summary>
-    private void ApplyDisplayInfo(BannerData data)
+    private void ApplyDisplayInfo(BannerData data, Image image)
     {
-        var displayInfo = data.EffectiveDisplayInfo;
+        var displayInfo = data.GetEffectiveDisplayInfo(image);
 
         var showText = displayInfo != BannerDisplayInfoEnum.IconOnly;
         lblTop.Visible = showText;
@@ -542,6 +538,32 @@ public partial class BannerForm : Form
         pbxLogo.Visible = displayInfo != BannerDisplayInfoEnum.DescriptionOnly;
 
         PerformLayout();
+    }
+
+    /// <summary>
+    /// Applies style-specific content and layout without resetting the timer or click action.
+    /// </summary>
+    private void ApplyPresentation(BannerData data)
+    {
+        var style = AppModel.Instance.BannerStyle;
+        var content = data.GetContent(style);
+        var compactMode = style == BannerStyle.Compact;
+        SuspendLayout();
+        tableLayoutPanel.SuspendLayout();
+        try
+        {
+            // Assign all fields even when empty: forms can be reused across notification kinds.
+            pbxLogo.Image = content.Image;
+            lblTop.Text = content.Title;
+            lblTitle.Text = content.Text;
+            ApplyDisplayInfo(data, content.Image);
+            ApplyBannerScale(compactMode);
+        }
+        finally
+        {
+            tableLayoutPanel.ResumeLayout(true);
+            ResumeLayout(true);
+        }
     }
 
     /// <summary>
@@ -582,7 +604,7 @@ public partial class BannerForm : Form
     }
 
     /// <summary>
-    /// Applies the user configured scale, optionally reduced for the compact microphone banners.
+    /// Applies the user configured scale and global banner style.
     /// </summary>
     private void ApplyBannerScale(bool compactMode)
     {
@@ -590,12 +612,11 @@ public partial class BannerForm : Form
         var fontScale = BannerAppearance.FontScale(scalePercentage, compactMode);
         ApplyScaledFonts(fontScale);
 
-        // The icon being displayed drives the size: _defaultPictureSize is the designer's 16x16
-        // placeholder box while notification icons are 32x32, so scaling that placeholder would
-        // halve every regular banner.
         var imageScale = BannerAppearance.ImageScale(scalePercentage, compactMode);
         pbxLogo.SizeMode = PictureBoxSizeMode.Zoom;
-        pbxLogo.Size = BannerAppearance.ResolveImageSize(pbxLogo.Image?.Size, _defaultPictureSize, imageScale);
+        pbxLogo.Size = compactMode
+            ? BannerAppearance.CompactIconSize(scalePercentage)
+            : BannerAppearance.ResolveImageSize(pbxLogo.Image?.Size, _defaultPictureSize, imageScale);
 
         Padding = new Padding(
             (int)Math.Round(_defaultPadding.Left * fontScale),
@@ -684,6 +705,7 @@ public partial class BannerForm : Form
             while (Opacity > 0.0)
             {
                 await Task.Delay(50);
+                if (IsDisposed) return;
                 if (!_hiding) break;
                 Opacity -= 0.05;
             }

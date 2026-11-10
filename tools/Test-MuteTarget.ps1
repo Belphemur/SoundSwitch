@@ -73,6 +73,7 @@ $featureFixtures = @(
     'DeviceInfoSerializationTests',        # DeviceInfo snapshot (de)serialization round-trips
     'BannerMonitorTests',                  # pinned banner monitor detection
     'BannerAppearanceTests',               # banner scale/position appearance resolution
+    'BannerStyleTests',                    # symmetric persistent state reconciliation and global style
     'BannerPositionTests',                 # banner position bounds
     'BannerPositionMigrationTests',        # banner position config migration
     'NotificationContentBuilderTests',     # mute/mute banner title and icon content

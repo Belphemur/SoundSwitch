@@ -19,6 +19,7 @@ using System.Drawing;
 using JetBrains.Annotations;
 
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
 using SoundSwitch.Framework.Banner.BannerPosition;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
@@ -88,6 +89,7 @@ public interface ISoundSwitchConfiguration : IConfiguration
     string BannerMonitorDeviceName { get; set; }
     int BannerBackgroundArgb { get; set; }
     int BannerScalePercentage { get; set; }
+    BannerStyle BannerStyle { get; set; }
 
     bool AutoAddNewConnectedDevices { get; set; }
 

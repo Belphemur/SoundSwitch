@@ -1,6 +1,9 @@
 # Microphone Mute Banner Manager
 
-The `MicrophoneMuteBannerManager` is a UI-thread manager responsible for displaying persistent banner notifications when microphones are muted, and for dismissing them when microphones are unmuted.
+The `MicrophoneMuteBannerManager` is a UI-thread manager responsible for displaying
+persistent state banners for microphones. Either muted or unmuted can be persistent,
+independently of the global Normal/Compact style. See the
+[style and lifetime ADR](design/ui/2026-11-10-banner-style-and-lifetime.md).
 
 ## Exclusive Fullscreen Detection
 
@@ -39,24 +42,34 @@ Modern games (e.g. Counter-Strike 2) use **borderless fullscreen** with the DXGI
 
 ## Core Behaviors
 
-### Muted State — Persistent Banner
+### Either State — Persistent Banner
 
-When a microphone is muted (`isMuted = true`):
+When the current microphone state's notification mode is Persistent:
 
 - A `BannerForm` is created (or updated) for that microphone.
 - The banner uses `TimeSpan.MaxValue` as its TTL, making it effectively **infinite** until explicitly dismissed.
-- The banner displays the microphone name, a mute icon, and a localized "microphone off" title.
-- Clicking the banner toggles the microphone back to unmuted by calling `AppModel.Instance.SetMicrophoneMuteState(microphoneId, false)`.
+- Normal shows a status message containing the microphone name. Compact uses a short state title and separate microphone name. Style is independent of lifetime.
+- Clicking the banner toggles that microphone through `AppModel.Instance.SetMicrophoneMuteState(microphoneId, !isMuted)`.
+- Both persistent states use the same tracked form, updated in place when the state changes.
 
-### Unmuted State — Temporary Notification
+### Fading and None
 
-When a microphone is unmuted (`isMuted = false`):
+`NotificationBanner.NotifyMicrophoneMuteChanged` selects the mode for the new state:
 
-- The persistent banner is replaced with a temporary notification.
-- This temporary banner has a **TTL of 1.5 seconds** (`TimeSpan.FromMilliseconds(1500)`).
-- It shows a "microphone on" icon and title.
-- Clicking it toggles the microphone back to muted.
-- Once the TTL expires, the banner auto-disposes.
+- Fading removes any persistent state banner and uses `BannerManager` with the configured on-screen time, for either On or Off. Clicking a fading banner dismisses it.
+- None removes any persistent state banner without showing another notification.
+- Reconciliation after mode, target, scope, notification-type, or device-list changes retains only in-scope microphones whose current state is Persistent. It does not replay fading notifications.
+
+### Appearance
+
+`BannerForm` reads global style, color, and scale settings independently of TTL.
+Changing style refreshes visible windows without restarting timers; managers
+recompute stacked offsets when window sizes change. Persistent banners also honor
+the configured opacity and display-info selection.
+
+`BannerForm.ApplyPresentation` selects `BannerData.CompactContent` when available.
+All compact banners share the microphone layout: a title-row icon in a scale-adjusted
+24×24 box, with the description below. Source image resolution does not affect sizing.
 
 ### Multiple Microphones
 
@@ -74,10 +87,10 @@ You can call `RemovePersistentMuteBanner(microphoneId)` to immediately remove a 
 |--------|--------|
 | Thread safety | UI-thread only; all operations marshaled via `SynchronizationContext` |
 | Focus safety | Banners are non-activating and guarded against focus/activation (e.g., `WS_EX_NOACTIVATE`, `WM_WINDOWPOSCHANGING` guard, `WM_MOUSEACTIVATE` / `WM_ACTIVATE` handling) |
-| Persistence | Mute banners live forever (`TimeSpan.MaxValue`) |
-| Auto-dismiss | Unmute banners auto-dismiss after 1.5s |
+| Persistence | On and Off both use `TimeSpan.MaxValue` when their mode is Persistent |
+| Auto-dismiss | Either state in Fading uses configured on-screen time |
 | Stacking | Banners arranged vertically with fixed spacing |
-| Interactivity | Clicking any banner toggles the microphone's mute state |
+| Interactivity | Clicking a persistent state banner toggles that microphone; clicking a fading banner dismisses it |
 
 ## Usage Example
 

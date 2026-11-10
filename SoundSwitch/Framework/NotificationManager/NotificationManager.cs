@@ -66,11 +66,6 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         ApplyConfigurationChanges(_switchDeviceNotification, e);
         ApplyConfigurationChanges(_switchProfileNotification, e);
         ApplyConfigurationChanges(_microphoneMuteNotification, e);
-
-        // Leaving the persistent mute style must dismiss banners that are already pinned on
-        // screen; otherwise they would stay visible until the next mute-target or device event.
-        if (e.PrevMicrophoneMuteBanner == MicrophoneMute.Persistent && e.NewMicrophoneMuteBanner != MicrophoneMute.Persistent)
-            ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
     }
 
     private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -279,13 +274,13 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     /// Reconciles the persistent mute banners after the mute target or banner scope changed.
     /// </summary>
     /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
-    /// <param name="mutedInScopeMicrophones">In-scope microphones that are currently muted</param>
+    /// <param name="inScopeMicrophones">Current states of in-scope microphones</param>
     public void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
-        IReadOnlyCollection<(string Id, string Name)> mutedInScopeMicrophones)
+        IReadOnlyCollection<(string Id, string Name, bool IsMuted)> inScopeMicrophones)
     {
         var banner = (NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification);
         if (MicrophoneMuteNotificationIsBanner)
-            banner.SyncMuteBanners(inScopeMicrophoneIds, mutedInScopeMicrophones);
+            banner.SyncMuteBanners(inScopeMicrophoneIds, inScopeMicrophones);
         else
             banner.ClearPersistentMuteBanners();
     }

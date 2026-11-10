@@ -397,13 +397,16 @@ function Invoke-SoundSwitchCli {
 
 function Get-SoundSwitchWindows {
     <#
-        Visible, titled top-level windows owned by the given process. The Settings
+        Visible top-level windows owned by the given process. The Settings
         form is the only such window normally (the app has no "main" form); the
-        message-pump and tray windows are hidden and title-less.
+        message-pump and tray windows are hidden and title-less. IncludeUntitled
+        also returns banner windows, which intentionally have no window title.
     #>
     param(
         [Parameter(Mandatory = $true)]
-        [int]$ProcessId
+        [int]$ProcessId,
+
+        [switch]$IncludeUntitled
     )
 
     $windows = [System.Collections.Generic.List[object]]::new()
@@ -411,7 +414,7 @@ function Get-SoundSwitchWindows {
         param([IntPtr]$handle, [IntPtr]$lParam)
 
         if ([SoundSwitch.AppControl.Native]::IsWindowVisible($handle) -and
-            [SoundSwitch.AppControl.Native]::GetWindowTextLength($handle) -gt 0) {
+            ($IncludeUntitled -or [SoundSwitch.AppControl.Native]::GetWindowTextLength($handle) -gt 0)) {
             [uint32]$windowProcessId = 0
             [SoundSwitch.AppControl.Native]::GetWindowThreadProcessId($handle, [ref]$windowProcessId) | Out-Null
             if ([int]$windowProcessId -eq $ProcessId) {
