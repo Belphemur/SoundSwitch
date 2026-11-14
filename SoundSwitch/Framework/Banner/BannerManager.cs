@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Serilog;
 
@@ -29,7 +30,7 @@ namespace SoundSwitch.Framework.Banner;
 public class BannerManager
 {
     private static System.Threading.SynchronizationContext _syncContext;
-    private readonly Dictionary<Guid, BannerForm> _bannerForms = new();
+    private readonly List<BannerForm> _bannerForms = new();
     private BannerForm _singleBanner;
     private BannerForm _customPositionBanner;
     private const int SPACING = 10;
@@ -74,6 +75,20 @@ public class BannerManager
         }, null);
     }
 
+    internal void RemoveMicrophoneNotifications(string microphoneId)
+    {
+        if (_syncContext == null || string.IsNullOrEmpty(microphoneId)) return;
+
+        _syncContext.Send(_ =>
+        {
+            foreach (var banner in _bannerForms.Append(_singleBanner).ToArray())
+            {
+                if (banner != null && string.Equals(banner.MicrophoneId, microphoneId, StringComparison.OrdinalIgnoreCase))
+                    banner.Dispose();
+            }
+        }, null);
+    }
+
     private void ShowOrUpdateCustomPositionNotification(BannerData data)
     {
         _syncContext.Send(_ =>
@@ -94,15 +109,31 @@ public class BannerManager
         _syncContext.Send(_ =>
         {
             var banner = new BannerForm();
-            banner.Disposed += (s, e) => { _bannerForms.Remove(banner.Id); };
+            banner.Disposed += (s, e) =>
+            {
+                _bannerForms.Remove(banner);
+                RearrangeBanners();
+            };
             banner.SetData(data);
-            foreach (var bannerForm in _bannerForms.Values)
+            foreach (var bannerForm in _bannerForms.ToArray())
             {
                 bannerForm.UpdateLocationOpacity(banner.Height + SPACING,  0.10, 100/AppModel.Instance.MaxNumberNotification);
             }
 
-            _bannerForms.Add(banner.Id, banner);
+            _bannerForms.Add(banner);
+            banner.SizeChanged += (_, _) => RearrangeBanners();
         }, null);
+    }
+
+    private void RearrangeBanners()
+    {
+        var offset = 0;
+        foreach (var banner in _bannerForms.ToArray().Reverse())
+        {
+            if (banner.IsDisposed) continue;
+            banner.UpdatePosition(offset);
+            offset += banner.Height + SPACING;
+        }
     }
 
     /// <summary>

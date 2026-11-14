@@ -101,6 +101,19 @@ internal static class NotificationContentBuilder
         Text = SettingsStrings.appSoundLock_rule_noProcess
     };
 
+    /// <summary>Both microphone presentations are available for either lifetime.</summary>
+    internal static BannerData BuildMicrophoneBanner(string microphoneName, bool isMuted)
+    {
+        var data = BuildMicrophoneMuteChanged(microphoneName, isMuted);
+        // The original fading banner put the microphone name in its title only.
+        data.Text = null;
+        data.CompactContent = new BannerContent(
+            isMuted ? SettingsStrings.microphone_off : SettingsStrings.microphone_on,
+            microphoneName,
+            isMuted ? Resources.MicrophoneOff : Resources.MicrophoneOn);
+        return data;
+    }
+
     internal static BannerData BuildMicrophoneMuteChanged(string microphoneName, bool newMuteState) => new()
     {
         Priority = 2,

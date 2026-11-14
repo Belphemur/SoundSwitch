@@ -25,6 +25,9 @@ using BannerDisplayInfoEnum = SoundSwitch.Framework.Banner.BannerDisplayInfo.Ban
 
 namespace SoundSwitch.Framework.Banner;
 
+/// <summary>Style-specific content, without notification lifetime or behavior.</summary>
+internal sealed record BannerContent(string Title, string Text, Image Image);
+
 /// <summary>
 /// Contains configuration data for the banner form.
 /// </summary>
@@ -44,6 +47,18 @@ public class BannerData
     /// Gets/sets the path for an image, this is optional.
     /// </summary>
     public Image Image { get; internal set; }
+
+    internal string MicrophoneId { get; set; }
+
+    /// <summary>
+    /// Optional compact content, independent of notification lifetime.
+    /// </summary>
+    internal BannerContent CompactContent { get; set; }
+
+    internal BannerContent GetContent(BannerStyle style) =>
+        style == BannerStyle.Compact && CompactContent != null
+            ? CompactContent
+            : new BannerContent(Title, Text, Image);
 
     /// <summary>
     /// Gets/sets the path for a wav sound to be playedc during the notification, this is optional.
@@ -87,15 +102,12 @@ public class BannerData
     /// The display mode that can actually be rendered for this banner.
     /// An icon-only banner without an image would be empty, so it falls back to full display.
     /// </summary>
-    public BannerDisplayInfoEnum EffectiveDisplayInfo =>
-        DisplayInfo == BannerDisplayInfoEnum.IconOnly && Image == null
+    public BannerDisplayInfoEnum EffectiveDisplayInfo => GetEffectiveDisplayInfo(Image);
+
+    internal BannerDisplayInfoEnum GetEffectiveDisplayInfo(Image image) =>
+        DisplayInfo == BannerDisplayInfoEnum.IconOnly && image == null
             ? BannerDisplayInfoEnum.FullDisplay
             : DisplayInfo;
-
-    /// <summary>
-    /// When enabled, displays the banner in compact mode (half the normal size)
-    /// </summary>
-    public bool CompactMode { get; internal set; }
 
     /// <summary>
     /// When enabled. sets the banner in custom position mode

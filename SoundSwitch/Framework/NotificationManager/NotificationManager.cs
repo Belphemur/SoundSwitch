@@ -66,11 +66,6 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         ApplyConfigurationChanges(_switchDeviceNotification, e);
         ApplyConfigurationChanges(_switchProfileNotification, e);
         ApplyConfigurationChanges(_microphoneMuteNotification, e);
-
-        // Leaving the persistent mute style must dismiss banners that are already pinned on
-        // screen; otherwise they would stay visible until the next mute-target or device event.
-        if (e.PrevMicrophoneMuteBanner == MicrophoneMute.Persistent && e.NewMicrophoneMuteBanner != MicrophoneMute.Persistent)
-            ((NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification)).ClearPersistentMuteBanners();
     }
 
     private void ModelOnCustomSoundChanged(object sender, CustomSoundChangedEvent customSoundChangedEvent)
@@ -278,16 +273,12 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     /// <summary>
     /// Reconciles the persistent mute banners after the mute target or banner scope changed.
     /// </summary>
-    /// <param name="inScopeMicrophoneIds">Identifiers of the microphones that remain in scope</param>
-    /// <param name="mutedInScopeMicrophones">In-scope microphones that are currently muted</param>
-    public void SyncMuteBanners(IReadOnlyCollection<string> inScopeMicrophoneIds,
-        IReadOnlyCollection<(string Id, string Name)> mutedInScopeMicrophones)
+    /// <param name="getInScopeMicrophones">Reads current scoped states when the UI thread applies the refresh</param>
+    public void SyncMuteBanners(Func<IReadOnlyCollection<(string Id, string Name, bool IsMuted)>> getInScopeMicrophones)
     {
         var banner = (NotificationBanner)_notificationFactory.Get(NotificationType.BannerNotification);
-        if (MicrophoneMuteNotificationIsBanner)
-            banner.SyncMuteBanners(inScopeMicrophoneIds, mutedInScopeMicrophones);
-        else
-            banner.ClearPersistentMuteBanners();
+        // The notification type may also change before a background refresh reaches the UI.
+        banner.SyncMuteBanners(() => MicrophoneMuteNotificationIsBanner ? getInScopeMicrophones() : []);
     }
 
     public void Dispose()

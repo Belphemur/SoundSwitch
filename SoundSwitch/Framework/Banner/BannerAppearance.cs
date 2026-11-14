@@ -15,11 +15,11 @@ internal static class BannerAppearance
     /// <summary>Largest banner scale, in percent, the UI offers.</summary>
     public const int MaxScalePercentage = 200;
 
-    /// <summary>Multiplier applied to fonts and padding by the compact microphone banner.</summary>
+    /// <summary>Multiplier applied to fonts and padding by the compact banner style.</summary>
     public const float CompactFontScale = 0.8f;
 
     /// <summary>
-    /// Multiplier applied to the icon by the compact microphone banner. It differs from the font
+    /// Multiplier applied to the icon by the compact banner style. It differs from the font
     /// multiplier because the compact banner shows a comparatively larger icon.
     /// </summary>
     public const float CompactImageScale = 1.5f;
@@ -39,6 +39,16 @@ internal static class BannerAppearance
     /// <summary>Scale factor for the banner icon.</summary>
     public static float ImageScale(int scalePercentage, bool compactMode) =>
         NormalizePercentage(scalePercentage) * (compactMode ? CompactImageScale : 1f);
+
+    /// <summary>
+    /// Shared compact icon box, matching the 16×16 microphone resources at 1.5× scale.
+    /// </summary>
+    public static Size CompactIconSize(int scalePercentage)
+    {
+        const int notificationIconSize = 16;
+        var side = Math.Max(1, (int)Math.Round(notificationIconSize * ImageScale(scalePercentage, true)));
+        return new Size(side, side);
+    }
 
     /// <summary>
     /// Size the icon is drawn at.

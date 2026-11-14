@@ -132,7 +132,7 @@ public partial class AppModel : IAppModel
         {
             lock (_defaultMuteDeviceIdLock)
                 _defaultMuteDeviceIdValid = false;
-            if (_initialized && LimitMuteBannersToTarget && MuteRecordingDevice != null)
+            if (_initialized)
                 RefreshMicrophoneMuteBanners();
         });
 
