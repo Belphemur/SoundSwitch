@@ -12,10 +12,10 @@
     "preview": "npm run docs:build && wrangler dev"
   },
   "dependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.31",
+    "@vuepress/bundler-vite": "2.0.0-rc.32",
     "sass-embedded": "^1.100.0",
     "vue": "^3.5.40",
-    "vuepress": "2.0.0-rc.31",
+    "vuepress": "2.0.0-rc.32",
     "vuepress-theme-hope": "2.0.0-rc.110"
   },
   "devDependencies": {
