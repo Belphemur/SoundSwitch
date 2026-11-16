@@ -127,7 +127,7 @@
     "@semantic-release/release-notes-generator": "^14.1.1",
     "conventional-changelog-conventionalcommits": "^9.3.1",
     "normalize-url": ">=9.0.0",
-    "semantic-release": "^25.0.3",
+    "semantic-release": "^26.0.0",
     "trim-newlines": ">=5.0.0"
   }
 }
