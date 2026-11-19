@@ -19,14 +19,37 @@
             "automerge": false
         },
         {
-            "description": "VuePress core + bundler + theme must move together (peer deps)",
+            "description": "VuePress core + bundler + theme + plugins must move together (peer deps)",
             "matchPackageNames": [
                 "vuepress",
                 "@vuepress/bundler-vite",
                 "vuepress-theme-hope",
-                "@vuepress/plugin-llms"
+                "@vuepress/plugin-llms",
+                "@vuepress/plugin-slimsearch"
             ],
             "groupName": "vuepress"
+        },
+        {
+            "description": "Blocked: vuepress-theme-hope@2.0.0-rc.110 peer-pins vuepress exactly 2.0.0-rc.31 and its plugin line (rc.137 search-helper) breaks the docs build (ERR_UNKNOWN_FILE_EXTENSION on search-helper dist .css during SSR). Remove these pins when theme-hope releases a version built for core rc.32+ and search-helper is fixed upstream.",
+            "matchPackageNames": [
+                "vuepress",
+                "@vuepress/bundler-vite"
+            ],
+            "allowedVersions": "<=2.0.0-rc.31"
+        },
+        {
+            "description": "Blocked: @vuepress/search-helper rc.137+ (pulled in by plugin-slimsearch >= rc.137) fails the docs build with ERR_UNKNOWN_FILE_EXTENSION for its dist .css import during SSR rendering. Stay on rc.134 until upstream fixes search-helper.",
+            "matchPackageNames": [
+                "@vuepress/plugin-slimsearch"
+            ],
+            "allowedVersions": "<=2.0.0-rc.134"
+        },
+        {
+            "description": "plugin-llms rc.138 peer-pins vuepress 2.0.0-rc.32, which is still blocked by the theme pin above.",
+            "matchPackageNames": [
+                "@vuepress/plugin-llms"
+            ],
+            "allowedVersions": "<=2.0.0-rc.137"
         },
         {
             "matchPackageNames": [
