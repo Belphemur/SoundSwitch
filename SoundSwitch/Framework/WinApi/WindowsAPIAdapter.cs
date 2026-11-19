@@ -134,11 +134,16 @@ public class WindowsAPIAdapter : Form
             {
                 _instance.Invoke(new MethodInvoker(_instance.EndForm));
             }
-            catch (Exception ex)
+            catch (ObjectDisposedException)
             {
                 //Can happen when the instance got dispose in its own thread
                 //when in the same time the Application thread call the Stop() method.
-                Trace.WriteLine("Thread Race Condition: " + ex);
+            }
+            catch (Exception ex)
+            {
+                // Not the expected dispose race. Logged at Warning so it stays visible
+                // in shipped builds (Information-level logs) instead of being swallowed.
+                Log.Warning(ex, "Unexpected error while stopping the WindowsAPIAdapter form");
             }
         }
     }
