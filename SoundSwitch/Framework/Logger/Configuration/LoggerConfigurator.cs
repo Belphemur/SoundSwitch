@@ -34,7 +34,8 @@ public static class LoggerConfigurator
                 outputTemplate: outputTemplate)
             .WriteTo.Sentry(o =>
             {
-                o.InitializeSdk = false;
+                // Sentry.Serilog v7: the sink no longer auto-initializes the SDK (InitializeSdk removed),
+                // so the explicit SentrySdk.Init in Program.cs stays the single initialization point.
                 o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
                 o.MinimumEventLevel = LogEventLevel.Error;
                 o.TextFormatter = new MessageTemplateTextFormatter(sentryTemplate);
