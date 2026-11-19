@@ -86,12 +86,14 @@ debug-grade diagnostics no longer appear. Local `Debug` builds are unchanged
   - `SerilogTraceListener` 3.2.0 maps `System.Diagnostics.Trace.Write/WriteLine`
     to Serilog **Debug** (verified empirically with a net10.0 harness against the
     exact NuGet package). Affected `Trace.WriteLine` call sites:
-    `SoundSwitch/Framework/WinApi/WindowsAPIAdapter.cs:141/240` ("Thread Race
-    Condition …" — self-documented benign, handled races: "Can happen when the
-    instance got dispose[d] in its own thread…") and
-    `SoundSwitch.Audio.Manager/AudioSwitcher.cs:96/157` ("Default endpoint
-    already {deviceId}" — no-op-skip diagnostics). All four are diagnostics; none
-    warrants promotion.
+    `SoundSwitch.Framework/WinApi/WindowsAPIAdapter.cs:141` ("Thread Race
+    Condition: …" in a broad `catch (Exception)` — see §6.2),
+    `SoundSwitch.Framework/WinApi/WindowsAPIAdapter.cs:240` ("Thread Race
+    Condition when registering hotkey" — an `IsDisposed` guard, expected
+    benign condition) and `SoundSwitch.Audio.Manager/AudioSwitcher.cs:96/157`
+    ("Default endpoint already {deviceId}" — no-op-skip diagnostics). The guard
+    and the no-op skips are benign diagnostics and drop with the floor;
+    the broad catch was promoted instead (§6.2).
   - Device-switch breadcrumbs, the one class of Debug output with potential
     support value, are already `Information`: `ADeviceCycler.cs:97/111`,
     `AppSoundLockManager.cs:372/519/604`, `ProfileManager.cs:214`.
@@ -128,6 +130,17 @@ TRACE;DEBUG`), so Debug → Verbose, and Release/Beta/Nightly → Information.
 No other statement in the method changes; the console sink remains
 `#if DEBUG`-only and the Sentry sink settings remain untouched.
 
+### 6.2 WindowsAPIAdapter broad-catch promotion
+
+The `Stop()` path in `SoundSwitch/Framework/WinApi/WindowsAPIAdapter.cs` had a
+broad `catch (Exception ex)` that reported via `Trace.WriteLine` (Serilog
+Debug). Under the new Information floor, an *unexpected* exception there would
+have been silently swallowed in shipped builds. The catch is now narrowed:
+`ObjectDisposedException` (the documented benign dispose race) is silently
+absorbed as before, and any other exception is reported with
+`Log.Warning(ex, …)` so it stays visible in shipped logs. Control flow is
+unchanged — both branches swallow; only the logging differs.
+
 ## 7. Telemetry
 
 No new events. The Sentry sink continues to report `Error`+ events
@@ -144,6 +157,7 @@ No new user-facing strings — the change alters log file contents only.
 |---|---|
 | `docs/design/logging/2026-11-18-release-log-levels.md` | This ADR. |
 | `SoundSwitch/Framework/Logger/Configuration/LoggerConfigurator.cs` | Re-key the pipeline minimum level from `#if RELEASE … Debug #else … Verbose` to `#if DEBUG … Verbose #else … Information`. |
+| `SoundSwitch/Framework/WinApi/WindowsAPIAdapter.cs` | `Stop()`: narrow the broad catch — expected `ObjectDisposedException` race stays silent, unexpected exceptions now `Log.Warning` instead of `Trace.WriteLine` (§6.2). |
 
 ## 10. Test plan
 
@@ -171,7 +185,7 @@ validation box.
 | 1 | Single global `#if DEBUG / Verbose / #else / Information / #endif` pipeline gate. | One line of policy, covers every sink and every shipped configuration by construction. Rejected: per-source `MinimumLevel.Override` entries — would need maintaining a list of chatty sources and still misses future ones. |
 | 2 | Key on `DEBUG`, not `RELEASE`. | `RELEASE` excludes Beta/Nightly, which is exactly the bug class that produced the Beta/Nightly Verbose surprise. `DEBUG` is defined by the only configuration that should see debug-grade output. |
 | 3 | Floor shipped builds at `Information`, not `Debug`. | Debug-grade output is the reported noise; switch events, warnings, and errors are all already `Information`+. Rejected: Debug floor — leaves the reported chatter in shipped logs. |
-| 4 | No `_logger.Debug` call-site rewrites or promotions. | The audit (§5) found no support-critical message below Information: switch outcomes and rule matches are already Information; all Debug emitters are chatter or handled benign conditions. |
+| 4 | No `_logger.Debug` call-site rewrites; single exception: the `WindowsAPIAdapter.Stop()` broad catch (§6.2). | The audit (§5) found no support-critical message below Information: switch outcomes and rule matches are already Information; all other Debug emitters are chatter or handled benign conditions. The broad catch is the one site where the Information floor would have made *unexpected* exceptions invisible — promoted to `Log.Warning` (narrowed catch) rather than dropped. |
 | 5 | Accept that shipped Sentry breadcrumbs become effectively Information+. | The global minimum gates all sinks; per-sink `MinimumBreadcrumbLevel = Debug` cannot re-open what the pipeline dropped. Sentry's default breadcrumb level is Info and error events are unaffected; sink settings stay untouched per owner direction. Rejected: keeping the global floor at Debug + per-sink `restrictedToMinimumLevel: Information` on the file sink — preserves Debug breadcrumbs but keeps the shipped pipeline creating/enriching Debug events and adds a second preprocessor block, for negligible support value. |
 | 6 | No website change. | No `website/src/**` page documents log verbosity or log-file contents (only log *export*), so nothing becomes inaccurate. |
 
@@ -179,5 +193,3 @@ validation box.
 
 - Runtime log-level control (verbosity setting or CLI flag) for support cases
   that need debug-grade detail from a shipped build — deferred; not requested.
-- Promote `WindowsAPIAdapter` race-condition notes out of `Trace.WriteLine` if
-  they ever become support-relevant — currently benign by their own comments.
