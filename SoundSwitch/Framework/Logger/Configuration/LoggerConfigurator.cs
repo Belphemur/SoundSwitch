@@ -18,10 +18,10 @@ public static class LoggerConfigurator
         const string sentryTemplate = "{Message}\n{Properties}";
         const string outputTemplate = "[{Timestamp:HH:mm:ss.fff} {Level:u3}]]{Properties} {Message}(at {Caller}){NewLine}{Exception}";
         Log.Logger = new LoggerConfiguration()
-#if RELEASE
-                    .MinimumLevel.Debug()
-#else
+#if DEBUG
             .MinimumLevel.Verbose()
+#else
+            .MinimumLevel.Information()
 #endif
             .Enrich.WithExceptionDetails()
             .Enrich.WithCaller()
