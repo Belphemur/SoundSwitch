@@ -48,6 +48,8 @@ When a double-click action is configured, SoundSwitch waits up to **250 ms** aft
 
 When enabled, switching the default playback device also switches the Windows **Default Communication Device**. Windows uses the communication device separately from the multimedia device — for example, VoIP apps like Discord or Skype may default to the communication device. Enabling this keeps both in sync when SoundSwitch changes devices.
 
+This option is **enabled by default** on new installs. Uncheck it if you want communication apps to stay on a fixed device.
+
 ### Also switch the foreground program
 
 When enabled, changing the default audio device also re-routes the currently focused (foreground) application to the new default device. This ensures the app you are actively using immediately follows the device change.
