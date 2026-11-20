@@ -165,18 +165,17 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     }
 
     /// <summary>
-    /// Notify on App Rule matched
+    /// Notify on App Rule matched. The devices are the ones the switch itself resolved
+    /// (against the active devices, not the switcher selection), so a rule targeting a
+    /// device outside the selection still gets a named notification.
     /// </summary>
-    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId)
+    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, string processName, DeviceFullInfo? playback, DeviceFullInfo? recording, IReadOnlyCollection<EDataFlow> flowsWritten, uint processId)
     {
         if (rule.Notify)
         {
             var icon = GetIconForRule(rule, processId);
-            
-            var playback = AppRuleDeviceResolver.Resolve(pair.Playback, deviceService);
-            var recording = AppRuleDeviceResolver.Resolve(pair.Recording, deviceService);
-            
-            _switchProfileNotification.NotifyAppRuleMatched(rule, playback, recording, icon, processId);
+
+            _switchProfileNotification.NotifyAppRuleMatched(rule, pair, processName, playback, recording, flowsWritten, icon, processId);
         }
     }
 

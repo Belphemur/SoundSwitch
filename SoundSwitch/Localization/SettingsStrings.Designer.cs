@@ -447,6 +447,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switched {0}.
+        /// </summary>
+        internal static string appSoundLock_rule_switchedApp {
+            get {
+                return ResourceManager.GetString("appSoundLock.rule.switchedApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} pairs · cycling.
         /// </summary>
         internal static string appSoundLock_rule_pairCount {

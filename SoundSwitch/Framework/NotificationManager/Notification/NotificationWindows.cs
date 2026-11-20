@@ -18,6 +18,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
@@ -49,9 +50,9 @@ internal class NotificationWindows : INotification
         ShowToastOrBalloon(data);
     }
 
-    public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId)
+    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, string processName, DeviceFullInfo playback, DeviceFullInfo recording, IReadOnlyCollection<EDataFlow> flowsWritten, Bitmap icon, uint processId)
     {
-        var data = NotificationContentBuilder.BuildAppRuleMatched(playback, recording, icon);
+        var data = NotificationContentBuilder.BuildAppRuleMatched(processName, pair, playback, recording, flowsWritten, icon);
         ShowToastOrBalloon(data);
     }
 

@@ -23,6 +23,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
@@ -78,18 +79,41 @@ internal static class NotificationContentBuilder
         Text = string.Join("\n", profile.Devices.Select(wrapper => wrapper.DeviceInfo.NameClean).Distinct())
     };
 
-    internal static BannerData BuildAppRuleMatched(DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon)
+    internal static BannerData BuildAppRuleMatched(string processName, AppSoundRuleDevicePair pair, DeviceFullInfo playback, DeviceFullInfo recording, IReadOnlyCollection<EDataFlow> flowsWritten, Bitmap icon)
     {
-        var devices = new List<string>();
-        if (playback != null) devices.Add(playback.NameClean);
-        if (recording != null) devices.Add(recording.NameClean);
+        // Resolution can legitimately fail (e.g. device unplugged); the pair's stored name keeps
+        // the notification informative instead of empty.
+        var playbackName = playback?.NameClean ?? pair.Playback?.NameClean;
+        var recordingName = recording?.NameClean ?? pair.Recording?.NameClean;
+
+        // One line per flow actually written, so the text never advertises a role that didn't move.
+        var lines = new List<string>();
+        var compactNames = new List<string>();
+        foreach (var flow in flowsWritten)
+        {
+            switch (flow)
+            {
+                case EDataFlow.eRender:
+                    lines.Add($"{SettingsStrings.playback} → {playbackName}");
+                    compactNames.Add(playbackName);
+                    break;
+                case EDataFlow.eCapture:
+                    lines.Add($"{SettingsStrings.recording} → {recordingName}");
+                    compactNames.Add(recordingName);
+                    break;
+            }
+        }
+
+        var title = string.Format(SettingsStrings.appSoundLock_rule_switchedApp, processName);
 
         return new BannerData
         {
             Priority = 1,
             Image = icon,
-            Title = SettingsStrings.appSoundLock_tab,
-            Text = string.Join("\n", devices)
+            Title = title,
+            Text = string.Join("\n", lines),
+            // Compact banners drop the role labels: device names only, middot-joined.
+            CompactContent = new BannerContent(title, string.Join(" · ", compactNames), icon)
         };
     }
 

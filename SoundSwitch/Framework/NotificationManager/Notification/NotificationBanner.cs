@@ -114,14 +114,15 @@ internal class NotificationBanner : INotification
         _bannerManager.ShowNotification(bannerData);
     }
 
-    public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId)
+    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, string processName, DeviceFullInfo playback, DeviceFullInfo recording, IReadOnlyCollection<EDataFlow> flowsWritten, Bitmap icon, uint processId)
     {
-        var content = NotificationContentBuilder.BuildAppRuleMatched(playback, recording, icon);
+        var content = NotificationContentBuilder.BuildAppRuleMatched(processName, pair, playback, recording, flowsWritten, icon);
         var bannerData = CreateBannerData();
         bannerData.Priority = content.Priority;
         bannerData.Image = content.Image;
         bannerData.Title = content.Title;
         bannerData.Text = content.Text;
+        bannerData.CompactContent = content.CompactContent;
         _bannerManager.ShowNotification(bannerData);
     }
 

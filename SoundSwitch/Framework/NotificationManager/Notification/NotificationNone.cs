@@ -12,8 +12,10 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System.Collections.Generic;
 using System.Drawing;
 
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.NotificationManager.Notification.Configuration;
@@ -33,7 +35,7 @@ internal class NotificationNone : INotification
 
     public void NotifyProfileChanged(Profile.Profile profile, Bitmap icon, uint? processId) { }
 
-    public void NotifyAppRuleMatched(AppSoundRule rule, DeviceFullInfo playback, DeviceFullInfo recording, Bitmap icon, uint processId) { }
+    public void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, string processName, DeviceFullInfo playback, DeviceFullInfo recording, IReadOnlyCollection<EDataFlow> flowsWritten, Bitmap icon, uint processId) { }
 
     public void NotifyAppRuleNoProcess(AppSoundRule rule) { }
 

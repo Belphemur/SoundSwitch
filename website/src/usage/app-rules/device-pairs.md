@@ -63,7 +63,7 @@ Automatic mode applies `DevicePairs[0]` whenever the application matches. The ed
 
 ### Hotkey
 
-Every press applies the next pair in list order and wraps after the last one. The current pair is shown in the notification (if the rule's **Notify when triggered** option is on). See [Hotkey mode](./hotkey.md) for the full cycling rules.
+Every press applies the next pair in list order and wraps after the last one. The current pair is shown in the notification (if the rule's **Notify when triggered** option is on), which also names the application and each of the pair's available devices. A side whose device isn't available is skipped, so that side isn't named. See [Hotkey mode](./hotkey.md) for the full cycling rules.
 
 ## Mode switching
 
