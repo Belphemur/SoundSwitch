@@ -64,6 +64,7 @@ Every time a Chrome window whose title contains "YouTube" comes to the foregroun
 - **Multiple matching processes.** Each matching process is routed when its own process or foreground event is handled. For example, a browser with several child processes is rerouted as each one starts or comes to the foreground — the rule does not push a group update to every matching process when only one of them gains focus.
 - **Unavailable device.** If the stored playback or recording device is not currently active, that side is skipped and the other side is still applied. The skip is written to the log.
 - **Device changes.** If a device gets a new id, SoundSwitch resolves it by its stable device-instance path or unique name and updates the stored identity. See [Device pairs](./device-pairs.md).
+- **Notifications.** When **Notify when triggered** is on, the notification names the application and the device each role switched to — for example *Switched spotify* with *Playback → Speakers* and *Recording → CABLE Output* lines.
 - **Disabled rules** keep their settings but are never applied.
 
 ## Automatic or Hotkey?

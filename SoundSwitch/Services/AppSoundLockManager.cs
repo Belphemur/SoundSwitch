@@ -518,20 +518,22 @@ namespace SoundSwitch.Services
         {
             _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
 
-            var playbackSwitched = SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
-            var recordingSwitched = SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
-            var changed = playbackSwitched || recordingSwitched;
+            var playbackSwitch = SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
+            var recordingSwitch = SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
+            var changed = playbackSwitch.Switched || recordingSwitch.Switched;
 
             var flows = new List<EDataFlow>();
-            if (playbackSwitched) flows.Add(EDataFlow.eRender);
-            if (recordingSwitched) flows.Add(EDataFlow.eCapture);
+            if (playbackSwitch.Switched) flows.Add(EDataFlow.eRender);
+            if (recordingSwitch.Switched) flows.Add(EDataFlow.eCapture);
             flowsWritten = flows;
 
             if (notify && rule.Notify && changed)
             {
                 if (notifiedRules == null || !notifiedRules.Contains(rule.Id))
                 {
-                    _notificationManager.NotifyAppRuleMatched(rule, pair, processId);
+                    // The resolved devices come straight from the switch, so the notification can
+                    // never disagree with it: a device outside the switcher selection still gets named.
+                    _notificationManager.NotifyAppRuleMatched(rule, pair, processName, playbackSwitch.Resolved, recordingSwitch.Resolved, flowsWritten, processId);
                     notifiedRules?.Add(rule.Id);
                 }
             }
@@ -651,7 +653,15 @@ namespace SoundSwitch.Services
             // failure cannot block the cycle.
             if (rule.Notify)
             {
-                _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessId);
+                // Resolve from the same source as the switch and report every role the pair sets:
+                // the banner is feedback for which pair is now active, so it must stay informative
+                // even when nothing moved. A role that no longer resolves falls back to the stored name.
+                var resolvedPlayback = AppRuleDeviceResolver.Resolve(pair.Playback, AppModel.Instance.AudioDeviceLister);
+                var resolvedRecording = AppRuleDeviceResolver.Resolve(pair.Recording, AppModel.Instance.AudioDeviceLister);
+                var pairFlows = new List<EDataFlow>();
+                if (pair.Playback != null) pairFlows.Add(EDataFlow.eRender);
+                if (pair.Recording != null) pairFlows.Add(EDataFlow.eCapture);
+                _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessName, resolvedPlayback, resolvedRecording, pairFlows, matches[0].ProcessId);
             }
 
             // A single press is one activation: record telemetry once for the first match
@@ -735,22 +745,33 @@ namespace SoundSwitch.Services
         }
 
         /// <summary>
+        /// Outcome of switching one role of a rule's device pair: whether the process moved, plus the
+        /// stored <see cref="DeviceInfo"/> and the <see cref="DeviceFullInfo"/> it resolved to. The
+        /// resolved device is reused by the trigger notification so both speak about the same switch
+        /// (resolved against the active devices, not the user's switcher selection).
+        /// </summary>
+        /// <param name="Switched">Whether the process was switched to the device.</param>
+        /// <param name="Stored">The pair's stored device, null when the role isn't set.</param>
+        /// <param name="Resolved">The live device the stored one resolved to, null when unresolved.</param>
+        private readonly record struct RuleDeviceSwitchResult(bool Switched, DeviceInfo? Stored, DeviceFullInfo? Resolved);
+
+        /// <summary>
         /// Resolve the pair's stored device against the active devices, switch the process to it and
         /// self-heal the stored <see cref="DeviceInfo"/> when the live device differs (new id or name,
         /// e.g. after a driver update). This is what keeps rules working and turns the migrated
         /// name=id placeholder rules back into properly named rules after the first successful match.
         /// </summary>
-        /// <returns>`true` when the process was switched to the device.</returns>
-        private bool SwitchRuleDevice(AppSoundRuleDevicePair pair, Func<AppSoundRuleDevicePair, DeviceInfo?> getter, Action<AppSoundRuleDevicePair, DeviceInfo> setter, EDataFlow flow, uint processId)
+        /// <returns>The switch outcome, including the resolved device for the notification.</returns>
+        private RuleDeviceSwitchResult SwitchRuleDevice(AppSoundRuleDevicePair pair, Func<AppSoundRuleDevicePair, DeviceInfo?> getter, Action<AppSoundRuleDevicePair, DeviceInfo> setter, EDataFlow flow, uint processId)
         {
             var stored = getter(pair);
-            if (stored == null) return false;
+            if (stored == null) return default;
 
             var resolved = AppRuleDeviceResolver.Resolve(stored, AppModel.Instance.AudioDeviceLister);
             if (resolved == null)
             {
                 _logger.Warning("App rule device {NameClean} ({DeviceId}) not found among active {Flow} devices, skipping switch", stored.NameClean, stored.Id, flow);
-                return false;
+                return default;
             }
 
             var healed = false;
@@ -785,7 +806,7 @@ namespace SoundSwitch.Services
                 }
             }
 
-            return switched;
+            return new RuleDeviceSwitchResult(switched, stored, resolved);
         }
 
         /// <summary>

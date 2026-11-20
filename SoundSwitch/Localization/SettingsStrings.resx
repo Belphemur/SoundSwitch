@@ -924,6 +924,9 @@ Press Esc to close.</value>
   <data name="appSoundLock.rule.noProcess" xml:space="preserve">
     <value>The application isn't running — nothing switched.</value>
   </data>
+  <data name="appSoundLock.rule.switchedApp" xml:space="preserve">
+    <value>Switched {0}</value>
+  </data>
   <data name="appSoundLock.rule.error.hotkeyRequired" xml:space="preserve">
     <value>Select a hotkey for this rule.</value>
   </data>

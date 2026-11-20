@@ -12,10 +12,12 @@
 * GNU General Public License for more details.
 ********************************************************************/
 
+using System.Collections.Generic;
 using System.Drawing;
 
 using JetBrains.Annotations;
 
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Factory;
@@ -48,12 +50,15 @@ public interface INotification : IEnumImpl<NotificationType>
     /// <summary>
     /// Notify when an App Rule has been matched
     /// </summary>
-    /// <param name="rule"></param>
-    /// <param name="playback"></param>
-    /// <param name="recording"></param>
-    /// <param name="icon"></param>
-    /// <param name="processId"></param>
-    void NotifyAppRuleMatched(AppSoundRule rule, [CanBeNull] DeviceFullInfo playback, [CanBeNull] DeviceFullInfo recording, [CanBeNull] Bitmap icon, uint processId);
+    /// <param name="rule">The rule that matched</param>
+    /// <param name="pair">The pair that was applied; its stored device names are the fallback</param>
+    /// <param name="processName">Name of the matched process, shown in the title</param>
+    /// <param name="playback">Playback device resolved by the switch, null when the role wasn't set or didn't resolve</param>
+    /// <param name="recording">Recording device resolved by the switch, null when the role wasn't set or didn't resolve</param>
+    /// <param name="flowsWritten">The flows the switch actually wrote</param>
+    /// <param name="icon">Process icon</param>
+    /// <param name="processId">Matched process id</param>
+    void NotifyAppRuleMatched(AppSoundRule rule, AppSoundRuleDevicePair pair, string processName, [CanBeNull] DeviceFullInfo playback, [CanBeNull] DeviceFullInfo recording, IReadOnlyCollection<EDataFlow> flowsWritten, [CanBeNull] Bitmap icon, uint processId);
 
     /// <summary>
     /// Notify that an App Rule hotkey was pressed but its application isn't running

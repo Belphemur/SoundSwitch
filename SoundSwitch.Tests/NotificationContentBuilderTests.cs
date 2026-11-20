@@ -13,6 +13,7 @@
  ********************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 using SoundSwitch.Audio.Manager.Interop.Enum;
@@ -24,6 +25,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
 
@@ -32,6 +34,9 @@ public class NotificationContentBuilderTests
 {
     private static DeviceFullInfo CreateDevice(string name, EDataFlow type) =>
         new(name, $"id-{name}", type, @"C:\nonexistent\device.ico", EDeviceState.Active, false);
+
+    private static DeviceInfo CreateStoredDevice(string name, EDataFlow type) =>
+        new(name, $"stored-{name}", type, false, DateTime.UtcNow);
 
     [Test]
     public void BuildDefaultChanged_RenderWindowsNotification_SetsTitleTextAndImage()
@@ -99,13 +104,73 @@ public class NotificationContentBuilderTests
     {
         var playback = CreateDevice("Speakers", EDataFlow.eRender);
         var recording = CreateDevice("Mic", EDataFlow.eCapture);
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = CreateStoredDevice("Speakers", EDataFlow.eRender),
+            Recording = CreateStoredDevice("Mic", EDataFlow.eCapture)
+        };
 
-        var data = NotificationContentBuilder.BuildAppRuleMatched(playback, recording, new Bitmap(1, 1));
+        var data = NotificationContentBuilder.BuildAppRuleMatched("spotify", pair, playback, recording,
+            new[] { EDataFlow.eRender, EDataFlow.eCapture }, new Bitmap(1, 1));
 
         data.Priority.Should().Be(1);
-        data.Title.Should().Be(SettingsStrings.appSoundLock_tab);
-        data.Text.Should().Contain(playback.NameClean);
-        data.Text.Should().Contain(recording.NameClean);
+        data.Title.Should().Be(string.Format(SettingsStrings.appSoundLock_rule_switchedApp, "spotify"));
+        data.Title.Should().Contain("spotify");
+        data.Title.Should().NotContain(SettingsStrings.appSoundLock_tab);
+        data.Text.Should().Contain($"{SettingsStrings.playback} → {playback.NameClean}");
+        data.Text.Should().Contain($"{SettingsStrings.recording} → {recording.NameClean}");
+    }
+
+    [Test]
+    public void BuildAppRuleMatched_PlaybackOnlyFlow_ShowsSinglePlaybackLine()
+    {
+        var playback = CreateDevice("Speakers", EDataFlow.eRender);
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = CreateStoredDevice("Speakers", EDataFlow.eRender),
+            Recording = CreateStoredDevice("Mic", EDataFlow.eCapture)
+        };
+
+        var data = NotificationContentBuilder.BuildAppRuleMatched("spotify", pair, playback, null,
+            new[] { EDataFlow.eRender }, new Bitmap(1, 1));
+
+        data.Text.Should().Be($"{SettingsStrings.playback} → {playback.NameClean}");
+        data.Text.Should().NotContain(SettingsStrings.recording);
+    }
+
+    [Test]
+    public void BuildAppRuleMatched_UnresolvedDevice_FallsBackToStoredName()
+    {
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = CreateStoredDevice("Headset", EDataFlow.eRender),
+            Recording = CreateStoredDevice("CABLE Output", EDataFlow.eCapture)
+        };
+
+        var data = NotificationContentBuilder.BuildAppRuleMatched("spotify", pair, null, null,
+            new[] { EDataFlow.eRender, EDataFlow.eCapture }, new Bitmap(1, 1));
+
+        data.Text.Should().Be($"{SettingsStrings.playback} → {pair.Playback.NameClean}\n{SettingsStrings.recording} → {pair.Recording.NameClean}");
+        data.Text.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Test]
+    public void BuildAppRuleMatched_CompactContent_JoinsNamesWithMiddot()
+    {
+        var playback = CreateDevice("Speakers", EDataFlow.eRender);
+        var recording = CreateDevice("CABLE Output", EDataFlow.eCapture);
+        var pair = new AppSoundRuleDevicePair
+        {
+            Playback = CreateStoredDevice("Speakers", EDataFlow.eRender),
+            Recording = CreateStoredDevice("CABLE Output", EDataFlow.eCapture)
+        };
+
+        var data = NotificationContentBuilder.BuildAppRuleMatched("spotify", pair, playback, recording,
+            new[] { EDataFlow.eRender, EDataFlow.eCapture }, new Bitmap(1, 1));
+
+        data.CompactContent.Should().NotBeNull();
+        data.CompactContent.Title.Should().Be(data.Title);
+        data.CompactContent.Text.Should().Be($"{playback.NameClean} · {recording.NameClean}");
     }
 
     [Test]
