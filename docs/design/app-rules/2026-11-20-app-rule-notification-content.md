@@ -100,7 +100,7 @@ resolvedRecording, flowsWritten, processId)`:
 
 - builds the icon as today (`GetIconForRule`);
 - calls `NotificationContentBuilder.BuildAppRuleMatched(processName, pair, playback,
-  recording, flowsWritten)` with already-resolved devices (no `deviceService`
+  recording, flowsWritten, icon)` with already-resolved devices (no `deviceService`
   lookup anymore — this removes the empty-text bug class entirely);
 - forwards to all four `INotification` implementations as today.
 
@@ -175,7 +175,7 @@ is literal (same convention as the profile notification's device list).
 | File | Change |
 |---|---|
 | `SoundSwitch/Framework/NotificationManager/Notification/INotification.cs` | `NotifyAppRuleMatched` signature |
-| `SoundSwitch/Framework/NotificationManager/Notification/NotificationContentBuilder.cs` | `BuildAppRuleMatched(processName, pair, playback, recording, flowsWritten)`; compact content |
+| `SoundSwitch/Framework/NotificationManager/Notification/NotificationContentBuilder.cs` | `BuildAppRuleMatched(processName, pair, playback, recording, flowsWritten, icon)`; compact content |
 | `SoundSwitch/Framework/NotificationManager/NotificationManager.cs` | resolve-free forwarding of already-resolved devices |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationBanner.cs` | mechanical signature update |
 | `SoundSwitch/Framework/NotificationManager/Notification/NotificationWindows.cs` | mechanical signature update |
