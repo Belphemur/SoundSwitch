@@ -56,7 +56,7 @@ public class SoundSwitchConfiguration : ISoundSwitchConfiguration
     public IconDoubleClick IconDoubleClick { get; set; } = IconDoubleClick.SwitchPlaybackDevice;
 
     // Audio Settings
-    public bool ChangeCommunications { get; set; } = false;
+    public bool ChangeCommunications { get; set; } = true;
     public bool SwitchForegroundProgram { get; set; }
 
     /// <summary>

@@ -15,7 +15,7 @@ Instead of relying on the Windows default communication device, choose the exact
 
 ## How to fix it
 
-1. In SoundSwitch, open **Settings → General** and enable **Switch Default Communication Device**.
+1. In SoundSwitch, open **Settings → General** and make sure **Switch Default Communication Device** is enabled.
 2. Open **Windows Settings → System → Sound** and go to **Input**.
 3. Select the microphone you want SoundSwitch to toggle and ensure it is set as the **default communication device**.
 

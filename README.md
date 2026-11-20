@@ -122,7 +122,7 @@ When multiple profiles share the same hotkey, SoundSwitch automatically cycles t
 
 ### 🎙 Communications
 
-SoundSwitch can also change the **Default Communication Device** when asked in the Settings. Windows differentiates between Multimedia and Communication; it means if an application asks to have access to communications audio device, it will receive the Default Communication Device. By default SoundSwitch only changes the multimedia device and not the communication device. Now if the checkbox is checked in the settings, it will also change the Communication Device.
+SoundSwitch can also change the **Default Communication Device** when the *Switch Default Communication Device* option is enabled in the Settings. Windows differentiates between Multimedia and Communication; it means if an application asks to have access to communications audio device, it will receive the Default Communication Device. On new installs this option is enabled by default, so switching the default device also switches the Communication Device. Uncheck the option in the settings if you want the Communication Device to stay fixed.
 
 ### 📥 Auto-Updater
 
