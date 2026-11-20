@@ -58,7 +58,7 @@ notification's structure:
 
 | Surface | Title | Text |
 |---|---|---|
-| Toast / balloon / Normal banner | `Spotify switched` (localized: "Switched {app}") | `Playback → Speakers (Realtek HD Audio)` newline `Recording → CABLE Output` — only the roles actually written |
+| Toast / balloon / Normal banner | `Spotify switched` (localized: "Switched {0}") | `Playback → Speakers (Realtek HD Audio)` newline `Recording → CABLE Output` — only the roles actually written |
 | Compact banner | `Spotify switched` | `Speakers (Realtek) · CABLE Output` (name-only, middot-joined) |
 
 Mockup: `app-rule-notification-content.png` (cards A–E: current broken output,
@@ -99,7 +99,7 @@ returned to its caller (out-parameter or small record) and reused.
 resolvedRecording, flowsWritten, processId)`:
 
 - builds the icon as today (`GetIconForRule`);
-- calls `NotificationContentBuilder.BuildAppRuleMatched(processName, playback,
+- calls `NotificationContentBuilder.BuildAppRuleMatched(processName, pair, playback,
   recording, flowsWritten)` with already-resolved devices (no `deviceService`
   lookup anymore — this removes the empty-text bug class entirely);
 - forwards to all four `INotification` implementations as today.
@@ -163,7 +163,7 @@ No new events; uses the existing `soundswitch.apprule.activated` counter
 
 | Key | English value |
 |---|---|
-| `appSoundLock.rule.switchedApp` | `Switched {app}` |
+| `appSoundLock.rule.switchedApp` | `Switched {0}` |
 
 Role labels reuse existing keys `playback` / `recording`; the arrow separator
 is literal (same convention as the profile notification's device list).
@@ -213,7 +213,7 @@ is literal (same convention as the profile notification's device list).
 | # | Decision | Rationale |
 |---|---|---|
 | 1 | Notification devices resolve from `AudioDeviceLister` (same source as the switch), passed in already-resolved | Removes the empty-text bug class; notification can never disagree with the actual switch. Rejected: keep `deviceService` resolve + fallback patching — leaves two sources of truth that can drift again. |
-| 2 | Title names the app (`Switched {app}`), profile-parity shape | The user wants to know *what changed for which app*; Profile notifications already use this shape (`profile_notification_text`). Rejected: keep "App Rules" as title with app in text — the title is the strongest signal and "App Rules" carries no event information. |
+| 2 | Title names the app (`Switched {0}`), profile-parity shape | The user wants to know *what changed for which app*; Profile notifications already use this shape (`profile_notification_text`). Rejected: keep "App Rules" as title with app in text — the title is the strongest signal and "App Rules" carries no event information. |
 | 3 | On resolve failure show the stored `NameClean` from the pair | The stored name is meaningful (user picked it); never-empty guarantees the notification is informative. Rejected: "(unavailable)" placeholder — noise; omitting the line hides that a role was written. |
 | 4 | Only roles actually written (`flowsWritten`) get lines | Mirrors what happened; a playback-only rule shouldn't advertise a recording device. |
 | 5 | One shared `BuildAppRuleMatched` across channels; Compact banner gets `CompactContent` like the microphone banner | Follows the banner-style ADR (2026-11-10) convention; no per-channel content logic. |
