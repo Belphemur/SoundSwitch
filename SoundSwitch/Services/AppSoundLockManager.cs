@@ -653,14 +653,15 @@ namespace SoundSwitch.Services
             // failure cannot block the cycle.
             if (rule.Notify)
             {
-                // Resolve from the same source as the switch and report every role the pair sets:
-                // the banner is feedback for which pair is now active, so it must stay informative
-                // even when nothing moved. A role that no longer resolves falls back to the stored name.
+                // Resolve from the same source as the switch and report the pair's available roles:
+                // the banner is feedback for which pair the press selected, so an already-applied
+                // press still names its devices. A role whose device is unavailable is omitted the
+                // same way the switch skips it — naming it would claim a route that wasn't applied.
                 var resolvedPlayback = AppRuleDeviceResolver.Resolve(pair.Playback, AppModel.Instance.AudioDeviceLister);
                 var resolvedRecording = AppRuleDeviceResolver.Resolve(pair.Recording, AppModel.Instance.AudioDeviceLister);
                 var pairFlows = new List<EDataFlow>();
-                if (pair.Playback != null) pairFlows.Add(EDataFlow.eRender);
-                if (pair.Recording != null) pairFlows.Add(EDataFlow.eCapture);
+                if (resolvedPlayback != null) pairFlows.Add(EDataFlow.eRender);
+                if (resolvedRecording != null) pairFlows.Add(EDataFlow.eCapture);
                 _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessName, resolvedPlayback, resolvedRecording, pairFlows, matches[0].ProcessId);
             }
 

@@ -64,7 +64,7 @@ Above your own rules, the list also shows — dimmed — the applications that W
 | Option | Description |
 |--------|-------------|
 | **Enabled** | Turns the rule on or off without deleting it. Disabled rules are ignored and their hotkeys are not registered. |
-| **Notify when triggered** | Shows a notification when the rule routes an application, naming the app and the devices it switched to. Useful while setting a rule up. |
+| **Notify when triggered** | Shows a notification when the rule routes an application, naming the app and the devices it switched to. A device that isn't currently available is skipped and not named. Useful while setting a rule up. |
 | **Case Sensitive** | Makes the process and window patterns case-sensitive. |
 
 ## The process picker

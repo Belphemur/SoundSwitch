@@ -120,6 +120,20 @@ resolvedRecording, flowsWritten, processId)`:
 project; the four implementations (`NotificationBanner`, `NotificationWindows`,
 `NotificationSound`, `NotificationNone`) update mechanically.
 
+The hotkey path (`ApplyRuleToRunningProcesses`) notifies once per press, after
+the match loop, and reports the pair rather than any single match: the process
+identity is `matches[0]` as before, and the flow list is the pair's roles that
+resolve against the active devices. An already-applied press therefore still
+names the pair it selected, and the flow list is never empty for a press —
+`CanApplyPair` rejects a pair with no resolvable side before the loop.
+Per-match `flowsWritten` is deliberately not used there: matches can write
+different flow sets, and the banner answers "which pair is now active", not
+"what did one process move". A role whose device is unavailable is omitted,
+mirroring the switch that skips it, so the banner never claims a side it did
+not apply; each reported role names the resolved device's `NameClean`, with the
+pair's stored `NameClean` remaining the builder's fallback for a null resolved
+device. The automatic path keeps reporting only the flows actually written.
+
 ### 6.2 Migration
 
 No schema change — no migration. (String format only; the old
