@@ -24,6 +24,7 @@ Determines what icon the SoundSwitch tray icon displays.
 | **Playback** | Show the icon of the active playback (speaker/headphone) device. |
 | **Both** | Show the current device icons, alternating between playback and recording. |
 | **Theme Based** | Use a light or dark application icon that matches the current Windows taskbar theme. |
+| **Microphone Mute State** | Show a microphone glyph that reflects the mute state of the configured mute microphone (**Windows default input** by default, or the device chosen in **Mute microphone**). The icon updates live whenever that microphone is muted or unmuted, from any source: the SoundSwitch hotkey, Windows settings or the device's own hardware mute button. |
 
 ### Double-click Action
 
