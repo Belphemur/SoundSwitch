@@ -18,16 +18,15 @@ using System.Linq;
 
 using Serilog;
 
+using SoundSwitch.Framework.NotificationManager.Notification;
 using SoundSwitch.Framework.Telemetry;
-using SoundSwitch.Localization;
 using SoundSwitch.Model;
-using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 
 /// <summary>
 /// Specialized banner manager for microphone mute notifications.
-/// Displays banners for muted microphones and removes them when unmuted.
+/// Tracks one persistent state banner per microphone, whether muted or unmuted.
 /// </summary>
 public class MicrophoneMuteBannerManager
 {
@@ -44,6 +43,23 @@ public class MicrophoneMuteBannerManager
     private static bool BannerContextUnavailable => _syncContext == null;
 
     /// <summary>
+    /// Runs a complete microphone banner operation on the UI thread, including state lookup.
+    /// </summary>
+    internal void RunOnUiThread(Action action)
+    {
+        if (BannerContextUnavailable)
+        {
+            Log.Warning("Microphone mute banner manager not initialized yet; ignoring banner operation");
+            return;
+        }
+
+        if (System.Threading.SynchronizationContext.Current == _syncContext)
+            action();
+        else
+            _syncContext.Send(_ => action(), null);
+    }
+
+    /// <summary>
     /// Updates or creates a banner when a microphone's mute state changes
     /// </summary>
     /// <param name="microphoneId">Unique identifier for the microphone</param>
@@ -58,47 +74,30 @@ public class MicrophoneMuteBannerManager
             return;
         }
 
-        _syncContext.Send(_ =>
-        {
-            if (isMuted)
-            {
-                // Create or update a banner for the muted microphone
-                ShowMuteBanner(microphoneId, microphoneName);
-            }
-            else
-            {
-                // Show temporary unmute notification and remove the banner
-                ShowTempUnmuteNotification(microphoneId, microphoneName);
-            }
-        }, null);
+        _syncContext.Send(_ => ShowStateBanner(microphoneId, microphoneName, isMuted), null);
     }
 
     /// <summary>
-    /// Shows a banner that indicates a microphone is muted
+    /// Shows the current microphone state until it is replaced or leaves scope.
     /// </summary>
     /// <param name="microphoneId">Unique identifier for the microphone</param>
     /// <param name="microphoneName">User-friendly name of the microphone</param>
-    private void ShowMuteBanner(string microphoneId, string microphoneName)
+    private void ShowStateBanner(string microphoneId, string microphoneName, bool isMuted)
     {
-        // Create banner data with very long TTL
-        var data = new BannerData
+        var data = NotificationContentBuilder.BuildMicrophoneBanner(microphoneName, isMuted);
+        data.Priority = 3;
+        data.Position = AppModel.Instance.BannerPositionImpl;
+        data.Ttl = TimeSpan.MaxValue;
+        data.Opacity = AppModel.Instance.BannerOpacityPercentage;
+        data.DisplayInfo = AppModel.Instance.BannerDisplayInfo;
+        data.OnClick = (sender, args) =>
         {
-            Priority = 3, // Higher than regular notifications
-            Image = Resources.MicrophoneOff,
-            Text = microphoneName,
-            Title = SettingsStrings.microphone_off,
-            Position = AppModel.Instance.BannerPositionImpl,
-            Opacity = AppModel.Instance.BannerOpacityPercentage,
-            Ttl = TimeSpan.MaxValue, // Effectively "infinite" until explicitly dismissed
-            CompactMode = true,
-            OnClick = (sender, args) =>
-            {
+            if (isMuted)
                 TelemetryService.TrackNotificationBanner("unmute_clicked");
-                var result = AppModel.Instance.SetMicrophoneMuteState(microphoneId, false);
-                if (result != null)
-                {
-                    TelemetryService.TrackMicMute("banner", false);
-                }
+            var result = AppModel.Instance.SetMicrophoneMuteState(microphoneId, !isMuted);
+            if (result != null)
+            {
+                TelemetryService.TrackMicMute("banner", !isMuted);
             }
         };
 
@@ -128,11 +127,10 @@ public class MicrophoneMuteBannerManager
     private void TrackBanner(string microphoneId, BannerForm banner)
     {
         _activeBanners[microphoneId] = banner;
+        banner.SizeChanged += (_, _) => RearrangeBanners();
         banner.Disposed += (_, _) =>
         {
-            // Only clear the entry while it still points at this banner: the temporary
-            // unmute notification removes its own entry before disposing the form, and
-            // that path already rearranges the survivors on Disposed.
+            // Only clear the entry while it still points at this banner.
             if (!_activeBanners.TryGetValue(microphoneId, out var tracked) || !ReferenceEquals(tracked, banner))
                 return;
 
@@ -144,52 +142,7 @@ public class MicrophoneMuteBannerManager
     }
 
     /// <summary>
-    /// Shows a temporary unmute notification and removes the mute banner
-    /// </summary>
-    /// <param name="microphoneId">Unique identifier for the microphone</param>
-    /// <param name="microphoneName">User-friendly name of the microphone</param>
-    private void ShowTempUnmuteNotification(string microphoneId, string microphoneName)
-    {
-        // Create unmute notification data
-        var unmuteBannerData = new BannerData
-        {
-            Priority = 3,
-            Image = Resources.MicrophoneOn,
-            Text = microphoneName,
-            Title = SettingsStrings.microphone_on,
-            Position = AppModel.Instance.BannerPositionImpl,
-            Opacity = AppModel.Instance.BannerOpacityPercentage,
-            Ttl = TimeSpan.FromMilliseconds(1500),
-            OnClick = (sender, args) => AppModel.Instance.SetMicrophoneMuteState(microphoneId, true),
-            CompactMode = true
-        };
-
-        // Check if we have an existing banner for this microphone
-        if (_activeBanners.TryGetValue(microphoneId, out var existingBanner))
-        {
-            // Update the existing banner
-            existingBanner.SetData(unmuteBannerData);
-
-            // Remove from our tracking dictionary
-            _activeBanners.Remove(microphoneId);
-
-            // Banner will auto-dispose after TTL expires
-            existingBanner.Disposed += (s, e) => RearrangeBanners();
-        }
-        else
-        {
-            // Create a new temporary banner
-            var newBanner = new BannerForm();
-            newBanner.SetData(unmuteBannerData);
-            newBanner.Disposed += (s, e) => RearrangeBanners();
-
-            // No need to track in _activeBanners since it's temporary
-            RearrangeBanners();
-        }
-    }
-
-    /// <summary>
-    /// Removes persistent banner that indicates a microphone is muted
+    /// Removes the persistent state banner for a microphone.
     /// </summary>
     /// <param name="microphoneId">Unique identifier for the microphone</param>
     public void RemovePersistentMuteBanner(string microphoneId)

@@ -67,6 +67,15 @@ public class BannerAppearanceTests
     }
 
     [Test]
+    public void SharedCompactIconBoxMatchesTheMicrophoneSizeAtEachScale()
+    {
+        BannerAppearance.CompactIconSize(50).Should().Be(new Size(12, 12));
+        BannerAppearance.CompactIconSize(100).Should().Be(new Size(24, 24));
+        BannerAppearance.CompactIconSize(200).Should().Be(new Size(48, 48));
+        BannerAppearance.CompactIconSize(0).Should().Be(new Size(24, 24));
+    }
+
+    [Test]
     public void IconSizeNeverCollapsesToZero()
     {
         // A zero-sized picture box would hide the icon entirely.

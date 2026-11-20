@@ -51,6 +51,7 @@ public class NotificationManagerMuteTests
         public string BannerMonitorDeviceName { get; set; }
         public Color BannerBackgroundColor { get; set; }
         public int BannerScalePercentage { get; set; }
+        public SoundSwitch.Framework.Banner.BannerStyle BannerStyle { get; set; }
 
 #pragma warning disable CS0067
         public event EventHandler<NotificationSettingsUpdatedEvent> NotificationSettingsChanged;
