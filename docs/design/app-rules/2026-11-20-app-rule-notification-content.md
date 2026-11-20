@@ -121,18 +121,20 @@ project; the four implementations (`NotificationBanner`, `NotificationWindows`,
 `NotificationSound`, `NotificationNone`) update mechanically.
 
 The hotkey path (`ApplyRuleToRunningProcesses`) notifies once per press, after
-the match loop, and reports the pair rather than any single match: the process
-identity is `matches[0]` as before, and the flow list is the pair's roles that
-resolve against the active devices. An already-applied press therefore still
-names the pair it selected, and the flow list is never empty for a press —
-`CanApplyPair` rejects a pair with no resolvable side before the loop.
-Per-match `flowsWritten` is deliberately not used there: matches can write
-different flow sets, and the banner answers "which pair is now active", not
-"what did one process move". A role whose device is unavailable is omitted,
-mirroring the switch that skips it, so the banner never claims a side it did
-not apply; each reported role names the resolved device's `NameClean`, with the
-pair's stored `NameClean` remaining the builder's fallback for a null resolved
-device. The automatic path keeps reporting only the flows actually written.
+the match loop, and reports the pair rather than any single match: identity
+from `matches[0]`, flows from the switch-time resolution kept through the
+loop — never a second resolve after it, so a device change in the gap cannot
+make the banner disagree with what the press applied. The policy is
+resolution-based: a role is named when any match resolved its endpoint at
+switch time (already-matched or failed switches included — the press did
+select the pair), and a role whose device never resolved at switch time is
+omitted, so the banner never claims a role the switch could not apply. The
+list is therefore never empty for a press (`CanApplyPair` rejects a pair with
+no resolvable side), and an already-applied press still names its pair.
+Per-match `flowsWritten` is not used: the banner answers "which pair is now
+active", not "what did one process move". Reported roles name the resolved
+device's `NameClean`; the pair's stored `NameClean` stays the builder's null
+fallback. The automatic path keeps reporting only the flows actually written.
 
 ### 6.2 Migration
 

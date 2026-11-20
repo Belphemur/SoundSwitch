@@ -230,7 +230,7 @@ namespace SoundSwitch.Services
                 // The process may have exited between enumeration and the switch.
                 try
                 {
-                    if (ApplyRuleToProcess(rule, pair, running.Pid, running.Name, running.Path, notifiedRules, "assignment", notify, out var flowsWritten))
+                    if (ApplyRuleToProcess(rule, pair, running.Pid, running.Name, running.Path, notifiedRules, "assignment", notify, out var flowsWritten, out _, out _))
                     {
                         firstMatchPath ??= running.Path;
                         firstMatchName ??= running.Name;
@@ -496,7 +496,7 @@ namespace SoundSwitch.Services
                     : IsMatch(rule, processName, processPath, windowTitle);
                 if (!matched) continue;
 
-                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true, out var flowsWritten))
+                if (ApplyRuleToProcess(rule, pair, processId, processName, processPath, notifiedRules, triggerSource, true, out var flowsWritten, out _, out _))
                 {
                     // An assignment's engine re-applies the route itself after the first write;
                     // keep that observable in the trigger telemetry (ADR �7).
@@ -514,13 +514,18 @@ namespace SoundSwitch.Services
         /// Switch the given process to the pair's devices, notify and record telemetry.
         /// Shared by the automatic (process/foreground) path and the rule hotkey.
         /// </summary>
-        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify, out IReadOnlyCollection<EDataFlow> flowsWritten)
+        private bool ApplyRuleToProcess(AppSoundRule rule, AppSoundRuleDevicePair pair, uint processId, string processName, string processPath, HashSet<Guid>? notifiedRules, string triggerSource, bool notify, out IReadOnlyCollection<EDataFlow> flowsWritten, out DeviceFullInfo? resolvedPlayback, out DeviceFullInfo? resolvedRecording)
         {
             _logger.Information("MATCH: Rule for {ProcessPattern} matched process {ProcessName} (PID: {PID})", rule.ProcessPath, processName, processId);
 
             var playbackSwitch = SwitchRuleDevice(pair, p => p.Playback, (p, v) => p.Playback = v, EDataFlow.eRender, processId);
             var recordingSwitch = SwitchRuleDevice(pair, p => p.Recording, (p, v) => p.Recording = v, EDataFlow.eCapture, processId);
             var changed = playbackSwitch.Switched || recordingSwitch.Switched;
+
+            // The switch-time resolution, handed back so the hotkey banner reuses it instead of
+            // resolving a second time after the switch (ADR §6.1: one source of truth).
+            resolvedPlayback = playbackSwitch.Resolved;
+            resolvedRecording = recordingSwitch.Resolved;
 
             var flows = new List<EDataFlow>();
             if (playbackSwitch.Switched) flows.Add(EDataFlow.eRender);
@@ -619,12 +624,20 @@ namespace SoundSwitch.Services
             }
 
             var changed = false;
+            // Switch-time resolution per role, kept through the loop: the banner reports what the
+            // press actually applied, not a second resolution that a device-change event in the gap
+            // could disagree with. `??=` unions across matches — a role the press saw available
+            // (applied, already matched or switch-failed) for any process is named.
+            DeviceFullInfo? notifyPlayback = null;
+            DeviceFullInfo? notifyRecording = null;
             foreach (var match in matches)
             {
                 try
                 {
-                    var applied = ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out var flowsWritten);
+                    var applied = ApplyRuleToProcess(rule, pair, match.ProcessId, match.ProcessName, match.ProcessPath, null, "hotkey", false, out var flowsWritten, out var resolvedPlayback, out var resolvedRecording);
                     changed |= applied;
+                    notifyPlayback ??= resolvedPlayback;
+                    notifyRecording ??= resolvedRecording;
 
                     // Only an actually written route is claimed: a repeat press that already
                     // matches writes nothing, and stamping it would create (or blank out) an
@@ -653,16 +666,13 @@ namespace SoundSwitch.Services
             // failure cannot block the cycle.
             if (rule.Notify)
             {
-                // Resolve from the same source as the switch and report the pair's available roles:
-                // the banner is feedback for which pair the press selected, so an already-applied
-                // press still names its devices. A role whose device is unavailable is omitted the
-                // same way the switch skips it — naming it would claim a route that wasn't applied.
-                var resolvedPlayback = AppRuleDeviceResolver.Resolve(pair.Playback, AppModel.Instance.AudioDeviceLister);
-                var resolvedRecording = AppRuleDeviceResolver.Resolve(pair.Recording, AppModel.Instance.AudioDeviceLister);
+                // Roles come from the switch's own resolution (kept through the loop): an
+                // already-applied press still names its devices, and a role the switch saw as
+                // unavailable is omitted the same way the switch skips it.
                 var pairFlows = new List<EDataFlow>();
-                if (resolvedPlayback != null) pairFlows.Add(EDataFlow.eRender);
-                if (resolvedRecording != null) pairFlows.Add(EDataFlow.eCapture);
-                _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessName, resolvedPlayback, resolvedRecording, pairFlows, matches[0].ProcessId);
+                if (notifyPlayback != null) pairFlows.Add(EDataFlow.eRender);
+                if (notifyRecording != null) pairFlows.Add(EDataFlow.eCapture);
+                _notificationManager.NotifyAppRuleMatched(rule, pair, matches[0].ProcessName, notifyPlayback, notifyRecording, pairFlows, matches[0].ProcessId);
             }
 
             // A single press is one activation: record telemetry once for the first match
