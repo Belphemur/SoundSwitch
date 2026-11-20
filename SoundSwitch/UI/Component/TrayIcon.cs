@@ -32,6 +32,7 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
+using SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
@@ -285,7 +286,25 @@ public sealed class TrayIcon : IDisposable
         AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
         {
             var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
+            if (iconChanger is IconChangerMuteState)
+            {
+                // The mute-state type keys off the tracked microphone's state, not the default
+                // device: the device-driven overload is a no-op for it. Re-read the live state
+                // when the default communication microphone changed so a device swap repaints.
+                if (audioChangeEvent.Device.Type == EDataFlow.eCapture && audioChangeEvent.Role == ERole.eCommunications)
+                    iconChanger.ChangeIcon(this);
+                return;
+            }
+
             iconChanger.ChangeIcon(this, audioChangeEvent.Device, (ERole)audioChangeEvent.Role);
+        };
+        AppModel.Instance.DefaultMicMuteChanged += (sender, args) =>
+        {
+            if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
+                return;
+
+            if (new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon) is IconChangerMuteState muteStateChanger)
+                muteStateChanger.ChangeIcon(this, args.IsMuted);
         };
         AppModel.Instance.NewVersionReleased += (sender, @event) =>
         {

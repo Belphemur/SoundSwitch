@@ -106,3 +106,14 @@ public class DeviceDefaultChangedEvent(DeviceFullInfo device, ERole role)
     public ERole Role { get; } = role;
     public DeviceFullInfo Device { get; } = device;
 }
+
+/// <summary>
+/// The tracked microphone (configured mute device, else the default communication input)
+/// changed its mute state.
+/// </summary>
+public class MicrophoneMuteChangedEventArgs(string deviceId, string deviceName, bool isMuted) : EventArgs
+{
+    public string DeviceId { get; } = deviceId;
+    public string DeviceName { get; } = deviceName;
+    public bool IsMuted { get; } = isMuted;
+}

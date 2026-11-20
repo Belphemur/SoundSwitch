@@ -20,5 +20,6 @@ public enum IconChanger
     Recording = 1,
     Playback = 2,
     Always = 3,
-    ThemeBased = 4
+    ThemeBased = 4,
+    MuteState = 5
 }

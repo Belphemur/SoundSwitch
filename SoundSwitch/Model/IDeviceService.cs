@@ -53,6 +53,12 @@ public interface IDeviceService
     /// </summary>
     event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
 
+    /// <summary>
+    /// The mute state of the tracked microphone (configured mute device, else the
+    /// default communication input) changed.
+    /// </summary>
+    event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
+
     bool SelectDevice(DeviceFullInfo device);
     bool UnselectDevice(DeviceFullInfo device);
     bool SetActiveDevice(DeviceInfo device);

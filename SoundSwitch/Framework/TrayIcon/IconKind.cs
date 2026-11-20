@@ -19,5 +19,6 @@ internal enum IconKind
     Speaker,
     Headphone,
     Headset,
-    Microphone
+    Microphone,
+    MicrophoneMuted
 }

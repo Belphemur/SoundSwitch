@@ -187,6 +187,15 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Microphone Mute State.
+        /// </summary>
+        internal static string iconChanger_muteState {
+            get {
+                return ResourceManager.GetString("iconChanger.muteState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No devices selected.
         /// </summary>
         internal static string noDevicesSelected {
