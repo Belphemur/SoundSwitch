@@ -130,6 +130,28 @@ public class CompositionRootTests
         services.Should().OnlyContain(descriptor => descriptor.Lifetime == ServiceLifetime.Singleton);
     }
 
+    /// <summary>
+    ///     Review regression (Kody, High): the tray icon constructor must not
+    ///     dereference the profile manager — the profile manager's DI factory resolves
+    ///     the tray icon for its ShowError delegate, so an eager read re-entered
+    ///     Lazy&lt;ProfileManager&gt; mid-construction and crashed startup. The tray icon
+    ///     resolves first, the profile manager after it, and both resolve once.
+    /// </summary>
+    [Test]
+    [Apartment(ApartmentState.STA)]
+    public void TrayIcon_Resolves_BeforeAndWithoutTheProfileManager()
+    {
+        using var provider = CompositionRoot.BuildServiceProvider();
+
+        var trayIcon = provider.GetRequiredService<TrayIcon>();
+        trayIcon.Should().NotBeNull();
+        provider.GetRequiredService<TrayIcon>().Should().BeSameAs(trayIcon,
+            "the tray icon must be cached before the profile manager factory asks for it");
+
+        var profileManager = provider.GetRequiredService<ProfileManager>();
+        profileManager.Should().NotBeNull("the profile manager resolves after the tray icon is cached");
+    }
+
     [Test]
     public void TheFourSubInterfaces_ResolveToTheirSingleImplementations()
     {

@@ -120,7 +120,11 @@ public sealed class TrayIcon : IDisposable
         UpdateIcon();
         _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
         _tooltipInfoManager = new TooltipInfoManager(NotifyIcon, _deviceService);
-        _profileTrayIconBuilder = new ProfileTrayIconBuilder(_infrastructure.ProfileManager, _infrastructure.AudioDeviceLister);
+        // Pass the infrastructure façade itself, not its ProfileManager: the manager's DI
+        // factory resolves this tray icon (ShowError), so dereferencing it here would
+        // re-enter Lazy<ProfileManager> mid-construction. The builder resolves it lazily
+        // when the menu is built, after the bootstrapper constructed both.
+        _profileTrayIconBuilder = new ProfileTrayIconBuilder(_infrastructure);
         _iconDoubleClickFactory = new IconDoubleClickFactory(_deviceService, _infrastructure);
 
         SetUpdateMenuItem(AppConfigs.Configuration.UpdateMode);
