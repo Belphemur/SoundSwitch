@@ -85,6 +85,8 @@ public class NotificationManagerMuteTests
 #pragma warning disable CS0067
         public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
         public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
+        public event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
+        public event EventHandler MuteTargetChanged;
 #pragma warning restore CS0067
 
         public bool SelectDevice(DeviceFullInfo device) => false;

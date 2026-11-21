@@ -49,6 +49,8 @@ public partial class AppModel
 
     public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
     public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
+    public event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
+    public event EventHandler MuteTargetChanged;
 
     #region Selected devices
 
@@ -118,9 +120,18 @@ public partial class AppModel
     /// <param name="payload">The volume changed payload</param>
     private void HandleMicrophoneMuteChanged(DeviceVolumeChangedPayload payload)
     {
+        var muteTargetId = GetConfiguredOrDefaultMuteDeviceId();
+
+        // The mute-state tray icon keys off the tracked microphone. Raise independently of
+        // the banner scope below so every tracked-mic transition repaints the icon.
+        if (IsTrackedMuteDevice(payload.Device.Id, muteTargetId))
+        {
+            DefaultMicMuteChanged?.Invoke(this, new MicrophoneMuteChangedEventArgs(payload.Device.Id, payload.Device.NameClean, payload.IsMuted));
+        }
+
         // The "only selected input" option limits mute banners. Sound and toast
         // notifications keep reporting every microphone.
-        if (_notificationManager.MicrophoneMuteNotificationIsBanner && !IsMuteBannerInScope(payload.Device.Id))
+        if (_notificationManager.MicrophoneMuteNotificationIsBanner && !IsMuteBannerInScope(payload.Device.Id, muteTargetId))
             return;
 
         Log.Information("Microphone {DeviceName} mute state changed from {WasMuted} to {IsMuted}",
@@ -207,16 +218,20 @@ public partial class AppModel
     /// <summary>
     /// Whether mute banners may be shown for the given recording endpoint.
     /// </summary>
-    private bool IsMuteBannerInScope(string deviceId) =>
-        IsMuteBannerInScope(deviceId, LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null);
-
     private bool IsMuteBannerInScope(string deviceId, string targetId)
     {
         if (!LimitMuteBannersToTarget) return true;
 
-        return !string.IsNullOrEmpty(targetId) &&
-               string.Equals(deviceId, targetId, StringComparison.OrdinalIgnoreCase);
+        return IsTrackedMuteDevice(deviceId, targetId);
     }
+
+    /// <summary>
+    /// Whether the given endpoint is the resolved mute target. Endpoint ids are matched
+    /// case-insensitively, like every other device-id resolution.
+    /// </summary>
+    internal static bool IsTrackedMuteDevice(string deviceId, string targetId) =>
+        !string.IsNullOrEmpty(targetId) &&
+        string.Equals(deviceId, targetId, StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Reconciles the persistent mute banners with the current mute target and banner scope:

@@ -32,6 +32,7 @@ using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Profile.UI;
 using SoundSwitch.Framework.TrayIcon.IconChanger;
+using SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 using SoundSwitch.Framework.Updater;
@@ -285,7 +286,35 @@ public sealed class TrayIcon : IDisposable
         AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
         {
             var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
+            if (iconChanger is IconChangerMuteState)
+            {
+                // The mute-state type keys off the tracked microphone's state, not the default
+                // device: the device-driven overload is a no-op for it. Re-read the live state
+                // when the default communication microphone changed so a device swap repaints.
+                if (audioChangeEvent.Device.Type == EDataFlow.eCapture && audioChangeEvent.Role == ERole.eCommunications)
+                    QueueMuteStateIconUpdate();
+                return;
+            }
+
             iconChanger.ChangeIcon(this, audioChangeEvent.Device, (ERole)audioChangeEvent.Role);
+        };
+        AppModel.Instance.DefaultMicMuteChanged += (sender, args) =>
+        {
+            if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
+                return;
+
+            // Mute events are raised from thread-pool tasks (DeviceFullInfo fires them
+            // via Task.Run), so rapid toggles can be handled out of order.
+            QueueMuteStateIconUpdate();
+        };
+        AppModel.Instance.MuteTargetChanged += (sender, args) =>
+        {
+            if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
+                return;
+
+            // The tracked microphone changed (configured target edited, or a device
+            // arrival/removal re-resolved it, possibly on a worker thread).
+            QueueMuteStateIconUpdate();
         };
         AppModel.Instance.NewVersionReleased += (sender, @event) =>
         {
@@ -308,12 +337,30 @@ public sealed class TrayIcon : IDisposable
         };
         WindowsAPIAdapter.SystemThemeChanged += (_, _) =>
         {
-            if (AppConfigs.Configuration.SwitchIcon == IconChanger.ThemeBased)
+            if (AppConfigs.Configuration.SwitchIcon is IconChanger.ThemeBased or IconChanger.MuteState)
             {
                 UpdateIcon();
             }
         };
         NotifyIcon.MouseMove += (sender, args) => { _tooltipInfoManager.SetIconText(); };
+    }
+
+    /// <summary>
+    /// Queues a mute-state icon repaint. The live mute state is re-read on the UI thread
+    /// together with the paint, and the icon mode is re-checked there: whatever order the
+    /// triggering events arrive in (thread-pool mute callbacks, resume workers, settings
+    /// edits) and whatever the user does while they are in flight, the last queued update
+    /// always paints the tracked microphone's current state for the selected icon mode.
+    /// </summary>
+    private void QueueMuteStateIconUpdate()
+    {
+        _context.Post(_ =>
+        {
+            if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
+                return;
+
+            new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
+        }, null);
     }
 
     private void NewReleaseAvailable(object sender, UpdateChecker.NewReleaseEvent newReleaseEvent)

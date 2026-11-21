@@ -82,6 +82,7 @@ internal static class ThemeIcons
             "themeIconHeadphone" + suffix,
             "themeIconHeadset" + suffix,
             "themeIconMicrophone" + suffix,
+            "themeIconMicMuted" + suffix,
         };
 
         var handles = new IconHandle[resourceNames.Length];
@@ -110,7 +111,7 @@ internal static class ThemeIcons
     {
         lock (FallbackLock)
         {
-            if (kind == IconKind.Microphone)
+            if (kind is IconKind.Microphone or IconKind.MicrophoneMuted)
             {
                 _informationFallback ??= IconExtractor.CreatePermanent((Icon) SystemIcons.Information.Clone());
                 return _informationFallback;

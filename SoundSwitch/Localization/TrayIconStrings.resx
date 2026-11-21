@@ -183,6 +183,9 @@
   <data name="iconChanger.recording" xml:space="preserve">
     <value>Recording</value>
   </data>
+  <data name="iconChanger.muteState" xml:space="preserve">
+    <value>Microphone Mute State</value>
+  </data>
   <data name="community" xml:space="preserve">
     <value>Community</value>
   </data>
