@@ -94,9 +94,12 @@ public class CompositionRootTests
         var services = new ServiceCollection();
         CompositionRoot.RegisterServices(services);
 
-        // Process-level singletons registered for container-owned teardown.
+        // Process-level singletons registered for container-owned teardown. AudioSwitcher
+        // is not disposable, so the instance overload suffices; the disposable
+        // MMNotificationClient uses the factory overload so the container captures and
+        // disposes the resolved instance (MS.DI never disposes instance registrations).
         SingletonDescriptor(services, typeof(AudioSwitcher)).ImplementationInstance.Should().BeSameAs(AudioSwitcher.Instance);
-        SingletonDescriptor(services, typeof(MMNotificationClient)).ImplementationInstance.Should().BeSameAs(MMNotificationClient.Instance);
+        SingletonDescriptor(services, typeof(MMNotificationClient)).ImplementationFactory.Should().NotBeNull("the disposable MM client must be factory-registered so provider.Dispose() disposes it");
 
         // The cached audio device lister and the shared error event.
         SingletonDescriptor(services, typeof(IAudioDeviceLister)).ImplementationFactory.Should().NotBeNull("the lister is factory-registered with the active+unplugged mask");
@@ -181,9 +184,13 @@ public class CompositionRootTests
         var provider = CompositionRoot.BuildServiceProvider();
         // Resolving the non-UI subset: the manager ctors must be constructible without a
         // message pump or audio registration, since the container constructs them in
-        // dependency order.
+        // dependency order. The MM notification client must be the process singleton
+        // captured through the factory registration, so provider.Dispose() unregisters
+        // its native audio callback (MS.DI never disposes instance-overload registrations).
         provider.GetRequiredService<IAudioDeviceLister>().Should().NotBeNull();
         provider.GetRequiredService<NotificationManager>().Should().NotBeNull();
+        provider.GetRequiredService<MMNotificationClient>().Should().BeSameAs(MMNotificationClient.Instance,
+            "the factory registration resolves the process singleton so the container captures it for disposal");
 
         var act = () => provider.Dispose();
 
@@ -251,6 +258,7 @@ public class CompositionRootTests
             deviceService,
             settingsService,
             notificationManager,
+            MMNotificationClient.Instance,
             new FakeInfrastructure(),
             new Lazy<TrayIcon>(() => throw new InvalidOperationException("the UI-thread managers are not constructed by this test")),
             new Lazy<ProfileManager>(() => throw new InvalidOperationException("the UI-thread managers are not constructed by this test")),

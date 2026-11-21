@@ -56,6 +56,7 @@ public sealed class AppBootstrapper : IDisposable
     private readonly DeviceService _deviceService;
     private readonly SettingsService _settingsService;
     private readonly NotificationManager _notificationManager;
+    private readonly MMNotificationClient _mmNotificationClient;
     private readonly IAppInfrastructure _infrastructure;
     private readonly Lazy<TrayIcon> _trayIcon;
     private readonly Lazy<ProfileManager> _profileManager;
@@ -67,6 +68,7 @@ public sealed class AppBootstrapper : IDisposable
         DeviceService deviceService,
         SettingsService settingsService,
         NotificationManager notificationManager,
+        MMNotificationClient mmNotificationClient,
         IAppInfrastructure infrastructure,
         Lazy<TrayIcon> trayIcon,
         Lazy<ProfileManager> profileManager,
@@ -76,6 +78,11 @@ public sealed class AppBootstrapper : IDisposable
         _deviceService = deviceService;
         _settingsService = settingsService;
         _notificationManager = notificationManager;
+        // Holding the resolved instance makes the container capture it: factory-created
+        // singletons are disposed by provider.Dispose(), unregistering the native audio
+        // notification callback at exit (the instance registration was never disposed
+        // by MS.DI — review finding on PR #2622).
+        _mmNotificationClient = mmNotificationClient;
         _infrastructure = infrastructure;
         _trayIcon = trayIcon;
         _profileManager = profileManager;
@@ -127,7 +134,7 @@ public sealed class AppBootstrapper : IDisposable
         // The cached lister must see real devices before the notification client
         // registers, so the first reconcile observes the live set.
         _audioDeviceLister.Refresh(CancellationToken.None);
-        MMNotificationClient.Instance.Register();
+        _mmNotificationClient.Register();
 
         // === The former InitializeMain, same statement order ===
         JobScheduler.Instance.ScheduleJob(new ProcessNotificationEventsJob(_audioDeviceLister));
@@ -220,7 +227,7 @@ public sealed class AppBootstrapper : IDisposable
             {
                 Log.Information("System resumed from sleep, refreshing audio devices and reconciling default device");
                 _audioDeviceLister.Refresh(CancellationToken.None);
-                MMNotificationClient.Instance.ReconcileDefaultDevices();
+                _mmNotificationClient.ReconcileDefaultDevices();
             }
             catch (Exception ex)
             {

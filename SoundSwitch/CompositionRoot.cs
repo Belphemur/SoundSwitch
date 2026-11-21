@@ -49,8 +49,13 @@ public static class CompositionRoot
         // Process-level singletons, registered so the container owns their teardown.
         // Their call sites keep using the static instances; JobScheduler and
         // QuickMenuManager deliberately stay outside the graph (ADR non-goals).
+        // AudioSwitcher is not disposable, so the instance overload suffices; MS.DI
+        // never disposes developer-supplied instances, so the disposable
+        // MMNotificationClient MUST use the factory overload — a resolved
+        // factory-created instance is captured and disposed by provider.Dispose()
+        // (verified empirically against MS.DI 11.0.0 in the PR review).
         services.AddSingleton(AudioSwitcher.Instance);
-        services.AddSingleton(MMNotificationClient.Instance);
+        services.AddSingleton(_ => MMNotificationClient.Instance);
 
         // The cached audio device lister (constructed with the same device-state
         // mask the pre-refactor context used) and the application error event.
