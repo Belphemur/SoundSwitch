@@ -41,6 +41,7 @@ public partial class UpsertProfileExtended : Form
     private readonly TriggerFactory _triggerFactory;
     private ToolTip _restoreDeviceToolTip;
     private bool _advancedExpanded;
+    private Size? _collapsedMinimumSize;
 
     /// <summary>
     ///     Runtime construction with the model services (Q4 ADR: forms take services via
@@ -203,6 +204,12 @@ public partial class UpsertProfileExtended : Form
         var gap = advancedPanel.Top - advancedToggleButton.Bottom;
         var delta = _advancedExpanded ? advancedPanel.Height + gap : -(advancedPanel.Height + gap);
 
+        // Compute the target BEFORE touching MinimumSize: assigning a minimum above the
+        // current height resizes the form at once, so reading ClientSize afterwards
+        // would apply the delta a second time and every expand/collapse cycle would
+        // leave the form one panel-height taller (review round 1).
+        var targetClientHeight = ClientSize.Height + delta;
+
         SuspendLayout();
         try
         {
@@ -214,13 +221,18 @@ public partial class UpsertProfileExtended : Form
 
             if (IsHandleCreated)
             {
-                // Keep the minimum size in step with the expanded content, the same
-                // way UpsertAppSoundLockRule guards its mode heights.
-                var frameHeight = Math.Max(0, Size.Height - ClientSize.Height);
-                MinimumSize = new Size(MinimumSize.Width, ClientSize.Height + delta + frameHeight);
+                // The minimum follows the state's layout need, derived from the designer
+                // minimum (captured before the first expansion) rather than the current
+                // client height, so a user-resized window cannot ratchet it upward. It is
+                // set BEFORE the ClientSize change: a still-raised minimum would clamp
+                // the collapse back to the expanded height.
+                _collapsedMinimumSize ??= MinimumSize;
+                MinimumSize = _advancedExpanded
+                    ? new Size(_collapsedMinimumSize.Value.Width, _collapsedMinimumSize.Value.Height + advancedPanel.Height + gap)
+                    : _collapsedMinimumSize.Value;
             }
 
-            ClientSize = new Size(ClientSize.Width, ClientSize.Height + delta);
+            ClientSize = new Size(ClientSize.Width, targetClientHeight);
             triggerBox.Top = _advancedExpanded ? advancedPanel.Bottom + gap : advancedPanel.Top;
             triggerBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
         }
