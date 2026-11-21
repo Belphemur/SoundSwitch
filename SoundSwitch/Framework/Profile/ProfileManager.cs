@@ -43,6 +43,7 @@ public class ProfileManager
 
     private Profile? _steamProfile;
     private Profile? _forcedProfile;
+    private readonly ProfileVolumeApplier _volumeApplier;
 
     /// <summary>
     /// Serializes profile applications. Trigger events reach this manager unsynchronized on
@@ -94,6 +95,7 @@ public class ProfileManager
         _triggerFactory = triggerFactory;
         _notificationManager = notificationManager;
         _profileHotkeyManager = new(this, appSettings, hotkeyRegistry);
+        _volumeApplier = new ProfileVolumeApplier(audioSwitcher);
         _logger = Log.ForContext(GetType());
     }
 
@@ -442,6 +444,10 @@ public class ProfileManager
                     continue;
                 }
 
+                // Volume preset (ADR Decision 4): applied per resolved device, best-effort —
+                // a failure is logged inside the applier and never fails the switch.
+                _volumeApplier.Apply(profile, deviceToUse);
+
                 foreach (var role in device.Roles)
                 {
                     _audioSwitcher.SwitchProcessTo(
@@ -504,6 +510,10 @@ public class ProfileManager
                     missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
                     continue;
                 }
+
+                // Volume preset (ADR Decision 4): applied per resolved device, best-effort —
+                // a failure is logged inside the applier and never fails the switch.
+                _volumeApplier.Apply(profile, deviceToUse);
 
                 foreach (var role in device.Roles)
                 {
