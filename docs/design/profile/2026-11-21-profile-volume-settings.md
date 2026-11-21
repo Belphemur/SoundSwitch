@@ -120,8 +120,13 @@ UI-only phase landed on `feature/profile-volume` before implementation
 (owner rule: mockup first): model + serialization tests (`c5cc67c8`),
 collapsed advanced section in `UpsertProfileExtended` (`f0bd7992`), capture
 tooling (`fc134e33`). Real WinForms renders captured and verified:
-`artifacts/mockup-default.png` (collapsed — form above the disclosure row
-pixel-identical to pre-change baseline) and `artifacts/mockup-expanded.png`
-(playback checked at 35%, recording checked at 80%). One deviation from the
-ADR sketch: the stored range is the full 0–100 (`0 <= volume <= 100`),
-not `0 < volume <= 100` — folded into Decision 5 above.
+
+| State | Image |
+| --- | --- |
+| Collapsed default (form above the disclosure row pixel-identical to the pre-change baseline) | ![Collapsed](mockup-default.png) |
+| Advanced expanded (playback checked at 35%, recording checked at 80%) | ![Expanded](mockup-expanded.png) |
+
+One deviation from the ADR sketch: the stored range is the full 0–100
+(`0 <= volume <= 100`), not `0 < volume <= 100` — folded into Decision 5
+above. The 710×620 capture size is the VM's basic display adapter clamp, not
+the form's real size on a normal display.
