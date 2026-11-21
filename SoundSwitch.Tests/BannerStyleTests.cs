@@ -96,7 +96,7 @@ public class BannerStyleTests
     {
         var device = new DeviceInfo("Test microphone (USB Audio)", "mic", EDataFlow.eCapture, false, DateTime.UnixEpoch);
 
-        AppModel.GetMicrophoneBannerName(device).Should().Be("Test microphone");
+        DeviceService.GetMicrophoneBannerName(device).Should().Be("Test microphone");
         device.NameClean.Should().Be("Test microphone (USB Audio)");
     }
 

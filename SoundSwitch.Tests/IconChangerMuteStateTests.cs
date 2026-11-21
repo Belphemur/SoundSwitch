@@ -66,6 +66,6 @@ public class IconChangerMuteStateTests
     [TestCase("id.1", "", false)]
     public void IsTrackedMuteDevice_FiltersToResolvedTarget(string deviceId, string targetId, bool expected)
     {
-        AppModel.IsTrackedMuteDevice(deviceId, targetId).Should().Be(expected);
+        DeviceService.IsTrackedMuteDevice(deviceId, targetId).Should().Be(expected);
     }
 }

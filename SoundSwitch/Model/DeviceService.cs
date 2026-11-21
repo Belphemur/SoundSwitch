@@ -16,20 +16,73 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SoundSwitch.Audio.Manager.Interop.Enum;
+using System.Reactive.Linq;
+
 using Serilog;
+
 using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Microphone;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
+using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Services;
 
 namespace SoundSwitch.Model;
 
-public partial class AppModel
+/// <summary>
+///     Audio device operations: selection, cycling, microphone mute control, the
+///     mute-target resolution chain and the persistent mute-banner reconcile.
+///     Extracted from the AppModel.DeviceService and AppModel.AppSettings partials;
+///     owns the state previously shared across them.
+/// </summary>
+public class DeviceService : IDeviceService
 {
+    private readonly ErrorEvents _errorEvents;
+    private readonly NotificationManager _notificationManager;
+    private readonly IAudioDeviceLister _audioDeviceLister;
+    private readonly DeviceCyclerManager _deviceCyclerManager;
+    private readonly MicrophoneMuteToggler _microphoneMuteToggler;
+
+    private bool _initialized;
+    private DeviceCollection<DeviceInfo> _selectedDevices;
+
+    // The default capture endpoint is resolved with a COM call; microphone mute events are
+    // frequent, so cache it and invalidate whenever the default or the device list changes.
+    // Invalidation and publication share this lock so a lookup that started before an event
+    // cannot publish the former default after the cache was invalidated.
+    private readonly object _defaultMuteDeviceIdLock = new();
+    private string _defaultMuteDeviceId;
+    private bool _defaultMuteDeviceIdValid;
+
+    public DeviceService(IAudioDeviceLister audioDeviceLister,
+        ErrorEvents errorEvents,
+        NotificationManager notificationManager,
+        SettingsService settingsService,
+        NotificationSettingsService notificationSettingsService)
+    {
+        _audioDeviceLister = audioDeviceLister;
+        _errorEvents = errorEvents;
+        _notificationManager = notificationManager;
+        _deviceCyclerManager = new DeviceCyclerManager();
+        _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance);
+
+        // The settings services are built before the device service (they are usable before
+        // InitializeMain) and ask it — the reconcile owner — to react to mute-banner-relevant
+        // changes. Same reaction points and order as the pre-refactor setters.
+        settingsService.MuteRecordingDeviceChanged += (_, _) =>
+        {
+            RefreshMicrophoneMuteBanners();
+            MuteTargetChanged?.Invoke(this, EventArgs.Empty);
+        };
+        settingsService.LimitMuteBannersToTargetChanged += (_, _) => RefreshMicrophoneMuteBanners();
+        notificationSettingsService.MuteBannerReconciliationRequested += (_, _) => RefreshMicrophoneMuteBanners();
+    }
+
     public DeviceCollection<DeviceInfo> SelectedDevices
     {
         get
@@ -42,15 +95,62 @@ public partial class AppModel
     }
 
     public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices =>
-        AudioDeviceLister?.GetDevices(EDataFlow.eRender, EDeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
+        _audioDeviceLister.GetDevices(EDataFlow.eRender, EDeviceState.Active).IntersectWith(SelectedDevices);
 
     public IEnumerable<DeviceFullInfo> AvailableRecordingDevices =>
-        AudioDeviceLister?.GetDevices(EDataFlow.eCapture, EDeviceState.Active).IntersectWith(SelectedDevices) ?? Enumerable.Empty<DeviceFullInfo>();
+        _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active).IntersectWith(SelectedDevices);
 
     public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
     public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
     public event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
     public event EventHandler MuteTargetChanged;
+
+    /// <summary>
+    ///     Subscribes the device lister's event streams. Called at the exact
+    ///     pre-refactor point of the startup sequence (InitializeMain).
+    /// </summary>
+    internal void SubscribeAudioDeviceEvents()
+    {
+        _audioDeviceLister.DefaultDeviceChanged.Subscribe((@event) =>
+        {
+            if (@event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
+            {
+                lock (_defaultMuteDeviceIdLock)
+                    _defaultMuteDeviceIdValid = false;
+            }
+
+            // Refresh on every communications-input change: with a configured target that is
+            // available the result is unchanged, and when it is unavailable the mute action falls
+            // back to the default input, whose banners must follow the new default.
+            if (_initialized && AppConfigs.Configuration.LimitMuteBannersToTarget &&
+                @event.Role == ERole.eCommunications && @event.Device.Type == EDataFlow.eCapture)
+                RefreshMicrophoneMuteBanners();
+
+            DefaultDeviceChanged?.Invoke(this, new DeviceDefaultChangedEvent(@event.Device, @event.Role));
+        });
+
+        // Device arrival/removal changes which microphone the configured target resolves to
+        // (and whether it resolves at all), so reconcile the persistent mute banners too.
+        _audioDeviceLister.DeviceListRefreshed.Subscribe(_ =>
+        {
+            lock (_defaultMuteDeviceIdLock)
+                _defaultMuteDeviceIdValid = false;
+            if (_initialized)
+                RefreshMicrophoneMuteBanners();
+            // Arrival/removal can also change which microphone the mute actions target;
+            // the mute-state tray icon re-reads the live state to follow it.
+            MuteTargetChanged?.Invoke(this, EventArgs.Empty);
+        });
+
+        // Subscribe to volume change events for microphones
+        _audioDeviceLister.DeviceVolumeChanged
+            .Where(payload =>
+                // Only listen for recording devices (microphones)
+                payload.Device.Type == EDataFlow.eCapture &&
+                // Only care about mute changes
+                payload.MuteChanged)
+            .Subscribe(HandleMicrophoneMuteChanged);
+    }
 
     #region Selected devices
 
@@ -156,10 +256,10 @@ public partial class AppModel
     /// <returns>The active device, or null when no target is configured or it is unavailable.</returns>
     private DeviceFullInfo? ResolveMuteTarget()
     {
-        var stored = MuteRecordingDevice;
-        if (stored == null || AudioDeviceLister == null) return null;
+        var stored = AppConfigs.Configuration.MuteRecordingDevice;
+        if (stored == null || _audioDeviceLister == null) return null;
 
-        var resolved = AppRuleDeviceResolver.Resolve(stored, AudioDeviceLister);
+        var resolved = AppRuleDeviceResolver.Resolve(stored, _audioDeviceLister);
         if (resolved == null) return null;
         // Heal the stored snapshot when the endpoint id or name changed (e.g. after a driver
         // update), so the next lookup stays exact. Write the config directly to avoid
@@ -187,7 +287,7 @@ public partial class AppModel
         var target = ResolveMuteTarget();
         if (target != null) return target.Id;
 
-        var stored = MuteRecordingDevice;
+        var stored = AppConfigs.Configuration.MuteRecordingDevice;
         if (stored != null)
         {
             Log.Warning("Configured mute microphone {DeviceName} ({DeviceId}) is unavailable; using the Windows default input",
@@ -220,7 +320,7 @@ public partial class AppModel
     /// </summary>
     private bool IsMuteBannerInScope(string deviceId, string targetId)
     {
-        if (!LimitMuteBannersToTarget) return true;
+        if (!AppConfigs.Configuration.LimitMuteBannersToTarget) return true;
 
         return IsTrackedMuteDevice(deviceId, targetId);
     }
@@ -238,16 +338,16 @@ public partial class AppModel
     /// banners for microphones that left the scope are dismissed and in-scope microphones
     /// whose current state uses Persistent get their banner back.
     /// </summary>
-    private void RefreshMicrophoneMuteBanners()
+    internal void RefreshMicrophoneMuteBanners()
     {
-        if (!_initialized || AudioDeviceLister == null) return;
+        if (!_initialized) return;
 
         _notificationManager.SyncMuteBanners(() =>
         {
-            var targetId = LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
+            var targetId = AppConfigs.Configuration.LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
             // Read the lister's cached states on the UI thread when applying the refresh.
             // Capturing them before dispatch could overwrite a newer live mute event.
-            return AudioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
+            return _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
                 .Where(device => IsMuteBannerInScope(device.Id, targetId))
                 .Select(device => (device.Id, GetMicrophoneBannerName(device), device.IsMuted))
                 .ToList();
@@ -260,14 +360,14 @@ public partial class AppModel
     /// Toggles the configured mute microphone's state, or the Windows default input.
     /// </summary>
     /// <remarks>
-    /// If no default microphone is found or the operation fails, the method invokes the <c>ErrorTriggered</c> event and logs an error; on success it logs the new mute state.
+    /// If no default microphone is found or the operation fails, the method raises the application error event and logs an error; on success it logs the new mute state.
     /// </remarks>
     public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute()
     {
         var result = _microphoneMuteToggler.ToggleMute(GetConfiguredOrDefaultMuteDeviceId());
         if (result == null)
         {
-            ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
+            _errorEvents.Raise(new Exception("No mic found or unable to toggle mute state"));
             Log.Error("No mic found or unable to toggle mute state");
         }
         else
@@ -303,7 +403,7 @@ public partial class AppModel
         var result = _microphoneMuteToggler.SetMicrophoneMuteState(deviceId, muteState);
         if (result == null)
         {
-            ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to toggle mute state")));
+            _errorEvents.Raise(new Exception("No mic found or unable to toggle mute state"));
         }
         return result;
     }
@@ -318,7 +418,7 @@ public partial class AppModel
         var result = _microphoneMuteToggler.SetConfiguredMuteState(muteState, GetConfiguredOrDefaultMuteDeviceId());
         if (result == null)
         {
-            ErrorTriggered?.Invoke(this, new ExceptionEvent(new Exception("No mic found or unable to set mute state")));
+            _errorEvents.Raise(new Exception("No mic found or unable to set mute state"));
         }
         return result;
     }
@@ -339,7 +439,7 @@ public partial class AppModel
         }
         catch (Exception ex)
         {
-            ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
+            _errorEvents.Raise(ex);
         }
 
         return false;
@@ -347,8 +447,8 @@ public partial class AppModel
 
     /// <summary>
     ///     Cycles the active device to the next device. Returns true if succesfully switched (at least
-    ///     as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
-    ///     if there are no devices configured.
+    /// as far as we can tell), returns false if could not successfully switch. Throws NoDevicesException
+    /// if there are no devices configured.
     /// </summary>
     public bool CycleActiveDevice(EDataFlow type)
     {
@@ -358,11 +458,69 @@ public partial class AppModel
         }
         catch (Exception exception)
         {
-            ErrorTriggered?.Invoke(this, new ExceptionEvent(exception));
+            _errorEvents.Raise(exception);
         }
 
         return false;
     }
 
     #endregion
+
+    /// <summary>
+    /// Marks the startup sequence complete: mute-banner reconciles that were suppressed
+    /// during startup now run. Flipped at the exact pre-refactor point of InitializeMain.
+    /// </summary>
+    internal void MarkInitialized() => _initialized = true;
+
+    /// <summary>
+    /// Marks the model disposed: mute-banner reconciles are suppressed again, as before
+    /// the refactor. Flipped by the façade's Dispose at the exact pre-refactor point.
+    /// </summary>
+    internal void MarkDeinitialized() => _initialized = false;
+
+    /// <summary>
+    /// Handles hotkey press events and performs the configured action for playback, recording, or mute hotkeys.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">Key press event data whose <c>HotKey</c> is checked; unrelated hotkeys are ignored.</param>
+    internal void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
+    {
+        if (e.HotKey != AppConfigs.Configuration.PlaybackHotKey
+            && e.HotKey != AppConfigs.Configuration.RecordingHotKey
+            && e.HotKey != AppConfigs.Configuration.MuteRecordingHotKey)
+        {
+            Log.Debug("Not the registered Hotkeys {hotkeys}", e.HotKey);
+            return;
+        }
+
+        try
+        {
+            if (e.HotKey == AppConfigs.Configuration.PlaybackHotKey)
+            {
+                TelemetryService.AddBreadcrumb("hotkey", "PlaybackHotKey pressed");
+                CycleActiveDevice(EDataFlow.eRender);
+                TelemetryService.TrackPlaybackSwitch("hotkey");
+            }
+            else if (e.HotKey == AppConfigs.Configuration.RecordingHotKey)
+            {
+                TelemetryService.AddBreadcrumb("hotkey", "RecordingHotKey pressed");
+                CycleActiveDevice(EDataFlow.eCapture);
+                TelemetryService.TrackRecordingSwitch("hotkey");
+            }
+            else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
+            {
+                Log.Information("Mute hotkey pressed: {hotkey}", e.HotKey);
+                TelemetryService.AddBreadcrumb("hotkey", "MuteRecordingHotKey pressed");
+                var micResult = ToggleMicrophoneMute();
+                if (micResult != null)
+                {
+                    TelemetryService.TrackMicMute("hotkey", micResult.Value.IsMuted);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorEvents.Raise(ex);
+        }
+    }
 }

@@ -15,14 +15,15 @@
 
 using System;
 using System.Threading;
-using SoundSwitch.Audio.Manager.Interop.Enum;
+
 using Serilog;
+
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.Telemetry;
-using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.Theme;
+using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.Updater.Job;
@@ -33,8 +34,23 @@ using SoundSwitch.Localization.Factory;
 
 namespace SoundSwitch.Model;
 
-public partial class AppModel
+/// <summary>
+///     Persisted application settings: a thin façade over <see cref="AppConfigs.Configuration" />
+///     (the single settings store), plus the hotkey registration and the update checker.
+///     Extracted from the AppModel.AppSettings partial.
+/// </summary>
+public class SettingsService : IAppSettings
 {
+    private readonly ErrorEvents _errorEvents;
+    private IUpdateChecker _updateChecker;
+    private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
+
+    public SettingsService(ErrorEvents errorEvents)
+    {
+        _errorEvents = errorEvents;
+        _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
+    }
+
     public DeviceInfo MuteRecordingDevice
     {
         get => AppConfigs.Configuration.MuteRecordingDevice;
@@ -47,8 +63,9 @@ public partial class AppModel
 
             AppConfigs.Configuration.MuteRecordingDevice = value;
             AppConfigs.Configuration.Save();
-            RefreshMicrophoneMuteBanners();
-            MuteTargetChanged?.Invoke(this, EventArgs.Empty);
+            // The device service owns the mute-banner reconcile and the mute-target
+            // notification; the pre-refactor setter invoked them directly, in this order.
+            MuteRecordingDeviceChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -60,7 +77,7 @@ public partial class AppModel
             if (AppConfigs.Configuration.LimitMuteBannersToTarget == value) return;
             AppConfigs.Configuration.LimitMuteBannersToTarget = value;
             AppConfigs.Configuration.Save();
-            RefreshMicrophoneMuteBanners();
+            LimitMuteBannersToTargetChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -75,7 +92,7 @@ public partial class AppModel
     }
 
     /// <summary>
-    /// Beta or Stable channel.
+    ///     Beta or Stable channel.
     /// </summary>
     public bool IncludeBetaVersions
     {
@@ -203,9 +220,30 @@ public partial class AppModel
 
     public event EventHandler<UpdateMode> UpdateModeChanged;
 
+    /// <summary>
+    ///     The update checker found a newer release than the installed version.
+    /// </summary>
+    public event EventHandler<NewReleaseAvailableEvent> NewVersionReleased;
+
     #endregion
 
-    private void InitUpdateChecker()
+    /// <summary>
+    ///     The configured mute target changed. The device service reacts by reconciling
+    ///     the persistent mute banners and notifying the mute-target followers.
+    /// </summary>
+    internal event EventHandler MuteRecordingDeviceChanged;
+
+    /// <summary>
+    ///     The banner-scope setting changed. The device service reacts by reconciling
+    ///     the persistent mute banners.
+    /// </summary>
+    internal event EventHandler LimitMuteBannersToTargetChanged;
+
+    /// <summary>
+    ///     Creates and schedules the update checker. Called at the exact
+    ///     pre-refactor point in the startup sequence (InitializeMain).
+    /// </summary>
+    internal void InitUpdateChecker()
     {
 #if NIGHTLY
         const string url = "https://nightly.soundswitch.aaflalo.me/nightly/version.json";
@@ -237,6 +275,25 @@ public partial class AppModel
     }
 
     #region Hot keys
+
+    /// <summary>
+    ///     Registers the hotkeys configured at startup. Registration failure is
+    ///     tolerated: the warning is logged and startup continues, exactly as the
+    ///     pre-refactor InitializeMain did.
+    /// </summary>
+    internal void RegisterConfiguredHotkeys()
+    {
+        RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
+        if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
+        {
+            Log.Warning("Recording hotkey could not be registered: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
+        }
+
+        if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
+        {
+            Log.Warning("Mute hotkey could not be registered: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
+        }
+    }
 
     public bool SetHotkeyCombination(HotKey hotKey, HotKeyAction action, bool force = false)
     {
@@ -306,56 +363,8 @@ public partial class AppModel
             return true;
 
         Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
-        ErrorTriggered?.Invoke(this,
-            new ExceptionEvent(new Exception("Impossible to register HotKey: " + hotkeys)));
+        _errorEvents.Raise(new Exception("Impossible to register HotKey: " + hotkeys));
         return false;
-    }
-
-
-    /// <summary>
-    /// Handles hotkey press events and performs the configured action for playback, recording, or mute hotkeys.
-    /// </summary>
-    /// <param name="sender">The event source.</param>
-    /// <param name="e">Key press event data whose <c>HotKey</c> is checked; unrelated hotkeys are ignored.</param>
-    private void HandleHotkeyPress(object sender, WindowsAPIAdapter.KeyPressedEventArgs e)
-    {
-        if (e.HotKey != AppConfigs.Configuration.PlaybackHotKey
-            && e.HotKey != AppConfigs.Configuration.RecordingHotKey
-            && e.HotKey != AppConfigs.Configuration.MuteRecordingHotKey)
-        {
-            Log.Debug("Not the registered Hotkeys {hotkeys}", e.HotKey);
-            return;
-        }
-
-        try
-        {
-            if (e.HotKey == AppConfigs.Configuration.PlaybackHotKey)
-            {
-                TelemetryService.AddBreadcrumb("hotkey", "PlaybackHotKey pressed");
-                CycleActiveDevice(EDataFlow.eRender);
-                TelemetryService.TrackPlaybackSwitch("hotkey");
-            }
-            else if (e.HotKey == AppConfigs.Configuration.RecordingHotKey)
-            {
-                TelemetryService.AddBreadcrumb("hotkey", "RecordingHotKey pressed");
-                CycleActiveDevice(EDataFlow.eCapture);
-                TelemetryService.TrackRecordingSwitch("hotkey");
-            }
-            else if (e.HotKey == AppConfigs.Configuration.MuteRecordingHotKey)
-            {
-                Log.Information("Mute hotkey pressed: {hotkey}", e.HotKey);
-                TelemetryService.AddBreadcrumb("hotkey", "MuteRecordingHotKey pressed");
-                var micResult = ToggleMicrophoneMute();
-                if (micResult != null)
-                {
-                    TelemetryService.TrackMicMute("hotkey", micResult.Value.IsMuted);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            ErrorTriggered?.Invoke(this, new ExceptionEvent(ex));
-        }
     }
 
     #endregion
