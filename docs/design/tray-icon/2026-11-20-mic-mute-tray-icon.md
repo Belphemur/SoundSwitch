@@ -102,7 +102,7 @@ public void ChangeIcon(UI.Component.TrayIcon trayIcon, bool isMuted)  // new ded
 
 To avoid `IIconChanger` interface churn across all six implementations, `IconChangerMuteState` exposes the dedicated `ChangeIcon(trayIcon, bool isMuted)` overload as its own public method; the parameterless `ChangeIcon` resolves the live state and delegates to it, so it doubles as the changer's shared paint primitive.
 
-Review follow-up (ordering): `DeviceFullInfo` raises each volume event inside `Task.Run`, so two rapid toggles can be handled out of order and an older payload could overwrite a newer paint. The mute-event path in `TrayIcon` therefore never paints the event's historical boolean: it queues the parameterless re-read onto the UI thread, and the last queued update always resolves the microphone's final state.
+Review follow-up (ordering): `DeviceFullInfo` raises each volume event inside `Task.Run`, so two rapid toggles can be handled out of order and an older payload could overwrite a newer paint. The mute-event path in `TrayIcon` therefore never paints the event's historical boolean: it queues the parameterless re-read onto the UI thread, and the last queued update always resolves the microphone's final state. All `MuteState` repaint triggers — mute events, mute-target changes, and default communication swaps — funnel through the same UI-queued re-read (`TrayIcon.QueueMuteStateIconUpdate`), which also re-checks the selected icon mode when the queued update runs.
 
 ### 6.3 Event wiring
 
