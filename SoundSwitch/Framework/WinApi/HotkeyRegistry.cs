@@ -65,6 +65,16 @@ public sealed class HotkeyRegistry
     public string? TryRegister(HotKey hotKey, HotkeyOwner owner)
     {
         string conflict;
+        // Invariant: exactly one owner per combination, decided atomically. The
+        // ownership check, the adapter call and the owner recording share one
+        // critical section, so two systems claiming the same combination
+        // concurrently cannot both succeed (the adapter would otherwise re-base
+        // the native id under the second claim, leaving both believing they own
+        // it). Holding the lock across RegisterHotKey is safe: the adapter
+        // dispatches to its own STA thread, whose subscribers (theme repaints,
+        // session-unlock profile switching) never call back into the registry,
+        // and registrations are rare — startup and explicit user changes — so
+        // serializing them costs nothing measurable.
         lock (_lock)
         {
             if (_owners.TryGetValue(hotKey, out var current) && !current.Equals(owner))
@@ -73,19 +83,14 @@ public sealed class HotkeyRegistry
                 Log.Warning("{HotkeyConflict}", conflict);
                 return conflict;
             }
-        }
 
-        // No adapter call under the registry lock: RegisterHotKey dispatches to the
-        // adapter thread and blocks, so holding the lock would serialize every caller.
-        if (!WindowsAPIAdapter.RegisterHotKey(hotKey))
-        {
-            conflict = string.Format(SettingsStrings.hotkey_conflict_external, hotKey);
-            Log.Warning("{HotkeyConflict}", conflict);
-            return conflict;
-        }
+            if (!WindowsAPIAdapter.RegisterHotKey(hotKey))
+            {
+                conflict = string.Format(SettingsStrings.hotkey_conflict_external, hotKey);
+                Log.Warning("{HotkeyConflict}", conflict);
+                return conflict;
+            }
 
-        lock (_lock)
-        {
             _owners[hotKey] = owner;
         }
 
