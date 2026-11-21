@@ -104,7 +104,32 @@ namespace SoundSwitch.Audio.Manager
                             // ignored
                         }
 
-                        ForegroundChanged?.Invoke(this, new Event(processId, processName, processPath, windowText, windowClass, hwnd));
+                        var foregroundChanged = ForegroundChanged;
+                        if (foregroundChanged == null)
+                        {
+                            return;
+                        }
+
+                        var @event = new Event(processId, processName, processPath, windowText, windowClass, hwnd);
+                        // Each subscriber runs in its own task with its own catch, exactly as
+                        // when the profile and app-rule managers owned separate monitors: a
+                        // failing or slow handler can neither skip nor delay the remaining
+                        // ones, and its failure is logged instead of silently swallowed by
+                        // the outer catch.
+                        foreach (EventHandler<Event> handler in foregroundChanged.GetInvocationList())
+                        {
+                            Task.Factory.StartNew(() =>
+                            {
+                                try
+                                {
+                                    handler(this, @event);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.Error(ex, "ForegroundChanged subscriber {Subscriber} failed", handler.Method.Name);
+                                }
+                            });
+                        }
                     }
                     catch (Exception)
                     {
