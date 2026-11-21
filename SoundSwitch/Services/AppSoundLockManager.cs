@@ -47,6 +47,14 @@ namespace SoundSwitch.Services
         private readonly Dictionary<Guid, int> _nextPairIndex = new();
 
         /// <summary>
+        /// Rule hotkey releases that failed at the native level and must be retried before
+        /// the next reload registers anything: the binding is still live and the registry
+        /// still names its rule as owner, so losing the cleanup obligation would block a
+        /// new rule from claiming that combination until a restart.
+        /// </summary>
+        private readonly List<KeyValuePair<HotKey, HotkeyOwner>> _pendingRuleReleases = new();
+
+        /// <summary>
         /// The rules as they were at the last <see cref="OnRulesChanged"/>, used to detect
         /// deletions, disables and edits of assignment rules so their written route gets
         /// restored to the default (deferred to the next sighting for a closed app).
@@ -411,11 +419,28 @@ namespace SoundSwitch.Services
         {
             lock (_lock)
             {
+                // Retry releases that failed before: the binding often becomes
+                // releasable again (transient native failure), and clearing the
+                // dispatch map below must not lose the cleanup obligation.
+                for (var index = _pendingRuleReleases.Count - 1; index >= 0; index--)
+                {
+                    var pending = _pendingRuleReleases[index];
+                    if (_hotkeyRegistry.Unregister(pending.Key, pending.Value))
+                    {
+                        _pendingRuleReleases.RemoveAt(index);
+                    }
+                }
+
                 // Owner-scoped: each rule unbinds exactly the registration it owns,
                 // leaving any other system's binding on the same combination alone.
+                // A failed release is queued so the next reload retries it.
                 foreach (var ruleHotkey in _rulesByHotkey)
                 {
-                    _hotkeyRegistry.Unregister(ruleHotkey.Key, new HotkeyOwner(HotkeyOwnerKind.AppRule, ruleHotkey.Value.ProcessPath));
+                    var owner = new HotkeyOwner(HotkeyOwnerKind.AppRule, ruleHotkey.Value.ProcessPath);
+                    if (!_hotkeyRegistry.Unregister(ruleHotkey.Key, owner))
+                    {
+                        _pendingRuleReleases.Add(new(ruleHotkey.Key, owner));
+                    }
                 }
 
                 _rulesByHotkey.Clear();
