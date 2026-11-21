@@ -129,6 +129,13 @@ internal static class Program
         }
 
 
+        // Must run after single-instance ownership is confirmed (a process that is about to
+        // exit must not be registered for restart) and before any installer can close us.
+        // Without this registration the Restart Manager cannot relaunch SoundSwitch after
+        // an update closed it (#2580).
+        ApplicationRestart.TryRegister();
+
+
         // DPI awareness is declared in app.manifest (PerMonitorV2) and applied at process
         // creation. Do not call SetProcessDPIAware() or Application.SetHighDpiMode here: they run
         // too late to take effect and would silently downgrade the manifest declaration
