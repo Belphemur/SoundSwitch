@@ -40,6 +40,7 @@ public partial class UpsertProfileExtended : Form
     private readonly bool _editing;
     private readonly TriggerFactory _triggerFactory;
     private ToolTip _restoreDeviceToolTip;
+    private bool _advancedExpanded;
 
     /// <summary>
     ///     Runtime construction with the model services (Q4 ADR: forms take services via
@@ -95,6 +96,138 @@ public partial class UpsertProfileExtended : Form
         notifyCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.NotifyOnActivation), false, DataSourceUpdateMode.OnPropertyChanged);
         restoreDevicesCheckBox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.RestoreDevices), false, DataSourceUpdateMode.OnPropertyChanged);
         switchForegroundCheckbox.DataBindings.Add(nameof(CheckBox.Checked), _profile, nameof(Profile.SwitchForegroundApp), false, DataSourceUpdateMode.OnPropertyChanged);
+        InitVolumeGroups();
+    }
+
+    /// <summary>
+    ///     Volume presets are optional model data: each flow's group binds to its
+    ///     <see cref="ProfileVolumeSetting" /> while the preset is on, and the profile
+    ///     field goes back to null (absent from the saved JSON) when the box is
+    ///     unchecked, so an untouched profile serializes exactly as before.
+    /// </summary>
+    private void InitVolumeGroups()
+    {
+        InitVolumeGroup(playbackVolumeCheckBox, playbackVolumeTrackBar, playbackVolumeValueLabel,
+            () => _profile.PlaybackVolume, setting => _profile.PlaybackVolume = setting);
+        InitVolumeGroup(recordingVolumeCheckBox, recordingVolumeTrackBar, recordingVolumeValueLabel,
+            () => _profile.RecordingVolume, setting => _profile.RecordingVolume = setting);
+    }
+
+    private void InitVolumeGroup(CheckBox checkBox, TrackBar trackBar, Label valueLabel,
+        Func<ProfileVolumeSetting?> get, Action<ProfileVolumeSetting?> set)
+    {
+        var setting = get();
+        if (setting != null)
+        {
+            trackBar.Value = ClampToTrack(trackBar, setting.Volume);
+            checkBox.Checked = setting.Enabled;
+            BindVolumeGroup(checkBox, trackBar, setting);
+        }
+        else
+        {
+            // A neutral start position, so the first check of the box keeps a
+            // reasonable value instead of jumping the slider to zero.
+            trackBar.Value = 50;
+        }
+
+        SetVolumeGroupEnabled(checkBox, trackBar, valueLabel);
+        UpdateVolumeValueLabel(valueLabel, trackBar);
+
+        // Wired after the initial state above, so setting Checked programmatically
+        // cannot run the materialization handler against half-built state.
+        checkBox.CheckedChanged += (sender, _) => VolumeCheckBox_CheckedChanged(checkBox, trackBar, valueLabel, get, set);
+        trackBar.ValueChanged += (sender, _) => UpdateVolumeValueLabel(valueLabel, trackBar);
+    }
+
+    private void VolumeCheckBox_CheckedChanged(CheckBox checkBox, TrackBar trackBar, Label valueLabel,
+        Func<ProfileVolumeSetting?> get, Action<ProfileVolumeSetting?> set)
+    {
+        if (checkBox.Checked)
+        {
+            var setting = get() ?? new ProfileVolumeSetting { Volume = trackBar.Value };
+            setting.Enabled = true;
+            set(setting);
+            BindVolumeGroup(checkBox, trackBar, setting);
+        }
+        else
+        {
+            checkBox.DataBindings.Clear();
+            trackBar.DataBindings.Clear();
+            set(null);
+        }
+
+        SetVolumeGroupEnabled(checkBox, trackBar, valueLabel);
+    }
+
+    private void BindVolumeGroup(CheckBox checkBox, TrackBar trackBar, ProfileVolumeSetting setting)
+    {
+        if (checkBox.DataBindings.Count > 0)
+        {
+            // Already bound from the initial profile state.
+            return;
+        }
+
+        checkBox.DataBindings.Add(nameof(CheckBox.Checked), setting, nameof(ProfileVolumeSetting.Enabled), false, DataSourceUpdateMode.OnPropertyChanged);
+        var trackBinding = new Binding(nameof(TrackBar.Value), setting, nameof(ProfileVolumeSetting.Volume), true, DataSourceUpdateMode.OnPropertyChanged);
+        trackBinding.Format += (_, args) => args.Value = ClampToTrack(trackBar, Convert.ToSingle(args.Value ?? 0f));
+        trackBar.DataBindings.Add(trackBinding);
+    }
+
+    private static void SetVolumeGroupEnabled(CheckBox checkBox, TrackBar trackBar, Label valueLabel)
+    {
+        trackBar.Enabled = checkBox.Checked;
+        valueLabel.Enabled = checkBox.Checked;
+    }
+
+    private static void UpdateVolumeValueLabel(Label valueLabel, TrackBar trackBar)
+    {
+        valueLabel.Text = string.Format(SettingsStrings.profile_volume_value, trackBar.Value);
+    }
+
+    private static int ClampToTrack(TrackBar trackBar, float volume) =>
+        Math.Clamp((int)Math.Round(volume), trackBar.Minimum, trackBar.Maximum);
+
+    private void AdvancedToggleButton_Click(object sender, EventArgs e)
+    {
+        _advancedExpanded = !_advancedExpanded;
+        advancedToggleButton.Text = _advancedExpanded
+            ? SettingsStrings.profile_volume_advanced_expanded
+            : SettingsStrings.profile_volume_advanced_collapsed;
+        ApplyAdvancedLayout();
+    }
+
+    private void ApplyAdvancedLayout()
+    {
+        // Recompute the inter-box gap from the designer layout instead of hardcoding
+        // pixels, so the expansion stays aligned on a DPI/font-scaled form.
+        var gap = advancedPanel.Top - advancedToggleButton.Bottom;
+        var delta = _advancedExpanded ? advancedPanel.Height + gap : -(advancedPanel.Height + gap);
+
+        SuspendLayout();
+        try
+        {
+            // Without this, the height change fights the trigger box's bottom anchor
+            // (it would stretch instead of moving down). The full anchor is restored
+            // once the new bounds are final, re-baselining it for user resizes.
+            triggerBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            advancedPanel.Visible = _advancedExpanded;
+
+            if (IsHandleCreated)
+            {
+                // Keep the minimum size in step with the expanded content, the same
+                // way UpsertAppSoundLockRule guards its mode heights.
+                var frameHeight = Math.Max(0, Size.Height - ClientSize.Height);
+                MinimumSize = new Size(MinimumSize.Width, ClientSize.Height + delta + frameHeight);
+            }
+
+            ClientSize = new Size(ClientSize.Width, ClientSize.Height + delta);
+            triggerBox.Top = _advancedExpanded ? advancedPanel.Bottom + gap : advancedPanel.Top;
+            triggerBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        }
+        finally
+        {
+            ResumeLayout(false);
+        }
     }
 
     private void InitRecordingPlaybackComboBoxes(IEnumerable<DeviceFullInfo> playbacks,
@@ -147,6 +280,11 @@ public partial class UpsertProfileExtended : Form
         saveButton.Text = SettingsStrings.buttonSave;
         restoreDevicesCheckBox.Text = SettingsStrings.profile_trigger_restoreDevices;
         switchForegroundCheckbox.Text = SettingsStrings.foregroundApp;
+        advancedToggleButton.Text = SettingsStrings.profile_volume_advanced_collapsed;
+        playbackVolumeBox.Text = SettingsStrings.playback;
+        recordingVolumeBox.Text = SettingsStrings.recording;
+        playbackVolumeCheckBox.Text = SettingsStrings.profile_volume_setVolume;
+        recordingVolumeCheckBox.Text = SettingsStrings.profile_volume_setVolume;
 
         new ToolTip().SetToolTip(switchDefaultCheckBox, SettingsStrings.profile_defaultDevice_checkbox_tooltip);
         new ToolTip().SetToolTip(switchForegroundCheckbox, SettingsStrings.foregroundApp_tooltip);

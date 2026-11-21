@@ -2072,6 +2072,42 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ► Advanced.
+        /// </summary>
+        internal static string profile_volume_advanced_collapsed {
+            get {
+                return ResourceManager.GetString("profile.volume.advanced.collapsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ▼ Advanced.
+        /// </summary>
+        internal static string profile_volume_advanced_expanded {
+            get {
+                return ResourceManager.GetString("profile.volume.advanced.expanded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set volume.
+        /// </summary>
+        internal static string profile_volume_setVolume {
+            get {
+                return ResourceManager.GetString("profile.volume.setVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}%.
+        /// </summary>
+        internal static string profile_volume_value {
+            get {
+                return ResourceManager.GetString("profile.volume.value", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quick Menu on hotkey.
         /// </summary>
         internal static string quickMenu {

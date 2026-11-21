@@ -507,6 +507,18 @@ Restore the state of the system when the application is closed.</value>
   <data name="profile.trigger.restoreDevices.title" xml:space="preserve">
     <value>System state restored</value>
   </data>
+  <data name="profile.volume.advanced.collapsed" xml:space="preserve">
+    <value>► Advanced</value>
+  </data>
+  <data name="profile.volume.advanced.expanded" xml:space="preserve">
+    <value>▼ Advanced</value>
+  </data>
+  <data name="profile.volume.setVolume" xml:space="preserve">
+    <value>Set volume</value>
+  </data>
+  <data name="profile.volume.value" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
   <data name="profile.trigger.uwp" xml:space="preserve">
     <value>Microsoft Store app</value>
   </data>
