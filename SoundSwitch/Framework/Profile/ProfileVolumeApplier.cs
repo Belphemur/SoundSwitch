@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Serilog;
 
@@ -50,6 +51,19 @@ internal sealed class ProfileVolumeApplier
     /// </summary>
     public static bool HasActivePreset(Profile profile) =>
         profile.PlaybackVolume is { Enabled: true } || profile.RecordingVolume is { Enabled: true };
+
+    /// <summary>
+    /// The devices whose volumes a trigger activation may override and deactivation must
+    /// restore (ADR Q3): the pre-switch default endpoints (the switch moves them away)
+    /// plus the profile's resolved preset targets (the presets write them — they are not
+    /// necessarily the defaults). One entry per endpoint id: the same device can sit in
+    /// both sets.
+    /// </summary>
+    public static IEnumerable<DeviceInfo> DevicesToSnapshot(IEnumerable<DeviceInfo?> defaultEndpoints, IEnumerable<DeviceInfo> presetTargets) =>
+        defaultEndpoints.Concat<DeviceInfo?>(presetTargets)
+            .OfType<DeviceInfo>()
+            .GroupBy(device => device.Id, StringComparer.Ordinal)
+            .Select(group => group.First());
 
     /// <summary>
     /// Applies the preset matching the device's flow (render → playback, capture →

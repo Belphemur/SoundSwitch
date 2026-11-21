@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using FluentAssertions;
 
@@ -273,5 +274,68 @@ public class ProfileVolumeApplierTests
         var applier = new ProfileVolumeApplier(null!) { DeviceVolumeRead = _ => throw new InvalidOperationException("must not be called") };
 
         applier.SnapshotVolumes(new DeviceInfo?[] { null, null }).Should().BeEmpty();
+    }
+
+    [Test]
+    public void DevicesToSnapshot_UnionsDefaultEndpointsAndPresetTargets()
+    {
+        var defaults = new DeviceInfo?[] { Device("speakers", EDataFlow.eRender), Device("microphone", EDataFlow.eCapture), null };
+        var targets = new[] { Device("headset", EDataFlow.eRender) };
+
+        var devices = ProfileVolumeApplier.DevicesToSnapshot(defaults, targets).ToArray();
+
+        // The profile target differs from the current default endpoints and must be
+        // snapshotted alongside them, or its volume would never be restored.
+        devices.Should().HaveCount(3);
+        devices.Select(device => device.Id).Should().BeEquivalentTo("speakers-id", "microphone-id", "headset-id");
+    }
+
+    [Test]
+    public void DevicesToSnapshot_DeduplicatesByEndpointId()
+    {
+        var speakers = Device("speakers", EDataFlow.eRender);
+        var defaults = new DeviceInfo?[] { Device("microphone", EDataFlow.eCapture), speakers };
+        var targets = new[] { speakers, Device("headset", EDataFlow.eRender) };
+
+        var devices = ProfileVolumeApplier.DevicesToSnapshot(defaults, targets).ToArray();
+
+        devices.Should().HaveCount(3);
+        devices.Count(device => device.Id == "speakers-id").Should().Be(1, "one snapshot per endpoint id, whatever slot named it");
+    }
+
+    [Test]
+    public void SnapshotAndRestore_CoversAPresetTargetThatIsNotTheDefault()
+    {
+        var reads = new Dictionary<string, float?>
+        {
+            ["speakers-id"] = 0.3f,
+            ["headset-id"] = 0.9f
+        };
+        var writes = new List<(string Id, float Scalar)>();
+        var applier = new ProfileVolumeApplier(null!)
+        {
+            DeviceVolumeRead = id => reads.TryGetValue(id, out var scalar) ? scalar : throw new InvalidOperationException("no such device"),
+            DeviceVolumeWrite = (id, scalar) =>
+            {
+                writes.Add((id, scalar));
+                return true;
+            }
+        };
+
+        // The review regression (trigger profile targeting a device other than the
+        // current default): deactivation must restore the target's own volume, not
+        // only the default endpoints'.
+        var snapshot = applier.SnapshotVolumes(ProfileVolumeApplier.DevicesToSnapshot(
+            new DeviceInfo?[] { Device("speakers", EDataFlow.eRender) },
+            new[] { Device("headset", EDataFlow.eRender) }));
+
+        foreach (var entry in snapshot)
+        {
+            applier.Restore(entry.Device, entry.VolumeScalar);
+        }
+
+        writes.Should().HaveCount(2);
+        writes.Should().Contain(write => write.Id == "speakers-id" && Math.Abs(write.Scalar - 0.3f) < 0.0001f);
+        writes.Should().Contain(write => write.Id == "headset-id" && Math.Abs(write.Scalar - 0.9f) < 0.0001f);
     }
 }
