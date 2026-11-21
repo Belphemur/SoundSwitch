@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using SoundSwitch.Audio.Manager.Interop.Enum;
 using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Model;
+using SoundSwitch.Services;
+using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Tests;
 
@@ -35,3 +39,20 @@ public class FakeDeviceService : IDeviceService
     public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState) => null;
     public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(string deviceId, bool muteState) => null;
 }
+
+/// <summary>
+///     Shared <see cref="IAppInfrastructure" /> fake for tests that compose the real
+///     services with fakes over the interfaces (the ADR's tested seam).
+/// </summary>
+public class FakeInfrastructure : IAppInfrastructure
+{
+    public TrayIcon TrayIcon => null;
+    public IAudioDeviceLister AudioDeviceLister => null;
+    public ProfileManager ProfileManager => null;
+    public AppSoundLockManager AppSoundLockManager => null;
+
+#pragma warning disable CS0067
+    public event EventHandler<ExceptionEvent> ErrorTriggered;
+#pragma warning restore CS0067
+}
+

@@ -62,20 +62,6 @@ public class NotificationManagerMuteTests
         public void SetBannerMonitor(string deviceName, bool usePrimaryScreen) { }
     }
 
-    private sealed class FakeInfrastructure : IAppInfrastructure
-    {
-        public TrayIcon TrayIcon => null;
-        public IAudioDeviceLister AudioDeviceLister => null;
-        public global::SoundSwitch.Framework.Profile.ProfileManager ProfileManager => null;
-        public global::SoundSwitch.Services.AppSoundLockManager AppSoundLockManager => null;
-
-#pragma warning disable CS0067
-        public event EventHandler<ExceptionEvent> ErrorTriggered;
-#pragma warning restore CS0067
-
-        public void InitializeMain(IAudioDeviceLister active, bool skipUpdate = false) { }
-    }
-
     [Test]
     public void NotifyMuteChanged_BeforeInit_DoesNotThrow()
     {

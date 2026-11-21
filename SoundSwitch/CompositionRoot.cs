@@ -13,6 +13,8 @@
  * GNU General Public License for more details.
  ********************************************************************/
 
+using System;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using SoundSwitch.Audio.Manager;
@@ -91,6 +93,14 @@ public static class CompositionRoot
             new ProcessMonitor(),
             serviceProvider.GetRequiredService<NotificationManager>(),
             serviceProvider.GetRequiredService<IAudioDeviceLister>()));
+
+        // Lazy bridges for the deferred manager access (MS.DI resolves Lazy<T> only
+        // when it is registered): the IAppInfrastructure façade and the bootstrapper
+        // hold these, and the managers themselves are constructed at the bootstrapper's
+        // step, preserving the pre-refactor construction order.
+        services.AddSingleton(serviceProvider => new Lazy<TrayIcon>(() => serviceProvider.GetRequiredService<TrayIcon>()));
+        services.AddSingleton(serviceProvider => new Lazy<ProfileManager>(() => serviceProvider.GetRequiredService<ProfileManager>()));
+        services.AddSingleton(serviceProvider => new Lazy<AppSoundLockManager>(() => serviceProvider.GetRequiredService<AppSoundLockManager>()));
 
         // The startup sequence.
         services.AddSingleton<AppBootstrapper>();
