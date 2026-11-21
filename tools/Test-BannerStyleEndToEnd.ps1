@@ -39,7 +39,7 @@ $microphoneProject = Join-Path $PSScriptRoot 'TestMicrophoneControl/TestMicropho
 # Build the independent cleanup tool even with -NoBuild: that switch reuses app binaries.
 & dotnet build $microphoneProject -c Debug --nologo -v minimal
 if ($LASTEXITCODE -ne 0) { throw 'Microphone control helper build failed.' }
-$microphoneHelper = Join-Path $PSScriptRoot 'TestMicrophoneControl/bin/Debug/net10.0-windows/TestMicrophoneControl.dll'
+$microphoneHelper = Join-Path $PSScriptRoot 'TestMicrophoneControl/bin/Debug/net11.0-windows/TestMicrophoneControl.dll'
 
 function Assert-True([bool]$Condition, [string]$Message) {
     if (-not $Condition) { throw "FAIL: $Message" }
