@@ -127,7 +127,7 @@ public class MicrophoneMuteChangedEventArgs : EventArgs
 
 Startup correctness: `TrayIcon.UpdateIcon()` (parameterless `ChangeIcon`) already runs at init — it reads the live mute state so the icon is right before any event arrives.
 
-Default-device-changed subscription nuance: if the *default communication mic changes* (device swap), the new default's mute state may differ from the old one's. `TrayIcon`'s existing `DefaultDeviceChanged` handler calls the parameterless path through the factory for all types; for `MuteState` the changer re-reads the state, so a default swap repaints correctly without extra wiring.
+Default-device-changed subscription: when the *default communication microphone changes* (device swap), the new default's mute state may differ from the old one's. The existing `DefaultDeviceChanged` handler calls the **device-driven** overload (`ChangeIcon(trayIcon, Device, Role)`) for all types, which is a no-op for `MuteState`. The handler therefore branches: for `MuteState`, a **capture + eCommunications** default change re-invokes the parameterless changer, which re-reads the live mute state and repaints. Other types take their previous path unchanged. (During implementation this replaced an earlier draft that assumed the handler already routed through the parameterless path — it does not.)
 
 ### 6.4 Mute state resolution
 
