@@ -98,16 +98,31 @@ public sealed class HotkeyRegistry
     }
 
     /// <summary>
-    ///     Remove the ownership record and unregister the hotkey with the OS.
-    ///     The record is kept until Windows confirms the unregistration: a binding
-    ///     the adapter still tracks stays owned, so conflict checks keep naming
-    ///     the real owner instead of going blind.
+    ///     Unbind a hotkey combination owned by the given owner. A combination held by
+    ///     a different owner is left untouched — nothing of the caller's is bound —
+    ///     and so is one that never registered through this registry (e.g. rejected
+    ///     at startup); both return true, meaning "you hold nothing to unbind".
     /// </summary>
-    /// <returns>The result of the native unregistration.</returns>
-    public bool Unregister(HotKey hotKey)
+    /// <returns>
+    ///     False only when the caller's own binding couldn't be removed; the
+    ///     ownership record then stays, keeping the registry truthful.
+    /// </returns>
+    public bool Unregister(HotKey hotKey, HotkeyOwner owner)
     {
         lock (_lock)
         {
+            if (!_owners.TryGetValue(hotKey, out var current))
+            {
+                return true;
+            }
+
+            if (!current.Equals(owner))
+            {
+                // Another SoundSwitch system owns the combination: leave its binding alone.
+                Log.Debug("Leaving hotkey {HotKey} registered for owner {Owner}", hotKey, current);
+                return true;
+            }
+
             if (WindowsAPIAdapter.UnRegisterHotKey(hotKey))
             {
                 _owners.Remove(hotKey);
@@ -129,18 +144,6 @@ public sealed class HotkeyRegistry
             }
 
             return false;
-        }
-    }
-
-    /// <summary>
-    ///     Whether a hotkey combination is currently owned by a SoundSwitch system
-    ///     (i.e. it was registered through this registry and can be unbound again).
-    /// </summary>
-    public bool IsRegistered(HotKey hotKey)
-    {
-        lock (_lock)
-        {
-            return _owners.ContainsKey(hotKey);
         }
     }
 

@@ -41,11 +41,6 @@ namespace SoundSwitch.Services
         private readonly Dictionary<HotKey, AppSoundRule> _rulesByHotkey = new();
 
         /// <summary>
-        /// Hotkeys this manager registered with the OS, so they can be unregistered again.
-        /// </summary>
-        private readonly HashSet<HotKey> _ruleHotkeys = new();
-
-        /// <summary>
         /// In-memory index of the next device pair for each hotkey rule. Reset whenever
         /// the rules change or the app restarts; it is deliberately not persisted.
         /// </summary>
@@ -405,7 +400,6 @@ namespace SoundSwitch.Services
                         continue;
                     }
 
-                    _ruleHotkeys.Add(hotKey);
                     _rulesByHotkey[hotKey] = rule;
                 }
             }
@@ -417,12 +411,13 @@ namespace SoundSwitch.Services
         {
             lock (_lock)
             {
-                foreach (var hotKey in _ruleHotkeys)
+                // Owner-scoped: each rule unbinds exactly the registration it owns,
+                // leaving any other system's binding on the same combination alone.
+                foreach (var ruleHotkey in _rulesByHotkey)
                 {
-                    _hotkeyRegistry.Unregister(hotKey);
+                    _hotkeyRegistry.Unregister(ruleHotkey.Key, new HotkeyOwner(HotkeyOwnerKind.AppRule, ruleHotkey.Value.ProcessPath));
                 }
 
-                _ruleHotkeys.Clear();
                 _rulesByHotkey.Clear();
                 _nextPairIndex.Clear();
             }

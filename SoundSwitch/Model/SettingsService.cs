@@ -330,15 +330,17 @@ public class SettingsService : IAppSettings
             return false;
         }
 
-        // Only unbind the previous combination when it is actually registered: a binding
-        // that failed to register at startup must not make the new one look like a failure.
-        if (confHotKey.Enabled && _hotkeyRegistry.IsRegistered(confHotKey))
+        // Unbind only the previous binding of THIS action: a combination that
+        // belongs to another owner (a profile, an app rule, or another global
+        // hotkey that took it first) stays registered, and one that never
+        // registered (rejected at startup) unbinds nothing without failing.
+        if (confHotKey.Enabled)
         {
             Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
-            if (!_hotkeyRegistry.Unregister(confHotKey))
+            if (!_hotkeyRegistry.Unregister(confHotKey, new HotkeyOwner(ownerKind)))
             {
                 Log.Warning("Couldn't unregister previous hotkeys {hotkeys}, rolling back {newHotkeys}", confHotKey, hotKey);
-                if (hotKey.Enabled && !_hotkeyRegistry.Unregister(hotKey))
+                if (hotKey.Enabled && !_hotkeyRegistry.Unregister(hotKey, new HotkeyOwner(ownerKind)))
                     Log.Error("Couldn't roll back newly registered hotkeys {hotkeys}", hotKey);
                 return false;
             }

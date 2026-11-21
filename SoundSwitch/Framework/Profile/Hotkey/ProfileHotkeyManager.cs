@@ -142,7 +142,10 @@ public class ProfileHotkeyManager
         if (profiles.Count == 0)
         {
             _profiles.Remove(hotKey);
-            return _hotkeyRegistry.Unregister(hotKey);
+            // Owner-scoped: with the promotion above, the recorded owner is exactly
+            // this profile when the last claimant leaves, so only what the profile
+            // feature actually owns is unbound.
+            return _hotkeyRegistry.Unregister(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profile.Name));
         }
 
         // The recorded owner must always be a profile the user can still find:
