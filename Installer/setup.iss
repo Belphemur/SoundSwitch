@@ -57,7 +57,10 @@ WizardImageStretch=no
 LicenseFile={#ExeDir}LICENSE.txt
 InfoBeforeFile={#ExeDir}Terms.txt
 SetupLogging=yes
-RestartApplications=no
+// Relaunch the applications the Restart Manager closed (the running SoundSwitch
+// instance). Without this, a silent auto-update kills the app and leaves it dead
+// until the next logon (#2580).
+RestartApplications=yes
 ;AppMutex={#MyAppSetupName}
 
 ;MinVersion default value: "0,5.0 (Windows 2000+) if Unicode Inno Setup, else 4.0,4.0 (Windows 95+)"

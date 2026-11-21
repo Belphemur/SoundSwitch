@@ -14,7 +14,7 @@ public class UpdateRunner
   
     public Process RunUpdate(WebFile file, string args = "")
     {
-        args += " /NOCANCEL /NORESTART /CLOSEAPPLICATIONS";
+        args = BuildInstallerArguments(args);
         if (DateTime.UtcNow - AppConfigs.Configuration.LastDonationNagTime < AppConfigs.Configuration.TimeBetweenDonateNag)
         {
             args += " /NODONATE";
@@ -47,5 +47,17 @@ public class UpdateRunner
         }
 
         return file.Start(args);
+    }
+
+    /// <summary>
+    /// Append the switches every SoundSwitch update needs. <c>/CLOSEAPPLICATIONS</c> lets Inno
+    /// Setup close the running instance through the Windows Restart Manager; <c>/RESTARTAPPLICATIONS</c>
+    /// makes Inno relaunch the (new) executable afterwards. Without the restart, a silent
+    /// auto-update left SoundSwitch dead until the next logon: the tray icon vanished and
+    /// nothing managed the default devices in between (#2580).
+    /// </summary>
+    internal static string BuildInstallerArguments(string args)
+    {
+        return args + " /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS";
     }
 }
