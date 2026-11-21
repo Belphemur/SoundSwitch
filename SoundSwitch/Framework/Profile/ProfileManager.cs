@@ -469,6 +469,7 @@ public class ProfileManager
             }
 
             var deviceMissing = false;
+            var volumeApplied = 0;
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
@@ -481,7 +482,10 @@ public class ProfileManager
 
                 // Volume preset (ADR Decision 4): applied per resolved device, best-effort —
                 // a failure is logged inside the applier and never fails the switch.
-                _volumeApplier.Apply(profile, deviceToUse);
+                if (_volumeApplier.Apply(profile, deviceToUse))
+                {
+                    volumeApplied++;
+                }
 
                 foreach (var role in device.Roles)
                 {
@@ -500,7 +504,7 @@ public class ProfileManager
 
             if (triggerType.HasValue)
             {
-                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), volumeApplied);
                 if (deviceMissing)
                 {
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");
@@ -536,6 +540,7 @@ public class ProfileManager
             }
 
             var deviceMissing = false;
+            var volumeApplied = 0;
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
@@ -548,7 +553,10 @@ public class ProfileManager
 
                 // Volume preset (ADR Decision 4): applied per resolved device, best-effort —
                 // a failure is logged inside the applier and never fails the switch.
-                _volumeApplier.Apply(profile, deviceToUse);
+                if (_volumeApplier.Apply(profile, deviceToUse))
+                {
+                    volumeApplied++;
+                }
 
                 foreach (var role in device.Roles)
                 {
@@ -562,7 +570,7 @@ public class ProfileManager
 
             if (triggerType.HasValue)
             {
-                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), volumeApplied);
                 if (deviceMissing)
                 {
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");
