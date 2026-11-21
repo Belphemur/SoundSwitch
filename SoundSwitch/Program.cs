@@ -20,6 +20,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Sentry;
 
 using Serilog;
@@ -46,6 +48,7 @@ internal static class Program
     public static bool SkipUpdate { get; private set; }
     private const string SentryDsn = "https://7d52dfb4f6554bf0b58b256337835332@o631137.ingest.sentry.io/5755327";
     private static WindowsFormsSynchronizationContext _synchronizationContext;
+    private static ServiceProvider _serviceProvider;
 
     [STAThread]
     private static void Main(string[] args) => OldMain(args).GetAwaiter().GetResult();
@@ -95,7 +98,11 @@ internal static class Program
 #else
         WindowsAPIAdapter.Start();
 #endif
-        Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(AppModel.Instance.Language).CultureInfo;
+        // The composition root: builds the registry (construction stays lazy until each
+        // service's bootstrapper step). The provider is stored for the teardown path,
+        // which disposes the resolved services in reverse creation order.
+        _serviceProvider = CompositionRoot.BuildServiceProvider();
+        Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(_serviceProvider.GetRequiredService<IAppSettings>().Language).CultureInfo;
         Thread.CurrentThread.Name = "Main Thread";
         var userMutexName = PipeConstants.GetUserPipeName();
 
@@ -175,7 +182,11 @@ internal static class Program
         _synchronizationContext = new WindowsFormsSynchronizationContext();
         SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
-        var appContext = new SoundSwitchApplicationContext();
+        // The bootstrapper runs the ordered startup sequence (subscriptions, hotkeys,
+        // migration, tray icon, managers, update checker, startup mute-banner
+        // reconcile) and returns the context to run.
+        var bootstrapper = _serviceProvider.GetRequiredService<AppBootstrapper>();
+        var appContext = bootstrapper.Run(SkipUpdate);
         NamedPipe.StartListening(userMutexName, mainCts.Token);
 
         Application.Run(appContext);
@@ -190,9 +201,11 @@ internal static class Program
 #endif
         SentrySdk.EndSession();
         await SentrySdk.FlushAsync(TimeSpan.FromSeconds(2));
-        AppModel.Instance.Dispose();
+        // Container-owned teardown: disposes the resolved services (notification manager,
+        // tray icon, device lister, app sound lock manager, the MM notification client)
+        // in reverse creation order.
+        _serviceProvider.Dispose();
         WindowsAPIAdapter.Stop();
-        MMNotificationClient.Instance?.Dispose();
         NamedPipe.Cleanup();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
         JobScheduler.Instance.StopAsync(cts.Token).GetAwaiter().GetResult();

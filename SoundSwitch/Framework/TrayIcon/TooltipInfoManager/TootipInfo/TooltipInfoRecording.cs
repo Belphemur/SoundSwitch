@@ -28,9 +28,9 @@ public class TooltipInfoRecording : ITooltipInfo
     public TooltipInfoType TypeEnum => TooltipInfoType.Recording;
     public string Label => SettingsStrings.tooltipOnHover_option_recordingDevice;
 
-    public TooltipInfoRecording()
+    public TooltipInfoRecording(IDeviceService deviceService)
     {
-        AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
+        deviceService.DefaultDeviceChanged += (sender, @event) =>
         {
             if (@event.Device.Type != EDataFlow.eCapture)
                 return;

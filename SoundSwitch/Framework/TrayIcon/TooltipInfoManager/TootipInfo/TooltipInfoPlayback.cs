@@ -28,9 +28,9 @@ public class TooltipInfoPlayback : ITooltipInfo
     public TooltipInfoType TypeEnum => TooltipInfoType.Playback;
     public string Label => SettingsStrings.tooltipOnHover_option_playbackDevice;
 
-    public TooltipInfoPlayback()
+    public TooltipInfoPlayback(IDeviceService deviceService)
     {
-        AppModel.Instance.DefaultDeviceChanged += (sender, @event) =>
+        deviceService.DefaultDeviceChanged += (sender, @event) =>
         {
             if (@event.Device.Type != EDataFlow.eRender)
                 return;

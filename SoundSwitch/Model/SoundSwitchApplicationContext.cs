@@ -37,19 +37,15 @@ namespace SoundSwitch.Model;
 public class SoundSwitchApplicationContext : ApplicationContext
 {
     private readonly Guid _messageHandlerId;
+    private readonly IDeviceService _deviceService;
+    private readonly IAppSettings _appSettings;
+    private readonly IAppInfrastructure _infrastructure;
 
-    public SoundSwitchApplicationContext()
+    public SoundSwitchApplicationContext(IDeviceService deviceService, IAppSettings appSettings, IAppInfrastructure infrastructure)
     {
-        BannerManager.Setup();
-        MicrophoneMuteBannerManager.Setup();
-        QuickMenuManager<DeviceFullInfo>.Instance.Setup();
-        QuickMenuManager<Profile>.Instance.Setup();
-
-        var deviceActiveLister = new CachedAudioDeviceLister(EDeviceState.Active | EDeviceState.Unplugged);
-        deviceActiveLister.Refresh();
-        MMNotificationClient.Instance.Register();
-
-        AppModel.Instance.InitializeMain(deviceActiveLister, Program.SkipUpdate);
+        _deviceService = deviceService;
+        _appSettings = appSettings;
+        _infrastructure = infrastructure;
 
         TelemetryService.TrackUpdateMode(SoundSwitch.Framework.Configuration.AppConfigs.Configuration.UpdateMode);
 
@@ -62,10 +58,10 @@ public class SoundSwitchApplicationContext : ApplicationContext
         TelemetryService.TrackSetting("notification_advanced_mode", cfg.NotificationAdvancedMode);
         TelemetryService.TrackSetting("auto_add_new_connected_devices", cfg.AutoAddNewConnectedDevices);
         TelemetryService.TrackSetting("switch_icon", cfg.SwitchIcon.ToString());
-        TelemetryService.TrackProfileCount(AppModel.Instance.ProfileManager.Profiles.Count());
+        TelemetryService.TrackProfileCount(_infrastructure.ProfileManager.Profiles.Count());
         TelemetryService.TrackAppRuleCount(cfg.AppSoundRules.Count);
 
-        AppModel.Instance.NewVersionReleased += (sender, @event) =>
+        _appSettings.NewVersionReleased += (sender, @event) =>
         {
             if (@event.UpdateMode == UpdateMode.Silent)
             {
@@ -80,7 +76,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
 
         if (AppConfigs.Configuration.FirstRun)
         {
-            AppModel.Instance.TrayIcon.ShowSettings();
+            _infrastructure.TrayIcon.ShowSettings();
             AppConfigs.Configuration.FirstRun = false;
             Log.Information("First run");
         }
@@ -105,7 +101,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 {
                     var stateResponse = await Task.Run(() =>
                     {
-                        var result = AppModel.Instance.GetMicrophoneMuteState();
+                        var result = _deviceService.GetMicrophoneMuteState();
                         if (result == null) return null;
 
                         return new MicrophoneStateResponse
@@ -134,7 +130,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 try
                 {
                     Log.Information("Setting microphone mute state to: {Mute}", muteRequest.Mute);
-                    var result = AppModel.Instance.SetMicrophoneMuteState(muteRequest.Mute);
+                    var result = _deviceService.SetMicrophoneMuteState(muteRequest.Mute);
 
                     if (result == null)
                     {
@@ -159,7 +155,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 Log.Information("Asked by other instance to show settings");
                 try
                 {
-                    AppModel.Instance.TrayIcon.ShowSettings();
+                    _infrastructure.TrayIcon.ShowSettings();
                     return new OpenSettingsResponse { Success = true };
                 }
                 catch (Exception ex)
@@ -170,12 +166,12 @@ public class SoundSwitchApplicationContext : ApplicationContext
 
             case TriggerProfileRequest profileRequest:
                 Log.Information("Triggering profile: {ProfileName}", profileRequest.ProfileName);
-                var profile = AppModel.Instance.ProfileManager.Profiles.FirstOrDefault(p => p.Name == profileRequest.ProfileName);
+                var profile = _infrastructure.ProfileManager.Profiles.FirstOrDefault(p => p.Name == profileRequest.ProfileName);
                 if (profile != null)
                 {
                     try
                     {
-                        AppModel.Instance.ProfileManager.SwitchAudio(profile);
+                        _infrastructure.ProfileManager.SwitchAudio(profile);
                         return new TriggerProfileResponse { Success = true };
                     }
                     catch (Exception ex)
@@ -199,11 +195,11 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     switch (switchRequest.Type)
                     {
                         case AudioType.Recording:
-                            AppModel.Instance.CycleActiveDevice(EDataFlow.eCapture);
+                            _deviceService.CycleActiveDevice(EDataFlow.eCapture);
                             break;
                         case AudioType.Playback:
                         default:
-                            AppModel.Instance.CycleActiveDevice(EDataFlow.eRender);
+                            _deviceService.CycleActiveDevice(EDataFlow.eRender);
                             break;
                     }
 
@@ -215,7 +211,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                 }
 
             case GetProfileListRequest:
-                var profiles = AppModel.Instance.ProfileManager.Profiles
+                var profiles = _infrastructure.ProfileManager.Profiles
                     .Select(p => new ProfileInfo
                     {
                         Name = p.Name,
@@ -262,7 +258,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     return new GetActiveDevicesResponse
                     {
                         Success = true,
-                        ActiveProfile = AppModel.Instance.ProfileManager.LastTriggeredProfile,
+                        ActiveProfile = _infrastructure.ProfileManager.LastTriggeredProfile,
                         PlaybackDevice = playback,
                         RecordingDevice = recording,
                         PlaybackCommunicationDevice = playbackComm,
@@ -290,7 +286,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     var playback = await Task.Run(() =>
                     {
                         var names = new List<string>();
-                        foreach (var device in AppModel.Instance.AvailablePlaybackDevices)
+                        foreach (var device in _deviceService.AvailablePlaybackDevices)
                         {
                             names.Add(device.NameClean);
                         }
@@ -299,7 +295,7 @@ public class SoundSwitchApplicationContext : ApplicationContext
                     var recording = await Task.Run(() =>
                     {
                         var names = new List<string>();
-                        foreach (var device in AppModel.Instance.AvailableRecordingDevices)
+                        foreach (var device in _deviceService.AvailableRecordingDevices)
                         {
                             names.Add(device.NameClean);
                         }

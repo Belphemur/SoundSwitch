@@ -22,14 +22,14 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 
-public class DeviceCyclerAll : ADeviceCycler
+public class DeviceCyclerAll(IAppSettings appSettings, IAudioDeviceLister audioDeviceLister) : ADeviceCycler(appSettings)
 {
     public override DeviceCyclerType TypeEnum => DeviceCyclerType.All;
     public override string Label => SettingsStrings.cycleThrough_option_allAudioDevices;
-        
+
 
     protected override IEnumerable<DeviceFullInfo> GetDevices(EDataFlow type)
     {
-        return AppModel.Instance.AudioDeviceLister.GetDevices(type, EDeviceState.Active);
+        return audioDeviceLister.GetDevices(type, EDeviceState.Active);
     }
 }

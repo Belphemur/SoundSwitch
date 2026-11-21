@@ -16,12 +16,13 @@ using SoundSwitch.Audio.Manager.Interop.Enum;
 
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager;
 
-public class DeviceCyclerManager
+public class DeviceCyclerManager(IAppSettings appSettings, IDeviceService deviceService, IAudioDeviceLister audioDeviceLister)
 {
-    private readonly DeviceCyclerFactory _deviceCyclerFactory = new();
+    private readonly DeviceCyclerFactory _deviceCyclerFactory = new(appSettings, deviceService, audioDeviceLister);
 
     public static DeviceCyclerType CurrentCycler
     {

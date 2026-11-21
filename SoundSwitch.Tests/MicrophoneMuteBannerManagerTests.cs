@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -10,6 +10,7 @@ using NUnit.Framework;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Banner.MicrophoneMute;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
 
@@ -44,7 +45,7 @@ public class MicrophoneMuteBannerManagerTests
         var disposedBanner = new BannerForm();
         disposedBanner.Dispose();
 
-        var manager = new MicrophoneMuteBannerManager();
+        var manager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
         var tracked = GetTrackedBanners(manager);
         tracked.Add("live-mic", liveBanner);
         tracked.Add("disposed-mic", disposedBanner);
@@ -61,7 +62,7 @@ public class MicrophoneMuteBannerManagerTests
     {
         var liveBanner = new BannerForm();
 
-        var manager = new MicrophoneMuteBannerManager();
+        var manager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
         var tracked = GetTrackedBanners(manager);
         tracked.Add("live-mic", liveBanner);
         tracked.Add("null-mic", null);
@@ -76,7 +77,7 @@ public class MicrophoneMuteBannerManagerTests
     [Test]
     public void TrackBanner_ClearsTrackedReferenceOnDispose()
     {
-        var manager = new MicrophoneMuteBannerManager();
+        var manager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
 
         // TrackBanner is private; drive it through reflection like the rear pass above.
         var banner = new BannerForm();
@@ -94,7 +95,7 @@ public class MicrophoneMuteBannerManagerTests
     [Test]
     public void TrackBanner_KeepsEntryWhenAnotherBannerIsTrackedForSameId()
     {
-        var manager = new MicrophoneMuteBannerManager();
+        var manager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
 
         var first = new BannerForm();
         var second = new BannerForm();
@@ -114,7 +115,7 @@ public class MicrophoneMuteBannerManagerTests
     [Test]
     public void TrackBanner_PullsSurvivorUpWhenATrackedBannerIsDisposedOutsideTheManager()
     {
-        var manager = new MicrophoneMuteBannerManager();
+        var manager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
         var track = manager.GetType()
             .GetMethod("TrackBanner", BindingFlags.Instance | BindingFlags.NonPublic)!;
 

@@ -277,9 +277,12 @@ public class UpsertAppSoundLockRuleLayoutTests
 
     private static UpsertAppSoundLockRule CreateRuleDialog(Size? formSize = null)
     {
+        // The app sound lock manager is only consulted on the save path (hotkey
+        // availability and duplicate-target checks); the layout tests never save.
         var form = new UpsertAppSoundLockRule(
             new SoundSwitch.Model.AppSoundRule(),
             [], [],
+            appSoundLockManager: null!,
             editing: false);
         if (formSize.HasValue)
         {

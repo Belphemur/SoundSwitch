@@ -21,7 +21,7 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
 
-public class IconChangerMuteState : IIconChanger
+public class IconChangerMuteState(IDeviceService deviceService) : IIconChanger
 {
     public IconChanger TypeEnum => IconChanger.MuteState;
     public string Label => TrayIconStrings.iconChanger_muteState;
@@ -33,7 +33,7 @@ public class IconChangerMuteState : IIconChanger
     /// <param name="trayIcon">The tray icon whose visual icon will be replaced.</param>
     public void ChangeIcon(UI.Component.TrayIcon trayIcon)
     {
-        var state = AppModel.Instance.GetMicrophoneMuteState();
+        var state = deviceService.GetMicrophoneMuteState();
         if (state == null)
         {
             // No microphone resolved: keep the unmuted glyph; a mute event corrects the

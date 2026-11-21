@@ -21,16 +21,16 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Banner.BannerPosition.Position;
 
-internal class PositionCustom : APosition, IPosition
+internal class PositionCustom(INotificationSettings notificationSettings) : APosition, IPosition
 {
     public BannerPosition TypeEnum => BannerPosition.Custom;
     public string Label => SettingsStrings.buttonCustom;
 
     public Point GetScreenPosition(Screen screen, int height, int width, int offset) =>
-        ResolvePosition(screen, AppModel.Instance.CustomBannerPosition, AppModel.Instance.HasCustomBannerPosition, height, width);
+        ResolvePosition(screen, notificationSettings.CustomBannerPosition, notificationSettings.HasCustomBannerPosition, height, width, notificationSettings);
 
     public Point GetPosition(Rectangle bounds, int height, int width, int offset) =>
-        ResolvePosition(bounds, AppModel.Instance.CustomBannerPosition, AppModel.Instance.HasCustomBannerPosition, height, width);
+        ResolvePosition(bounds, notificationSettings.CustomBannerPosition, notificationSettings.HasCustomBannerPosition, height, width);
 
     /// <summary>
     /// Resolve the saved custom position against the display the banner actually belongs to.
@@ -40,12 +40,12 @@ internal class PositionCustom : APosition, IPosition
     /// explicit monitor selection moves it onto that display, the same as every other position
     /// strategy; otherwise the saved point keeps the banner on the display the user dropped it on.
     /// </remarks>
-    internal static Point ResolvePosition(Screen screen, Point savedPosition, bool hasSavedPosition, int height, int width)
+    internal static Point ResolvePosition(Screen screen, Point savedPosition, bool hasSavedPosition, int height, int width, INotificationSettings notificationSettings)
     {
         if (!hasSavedPosition)
             return new Point(PositionCenterX(screen.Bounds, width), PositionCenterY(screen.Bounds, height));
 
-        return ResolvePosition(TargetBounds(screen, savedPosition), savedPosition, true, height, width);
+        return ResolvePosition(TargetBounds(screen, savedPosition, notificationSettings), savedPosition, true, height, width);
     }
 
     /// <summary>
@@ -78,12 +78,12 @@ internal class PositionCustom : APosition, IPosition
     /// <see cref="Screen.FromPoint(Point)"/> falls back to the primary screen when the point is on
     /// no connected display, which keeps a stale position off any other monitor.
     /// </remarks>
-    private static Rectangle TargetBounds(Screen screen, Point savedPosition) =>
-        IsScreenExplicitlySelected()
+    private static Rectangle TargetBounds(Screen screen, Point savedPosition, INotificationSettings notificationSettings) =>
+        IsScreenExplicitlySelected(notificationSettings)
             ? screen.Bounds
             : Screen.FromPoint(savedPosition).Bounds;
 
-    private static bool IsScreenExplicitlySelected() =>
-        !string.IsNullOrEmpty(AppModel.Instance.BannerMonitorDeviceName) ||
-        AppModel.Instance.NotifyUsingPrimaryScreen;
+    private static bool IsScreenExplicitlySelected(INotificationSettings notificationSettings) =>
+        !string.IsNullOrEmpty(notificationSettings.BannerMonitorDeviceName) ||
+        notificationSettings.NotifyUsingPrimaryScreen;
 }

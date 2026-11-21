@@ -15,6 +15,7 @@
 
 using System;
 using System.Drawing;
+
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Banner;
 using SoundSwitch.Framework.Banner.BannerDisplayInfo;
@@ -27,22 +28,47 @@ using SoundSwitch.UI.Component;
 
 namespace SoundSwitch.Model;
 
-public partial class AppModel
+/// <summary>
+///     Notification and banner display settings: a thin façade over
+///     <see cref="AppConfigs.Configuration" /> (the single settings store) plus the
+///     cached custom-notification sound. Extracted from the
+///     AppModel.NotificationSettings partial.
+/// </summary>
+public class NotificationSettingsService : INotificationSettings
 {
     /// <summary>
-    /// Smallest banner scale, in percent, the UI offers.
+    ///     Smallest banner scale, in percent, the UI offers.
     /// </summary>
     public const int BannerScaleMinimum = BannerAppearance.MinScalePercentage;
 
     /// <summary>
-    /// Largest banner scale, in percent, the UI offers.
+    ///     Largest banner scale, in percent, the UI offers.
     /// </summary>
     public const int BannerScaleMaximum = BannerAppearance.MaxScalePercentage;
+
+    private readonly BannerPositionFactory _bannerPositionFactory;
+
+    private CachedSound _customNotificationCachedSound;
+
+    public NotificationSettingsService()
+    {
+        // The factory's custom-position strategy reads this service's banner settings.
+        _bannerPositionFactory = new(this);
+    }
+
+    /// <summary>
+    ///     A mute-banner-relevant setting changed. The device service reacts by
+    ///     reconciling the persistent mute banners; raised at the exact points where
+    ///     the pre-refactor setters called the reconcile directly.
+    /// </summary>
+    internal event EventHandler MuteBannerReconciliationRequested;
+
     public int BannerOnScreenTimeSecs
     {
         get => (int)BannerOnScreenTime.TotalSeconds;
         set => BannerOnScreenTime = TimeSpan.FromSeconds(value);
     }
+
     public TimeSpan BannerOnScreenTime
     {
         get => AppConfigs.Configuration.BannerOnScreenTime;
@@ -169,7 +195,7 @@ public partial class AppModel
                 new NotificationSettingsUpdatedEvent(previousSwitchDeviceNotification, AppConfigs.Configuration.SwitchDeviceNotification,
                     previousSwitchProfileNotification, AppConfigs.Configuration.SwitchProfileNotification,
                     previousMicrophoneMuteNotification, AppConfigs.Configuration.MicrophoneMuteNotification));
-            RefreshMicrophoneMuteBanners();
+            MuteBannerReconciliationRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -196,7 +222,7 @@ public partial class AppModel
                 new NotificationSettingsUpdatedEvent(previousSwitchDeviceNotification, AppConfigs.Configuration.SwitchDeviceNotification,
                     previousSwitchProfileNotification, AppConfigs.Configuration.SwitchProfileNotification,
                     previousMicrophoneMuteNotification, AppConfigs.Configuration.MicrophoneMuteNotification));
-            RefreshMicrophoneMuteBanners();
+            MuteBannerReconciliationRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -219,6 +245,7 @@ public partial class AppModel
                     preValue, value, MicrophoneMuteNotification, MicrophoneMuteNotification));
         }
     }
+
     public NotificationType MicrophoneMuteNotification
     {
         get => AppConfigs.Configuration.MicrophoneMuteNotification;
@@ -236,7 +263,7 @@ public partial class AppModel
             NotificationSettingsChanged?.Invoke(this,
                 new NotificationSettingsUpdatedEvent(SwitchDeviceNotification, SwitchDeviceNotification,
                     SwitchProfileNotification, SwitchProfileNotification, preValue, value));
-            RefreshMicrophoneMuteBanners();
+            MuteBannerReconciliationRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -292,7 +319,7 @@ public partial class AppModel
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
                     BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
                     prevValue, value, MicrophoneUnmuteBanner, MicrophoneUnmuteBanner));
-            RefreshMicrophoneMuteBanners();
+            MuteBannerReconciliationRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -308,7 +335,7 @@ public partial class AppModel
                 new BannerDataChangedEvent(BannerPosition, BannerPosition, BannerOnScreenTime, BannerOnScreenTime,
                     BannerOpacityPercentage, BannerOpacityPercentage, BannerDisplayInfo, BannerDisplayInfo,
                     MicrophoneMuteBanner, MicrophoneMuteBanner, prevValue, value));
-            RefreshMicrophoneMuteBanners();
+            MuteBannerReconciliationRequested?.Invoke(this, EventArgs.Empty);
         }
     }
 

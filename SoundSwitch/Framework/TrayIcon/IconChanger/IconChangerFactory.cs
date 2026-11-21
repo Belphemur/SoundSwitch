@@ -14,18 +14,19 @@
 
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.IconChanger.Changer;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.IconChanger;
 
-public class IconChangerFactory() : AbstractFactory<IconChanger, IIconChanger>(Impl)
+public class IconChangerFactory(IDeviceService deviceService) : AbstractFactory<IconChanger, IIconChanger>(Impl(deviceService))
 {
-    private static readonly IEnumImplList<IconChanger, IIconChanger> Impl = new EnumImplList<IconChanger, IIconChanger>()
+    private static IEnumImplList<IconChanger, IIconChanger> Impl(IDeviceService deviceService) => new EnumImplList<IconChanger, IIconChanger>()
     {
         new IconChangerNone(),
         new IconChangerPlayback(),
         new IconChangerRecording(),
         new IconChangerAlways(),
         new IconChangerThemeBased(),
-        new IconChangerMuteState()
+        new IconChangerMuteState(deviceService)
     };
 }

@@ -14,6 +14,7 @@
 
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 
@@ -21,20 +22,20 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick;
 /// Factory class for creating and managing system tray icon double-click action implementations.
 /// Provides access to all available double-click actions that users can configure for the SoundSwitch system tray icon.
 /// </summary>
-public class IconDoubleClickFactory() : AbstractFactory<IconDoubleClick, IIconDoubleClick>(DoubleClick)
+public class IconDoubleClickFactory(IDeviceService deviceService, IAppInfrastructure infrastructure) : AbstractFactory<IconDoubleClick, IIconDoubleClick>(DoubleClick(deviceService, infrastructure))
 {
     /// <summary>
     /// Collection of all available double-click action implementations.
     /// Each implementation corresponds to a specific action users can perform by double-clicking the system tray icon.
     /// </summary>
-    private static readonly IEnumImplList<IconDoubleClick, IIconDoubleClick> DoubleClick = new EnumImplList
+    private static IEnumImplList<IconDoubleClick, IIconDoubleClick> DoubleClick(IDeviceService deviceService, IAppInfrastructure infrastructure) => new EnumImplList
         <IconDoubleClick, IIconDoubleClick>
         {
             new IconDoubleClickOpenSettings(),
-            new IconDoubleClickSwitchProfile(),
-            new IconDoubleClickSwitchPlaybackDevice(),
-            new IconDoubleClickSwitchRecordingDevice(),
-            new IconDoubleClickToggleMicrophoneMute(),
+            new IconDoubleClickSwitchProfile(infrastructure),
+            new IconDoubleClickSwitchPlaybackDevice(deviceService),
+            new IconDoubleClickSwitchRecordingDevice(deviceService),
+            new IconDoubleClickToggleMicrophoneMute(deviceService),
             new IconDoubleClickNone(),
         };
 

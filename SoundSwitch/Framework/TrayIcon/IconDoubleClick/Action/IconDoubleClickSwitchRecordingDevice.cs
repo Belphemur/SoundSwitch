@@ -24,7 +24,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 /// Implementation for the "Switch Recording Device" double-click action.
 /// When the user double-clicks the system tray icon, this action cycles through the configured recording devices.
 /// </summary>
-internal class IconDoubleClickSwitchRecordingDevice : IIconDoubleClick
+internal class IconDoubleClickSwitchRecordingDevice(IDeviceService deviceService) : IIconDoubleClick
 {
     /// <summary>
     /// Gets the enum type that this implementation corresponds to.
@@ -43,7 +43,7 @@ internal class IconDoubleClickSwitchRecordingDevice : IIconDoubleClick
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
         TelemetryService.AddBreadcrumb("tray", "Recording switch (double-click)");
-        AppModel.Instance.CycleActiveDevice(EDataFlow.eCapture);
+        deviceService.CycleActiveDevice(EDataFlow.eCapture);
         TelemetryService.TrackRecordingSwitch("tray");
     }
 }

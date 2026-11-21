@@ -11,13 +11,13 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Audio.Lister.Job;
 
-public class ProcessNotificationEventsJob : IRecurringJob
+public class ProcessNotificationEventsJob(IAudioDeviceLister audioDeviceLister) : IRecurringJob
 {
     public Task ExecuteAsync(CancellationToken cancellationToken)
     {
         var events = MMNotificationClient.Instance.GetLastEvents();
         if(events.Count == 0) return Task.CompletedTask;
-        AppModel.Instance.AudioDeviceLister.ProcessDeviceUpdates(events);
+        audioDeviceLister.ProcessDeviceUpdates(events);
         return Task.CompletedTask;
     }
 

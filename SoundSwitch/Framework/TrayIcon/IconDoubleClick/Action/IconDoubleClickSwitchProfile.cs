@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 /// When the user double-clicks the system tray icon, this action cycles through the configured audio profiles.
 /// This allows users to quickly switch between different audio device configurations and setups.
 /// </summary>
-internal class IconDoubleClickSwitchProfile : IIconDoubleClick
+internal class IconDoubleClickSwitchProfile(IAppInfrastructure infrastructure) : IIconDoubleClick
 {
     private Profile.Profile _activeTrayProfile;
 
@@ -48,7 +48,7 @@ internal class IconDoubleClickSwitchProfile : IIconDoubleClick
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
         // Check if there are any profiles with tray menu triggers
-        var profiles = AppModel.Instance.ProfileManager.Profiles
+        var profiles = infrastructure.ProfileManager.Profiles
             .Where(profile => profile.Triggers.Any(trigger => trigger.Type == TriggerFactory.Enum.TrayMenu))
             .ToList();
 
@@ -65,6 +65,6 @@ internal class IconDoubleClickSwitchProfile : IIconDoubleClick
         _activeTrayProfile = nextProfile;
 
         Log.Information("Switching to profile {profile}", nextProfile.Name);
-        AppModel.Instance.ProfileManager.SwitchAudio(nextProfile);
+        infrastructure.ProfileManager.SwitchAudio(nextProfile);
     }
 }

@@ -23,7 +23,7 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 
-public class DeviceCyclerAvailable : ADeviceCycler
+public class DeviceCyclerAvailable(IAppSettings appSettings, IDeviceService deviceService) : ADeviceCycler(appSettings)
 {
     public override DeviceCyclerType TypeEnum => DeviceCyclerType.Available;
     public override string Label => SettingsStrings.cycleThrough_option_onlySelectedAudioDevices;
@@ -32,8 +32,8 @@ public class DeviceCyclerAvailable : ADeviceCycler
     {
         return type switch
         {
-            EDataFlow.eRender  => AppModel.Instance.AvailablePlaybackDevices,
-            EDataFlow.eCapture => AppModel.Instance.AvailableRecordingDevices,
+            EDataFlow.eRender  => deviceService.AvailablePlaybackDevices,
+            EDataFlow.eCapture => deviceService.AvailableRecordingDevices,
             _                => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

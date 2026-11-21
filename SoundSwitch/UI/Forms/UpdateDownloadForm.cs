@@ -37,9 +37,29 @@ public sealed partial class UpdateDownloadForm : Form
     private AppRelease _appReleaseInfo;
     private readonly PostponeService _postponeService = new();
 
+    /// <summary>
+    ///     Parameterless constructor kept for the WinForms designer.
+    /// </summary>
     public UpdateDownloadForm()
     {
-        RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+        InitializeComponent();
+        Icon = Resources.UpdateIcon;
+
+        LocalizeForm();
+        downloadProgress.DisplayStyle = TextProgressBar.ProgressBarDisplayText.Both;
+        downloadProgress.Visible = false;
+        TopMost = true;
+    }
+
+    /// <summary>
+    ///     Runtime construction with the model services (Q4 ADR: forms take services
+    ///     via constructor and expose a static factory for call sites).
+    /// </summary>
+    public static UpdateDownloadForm Factory(IAppSettings appSettings) => new(appSettings);
+
+    public UpdateDownloadForm(IAppSettings appSettings)
+    {
+        RightToLeft = new LanguageFactory().Get(appSettings.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
 
         InitializeComponent();
         Icon = Resources.UpdateIcon;

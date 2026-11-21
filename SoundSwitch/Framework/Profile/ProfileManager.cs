@@ -38,6 +38,8 @@ public class ProfileManager
     private readonly ShowError _showError;
     private readonly TriggerFactory _triggerFactory;
     private readonly NotificationManager.NotificationManager _notificationManager;
+    private readonly IDeviceService _deviceService;
+    private readonly IAppSettings _appSettings;
 
     private Profile? _steamProfile;
     private Profile? _forcedProfile;
@@ -64,6 +66,8 @@ public class ProfileManager
     public ProfileManager(WindowMonitor windowMonitor,
         AudioSwitcher audioSwitcher,
         IAudioDeviceLister activeDeviceLister,
+        IDeviceService deviceService,
+        IAppSettings appSettings,
         ShowError showError,
         TriggerFactory triggerFactory,
         NotificationManager.NotificationManager notificationManager)
@@ -71,10 +75,12 @@ public class ProfileManager
         _windowMonitor = windowMonitor;
         _audioSwitcher = audioSwitcher;
         _activeDeviceLister = activeDeviceLister;
+        _deviceService = deviceService;
+        _appSettings = appSettings;
         _showError = showError;
         _triggerFactory = triggerFactory;
         _notificationManager = notificationManager;
-        _profileHotkeyManager = new(this);
+        _profileHotkeyManager = new(this, appSettings);
         _logger = Log.ForContext(GetType());
     }
 
@@ -201,7 +207,7 @@ public class ProfileManager
         WindowsAPIAdapter.SessionUnlocked += (sender, @event) => { TriggerStartupProfiles(); };
         _logger.Information("Session Unlock Registered");
 
-        AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
+        _deviceService.DefaultDeviceChanged += (sender, audioChangeEvent) =>
         {
             if (HandleDeviceChanged(audioChangeEvent)) return;
         };
@@ -384,7 +390,7 @@ public class ProfileManager
 
     private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
     {
-        var collection = AppModel.Instance.AudioDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active);
+        var collection = _activeDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active);
         var result = collection.Match(deviceInfo);
         if (result.Kind == DeviceMatchKind.Ambiguous)
         {

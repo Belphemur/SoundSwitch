@@ -13,11 +13,16 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Profile.UI;
 
-public class ProfileTrayIconBuilder
+public class ProfileTrayIconBuilder(IAppInfrastructure infrastructure)
 {
-    private ProfileManager ProfileManager => AppModel.Instance.ProfileManager;
+    // Deferred access on purpose (Kody review on PR #2622): the profile manager's DI
+    // factory takes the tray icon for its ShowError delegate, so dereferencing it from
+    // the tray icon constructor re-entered Lazy<ProfileManager> mid-construction and
+    // crashed startup. The façade's lazy getters are only hit here, when the menu is
+    // actually built — after the bootstrapper constructed both managers.
+    private ProfileManager ProfileManager => infrastructure.ProfileManager;
 
-    private IAudioDeviceLister AudioDeviceLister => AppModel.Instance.AudioDeviceLister;
+    private IAudioDeviceLister AudioDeviceLister => infrastructure.AudioDeviceLister;
 
     /// <summary>
     /// Get the menu items for profile that needs to be shown in the menu

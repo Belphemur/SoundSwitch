@@ -14,15 +14,16 @@
 
 using SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
 using SoundSwitch.Framework.Factory;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.DeviceCyclerManager;
 
-public class DeviceCyclerFactory() : AbstractFactory<DeviceCyclerType, IDeviceCycler>(AllCycler)
+public class DeviceCyclerFactory(IAppSettings appSettings, IDeviceService deviceService, IAudioDeviceLister audioDeviceLister) : AbstractFactory<DeviceCyclerType, IDeviceCycler>(AllCycler(appSettings, deviceService, audioDeviceLister))
 {
-    private static readonly IEnumImplList<DeviceCyclerType, IDeviceCycler> AllCycler = new EnumImplList
+    private static IEnumImplList<DeviceCyclerType, IDeviceCycler> AllCycler(IAppSettings appSettings, IDeviceService deviceService, IAudioDeviceLister audioDeviceLister) => new EnumImplList
         <DeviceCyclerType, IDeviceCycler>
         {
-            new DeviceCyclerAvailable(),
-            new DeviceCyclerAll()
+            new DeviceCyclerAvailable(appSettings, deviceService),
+            new DeviceCyclerAll(appSettings, audioDeviceLister)
         };
 }

@@ -80,7 +80,12 @@ public sealed class TrayIcon : IDisposable
 
     private readonly TooltipInfoManager _tooltipInfoManager;
     private readonly ProfileTrayIconBuilder _profileTrayIconBuilder;
-    private readonly IconDoubleClickFactory _iconDoubleClickFactory = new();
+    private readonly TooltipInfoFactory _tooltipInfoFactory;
+    private readonly IDeviceService _deviceService;
+    private readonly IAppSettings _appSettings;
+    private readonly INotificationSettings _notificationSettings;
+    private readonly IAppInfrastructure _infrastructure;
+    private readonly IconDoubleClickFactory _iconDoubleClickFactory;
 
     private ToolStripMenuItem _updateMenuItem;
     private TimerForm _animationTimer;
@@ -93,26 +98,41 @@ public sealed class TrayIcon : IDisposable
     private readonly TimerForm _clickTimer;
     private const int ClickDetectionIntervalMs = 250;
 
-    public TrayIcon()
+    public TrayIcon(IDeviceService deviceService, IAppSettings appSettings, INotificationSettings notificationSettings, IAppInfrastructure infrastructure)
     {
+        _deviceService = deviceService;
+        _appSettings = appSettings;
+        _notificationSettings = notificationSettings;
+        _infrastructure = infrastructure;
         _clickTimer = new TimerForm { Interval = ClickDetectionIntervalMs };
         _clickTimer.Tick += NotifyIcon_MouseClick;
 
         _updateDownloadForm = new Lazy<UpdateDownloadForm>(() =>
         {
             UpdateDownloadForm form = null;
-            _context.Send(_ => { form = new UpdateDownloadForm(); }, null);
+            _context.Send(_ => { form = UpdateDownloadForm.Factory(_appSettings); }, null);
             return form;
         });
         //Localization
-        var rightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+        var rightToLeft = new LanguageFactory().Get(_appSettings.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         _selectionMenu.RightToLeft = rightToLeft;
         _settingsMenu.RightToLeft = rightToLeft;
 
         UpdateIcon();
         _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-        _tooltipInfoManager = new TooltipInfoManager(NotifyIcon);
-        _profileTrayIconBuilder = new ProfileTrayIconBuilder();
+        // One tooltip factory per process, owned by the tray icon: constructing it builds
+        // the tooltip implementations, each subscribing to DefaultDeviceChanged and to
+        // endpoint volume notifications. Sharing it with Settings keeps that lifecycle
+        // bounded exactly as the pre-refactor static list was (review finding: a factory
+        // per Settings open leaked one set of subscriptions per open).
+        _tooltipInfoFactory = new TooltipInfoFactory(_deviceService);
+        _tooltipInfoManager = new TooltipInfoManager(NotifyIcon, _tooltipInfoFactory);
+        // Pass the infrastructure façade itself, not its ProfileManager: the manager's DI
+        // factory resolves this tray icon (ShowError), so dereferencing it here would
+        // re-enter Lazy<ProfileManager> mid-construction. The builder resolves it lazily
+        // when the menu is built, after the bootstrapper constructed both.
+        _profileTrayIconBuilder = new ProfileTrayIconBuilder(_infrastructure);
+        _iconDoubleClickFactory = new IconDoubleClickFactory(_deviceService, _infrastructure);
 
         SetUpdateMenuItem(AppConfigs.Configuration.UpdateMode);
         NotifyIcon.ContextMenuStrip = _settingsMenu;
@@ -132,7 +152,7 @@ public sealed class TrayIcon : IDisposable
 
         if (e.Button != MouseButtons.Left) return;
 
-        if (AppModel.Instance.IconDoubleClick == IconDoubleClick.None)
+        if (_appSettings.IconDoubleClick == IconDoubleClick.None)
         {
             _inDoubleClick = false;
             _clickTimer.Stop();
@@ -164,7 +184,7 @@ public sealed class TrayIcon : IDisposable
 
     private void NotifyIcon_MouseDoubleClick()
     {
-        _iconDoubleClickFactory.ExecuteAction(AppModel.Instance.IconDoubleClick, this);
+        _iconDoubleClickFactory.ExecuteAction(_appSettings.IconDoubleClick, this);
     }
 
     private void NotifyIcon_MouseClick(object sender, EventArgs e)
@@ -219,7 +239,7 @@ public sealed class TrayIcon : IDisposable
 
     private void UpdateIcon()
     {
-        new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
+        new IconChangerFactory(_deviceService).Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
     }
 
     private void PopulateSettingsMenu()
@@ -228,7 +248,7 @@ public sealed class TrayIcon : IDisposable
         Debug.Assert(applicationDirectory != null, "applicationDirectory != null");
         _settingsMenu.Items.Clear();
         _settingsMenu.Items.Add(Application.ProductName + ' ' + AssemblyUtils.GetReleaseState() + " (" + Application.ProductVersion + ")", SoundSwitchLogoIcon.ToBitmap(),
-            (sender, e) => new About().Show());
+            (sender, e) => About.Factory(_appSettings).Show());
         _settingsMenu.Items.Add(_updateMenuItem);
         _settingsMenu.Items.Add(new ToolStripSeparator());
         _settingsMenu.Items.Add(TrayIconStrings.playbackDevices, ResourcePlaybackDevicesBitmap,
@@ -256,7 +276,7 @@ public sealed class TrayIcon : IDisposable
     {
         if (_updateMenuItem.Tag == null)
         {
-            AppModel.Instance.CheckForUpdate(UpdateCheckTrigger.Manual);
+            _appSettings.CheckForUpdate(UpdateCheckTrigger.Manual);
             return;
         }
 
@@ -273,7 +293,7 @@ public sealed class TrayIcon : IDisposable
 
     private void SetEventHandlers()
     {
-        AppModel.Instance.ErrorTriggered += (sender, @event) =>
+        _infrastructure.ErrorTriggered += (sender, @event) =>
         {
             if (@event.Exception is NoDevicesException)
                 ShowNoDevices();
@@ -283,9 +303,9 @@ public sealed class TrayIcon : IDisposable
                 ShowError(@event.Exception.Message, @event.Exception.GetType().Name);
             }
         };
-        AppModel.Instance.DefaultDeviceChanged += (sender, audioChangeEvent) =>
+        _deviceService.DefaultDeviceChanged += (sender, audioChangeEvent) =>
         {
-            var iconChanger = new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon);
+            var iconChanger = new IconChangerFactory(_deviceService).Get(AppConfigs.Configuration.SwitchIcon);
             if (iconChanger is IconChangerMuteState)
             {
                 // The mute-state type keys off the tracked microphone's state, not the default
@@ -298,7 +318,7 @@ public sealed class TrayIcon : IDisposable
 
             iconChanger.ChangeIcon(this, audioChangeEvent.Device, (ERole)audioChangeEvent.Role);
         };
-        AppModel.Instance.DefaultMicMuteChanged += (sender, args) =>
+        _deviceService.DefaultMicMuteChanged += (sender, args) =>
         {
             if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
                 return;
@@ -307,7 +327,7 @@ public sealed class TrayIcon : IDisposable
             // via Task.Run), so rapid toggles can be handled out of order.
             QueueMuteStateIconUpdate();
         };
-        AppModel.Instance.MuteTargetChanged += (sender, args) =>
+        _deviceService.MuteTargetChanged += (sender, args) =>
         {
             if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
                 return;
@@ -316,7 +336,7 @@ public sealed class TrayIcon : IDisposable
             // arrival/removal re-resolved it, possibly on a worker thread).
             QueueMuteStateIconUpdate();
         };
-        AppModel.Instance.NewVersionReleased += (sender, @event) =>
+        _appSettings.NewVersionReleased += (sender, @event) =>
         {
             switch (@event.UpdateMode)
             {
@@ -330,7 +350,7 @@ public sealed class TrayIcon : IDisposable
                     break;
             }
         };
-        AppModel.Instance.UpdateModeChanged += (_, mode) =>
+        _appSettings.UpdateModeChanged += (_, mode) =>
         {
             SetUpdateMenuItem(mode);
             PopulateSettingsMenu();
@@ -359,7 +379,7 @@ public sealed class TrayIcon : IDisposable
             if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
                 return;
 
-            new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
+            new IconChangerFactory(_deviceService).Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
         }, null);
     }
 
@@ -421,7 +441,7 @@ public sealed class TrayIcon : IDisposable
                 _settingsForm.BringToFront();
             else
             {
-                _settingsForm = new SettingsForm(AppModel.Instance.AudioDeviceLister);
+                _settingsForm = SettingsForm.Factory(_deviceService, _appSettings, _notificationSettings, _infrastructure, _tooltipInfoFactory);
                 _settingsForm.FormClosed += (object sender, FormClosedEventArgs e) =>
                     _settingsForm = null;
                 _settingsForm.Show();
@@ -436,8 +456,8 @@ public sealed class TrayIcon : IDisposable
     {
         Log.Information("Set tray icon menu devices");
         _selectionMenu.Items.Clear();
-        var playbackDevices = AppModel.Instance.AvailablePlaybackDevices.ToArray();
-        var recordingDevices = AppModel.Instance.AvailableRecordingDevices.ToArray();
+        var playbackDevices = _deviceService.AvailablePlaybackDevices.ToArray();
+        var recordingDevices = _deviceService.AvailableRecordingDevices.ToArray();
         var profiles = _profileTrayIconBuilder.GetMenuItems().ToArray();
 
         if (profiles.Length > 0)
@@ -472,7 +492,7 @@ public sealed class TrayIcon : IDisposable
         try
         {
             var item = (ToolStripDeviceItem)sender;
-            AppModel.Instance.SetActiveDevice(item.AudioDevice);
+            _deviceService.SetActiveDevice(item.AudioDevice);
         }
         catch (Exception)
         {

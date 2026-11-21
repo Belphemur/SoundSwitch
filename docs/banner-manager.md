@@ -49,7 +49,7 @@ When the current microphone state's notification mode is Persistent:
 - A `BannerForm` is created (or updated) for that microphone.
 - The banner uses `TimeSpan.MaxValue` as its TTL, making it effectively **infinite** until explicitly dismissed.
 - Normal shows a status message containing the microphone name. Compact uses a short state title and separate microphone name. Style is independent of lifetime.
-- Clicking the banner toggles that microphone through `AppModel.Instance.SetMicrophoneMuteState(microphoneId, !isMuted)`.
+- Clicking the banner toggles that microphone through the injected device service's `SetMicrophoneMuteState(microphoneId, !isMuted)`.
 - Both persistent states use the same tracked form, updated in place when the state changes.
 
 ### Fading and None

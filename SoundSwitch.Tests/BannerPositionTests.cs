@@ -6,6 +6,7 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
 
@@ -73,7 +74,9 @@ public class BannerPositionTests
         // The banner was never dragged, so it must not end up pinned to the desktop origin.
         var screen = Screen.AllScreens[0];
 
-        PositionCustom.ResolvePosition(screen, Point.Empty, false, HEIGHT, WIDTH)
+        // A service over the same single settings store the runtime uses; the
+        // notificationSettings parameter is unused on this never-placed branch.
+        PositionCustom.ResolvePosition(screen, Point.Empty, false, HEIGHT, WIDTH, new NotificationSettingsService())
             .Should().Be(new Point(
                 screen.Bounds.Left + (screen.Bounds.Width - WIDTH) / 2,
                 screen.Bounds.Top + (screen.Bounds.Height - HEIGHT) / 2));
