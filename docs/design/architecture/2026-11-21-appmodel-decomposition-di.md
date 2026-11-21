@@ -2,7 +2,10 @@
 
 ## Status
 
-Proposed — open questions Q1–Q6 below must be answered before implementation.
+Accepted (2026-11-21) — all open questions resolved by the owner the same
+day; see Resolved questions. Implementation directive: one PR for the whole
+refactor, reviewed by LLMs, carried out on the win11-dev VM via OpenCode
+(opencode-go/glm-5.3).
 
 ## Context
 
@@ -112,12 +115,12 @@ Rules:
 - **The singleton is retired by attrition, not decree:** new code must take
   `IAppModel` sub-interfaces via constructor; `AppModel.Instance` remains
   during migration and is deleted once the 317 references are migrated
-  (tracked in a single mechanical follow-up PR, see Rollout).
+  (tracked as the service-locator retirement commit, see Rollout).
 - `IAppModel` itself stays as the migration-neutral facade: existing callers
   keep compiling while services are extracted one partial at a time. It is
-  deleted in the final phase if Q2's answer makes it redundant.
+  deleted in the final phase per the resolved Q2.
 
-### B. Composition: the container choice (open)
+### B. Composition: the container (resolved — MS.DI)
 
 Two candidates, evaluated against WinForms reality:
 
@@ -158,8 +161,9 @@ Two candidates, evaluated against WinForms reality:
   - Lifecycle: currently author-maintained version-coupled to your other
     project; a bug fix must ship through both repos.
 
-**Recommendation (Q1):** **Option 1, MS.DI alone, for SoundSwitch.** The
-decisive factors are hosting model and maintenance: the IoC library is built
+**Decision (Q1, resolved 2026-11-21):** **Option 1, MS.DI alone, for
+SoundSwitch.** The decisive factors are hosting model and maintenance: the
+IoC library is built
 around a generic host with `IConfiguration`/`ILoggingBuilder` and env-var
 bindings — a shape SoundSwitch (a tray app whose configuration is a
 serialized `.json` via `AppConfigs`, not env vars) doesn't have, and each of
@@ -257,39 +261,41 @@ Yes, but scoped. The verdict per cost:
 - **Net:** the refactor is worth doing for maintainability; the codebase
   already chose the seam (sub-interfaces + test fakes), so this is
   formalizing an existing architecture, not inventing one. But it is a
-  phased PR sequence (PR1–PR4 above), not a one-shot rewrite.
+  phased single-PR rollout (one commit per phase), not a one-shot rewrite.
 
-### Rollout (prerequisite: Q1 answered)
+### Rollout (resolved — one PR, phased commits)
 
-Phased, one PR per phase, each independently mergeable and CI-green:
+The owner directed a **single PR** carrying the whole refactor (review is
+LLM-based, so the four merge points collapse into one). Clean-history rules
+still apply **inside** the PR: one conventional commit per phase, in this
+order, each phase buildable before the next starts:
 
-- **PR1 (mechanical, no behavior change):** add MS.DI package; introduce
-  `ServiceCollection` in `Program.cs`; register the four sub-interface
-  implementations + TrayIcon/ProfileManager/AppSoundLockManager/
-  NotificationManager; resolve them in `SoundSwitchApplicationContext`;
-  keep `AppModel.Instance` as a façade delegating to resolved services.
-  `AppModel.Instance` call sites unchanged. CI green, no behavior change.
-- **PR2:** split the four partials into four service classes (each partial
-  file becomes its own class taking dependencies by constructor; shared
-  private state split by ownership). `AppModel` becomes a thin delegating
-  facade for compatibility. CI green, no behavior change. (If Q2 selects
-  contract-first instead, this PR deletes the `IAppModel` façade and each
-  caller takes the specific sub-interface it uses — per-file using-statement
-  changes only.)
-- **PR3:** migrate the 317 `AppModel.Instance` references to constructor
-  injection, mechanical per-file edit (UI forms → ctor param via the
-  factory pattern per Q4; Framework managers → ctor param). This PR is the
-  service-locator retirement. Migration order within the PR: UI forms →
-  Framework → Services → tests.
-- **PR4 (optional per Q3):** introduce the update-checker/notification
-  hosted-lifetime separation (i.e. run the update download in a separate
-  scope so long-running download doesn't hold the container-resolved
-  singleton). Only if you want it; KISS says defer unless a real need
-  appears.
+1. **Commit 1 (mechanical, no behavior change):** add the
+   `Microsoft.Extensions.DependencyInjection` CPM pin; introduce
+   `ServiceCollection` in `Program.cs`; register the four sub-interface
+   implementations + TrayIcon/ProfileManager/AppSoundLockManager/
+   NotificationManager; resolve them in `SoundSwitchApplicationContext`;
+   keep `AppModel.Instance` as a façade delegating to resolved services.
+   `AppModel.Instance` call sites unchanged.
+2. **Commit 2:** split the four partials into four service classes (each
+   partial file becomes its own class taking dependencies by constructor;
+   shared private state split by ownership). `AppModel` becomes a thin
+   delegating façade for compatibility; `IAppModel` stays as the migration
+   façade (Q2).
+3. **Commit 3:** migrate the 317 `AppModel.Instance` references to
+   constructor injection, mechanical per-file edit (UI forms → ctor param
+   via the static factory per Q4; Framework managers → ctor param).
+   Migration order within the commit: UI forms → Framework → Services →
+   tests. This commit retires the service locator; `AppModel.Instance` and
+   the private parameterless path are deleted at its end.
+4. **Commit 4 (optional polish, per Q3 = defer):** none — the update
+   checker stays a singleton exactly as today. Instead this commit adds
+   composition tests (`BootstrapperOrderTests`-style: build the container,
+   assert the registration graph, assert dispose order) and removes any
+   dead scaffolding left by the migration.
 
-If Q1 selects Option 2, a **PR0** precedes the sequence: extract/publish
-the InversionOfControl library as its own repo/package; recorded here as a
-prerequisite rather than a rollout phase.
+Each commit must keep the solution buildable and the full test suite
+green on the win11-dev VM build gate before the next commit starts.
 
 ### Non-goals
 
@@ -319,41 +325,32 @@ prerequisite rather than a rollout phase.
    `IBootstrap` — real, but small here; your library keeps solving it in
    AddictedProxy where the shape fits.
 
-### Open Questions
+### Resolved questions (owner decisions, 2026-11-21)
 
-- **Q1 (container).** MS.DI (Option 1, recommended above) or your
-  InversionOfControl library (Option 2, prerequisite: publish it as its own
-  NuGet with hosting deps made optional)? The recommendation leans MS.DI
-  for hosting-shape and maintenance reasons spelled out in §B.
-- **Q2 (IAppModel façade).** Keep `IAppModel` as the aggregate façade
-  interface (migration-neutral, callers keep one type to depend on; delete
-  later once services are real) — or delete it immediately in PR2 and have
-  callers take the specific sub-interface? Keep is recommended (less churn,
-  IAppModel cost is one file).
-- **Q3 (update checker lifetime).** The update checker currently runs on a
-  custom `LimitedConcurrencyLevelTaskScheduler(1)`. After containerization,
-  it can become a scoped/hotkey-triggered service with its own scope — or
-  stay a singleton exactly as today (KISS, defer lifetime changes). Defer
-  (stay singleton) is recommended until a real need appears.
-- **Q4 (UI forms).** WinForms designer files need a parameterless ctor for
-  the designer; forms also have real dependencies. Options: (a) forms take
-  services via ctor and get a parameterless ctor with resolved dependencies
-  via a static factory pattern already used in this codebase
-  (`SettingsForm.Factory()` style), (b) property injection just for
-  designer-created forms. (a) is recommended — it matches the repo's
-  existing factory pattern for forms.
-- **Q5 (rollout budget).** Is the 4-PR sequence acceptable, or do you
-  want it compressed (PR2+PR3 merged) accepting higher risk on the startup
-  ordering hazard? The split is recommended for its independent merge
-  points + CI gate per phase.
-- **Q6 (only if Q1 = Option 2).** How should SoundSwitch consume the
-  InversionOfControl library: git submodule, CPM-pinned private NuGet feed,
-  or vendored source? Private feed recommended if Option 2 is chosen.
-- **Q7 (CLI).** `SoundSwitch.CLI` currently has no reference to
-  SoundSwitch.Model (verified by grep). If the CLI should gain model
-  capabilities later, container-based composition makes that a one-liner
-  composition root; out of scope here, recorded so the design doesn't block
-  it.
+- **Q1 (container) — MS.DI alone.** The InversionOfControl library was
+  evaluated in full (see §B) and set aside: it is a conventions layer over
+  MS.DI built around a hosted/env-var configuration shape that does not
+  fit a WinForms tray app, and it is not published where SoundSwitch's
+  Renovate can track it. It may be revisited if it is ever extracted as a
+  standalone package with the hosting dependencies optional.
+- **Q2 (IAppModel façade) — keep.** `IAppModel` stays as the aggregate
+  façade for the whole migration; it is deleted only at the end of Commit 3
+  if no caller still needs the aggregate (deferred to implementation
+  judgment, recorded here so the deletion is a decision, not an accident).
+- **Q3 (update checker lifetime) — defer.** Stays a singleton exactly as
+  today, on its existing `LimitedConcurrencyLevelTaskScheduler(1)`; the
+  mute-resolution chain stays in `DeviceService`.
+- **Q4 (UI forms) — static factory.** Forms take services via constructor
+  and expose `SettingsForm.Factory()`-style static factories for designer
+  compatibility, matching the repo's existing pattern.
+- **Q5 (rollout) — one PR.** Single PR, four phased commits inside it
+  (see Rollout); LLM review, not per-phase human merge gates.
+- **Q6 (IoC library consumption) — moot.** Q1 chose MS.DI; no submodule,
+  feed, or vendoring is introduced.
+- **Q7 (CLI) — out of scope, recorded.** `SoundSwitch.CLI` has no
+  dependency on `SoundSwitch.Model` today (verified by grep);
+  container-based composition keeps the door open for a future CLI
+  composition root without designing for it now.
 
 ## Consequences
 
