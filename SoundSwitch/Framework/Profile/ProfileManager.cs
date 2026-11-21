@@ -323,6 +323,19 @@ public class ProfileManager
                 return false;
             }
 
+            // A window destroyed while this activation waited on _switchLock must not get a
+            // restore entry: its destruction event already ran RestoreState, found nothing
+            // and scheduled no restore — no later event removes the entry this TryAdd would
+            // create, so the saved state would leak until the handle value is reused.
+            // Re-check liveness under the lock, the same point the entry is created.
+            // Residual risk: the handle was destroyed and its value recycled by then —
+            // accepted, as everywhere else Win32 handles are compared by value.
+            if (!User32.NativeMethods.IsWindow(windowHandle))
+            {
+                _logger.Debug("Window {WindowHandle} is gone before its restore state was saved; skipping", windowHandle);
+                return false;
+            }
+
             var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eCommunications);
             var playback = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
             var recording = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
@@ -410,6 +423,7 @@ public class ProfileManager
     private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, processId);
+        var missingDeviceErrors = new List<string>();
         lock (_switchLock)
         {
             if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
@@ -424,7 +438,7 @@ public class ProfileManager
                 if (deviceToUse == null)
                 {
                     deviceMissing = true;
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
+                    missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
                     continue;
                 }
 
@@ -452,12 +466,22 @@ public class ProfileManager
                 }
             }
         }
+
+        // The balloon tip runs synchronously on the calling thread; showing it under the
+        // lock would stall every other profile switch — including a tray-menu selection on
+        // the UI thread — until the balloon call returns. Same pattern as
+        // NotifyProfileChanged: display after the switch is complete.
+        foreach (var error in missingDeviceErrors)
+        {
+            _showError.Invoke(error, $"{SettingsStrings.profile_error_title}: {profile.Name}");
+        }
     }
 
 
     public void SwitchAudio(Profile profile, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, null);
+        var missingDeviceErrors = new List<string>();
         lock (_switchLock)
         {
             if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
@@ -477,7 +501,7 @@ public class ProfileManager
                 if (deviceToUse == null)
                 {
                     deviceMissing = true;
-                    _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
+                    missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
                     continue;
                 }
 
@@ -499,6 +523,12 @@ public class ProfileManager
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");
                 }
             }
+        }
+
+        // See the private overload above: balloons are shown only once the lock is released.
+        foreach (var error in missingDeviceErrors)
+        {
+            _showError.Invoke(error, $"{SettingsStrings.profile_error_title}: {profile.Name}");
         }
     }
 
