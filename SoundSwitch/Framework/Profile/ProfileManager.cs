@@ -68,6 +68,7 @@ public class ProfileManager
         IAudioDeviceLister activeDeviceLister,
         IDeviceService deviceService,
         IAppSettings appSettings,
+        HotkeyRegistry hotkeyRegistry,
         ShowError showError,
         TriggerFactory triggerFactory,
         NotificationManager.NotificationManager notificationManager)
@@ -80,7 +81,7 @@ public class ProfileManager
         _showError = showError;
         _triggerFactory = triggerFactory;
         _notificationManager = notificationManager;
-        _profileHotkeyManager = new(this, appSettings);
+        _profileHotkeyManager = new(this, appSettings, hotkeyRegistry);
         _logger = Log.ForContext(GetType());
     }
 
@@ -587,12 +588,15 @@ public class ProfileManager
         {
             var error = trigger.Type.Match(() =>
                 {
-                    if (trigger.HotKey == null || !_profileHotkeyManager.IsValidHotkey(trigger.HotKey))
+                    if (trigger.HotKey == null)
                     {
                         return string.Format(SettingsStrings.profile_error_hotkey, trigger.HotKey);
                     }
 
-                    return null;
+                    // Null when the profile can claim the hotkey; otherwise a localized
+                    // message naming the SoundSwitch system already holding it (ADR
+                    // docs/design/architecture/2026-11-21-shared-mechanism-consolidation.md §D3).
+                    return _profileHotkeyManager.GetHotkeyConflict(trigger.HotKey);
                 }, () =>
                 {
                     if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByWindowName.ContainsKey(trigger.WindowName.ToLower()))

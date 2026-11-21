@@ -30,6 +30,7 @@ namespace SoundSwitch.Services
         private readonly ProcessMonitor _processMonitor;
         private readonly NotificationManager _notificationManager;
         private readonly IAudioDeviceLister _audioDeviceLister;
+        private readonly HotkeyRegistry _hotkeyRegistry;
         private readonly ILogger _logger = Log.ForContext<AppSoundLockManager>();
         private readonly object _lock = new();
         private readonly AppRuleAssignmentReconciler _assignmentReconciler;
@@ -57,7 +58,7 @@ namespace SoundSwitch.Services
         /// </summary>
         private List<AppSoundRule> _rulesSnapshot = new();
 
-        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager, IAudioDeviceLister audioDeviceLister)
+        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager, IAudioDeviceLister audioDeviceLister, HotkeyRegistry hotkeyRegistry)
         {
             _configuration = configuration;
             _audioSwitcher = audioSwitcher;
@@ -65,6 +66,7 @@ namespace SoundSwitch.Services
             _processMonitor = processMonitor;
             _notificationManager = notificationManager;
             _audioDeviceLister = audioDeviceLister;
+            _hotkeyRegistry = hotkeyRegistry;
             _assignmentReconciler = new AppRuleAssignmentReconciler(configuration, audioSwitcher);
         }
 
@@ -396,9 +398,10 @@ namespace SoundSwitch.Services
                         continue;
                     }
 
-                    if (!WindowsAPIAdapter.RegisterHotKey(hotKey))
+                    // The registry logs the localized conflict naming the owner (a profile,
+                    // a global hotkey, another rule) when the registration fails.
+                    if (_hotkeyRegistry.TryRegister(hotKey, new HotkeyOwner(HotkeyOwnerKind.AppRule, rule.ProcessPath)) != null)
                     {
-                        _logger.Warning("Couldn't register app rule hotkey {HotKey}; it may conflict with another hotkey", hotKey);
                         continue;
                     }
 
@@ -416,7 +419,7 @@ namespace SoundSwitch.Services
             {
                 foreach (var hotKey in _ruleHotkeys)
                 {
-                    WindowsAPIAdapter.UnRegisterHotKey(hotKey);
+                    _hotkeyRegistry.Unregister(hotKey);
                 }
 
                 _ruleHotkeys.Clear();

@@ -18,6 +18,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Lister;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Model;
 using SoundSwitch.Services;
 using SoundSwitch.UI.Component;
@@ -83,7 +84,7 @@ public class CompositionRootTests
     private static (DeviceService DeviceService, SettingsService SettingsService, NotificationSettingsService NotificationSettingsService) ComposeDeviceService(IAudioDeviceLister lister)
     {
         var errorEvents = new ErrorEvents();
-        var settingsService = new SettingsService(errorEvents);
+        var settingsService = new SettingsService(errorEvents, new HotkeyRegistry());
         var notificationSettingsService = new NotificationSettingsService();
         return (new DeviceService(lister, errorEvents, settingsService, settingsService, notificationSettingsService), settingsService, notificationSettingsService);
     }

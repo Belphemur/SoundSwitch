@@ -1042,6 +1042,69 @@ namespace SoundSwitch.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The hotkey {0} is already used by {1}..
+        /// </summary>
+        internal static string hotkey_conflict {
+            get {
+                return ResourceManager.GetString("hotkey.conflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The hotkey {0} couldn't be registered. It may be used by another application..
+        /// </summary>
+        internal static string hotkey_conflict_external {
+            get {
+                return ResourceManager.GetString("hotkey.conflict.external", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the app rule {0}.
+        /// </summary>
+        internal static string hotkey_conflict_owner_appRule {
+            get {
+                return ResourceManager.GetString("hotkey.conflict.owner.appRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the mute hotkey.
+        /// </summary>
+        internal static string hotkey_conflict_owner_mute {
+            get {
+                return ResourceManager.GetString("hotkey.conflict.owner.mute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the playback switch hotkey.
+        /// </summary>
+        internal static string hotkey_conflict_owner_playback {
+            get {
+                return ResourceManager.GetString("hotkey.conflict.owner.playback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the profile {0}.
+        /// </summary>
+        internal static string hotkey_conflict_owner_profile {
+            get {
+                return ResourceManager.GetString("hotkey.conflict.owner.profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the recording switch hotkey.
+        /// </summary>
+        internal static string hotkey_conflict_owner_recording {
+            get {
+                return ResourceManager.GetString("hotkey.conflict.owner.recording", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check to enable hotkey..
         /// </summary>
         internal static string hotkey_tooltip {

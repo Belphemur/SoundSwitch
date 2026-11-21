@@ -42,12 +42,14 @@ namespace SoundSwitch.Model;
 public class SettingsService : IAppSettings
 {
     private readonly ErrorEvents _errorEvents;
+    private readonly HotkeyRegistry _hotkeyRegistry;
     private IUpdateChecker _updateChecker;
     private readonly LimitedConcurrencyLevelTaskScheduler _updateScheduler;
 
-    public SettingsService(ErrorEvents errorEvents)
+    public SettingsService(ErrorEvents errorEvents, HotkeyRegistry hotkeyRegistry)
     {
         _errorEvents = errorEvents;
+        _hotkeyRegistry = hotkeyRegistry;
         _updateScheduler = new LimitedConcurrencyLevelTaskScheduler(1);
     }
 
@@ -283,13 +285,13 @@ public class SettingsService : IAppSettings
     /// </summary>
     internal void RegisterConfiguredHotkeys()
     {
-        RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey);
-        if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey))
+        RegisterHotKey(AppConfigs.Configuration.PlaybackHotKey, HotkeyOwnerKind.PlaybackSwitch);
+        if (!RegisterHotKey(AppConfigs.Configuration.RecordingHotKey, HotkeyOwnerKind.RecordingSwitch))
         {
             Log.Warning("Recording hotkey could not be registered: {hotkey}", AppConfigs.Configuration.RecordingHotKey);
         }
 
-        if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey))
+        if (!RegisterHotKey(AppConfigs.Configuration.MuteRecordingHotKey, HotkeyOwnerKind.Mute))
         {
             Log.Warning("Mute hotkey could not be registered: {hotkey}", AppConfigs.Configuration.MuteRecordingHotKey);
         }
@@ -314,7 +316,15 @@ public class SettingsService : IAppSettings
         }
 
         Log.Information("Register new hotkeys {hotkeys}", hotKey);
-        if (!RegisterHotKey(hotKey))
+        var ownerKind = action switch
+        {
+            HotKeyAction.Playback => HotkeyOwnerKind.PlaybackSwitch,
+            HotKeyAction.Recording => HotkeyOwnerKind.RecordingSwitch,
+            HotKeyAction.Mute => HotkeyOwnerKind.Mute,
+            _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+        };
+
+        if (!RegisterHotKey(hotKey, ownerKind))
         {
             // The previous binding was never touched, so it stays in effect.
             return false;
@@ -322,13 +332,13 @@ public class SettingsService : IAppSettings
 
         // Only unbind the previous combination when it is actually registered: a binding
         // that failed to register at startup must not make the new one look like a failure.
-        if (confHotKey.Enabled && WindowsAPIAdapter.IsHotKeyRegistered(confHotKey))
+        if (confHotKey.Enabled && _hotkeyRegistry.IsRegistered(confHotKey))
         {
             Log.Information("Unregister previous hotkeys {hotkeys}", confHotKey);
-            if (!WindowsAPIAdapter.UnRegisterHotKey(confHotKey))
+            if (!_hotkeyRegistry.Unregister(confHotKey))
             {
                 Log.Warning("Couldn't unregister previous hotkeys {hotkeys}, rolling back {newHotkeys}", confHotKey, hotKey);
-                if (hotKey.Enabled && !WindowsAPIAdapter.UnRegisterHotKey(hotKey))
+                if (hotKey.Enabled && !_hotkeyRegistry.Unregister(hotKey))
                     Log.Error("Couldn't roll back newly registered hotkeys {hotkeys}", hotKey);
                 return false;
             }
@@ -357,13 +367,17 @@ public class SettingsService : IAppSettings
         return true;
     }
 
-    private bool RegisterHotKey(HotKey hotkeys)
+    private bool RegisterHotKey(HotKey hotkeys, HotkeyOwnerKind ownerKind)
     {
-        if (!hotkeys.Enabled || WindowsAPIAdapter.RegisterHotKey(hotkeys))
+        if (!hotkeys.Enabled)
             return true;
 
-        Log.Warning("Can't register new hotkeys {hotkeys}", hotkeys);
-        _errorEvents.Raise(new Exception("Impossible to register HotKey: " + hotkeys));
+        var conflict = _hotkeyRegistry.TryRegister(hotkeys, new HotkeyOwner(ownerKind));
+        if (conflict == null)
+            return true;
+
+        Log.Warning("Can't register new hotkeys {hotkeys}: {HotkeyConflict}", hotkeys, conflict);
+        _errorEvents.Raise(new Exception(conflict));
         return false;
     }
 

@@ -25,6 +25,7 @@ using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Profile;
 using SoundSwitch.Framework.Profile.Trigger;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Model;
 using SoundSwitch.Services;
 using SoundSwitch.UI.Component;
@@ -84,6 +85,12 @@ public static class CompositionRoot
         // change, with each manager keeping its own handler.
         services.AddSingleton<WindowMonitor>();
 
+        // One hotkey registry (same ADR §D3): the global switch/mute hotkeys, the
+        // profile hotkeys and the app-rule hotkeys all register through it, so a
+        // failed registration names the owning system instead of surfacing a raw
+        // RegisterHotKey failure. WindowsAPIAdapter stays the Win32 layer underneath.
+        services.AddSingleton<HotkeyRegistry>();
+
         // Managers. ProfileManager and AppSoundLockManager take their collaborators
         // exactly as the pre-refactor InitializeMain supplied them.
         services.AddSingleton<NotificationManager>();
@@ -94,6 +101,7 @@ public static class CompositionRoot
             serviceProvider.GetRequiredService<IAudioDeviceLister>(),
             serviceProvider.GetRequiredService<IDeviceService>(),
             serviceProvider.GetRequiredService<IAppSettings>(),
+            serviceProvider.GetRequiredService<HotkeyRegistry>(),
             serviceProvider.GetRequiredService<TrayIcon>().ShowError,
             new TriggerFactory(),
             serviceProvider.GetRequiredService<NotificationManager>()));
@@ -103,7 +111,8 @@ public static class CompositionRoot
             serviceProvider.GetRequiredService<WindowMonitor>(),
             new ProcessMonitor(),
             serviceProvider.GetRequiredService<NotificationManager>(),
-            serviceProvider.GetRequiredService<IAudioDeviceLister>()));
+            serviceProvider.GetRequiredService<IAudioDeviceLister>(),
+            serviceProvider.GetRequiredService<HotkeyRegistry>()));
 
         // Lazy bridges for the deferred manager access (MS.DI resolves Lazy<T> only
         // when it is registered): the IAppInfrastructure façade and the bootstrapper
