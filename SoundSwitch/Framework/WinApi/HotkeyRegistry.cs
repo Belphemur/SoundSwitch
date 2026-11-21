@@ -99,16 +99,37 @@ public sealed class HotkeyRegistry
 
     /// <summary>
     ///     Remove the ownership record and unregister the hotkey with the OS.
+    ///     The record is kept until Windows confirms the unregistration: a binding
+    ///     the adapter still tracks stays owned, so conflict checks keep naming
+    ///     the real owner instead of going blind.
     /// </summary>
     /// <returns>The result of the native unregistration.</returns>
     public bool Unregister(HotKey hotKey)
     {
         lock (_lock)
         {
-            _owners.Remove(hotKey);
-        }
+            if (WindowsAPIAdapter.UnRegisterHotKey(hotKey))
+            {
+                _owners.Remove(hotKey);
+                return true;
+            }
 
-        return WindowsAPIAdapter.UnRegisterHotKey(hotKey);
+            // The native unregistration failed. When the adapter still tracks the
+            // binding it may still be live, so the owner stays recorded and later
+            // conflict checks stay truthful; a binding that is already gone at the
+            // OS level is forgotten instead of immortalizing an owner that holds
+            // nothing.
+            if (!WindowsAPIAdapter.IsHotKeyRegistered(hotKey))
+            {
+                _owners.Remove(hotKey);
+            }
+            else
+            {
+                Log.Warning("Couldn't unregister hotkey {HotKey}; keeping its ownership record", hotKey);
+            }
+
+            return false;
+        }
     }
 
     /// <summary>
