@@ -20,6 +20,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using Sentry;
 
 using Serilog;
@@ -97,6 +99,10 @@ internal static class Program
 #endif
         Thread.CurrentThread.CurrentUICulture = new LanguageFactory().Get(AppModel.Instance.Language).CultureInfo;
         Thread.CurrentThread.Name = "Main Thread";
+        // Built after the first AppModel.Instance touch above so the singleton's
+        // construction point is unchanged. Teardown stays manual (AppModel.Dispose)
+        // until the service classes take over construction and the container owns it.
+        var serviceProvider = CompositionRoot.BuildServiceProvider();
         var userMutexName = PipeConstants.GetUserPipeName();
 
         using var mainMutex = new Mutex(true, Application.ProductName);
@@ -175,7 +181,7 @@ internal static class Program
         _synchronizationContext = new WindowsFormsSynchronizationContext();
         SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
 
-        var appContext = new SoundSwitchApplicationContext();
+        var appContext = new SoundSwitchApplicationContext(serviceProvider.GetRequiredService<IAppModel>());
         NamedPipe.StartListening(userMutexName, mainCts.Token);
 
         Application.Run(appContext);
