@@ -166,6 +166,20 @@ public sealed class HotkeyRegistry
     }
 
     /// <summary>
+    ///     Whether the combination is currently recorded for exactly this owner.
+    ///     Used to recognize a caller's own retained record — e.g. a release that
+    ///     failed during deletion and is still live at the OS level — which a
+    ///     same-owner re-registration self-heals through the adapter.
+    /// </summary>
+    public bool IsOwnedBy(HotKey hotKey, HotkeyOwner owner)
+    {
+        lock (_lock)
+        {
+            return _owners.TryGetValue(hotKey, out var current) && current.Equals(owner);
+        }
+    }
+
+    /// <summary>
     ///     Localized message naming the owner that already holds the combination,
     ///     or null when no SoundSwitch system owns it.
     /// </summary>

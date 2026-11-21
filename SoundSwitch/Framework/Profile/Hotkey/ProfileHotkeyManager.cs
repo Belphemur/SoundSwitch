@@ -86,7 +86,7 @@ public class ProfileHotkeyManager
     /// <returns></returns>
     public bool IsValidHotkey(HotKey hotKey)
     {
-        return GetHotkeyConflict(hotKey) == null;
+        return GetHotkeyConflict(hotKey, null) == null;
     }
 
     /// <summary>
@@ -96,9 +96,18 @@ public class ProfileHotkeyManager
     /// so a cross-system conflict is reported instead of silently stealing the
     /// other owner's registration through the raw OS probe.
     /// </summary>
-    public string? GetHotkeyConflict(HotKey hotKey)
+    /// <param name="profile">
+    /// The profile asking, when known: a registry record retained for that very
+    /// profile (a release that failed during deletion, still live at the OS level)
+    /// is not a conflict for it — the same-owner registration self-heals through
+    /// the adapter, so the UpdateProfile recovery can re-add the saved profile.
+    /// </param>
+    public string? GetHotkeyConflict(HotKey hotKey, Profile? profile)
     {
         if (_profiles.ContainsKey(hotKey))
+            return null;
+
+        if (profile != null && _hotkeyRegistry.IsOwnedBy(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profile.Name)))
             return null;
 
         var conflict = _hotkeyRegistry.DescribeConflict(hotKey);

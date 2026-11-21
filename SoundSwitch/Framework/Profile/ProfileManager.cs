@@ -596,7 +596,9 @@ public class ProfileManager
                     // Null when the profile can claim the hotkey; otherwise a localized
                     // message naming the SoundSwitch system already holding it (ADR
                     // docs/design/architecture/2026-11-21-shared-mechanism-consolidation.md §D3).
-                    return _profileHotkeyManager.GetHotkeyConflict(trigger.HotKey);
+                    // Passing the profile lets it reclaim its own retained record when a
+                    // previous release failed during deletion.
+                    return _profileHotkeyManager.GetHotkeyConflict(trigger.HotKey, profile);
                 }, () =>
                 {
                     if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByWindowName.ContainsKey(trigger.WindowName.ToLower()))
