@@ -145,6 +145,11 @@ public class ProfileHotkeyManager
             return _hotkeyRegistry.Unregister(hotKey);
         }
 
+        // The recorded owner must always be a profile the user can still find:
+        // when other claimants remain after this removal, promote one of them so
+        // conflict messages never name a deleted profile.
+        _hotkeyRegistry.UpdateOwner(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profiles.First().Name));
+
         if (_profiles[hotKey].LastUsed == profile)
         {
             _profiles[hotKey].LastUsed = profiles.First();

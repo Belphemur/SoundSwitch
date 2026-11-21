@@ -145,6 +145,24 @@ public sealed class HotkeyRegistry
     }
 
     /// <summary>
+    ///     Rewrite the owner recorded for a hotkey without touching the OS registration.
+    ///     Used when the recorded representative of a shared profile hotkey changes
+    ///     (e.g. the first claiming profile was deleted while others still use the
+    ///     combination), so conflict messages keep naming a profile the user can
+    ///     still find. A combination with no record is left alone.
+    /// </summary>
+    public void UpdateOwner(HotKey hotKey, HotkeyOwner owner)
+    {
+        lock (_lock)
+        {
+            if (_owners.ContainsKey(hotKey))
+            {
+                _owners[hotKey] = owner;
+            }
+        }
+    }
+
+    /// <summary>
     ///     Localized message naming the owner that already holds the combination,
     ///     or null when no SoundSwitch system owns it.
     /// </summary>
