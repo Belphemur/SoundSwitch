@@ -23,7 +23,7 @@ using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 
-public class TooltipInfoManager(NotifyIcon icon, IDeviceService deviceService)
+public class TooltipInfoManager(NotifyIcon icon, TooltipInfoFactory tooltipInfoFactory)
 {
 
     private static class Fixes
@@ -39,7 +39,7 @@ public class TooltipInfoManager(NotifyIcon icon, IDeviceService deviceService)
         }
     }
 
-    private readonly TooltipInfoFactory _tooltipInfoFactory = new(deviceService);
+    private readonly TooltipInfoFactory _tooltipInfoFactory = tooltipInfoFactory;
 
     /// <summary>
     /// Currently active tooltip info

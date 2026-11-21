@@ -80,6 +80,7 @@ public sealed class TrayIcon : IDisposable
 
     private readonly TooltipInfoManager _tooltipInfoManager;
     private readonly ProfileTrayIconBuilder _profileTrayIconBuilder;
+    private readonly TooltipInfoFactory _tooltipInfoFactory;
     private readonly IDeviceService _deviceService;
     private readonly IAppSettings _appSettings;
     private readonly INotificationSettings _notificationSettings;
@@ -119,7 +120,13 @@ public sealed class TrayIcon : IDisposable
 
         UpdateIcon();
         _showContextMenu = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
-        _tooltipInfoManager = new TooltipInfoManager(NotifyIcon, _deviceService);
+        // One tooltip factory per process, owned by the tray icon: constructing it builds
+        // the tooltip implementations, each subscribing to DefaultDeviceChanged and to
+        // endpoint volume notifications. Sharing it with Settings keeps that lifecycle
+        // bounded exactly as the pre-refactor static list was (review finding: a factory
+        // per Settings open leaked one set of subscriptions per open).
+        _tooltipInfoFactory = new TooltipInfoFactory(_deviceService);
+        _tooltipInfoManager = new TooltipInfoManager(NotifyIcon, _tooltipInfoFactory);
         // Pass the infrastructure façade itself, not its ProfileManager: the manager's DI
         // factory resolves this tray icon (ShowError), so dereferencing it here would
         // re-enter Lazy<ProfileManager> mid-construction. The builder resolves it lazily
@@ -434,7 +441,7 @@ public sealed class TrayIcon : IDisposable
                 _settingsForm.BringToFront();
             else
             {
-                _settingsForm = SettingsForm.Factory(_deviceService, _appSettings, _notificationSettings, _infrastructure);
+                _settingsForm = SettingsForm.Factory(_deviceService, _appSettings, _notificationSettings, _infrastructure, _tooltipInfoFactory);
                 _settingsForm.FormClosed += (object sender, FormClosedEventArgs e) =>
                     _settingsForm = null;
                 _settingsForm.Show();

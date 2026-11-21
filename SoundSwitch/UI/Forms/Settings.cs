@@ -82,6 +82,7 @@ public sealed partial class SettingsForm : Form
     private readonly IAppSettings _appSettings;
     private readonly INotificationSettings _notificationSettings;
     private readonly IAppInfrastructure _infrastructure;
+    private readonly TooltipInfoFactory _tooltipInfoFactory;
     private readonly BannerManager _bannerManager;
     private IDisposable _deviceListRefreshedSubscription;
     private IDisposable _themeChangedSubscription;
@@ -170,17 +171,20 @@ public sealed partial class SettingsForm : Form
     /// <summary>
     ///     Runtime construction with the model services (Q4 ADR: forms take services via
     ///     constructor and expose a static factory for call sites). The device lister is
-    ///     the same instance the pre-refactor constructor received.
+    ///     the same instance the pre-refactor constructor received; the tooltip factory is
+    ///     the tray icon's process-wide instance, so the settings dialog does not build
+    ///     another set of device subscriptions.
     /// </summary>
-    public static SettingsForm Factory(IDeviceService deviceService, IAppSettings appSettings, INotificationSettings notificationSettings, IAppInfrastructure infrastructure) =>
-        new(deviceService, appSettings, notificationSettings, infrastructure);
+    public static SettingsForm Factory(IDeviceService deviceService, IAppSettings appSettings, INotificationSettings notificationSettings, IAppInfrastructure infrastructure, TooltipInfoFactory tooltipInfoFactory) =>
+        new(deviceService, appSettings, notificationSettings, infrastructure, tooltipInfoFactory);
 
-    public SettingsForm(IDeviceService deviceService, IAppSettings appSettings, INotificationSettings notificationSettings, IAppInfrastructure infrastructure)
+    public SettingsForm(IDeviceService deviceService, IAppSettings appSettings, INotificationSettings notificationSettings, IAppInfrastructure infrastructure, TooltipInfoFactory tooltipInfoFactory)
     {
         _deviceService = deviceService;
         _appSettings = appSettings;
         _notificationSettings = notificationSettings;
         _infrastructure = infrastructure;
+        _tooltipInfoFactory = tooltipInfoFactory;
         _audioDeviceLister = infrastructure.AudioDeviceLister;
         _bannerManager = new BannerManager(notificationSettings);
         // Form itself
@@ -249,7 +253,7 @@ public sealed partial class SettingsForm : Form
             nameof(IAppSettings.KeepVolumeEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
         new ToolTip().SetToolTip(keepVolumeCheckbox, SettingsStrings.keepVolume_tooltip);
 
-        new TooltipInfoFactory(_deviceService).ConfigureListControl(tooltipInfoComboBox);
+        _tooltipInfoFactory.ConfigureListControl(tooltipInfoComboBox);
         tooltipInfoComboBox.SelectedValue = TooltipInfoManager.CurrentTooltipInfo;
 
         new DeviceCyclerFactory(_appSettings, _deviceService, _audioDeviceLister).ConfigureListControl(cycleThroughComboBox);
