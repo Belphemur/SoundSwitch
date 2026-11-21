@@ -2,10 +2,10 @@
 
 ## Status
 
-Proposed — mockup phase. Owner directive (2026-11-21): add per-profile volume
-settings for **both recording and playback**, exposed as an **advanced**
-feature in the profile form. Implementation is gated on mockup review and the
-open questions below.
+Accepted (2026-11-21) — owner directive: mockup delivered, open the PR, start
+the implementation. Q1–Q3 are resolved below with **owner-vetoable defaults**
+chosen under that directive (each marked as such); vetoing one reopens only
+that decision, not the feature.
 
 ## Context
 
@@ -44,17 +44,16 @@ SoundSwitch.
 
 1. **Model.** `Profile` gains two optional volume presets:
    ```csharp
-   public sealed class ProfileVolumeSetting // 0 < volume <= 100
+   public sealed class ProfileVolumeSetting // 0 <= volume <= 100
    {
        public bool Enabled { get; set; }
        public float Volume { get; set; }
    }
    ```
-   `Profile.PlaybackVolume` and `Profile.Recording` slot equivalents:
-   `PlaybackVolume` applies to the profile's render devices, `RecordingVolume`
-   to its capture devices. `null` (absent in JSON) = feature off — existing
-   configs deserialize unchanged, no migration needed (Newtonsoft ignores
-   missing members on old files and adds them on save).
+   `Profile.PlaybackVolume` applies to the profile's render devices,
+   `Profile.RecordingVolume` to its capture devices. `null` (absent in JSON) =
+   feature off — existing configs deserialize unchanged, no migration needed
+   (Newtonsoft ignores missing members on old files and adds them on save).
 2. **Granularity: per flow, not per slot.** One playback preset, one
    recording preset — per the owner's framing ("volume settings for both
    recordings and playback"). Per-slot (4 independent sliders) was rejected
@@ -73,37 +72,40 @@ SoundSwitch.
    succeeded; volume is best-effort per device).
 5. **Storage of volume: raw percent.** Store 0–100 as user-facing; convert
    to scalar only at the COM boundary. Keeps the config human-readable and
-   the slider binding trivial.
+   the slider binding trivial. `0` is a legal preset (intentionally silent).
 
-## Open questions
+## Resolved questions
 
-- **Q1 — re-apply semantics.** Force the preset on *every* activation (the
-  reporter's ask: re-switching to the profile resets 90 → 50), or only when
-  the default device actually changed? Forcing on every activation also
-  stomps a manual tweak made while the profile is already active (hotkey
-  re-press, window re-focus). Lean: force every activation — that is
-  literally the requested behavior; the "stomp" is the feature.
-- **Q2 — mute in the preset?** Include a mute toggle per flow, or
-  volume-only for the first cut? Lean: volume-only — mute has interplay with
-  the mic-mute banner feature and is easy to add later without schema break
-  (adding a field is backward compatible).
-- **Q3 — restore on deactivate.** When a window/process trigger deactivates
-  and `RestoreState` puts back the pre-switch defaults, should it also
-  restore the volumes the profile overrode? Requires `SaveCurrentState` to
-  snapshot `MasterVolumeLevelScalar` alongside the device list. Lean: yes —
-  otherwise a volume-applying trigger profile leaves the previous devices at
-  the profile's volume permanently.
+- **Q1 — re-apply semantics: force on EVERY activation** (both `SwitchAudio`
+  overloads, every trigger type). Re-pressing the hotkey or re-focusing the
+  window re-applies the preset, stomping a manual tweak made while the
+  profile is active — that stomp IS the reporter's ask ("reset to 50 instead
+  of last-saved 90"). *Owner-vetoable default.*
+- **Q2 — volume-only for the first cut; no mute in the preset.** Mute has
+  interplay with the mic-mute banner feature and can be added later without
+  schema break (adding a field is backward compatible). The slider's full
+  0–100 range is stored; 0 means "preset to silent", not mute.
+  *Owner-vetoable default.*
+- **Q3 — restore volumes on trigger deactivation: yes.** `SaveCurrentState`
+  snapshots `MasterVolumeLevelScalar` alongside each saved device;
+  `RestoreState` re-applies those volumes when the pre-switch defaults are
+  restored. Without this, a volume-applying trigger profile leaves the
+  previous devices permanently at the profile's volume. *Owner-vetoable
+  default.*
 
 ## Consequences
 
 - Profile activation becomes a device switch *plus* optional volume
   normalization; both recording and playback are covered per the owner
   directive.
-- `Profile.Copy()` must deep-copy the new settings; `UpsertProfileExtended`
-  binds them; banner/notification text is unchanged (volume is silent
-  best-effort — see non-goals).
+- `Profile.Copy()` deep-copies the new settings (done in the mockup phase);
+  `UpsertProfileExtended` binds them (done); banner/notification text is
+  unchanged (volume is silent best-effort — see non-goals).
 - Telemetry: extend `TrackProfileActivated` context with whether volume
   presets applied (counts usage for the release notes).
+- Deactivation via `RestoreState` now also restores volumes (Q3), so the
+  window/process trigger round-trip returns the system to its true
+  pre-trigger state.
 
 ## Non-goals
 
@@ -112,10 +114,14 @@ SoundSwitch.
 - Notification copy changes for volume.
 - Touching `KeepVolumeEnabled` behavior (tray cycling stays as-is).
 
-## Mockup
+## Mockup (delivered)
 
-Built before implementation (owner directive). UI-only branch:
-`UpsertProfileExtended` gains the collapsed advanced section, new model
-fields serialize but `ProfileManager.SwitchAudio` is untouched. Real WinForms
-renders captured from the VM for owner review; Q1–Q3 answered against the
-mockup, then folded in here before the implementation brief.
+UI-only phase landed on `feature/profile-volume` before implementation
+(owner rule: mockup first): model + serialization tests (`c5cc67c8`),
+collapsed advanced section in `UpsertProfileExtended` (`f0bd7992`), capture
+tooling (`fc134e33`). Real WinForms renders captured and verified:
+`artifacts/mockup-default.png` (collapsed — form above the disclosure row
+pixel-identical to pre-change baseline) and `artifacts/mockup-expanded.png`
+(playback checked at 35%, recording checked at 80%). One deviation from the
+ADR sketch: the stored range is the full 0–100 (`0 <= volume <= 100`),
+not `0 < volume <= 100` — folded into Decision 5 above.
