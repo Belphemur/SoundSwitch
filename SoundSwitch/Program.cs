@@ -157,9 +157,17 @@ internal static class Program
                     @event.Result = new IntPtr(1);
 
                     break;
+                case WindowsAPIAdapter.RestartManagerEventType.EndSession when !@event.SessionEnding:
+                    // Windows sends WM_ENDSESSION with wParam=0 when another application
+                    // refused the shutdown: the session continues, so keep running. Treating
+                    // every EndSession as fatal made SoundSwitch silently disappear while the
+                    // system kept running (#2580).
+                    Log.Information("Session end cancelled (wParam=0); {Application} keeps running", Application.ProductName);
+                    break;
                 case WindowsAPIAdapter.RestartManagerEventType.EndSession:
                 case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                    Log.Debug("Close Application");
+                    Log.Information("Closing application: {EventType} (session ending: {SessionEnding}, restart-manager close: {CloseAppRequested})",
+                        @event.Type, @event.SessionEnding, @event.CloseAppRequested);
                     try
                     {
                         mainCts.Cancel();
@@ -169,6 +177,9 @@ internal static class Program
                         // We're closing anyway
                     }
 
+                    // The file sink buffers for minutes; without an explicit flush the last
+                    // log lines are lost and the exit looks like a silent crash (#2580).
+                    Log.CloseAndFlush();
                     Environment.Exit(0);
                     break;
             }

@@ -460,14 +460,14 @@ public class WindowsAPIAdapter : Form
         switch (m.Msg)
         {
             case WM_QUERYENDSESSION:
-                var closingEvent = new RestartManagerEvent(RestartManagerEventType.Query);
+                var closingEvent = new RestartManagerEvent(RestartManagerEventType.Query) { LParam = m.LParam };
                 RestartManagerTriggered?.Invoke(this, closingEvent);
                 m.Result = closingEvent.Result;
-                Log.Information($"Received WM_QUERYENDSESSION responded {m.Result}");
+                Log.Information("Received WM_QUERYENDSESSION responded {Result} lParam {LParam}", m.Result, m.LParam);
                 break;
             case WM_ENDSESSION:
-                RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.EndSession));
-                Log.Information("Received WM_ENDSESSION");
+                RestartManagerTriggered?.Invoke(this, new RestartManagerEvent(RestartManagerEventType.EndSession) { WParam = m.WParam, LParam = m.LParam });
+                Log.Information("Received WM_ENDSESSION wParam {WParam} lParam {LParam}", m.WParam, m.LParam);
                 break;
 
             case WM_CLOSE:
@@ -826,6 +826,30 @@ public class WindowsAPIAdapter : Form
     {
         public IntPtr Result { get; set; } = new(1);
         public RestartManagerEventType Type { get; } = type;
+
+        /// <summary>
+        /// Raw <c>wParam</c> of the underlying session message. For <see cref="RestartManagerEventType.EndSession"/>
+        /// a zero value means the session end was <b>cancelled</b> (another application refused the
+        /// shutdown) and the application must keep running; non-zero means the session is really ending.
+        /// </summary>
+        public IntPtr WParam { get; init; } = IntPtr.Zero;
+
+        /// <summary>
+        /// Raw <c>lParam</c> of the underlying session message. Carries <c>ENDSESSION_CLOSEAPP</c>
+        /// when the Windows Restart Manager (typically an installer) is the source of the close,
+        /// instead of an interactive logoff/shutdown.
+        /// </summary>
+        public IntPtr LParam { get; init; } = IntPtr.Zero;
+
+        /// <summary>True when the message carried <c>ENDSESSION_CLOSEAPP</c>: an installer closed the application via the Restart Manager.</summary>
+        public bool CloseAppRequested => (LParam.ToInt64() & ENDSESSION_CLOSEAPP) != 0;
+
+        /// <summary>
+        /// True when this EndSession means the session is really ending and the process must exit.
+        /// A cancelled session end (<see cref="WParam"/> == 0) must leave the application running;
+        /// exiting there made SoundSwitch silently disappear while the system kept running (#2580).
+        /// </summary>
+        public bool SessionEnding => WParam != IntPtr.Zero;
     }
 
     public class DeviceChangeEvent : EventArgs;
