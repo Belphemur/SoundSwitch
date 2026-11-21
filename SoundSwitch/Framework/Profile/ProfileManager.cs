@@ -14,7 +14,6 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
@@ -24,6 +23,7 @@ using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using SoundSwitch.Services;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.Profile;
@@ -388,20 +388,6 @@ public class ProfileManager
         }
     }
 
-    private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
-    {
-        var collection = _activeDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active);
-        var result = collection.Match(deviceInfo);
-        if (result.Kind == DeviceMatchKind.Ambiguous)
-        {
-            _logger.Warning("Ambiguous profile device match for {NameClean}: {Count} active devices share the name, treating as not found",
-                deviceInfo.NameClean, result.Candidates!.Count);
-            return null;
-        }
-
-        return result.IsResolved ? result.Device : null;
-    }
-
     private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, processId);
@@ -413,7 +399,7 @@ public class ProfileManager
         var deviceMissing = false;
         foreach (var device in profile.Devices)
         {
-            var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
+            var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
             if (deviceToUse == null)
             {
                 deviceMissing = true;
@@ -462,7 +448,7 @@ public class ProfileManager
         var deviceMissing = false;
         foreach (var device in profile.Devices)
         {
-            var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
+            var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
             if (deviceToUse == null)
             {
                 deviceMissing = true;

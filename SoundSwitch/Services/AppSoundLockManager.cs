@@ -698,7 +698,7 @@ namespace SoundSwitch.Services
             return Resolves(pair.Playback) || Resolves(pair.Recording);
 
             bool Resolves(DeviceInfo? device) =>
-                device != null && AppRuleDeviceResolver.Resolve(device, _audioDeviceLister) != null;
+                device != null && DeviceResolver.Resolve(device, _audioDeviceLister) != null;
         }
 
         private int TakeNextPairIndex(Guid ruleId, int pairCount)
@@ -780,7 +780,7 @@ namespace SoundSwitch.Services
             var stored = getter(pair);
             if (stored == null) return default;
 
-            var resolved = AppRuleDeviceResolver.Resolve(stored, _audioDeviceLister);
+            var resolved = DeviceResolver.Resolve(stored, _audioDeviceLister);
             if (resolved == null)
             {
                 _logger.Warning("App rule device {NameClean} ({DeviceId}) not found among active {Flow} devices, skipping switch", stored.NameClean, stored.Id, flow);

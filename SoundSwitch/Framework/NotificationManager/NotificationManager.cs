@@ -142,15 +142,6 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
         _lastDeviceId = deviceDefaultChangedEvent.DeviceId;
     }
 
-    private DeviceFullInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
-    {
-        return deviceInfo.Type switch
-        {
-            EDataFlow.eCapture => deviceService.AvailableRecordingDevices.FirstOrDefault(info => info.Equals(deviceInfo)),
-            _ => deviceService.AvailablePlaybackDevices.FirstOrDefault(info => info.Equals(deviceInfo))
-        };
-    }
-
     /// <summary>
     /// Notify on Profile changed
     /// </summary>
@@ -235,7 +226,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
 
         if (icon == null)
         {
-            var device = profile.Devices.Select(wrapper => CheckDeviceAvailable(wrapper.DeviceInfo)).FirstOrDefault(info => info != null);
+            var device = profile.Devices.Select(wrapper => DeviceResolver.Resolve(wrapper.DeviceInfo, deviceService)).FirstOrDefault(info => info != null);
             if (device != null)
             {
                 using var iconHandle = device.LargeIcon;

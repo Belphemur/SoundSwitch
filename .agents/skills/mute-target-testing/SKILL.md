@@ -58,7 +58,7 @@ fast machines regardless of code changes. The rest of the fixture still runs.
 | Area | Fixture |
 | --- | --- |
 | Persisted target + scope flag | `MuteTargetConfigurationTests` |
-| Device identity resolution | `AppRuleDeviceResolverTests` |
+| Device identity resolution | `DeviceResolverTests` |
 | Matching machinery | `DeviceReadOnlyCollectionMatchTests` |
 | Snapshot serialization | `DeviceInfoSerializationTests` |
 | Banner pinning | `BannerMonitorTests` |
@@ -167,7 +167,7 @@ Automation IDs: `bannerStyleComboBox`, `microphoneMuteBannerComboBox`,
 ## Before pushing
 
 - Any change under `SoundSwitch/Model/AppModel.DeviceService.cs`,
-  `AppRuleDeviceResolver`, `MicrophoneMuteToggler`, or mute configuration:
+  `DeviceResolver`, `MicrophoneMuteToggler`, or mute configuration:
   run `pwsh tools\Test-MuteTarget.ps1` and `pwsh tools\Test-MuteTargetEndToEnd.ps1`.
 - Banner rendering/positioning changes: the unit layer covers them; extend the
   relevant fixture rather than relying on a manual check.

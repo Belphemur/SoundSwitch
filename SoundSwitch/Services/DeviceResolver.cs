@@ -13,15 +13,17 @@ using SoundSwitch.Model;
 namespace SoundSwitch.Services
 {
     /// <summary>
-    /// Resolve a persisted <see cref="DeviceInfo"/> against the currently active devices.
+    /// The single path for resolving a persisted <see cref="DeviceInfo"/> against the
+    /// currently active devices — used by profiles, notifications and app rules alike
+    /// (ADR docs/design/architecture/2026-11-21-shared-mechanism-consolidation.md §D2).
     /// All matching knowledge lives in <see cref="DeviceReadOnlyCollection{T}.Match"/>:
     /// exact Id, then stable device-instance path (same type), then unique <see cref="DeviceInfo.NameClean"/>.
-    /// Ambiguously named devices are never guessed — the rule is skipped and flagged.
-    /// This is what lets rules survive device id changes (e.g. after a driver update).
+    /// Ambiguously named devices are never guessed — the stored device is skipped and flagged.
+    /// This is what lets stored devices survive device id changes (e.g. after a driver update).
     /// </summary>
-    public static class AppRuleDeviceResolver
+    public static class DeviceResolver
     {
-        private static readonly ILogger Logger = Log.ForContext(typeof(AppRuleDeviceResolver));
+        private static readonly ILogger Logger = Log.ForContext(typeof(DeviceResolver));
 
         /// <summary>
         /// Resolve a stored device against the active devices of an <see cref="IAudioDeviceLister"/>.
