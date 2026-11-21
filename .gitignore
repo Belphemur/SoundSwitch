@@ -151,3 +151,8 @@ fabric.properties
 # MemPalace per-project files (issue #185)
 mempalace.yaml
 entities.json
+
+# Agent session workspace: mockup review deliverables (issue #2547) live on disk
+# under artifacts\, and the session brief is a workspace file, not repo content.
+artifacts/
+profile-volume-brief.md
