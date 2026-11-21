@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 
 using Serilog;
 
@@ -29,6 +30,12 @@ internal sealed class ProfileVolumeApplier
     /// writes through <see cref="AudioSwitcher"/> on its COM thread.
     /// </summary>
     internal Func<string, float, bool>? DeviceVolumeWrite { private get; init; }
+
+    /// <summary>
+    /// Test seam: when set, replaces the COM device read used by
+    /// <see cref="SnapshotVolumes"/>. Production leaves it null.
+    /// </summary>
+    internal Func<string, float?>? DeviceVolumeRead { private get; init; }
 
     public ProfileVolumeApplier(AudioSwitcher audioSwitcher, ILogger? logger = null)
     {
@@ -63,6 +70,64 @@ internal sealed class ProfileVolumeApplier
         }
 
         return SetDeviceScalar(device, preset.Volume / 100f, $"applying the preset of profile '{profile.Name}'");
+    }
+
+    /// <summary>
+    /// Writes a snapshotted 0-1 scalar back onto a device when a trigger deactivates
+    /// (ADR Q3). No preset is involved: the value is the pre-trigger volume as read by
+    /// <see cref="SnapshotVolumes"/>.
+    /// </summary>
+    public bool Restore(DeviceInfo device, float volumeScalar) =>
+        SetDeviceScalar(device, volumeScalar, "restoring the pre-trigger volume");
+
+    /// <summary>
+    /// Reads each device's current master volume scalar (0-1) for a later
+    /// <see cref="Restore"/> when a trigger deactivates (ADR Q3). Null entries in the
+    /// input (no default device in that slot) are ignored; an unresolvable or
+    /// unreadable device is logged and skipped — the snapshot stays best-effort, like
+    /// the apply.
+    /// </summary>
+    public (DeviceInfo Device, float VolumeScalar)[] SnapshotVolumes(IEnumerable<DeviceInfo?> devices)
+    {
+        var snapshots = new List<(DeviceInfo Device, float VolumeScalar)>();
+        foreach (var device in devices)
+        {
+            if (device == null)
+            {
+                continue;
+            }
+
+            try
+            {
+                float? scalar;
+                if (DeviceVolumeRead != null)
+                {
+                    scalar = DeviceVolumeRead(device.Id);
+                }
+                else
+                {
+                    using var audioDevice = _audioSwitcher.GetDevice(device.Id);
+                    if (audioDevice == null)
+                    {
+                        _logger.Warning("Device {Device} couldn't be resolved while snapshotting the pre-trigger volumes; skipped", device.NameClean);
+                        continue;
+                    }
+
+                    scalar = _audioSwitcher.InteractWithDevice(audioDevice, d => d.EndpointVolume?.MasterVolumeLevelScalar);
+                }
+
+                if (scalar.HasValue)
+                {
+                    snapshots.Add((device, scalar.Value));
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.Warning(e, "Couldn't read the master volume of {Device} while snapshotting the pre-trigger volumes; skipped", device.NameClean);
+            }
+        }
+
+        return snapshots.ToArray();
     }
 
     private bool SetDeviceScalar(DeviceInfo device, float scalar, string action)

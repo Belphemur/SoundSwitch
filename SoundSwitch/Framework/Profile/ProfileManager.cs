@@ -64,7 +64,19 @@ public class ProfileManager
     /// </summary>
     public string? LastTriggeredProfile { get; private set; }
 
-    private readonly ConcurrentDictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
+    /// <summary>
+    /// The system state saved when a trigger profile activates: the devices to restore on
+    /// deactivation, plus each saved device's pre-trigger master volume when the trigger
+    /// profile applies volume presets (ADR Q3). A null <see cref="Volumes"/> means the
+    /// activation didn't involve volume and deactivation behaves exactly as before.
+    /// </summary>
+    private sealed class SavedTriggerState
+    {
+        public required Profile Profile { get; init; }
+        public (DeviceInfo Device, float VolumeScalar)[]? Volumes { get; init; }
+    }
+
+    private readonly ConcurrentDictionary<User32.NativeMethods.HWND, SavedTriggerState> _activeWindowsTrigger = new();
 
     private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
     private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
@@ -353,7 +365,18 @@ public class ProfileManager
                 RecordingCommunication = recordingCommunication,
                 NotifyOnActivation = profile.NotifyOnActivation
             };
-            _activeWindowsTrigger.TryAdd(windowHandle, currentState);
+
+            // ADR Q3: when the trigger profile applies volume presets, remember each
+            // default device's current volume so deactivation puts it back. Without
+            // active presets nothing is applied on activation, so nothing is
+            // snapshotted and deactivation behaves exactly as before.
+            (DeviceInfo Device, float VolumeScalar)[]? volumes = null;
+            if (ProfileVolumeApplier.HasActivePreset(profile))
+            {
+                volumes = _volumeApplier.SnapshotVolumes(new DeviceInfo?[] { communication, playback, recording, recordingCommunication });
+            }
+
+            _activeWindowsTrigger.TryAdd(windowHandle, new SavedTriggerState { Profile = currentState, Volumes = volumes });
             return true;
         }
     }
@@ -365,13 +388,25 @@ public class ProfileManager
     /// <returns></returns>
     private bool RestoreState(User32.NativeMethods.HWND windowHandle)
     {
-        if (!_activeWindowsTrigger.TryGetValue(windowHandle, out var oldState))
+        if (!_activeWindowsTrigger.TryGetValue(windowHandle, out var savedState))
         {
             return false;
         }
 
-        SwitchAudio(oldState);
-        oldState.Dispose();
+        SwitchAudio(savedState.Profile);
+
+        // ADR Q3: put back the volumes the trigger's presets overrode, after the
+        // devices themselves are back. Best-effort per device, like the apply: a
+        // failure is logged inside the applier and never fails the restore.
+        if (savedState.Volumes != null)
+        {
+            foreach (var (device, volumeScalar) in savedState.Volumes)
+            {
+                _volumeApplier.Restore(device, volumeScalar);
+            }
+        }
+
+        savedState.Profile.Dispose();
         _activeWindowsTrigger.TryRemove(windowHandle, out _);
         return true;
     }
