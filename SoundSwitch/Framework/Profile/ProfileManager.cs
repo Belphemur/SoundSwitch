@@ -475,7 +475,10 @@ public class ProfileManager
             }
 
             var deviceMissing = false;
-            var volumeApplied = 0;
+            // The telemetry counts devices, not slots: playback and communication often
+            // resolve to the same physical endpoint, so deduplicate by resolved id
+            // (review round 1). Allocated only once a preset actually writes.
+            HashSet<string>? appliedEndpoints = null;
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
@@ -490,7 +493,8 @@ public class ProfileManager
                 // a failure is logged inside the applier and never fails the switch.
                 if (_volumeApplier.Apply(profile, deviceToUse))
                 {
-                    volumeApplied++;
+                    appliedEndpoints ??= new HashSet<string>(StringComparer.Ordinal);
+                    appliedEndpoints.Add(deviceToUse.Id);
                 }
 
                 foreach (var role in device.Roles)
@@ -510,7 +514,7 @@ public class ProfileManager
 
             if (triggerType.HasValue)
             {
-                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), volumeApplied);
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), appliedEndpoints?.Count ?? 0);
                 if (deviceMissing)
                 {
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");
@@ -546,7 +550,10 @@ public class ProfileManager
             }
 
             var deviceMissing = false;
-            var volumeApplied = 0;
+            // The telemetry counts devices, not slots: playback and communication often
+            // resolve to the same physical endpoint, so deduplicate by resolved id
+            // (review round 1). Allocated only once a preset actually writes.
+            HashSet<string>? appliedEndpoints = null;
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
@@ -561,7 +568,8 @@ public class ProfileManager
                 // a failure is logged inside the applier and never fails the switch.
                 if (_volumeApplier.Apply(profile, deviceToUse))
                 {
-                    volumeApplied++;
+                    appliedEndpoints ??= new HashSet<string>(StringComparer.Ordinal);
+                    appliedEndpoints.Add(deviceToUse.Id);
                 }
 
                 foreach (var role in device.Roles)
@@ -576,7 +584,7 @@ public class ProfileManager
 
             if (triggerType.HasValue)
             {
-                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), volumeApplied);
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), appliedEndpoints?.Count ?? 0);
                 if (deviceMissing)
                 {
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");
