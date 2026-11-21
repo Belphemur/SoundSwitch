@@ -368,11 +368,23 @@ catch {
     exit 1
 }
 finally {
-    # Only ever stop the instance THIS run launched (Start-SoundSwitchApp tracked its
-    # PID): a user's own session or an instance started independently during the run
-    # is left alone. Config writes on exit are the app's own - a profile is only added
-    # by an explicit Save, which this capture never presses.
-    if ($null -ne $process -and (Get-Command Stop-SoundSwitchApp -ErrorAction SilentlyContinue)) {
-        Stop-SoundSwitchApp -ErrorAction SilentlyContinue
+    # Stop exactly the instance THIS run launched, by its captured identity. Not through
+    # Stop-SoundSwitchApp: it resolves the target from the shared PID file, which a
+    # concurrent Control-SoundSwitch.ps1 invocation could have re-pointed at its own
+    # instance after this run's process exited (CodeRabbit re-review). The grace period
+    # mirrors that helper - let the app exit on its own first, force only if it lingers.
+    if ($null -ne $process) {
+        if (-not $process.HasExited) {
+            $process | Wait-Process -Timeout 5 -ErrorAction SilentlyContinue
+            if (-not $process.HasExited) {
+                Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
+            }
+        }
+
+        # Drop the tracking file this run's Start-SoundSwitchApp wrote — but only while
+        # it still names OUR pid, so a concurrent invocation's record is never removed.
+        if ((Test-Path $Script:PidFile) -and ((Get-Content $Script:PidFile -ErrorAction SilentlyContinue) -eq "$($process.Id)")) {
+            Remove-Item $Script:PidFile -Force -ErrorAction SilentlyContinue
+        }
     }
 }
