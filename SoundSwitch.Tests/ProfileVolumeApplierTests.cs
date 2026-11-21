@@ -361,17 +361,50 @@ public class ProfileVolumeApplierTests
     public void InheritHeldVolumes_OverlaysTheHeldOriginals()
     {
         var held = new Dictionary<string, float> { ["speakers-id"] = 0.3f };
+        var speakers = Device("speakers", EDataFlow.eRender);
+        var headset = Device("headset", EDataFlow.eRender);
         var freshlyRead = new[]
         {
-            (Device("speakers", EDataFlow.eRender), 0.5f),   // currently overridden by the active trigger
-            (Device("headset", EDataFlow.eRender), 0.9f)      // untouched by it
+            (Device: speakers, VolumeScalar: 0.5f),   // currently overridden by the active trigger
+            (Device: headset, VolumeScalar: 0.9f)      // untouched by it
         };
 
-        var inherited = ProfileVolumeApplier.InheritHeldVolumes(freshlyRead, held);
+        var inherited = ProfileVolumeApplier.InheritHeldVolumes(new[] { speakers, headset }, freshlyRead, held);
 
         inherited.Should().HaveCount(2);
         inherited.Single(entry => entry.Device.Id == "speakers-id").VolumeScalar.Should().Be(0.3f);
         inherited.Single(entry => entry.Device.Id == "headset-id").VolumeScalar.Should().Be(0.9f);
+    }
+
+    [Test]
+    public void InheritHeldVolumes_RetainsAHeldOriginalWhoseFreshReadFailed()
+    {
+        // Review re-check: when the overlapping trigger's own read of an endpoint fails,
+        // it must still hold the endpoint with the active trigger's recorded original,
+        // so the earlier close does not stomp the active preset and the later close
+        // still restores the original.
+        var held = new Dictionary<string, float> { ["speakers-id"] = 0.3f };
+        var speakers = Device("speakers", EDataFlow.eRender);
+        var headset = Device("headset", EDataFlow.eRender);
+        var freshlyRead = new[] { (Device: headset, VolumeScalar: 0.9f) };   // speakers read failed
+
+        var inherited = ProfileVolumeApplier.InheritHeldVolumes(new[] { speakers, headset }, freshlyRead, held);
+
+        inherited.Should().HaveCount(2);
+        inherited.Single(entry => entry.Device.Id == "speakers-id").VolumeScalar.Should().Be(0.3f, "the held original is retained despite the failed read");
+        inherited.Single(entry => entry.Device.Id == "headset-id").VolumeScalar.Should().Be(0.9f);
+    }
+
+    [Test]
+    public void InheritHeldVolumes_DoesNotAdoptUnrequestedHeldEndpoints()
+    {
+        var held = new Dictionary<string, float> { ["speakers-id"] = 0.3f };
+        var headset = Device("headset", EDataFlow.eRender);
+        var freshlyRead = new[] { (Device: headset, VolumeScalar: 0.9f) };
+
+        var inherited = ProfileVolumeApplier.InheritHeldVolumes(new[] { headset }, freshlyRead, held);
+
+        inherited.Should().ContainSingle().Which.Device.Id.Should().Be("headset-id", "held endpoints this activation never touches are not adopted");
     }
 
     [Test]
@@ -382,13 +415,13 @@ public class ProfileVolumeApplierTests
         var speakers = Device("speakers", EDataFlow.eRender);
 
         // Window 1 activates while the endpoint sits at its original 30%.
-        var firstState = (Sequence: 1, Volumes: new[] { (speakers, 0.3f) });
+        var firstState = (Sequence: 1, Volumes: new[] { (Device: speakers, VolumeScalar: 0.3f) });
         var heldAfterFirst = ProfileVolumeApplier.HeldVolumes(new[] { firstState });
 
         // Window 2 activates and reads the endpoint at the first trigger's preset (50%):
         // it must inherit the first trigger's original instead.
-        var secondRead = new[] { (speakers, 0.5f) };
-        var secondVolumes = ProfileVolumeApplier.InheritHeldVolumes(secondRead, heldAfterFirst);
+        var secondRead = new[] { (Device: speakers, VolumeScalar: 0.5f) };
+        var secondVolumes = ProfileVolumeApplier.InheritHeldVolumes(new[] { speakers }, secondRead, heldAfterFirst);
         var secondState = (Sequence: 2, Volumes: secondVolumes);
 
         // Window 1 closes while window 2 is still active: the endpoint is held, so its

@@ -93,10 +93,32 @@ internal sealed class ProfileVolumeApplier
     /// Overwrites freshly-read snapshots with the volumes that active trigger states
     /// already recorded for the same endpoints (see <see cref="HeldVolumes"/>): a
     /// second overlapping trigger then restores the true original on its deactivation,
-    /// not the first trigger's intermediate value.
+    /// not the first trigger's intermediate value. The projection walks the REQUESTED
+    /// devices, not just the successful reads: an endpoint a still-active trigger
+    /// already recorded keeps that record even when its fresh read failed, so the
+    /// overlapping trigger still holds the endpoint and its deactivation still restores
+    /// the original. Held endpoints outside the requested set are not adopted.
     /// </summary>
-    public static (DeviceInfo Device, float VolumeScalar)[] InheritHeldVolumes((DeviceInfo Device, float VolumeScalar)[] snapshots, IReadOnlyDictionary<string, float> heldVolumes) =>
-        snapshots.Select(snapshot => heldVolumes.TryGetValue(snapshot.Device.Id, out var original) ? (snapshot.Device, original) : snapshot).ToArray();
+    public static (DeviceInfo Device, float VolumeScalar)[] InheritHeldVolumes(IEnumerable<DeviceInfo> requestedDevices, (DeviceInfo Device, float VolumeScalar)[] snapshots, IReadOnlyDictionary<string, float> heldVolumes)
+    {
+        var readById = snapshots.ToDictionary(snapshot => snapshot.Device.Id, StringComparer.Ordinal);
+        var result = new List<(DeviceInfo Device, float VolumeScalar)>();
+        foreach (var device in requestedDevices)
+        {
+            if (heldVolumes.TryGetValue(device.Id, out var original))
+            {
+                result.Add((device, original));
+                continue;
+            }
+
+            if (readById.TryGetValue(device.Id, out var read))
+            {
+                result.Add((device, read.VolumeScalar));
+            }
+        }
+
+        return result.ToArray();
+    }
 
     /// <summary>
     /// Applies the preset matching the device's flow (render → playback, capture →
