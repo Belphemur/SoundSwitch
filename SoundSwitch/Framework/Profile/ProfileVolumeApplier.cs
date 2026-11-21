@@ -66,6 +66,39 @@ internal sealed class ProfileVolumeApplier
             .Select(group => group.First());
 
     /// <summary>
+    /// The endpoint volumes still held by active trigger states, keeping the oldest
+    /// record per endpoint id: when triggers overlap, the earliest active snapshot is
+    /// the endpoint's true pre-trigger volume, not the currently overridden one.
+    /// </summary>
+    public static IReadOnlyDictionary<string, float> HeldVolumes(IEnumerable<(int Sequence, (DeviceInfo Device, float VolumeScalar)[] Volumes)> activeStates)
+    {
+        var held = new Dictionary<string, (float Volume, int Sequence)>(StringComparer.Ordinal);
+        foreach (var (sequence, volumes) in activeStates)
+        {
+            foreach (var (device, volumeScalar) in volumes)
+            {
+                if (held.TryGetValue(device.Id, out var existing) && existing.Sequence <= sequence)
+                {
+                    continue;
+                }
+
+                held[device.Id] = (volumeScalar, sequence);
+            }
+        }
+
+        return held.ToDictionary(pair => pair.Key, pair => pair.Value.Volume, StringComparer.Ordinal);
+    }
+
+    /// <summary>
+    /// Overwrites freshly-read snapshots with the volumes that active trigger states
+    /// already recorded for the same endpoints (see <see cref="HeldVolumes"/>): a
+    /// second overlapping trigger then restores the true original on its deactivation,
+    /// not the first trigger's intermediate value.
+    /// </summary>
+    public static (DeviceInfo Device, float VolumeScalar)[] InheritHeldVolumes((DeviceInfo Device, float VolumeScalar)[] snapshots, IReadOnlyDictionary<string, float> heldVolumes) =>
+        snapshots.Select(snapshot => heldVolumes.TryGetValue(snapshot.Device.Id, out var original) ? (snapshot.Device, original) : snapshot).ToArray();
+
+    /// <summary>
     /// Applies the preset matching the device's flow (render → playback, capture →
     /// recording, ADR Decision 1). Returns whether the volume was actually written;
     /// a null or disabled preset is a plain no-op.

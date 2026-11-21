@@ -338,4 +338,68 @@ public class ProfileVolumeApplierTests
         writes.Should().Contain(write => write.Id == "speakers-id" && Math.Abs(write.Scalar - 0.3f) < 0.0001f);
         writes.Should().Contain(write => write.Id == "headset-id" && Math.Abs(write.Scalar - 0.9f) < 0.0001f);
     }
+
+    [Test]
+    public void HeldVolumes_KeepsTheEarliestRecordPerEndpoint()
+    {
+        var olderState = (Sequence: 1, Volumes: new[] { (Device("speakers", EDataFlow.eRender), 0.3f) });
+        var newerState = (Sequence: 2, Volumes: new[]
+        {
+            (Device("speakers", EDataFlow.eRender), 0.5f),
+            (Device("headset", EDataFlow.eRender), 0.7f)
+        });
+
+        // Enumeration order of the states must not matter: the sequence decides.
+        var held = ProfileVolumeApplier.HeldVolumes(new[] { newerState, olderState });
+
+        held["speakers-id"].Should().Be(0.3f, "the earliest active record is the endpoint's true pre-trigger volume");
+        held["headset-id"].Should().Be(0.7f);
+        held.Count.Should().Be(2);
+    }
+
+    [Test]
+    public void InheritHeldVolumes_OverlaysTheHeldOriginals()
+    {
+        var held = new Dictionary<string, float> { ["speakers-id"] = 0.3f };
+        var freshlyRead = new[]
+        {
+            (Device("speakers", EDataFlow.eRender), 0.5f),   // currently overridden by the active trigger
+            (Device("headset", EDataFlow.eRender), 0.9f)      // untouched by it
+        };
+
+        var inherited = ProfileVolumeApplier.InheritHeldVolumes(freshlyRead, held);
+
+        inherited.Should().HaveCount(2);
+        inherited.Single(entry => entry.Device.Id == "speakers-id").VolumeScalar.Should().Be(0.3f);
+        inherited.Single(entry => entry.Device.Id == "headset-id").VolumeScalar.Should().Be(0.9f);
+    }
+
+    [Test]
+    public void OverlappingTriggers_RestoreTheOriginalNotAnIntermediateValue()
+    {
+        // Review round 1 (qodo finding 6): two trigger windows apply presets to the
+        // same endpoint and close in the opposite order of their activation.
+        var speakers = Device("speakers", EDataFlow.eRender);
+
+        // Window 1 activates while the endpoint sits at its original 30%.
+        var firstState = (Sequence: 1, Volumes: new[] { (speakers, 0.3f) });
+        var heldAfterFirst = ProfileVolumeApplier.HeldVolumes(new[] { firstState });
+
+        // Window 2 activates and reads the endpoint at the first trigger's preset (50%):
+        // it must inherit the first trigger's original instead.
+        var secondRead = new[] { (speakers, 0.5f) };
+        var secondVolumes = ProfileVolumeApplier.InheritHeldVolumes(secondRead, heldAfterFirst);
+        var secondState = (Sequence: 2, Volumes: secondVolumes);
+
+        // Window 1 closes while window 2 is still active: the endpoint is held, so its
+        // restore is skipped and window 2's preset keeps governing the volume.
+        var heldWhenFirstCloses = ProfileVolumeApplier.HeldVolumes(new[] { secondState });
+        heldWhenFirstCloses.ContainsKey("speakers-id").Should().BeTrue();
+
+        // Window 2 closes last: nothing else holds the endpoint, and its inherited
+        // snapshot is the true original, not the intermediate preset.
+        var heldWhenSecondCloses = ProfileVolumeApplier.HeldVolumes(Array.Empty<(int, (DeviceInfo Device, float VolumeScalar)[])>());
+        heldWhenSecondCloses.ContainsKey("speakers-id").Should().BeFalse();
+        secondVolumes.Single().VolumeScalar.Should().Be(0.3f);
+    }
 }
