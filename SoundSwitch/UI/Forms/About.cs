@@ -27,9 +27,24 @@ public partial class About : Form
 {
     private static readonly System.Drawing.Icon helpIcon = Resources.HelpIcon;
 
+    /// <summary>
+    ///     Parameterless constructor kept for the WinForms designer.
+    /// </summary>
     public About()
     {
-        RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+        InitializeComponent();
+        Icon = helpIcon;
+    }
+
+    /// <summary>
+    ///     Runtime construction with the model services (Q4 ADR: forms take services
+    ///     via constructor and expose a static factory for call sites).
+    /// </summary>
+    public static About Factory(IAppSettings appSettings) => new(appSettings);
+
+    public About(IAppSettings appSettings)
+    {
+        RightToLeft = new LanguageFactory().Get(appSettings.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
         InitializeComponent();
         Icon = helpIcon;
     }

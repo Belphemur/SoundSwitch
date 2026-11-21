@@ -29,6 +29,7 @@ namespace SoundSwitch.Services
         private readonly WindowMonitor _windowMonitor;
         private readonly ProcessMonitor _processMonitor;
         private readonly NotificationManager _notificationManager;
+        private readonly IAudioDeviceLister _audioDeviceLister;
         private readonly ILogger _logger = Log.ForContext<AppSoundLockManager>();
         private readonly object _lock = new();
         private readonly AppRuleAssignmentReconciler _assignmentReconciler;
@@ -56,13 +57,14 @@ namespace SoundSwitch.Services
         /// </summary>
         private List<AppSoundRule> _rulesSnapshot = new();
 
-        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager)
+        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager, IAudioDeviceLister audioDeviceLister)
         {
             _configuration = configuration;
             _audioSwitcher = audioSwitcher;
             _windowMonitor = windowMonitor;
             _processMonitor = processMonitor;
             _notificationManager = notificationManager;
+            _audioDeviceLister = audioDeviceLister;
             _assignmentReconciler = new AppRuleAssignmentReconciler(configuration, audioSwitcher);
         }
 
@@ -691,12 +693,12 @@ namespace SoundSwitch.Services
         /// <summary>
         /// Whether at least one side of the pair resolves to a live device.
         /// </summary>
-        private static bool CanApplyPair(AppSoundRuleDevicePair pair)
+        private bool CanApplyPair(AppSoundRuleDevicePair pair)
         {
             return Resolves(pair.Playback) || Resolves(pair.Recording);
 
-            static bool Resolves(DeviceInfo? device) =>
-                device != null && AppRuleDeviceResolver.Resolve(device, AppModel.Instance.AudioDeviceLister) != null;
+            bool Resolves(DeviceInfo? device) =>
+                device != null && AppRuleDeviceResolver.Resolve(device, _audioDeviceLister) != null;
         }
 
         private int TakeNextPairIndex(Guid ruleId, int pairCount)
@@ -778,7 +780,7 @@ namespace SoundSwitch.Services
             var stored = getter(pair);
             if (stored == null) return default;
 
-            var resolved = AppRuleDeviceResolver.Resolve(stored, AppModel.Instance.AudioDeviceLister);
+            var resolved = AppRuleDeviceResolver.Resolve(stored, _audioDeviceLister);
             if (resolved == null)
             {
                 _logger.Warning("App rule device {NameClean} ({DeviceId}) not found among active {Flow} devices, skipping switch", stored.NameClean, stored.Id, flow);

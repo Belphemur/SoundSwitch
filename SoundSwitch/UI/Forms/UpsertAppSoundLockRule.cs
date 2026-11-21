@@ -18,6 +18,7 @@ public partial class UpsertAppSoundLockRule : Form
 {
     private readonly AppSoundRule _rule;
     private readonly bool _editing;
+    private readonly AppSoundLockManager _appSoundLockManager;
     private readonly List<DeviceFullInfo> _playbacks;
     private readonly List<DeviceFullInfo> _recordings;
     private readonly List<AppSoundRuleDevicePair> _pairs;
@@ -55,11 +56,19 @@ public partial class UpsertAppSoundLockRule : Form
     internal CheckBox EnabledCheckbox => chkEnabled;
     internal Label AssignmentHelperLabel => lblAssignmentHelper;
 
-    public UpsertAppSoundLockRule(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, bool editing = false)
+    /// <summary>
+    ///     Runtime construction with the model services (Q4 ADR: forms take services via
+    ///     constructor and expose a static factory for call sites).
+    /// </summary>
+    public static UpsertAppSoundLockRule Factory(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, AppSoundLockManager appSoundLockManager, bool editing = false) =>
+        new(rule, playbacks, recordings, appSoundLockManager, editing);
+
+    public UpsertAppSoundLockRule(AppSoundRule rule, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, AppSoundLockManager appSoundLockManager, bool editing = false)
     {
         _initializing = true;
         _rule = editing ? rule.Copy() : rule;
         _editing = editing;
+        _appSoundLockManager = appSoundLockManager;
         _playbacks = playbacks.ToList();
         _recordings = recordings.ToList();
         _pairs = _rule.DevicePairs?.Select(pair => pair.Copy()).ToList() ?? new List<AppSoundRuleDevicePair>();
@@ -961,7 +970,7 @@ public partial class UpsertAppSoundLockRule : Form
                 return;
             }
 
-            if (!AppModel.Instance.AppSoundLockManager.IsHotkeyAvailable(hotKeyBox.HotKey, _rule.Id))
+            if (!_appSoundLockManager.IsHotkeyAvailable(hotKeyBox.HotKey, _rule.Id))
             {
                 MessageBox.Show(SettingsStrings.appSoundLock_rule_error_hotkeyInUse, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -983,7 +992,7 @@ public partial class UpsertAppSoundLockRule : Form
             _rule.HotKey = hotKeyBox.HotKey;
             _rule.DevicePairs = _pairs.Select(pair => pair.Copy()).ToList();
 
-            if (!AppModel.Instance.AppSoundLockManager.IsHotkeyTargetAvailable(_rule))
+            if (!_appSoundLockManager.IsHotkeyTargetAvailable(_rule))
             {
                 MessageBox.Show(SettingsStrings.appSoundLock_rule_error_duplicateTarget, SettingsStrings.appSoundLock_rule_error_title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

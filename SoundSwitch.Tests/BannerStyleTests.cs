@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
@@ -433,8 +433,8 @@ public class BannerStyleTests
         {
             AppConfigs.Configuration.BannerStyle = BannerStyle.Normal;
             AppConfigs.Configuration.MaxNumberNotification = 5;
-            var microphoneManager = new MicrophoneMuteBannerManager();
-            var manager = new BannerManager();
+            var microphoneManager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
+            var manager = new BannerManager(new NotificationSettingsService());
             var persistent = Field<Dictionary<string, BannerForm>>(microphoneManager, "_activeBanners");
             var regular = Field<List<BannerForm>>(manager, "_bannerForms");
             try
@@ -469,7 +469,7 @@ public class BannerStyleTests
         {
             AppConfigs.Configuration.BannerStyle = BannerStyle.Normal;
             AppConfigs.Configuration.MaxNumberNotification = 5;
-            var manager = new BannerManager();
+            var manager = new BannerManager(new NotificationSettingsService());
             var banners = Field<List<BannerForm>>(manager, "_bannerForms");
             void Show() => manager.ShowNotification(new BannerData
             {
@@ -642,7 +642,7 @@ public class BannerStyleTests
         });
     }
 
-    private static NotificationBanner CreateNotification() => new()
+    private static NotificationBanner CreateNotification() => new(new NotificationSettingsService(), new FakeDeviceService())
     {
         Configuration = new NotificationConfiguration
         {

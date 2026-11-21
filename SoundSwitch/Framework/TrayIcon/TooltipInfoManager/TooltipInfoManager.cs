@@ -17,11 +17,13 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.Telemetry;
+using SoundSwitch.Model;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 
-public class TooltipInfoManager(NotifyIcon icon)
+public class TooltipInfoManager(NotifyIcon icon, IDeviceService deviceService)
 {
 
     private static class Fixes
@@ -37,7 +39,7 @@ public class TooltipInfoManager(NotifyIcon icon)
         }
     }
 
-    private readonly TooltipInfoFactory _tooltipInfoFactory = new();
+    private readonly TooltipInfoFactory _tooltipInfoFactory = new(deviceService);
 
     /// <summary>
     /// Currently active tooltip info

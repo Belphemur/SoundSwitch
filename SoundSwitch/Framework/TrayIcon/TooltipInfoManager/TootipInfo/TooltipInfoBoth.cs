@@ -13,13 +13,14 @@
 ********************************************************************/
 
 using SoundSwitch.Localization;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
 
-public class TooltipInfoBoth : ITooltipInfo
+public class TooltipInfoBoth(IDeviceService deviceService) : ITooltipInfo
 {
-    private readonly TooltipInfoRecording _tooltipInfoRecording = new();
-    private readonly TooltipInfoPlayback _tooltipInfoPlayback = new();
+    private readonly TooltipInfoRecording _tooltipInfoRecording = new(deviceService);
+    private readonly TooltipInfoPlayback _tooltipInfoPlayback = new(deviceService);
 
     public TooltipInfoType TypeEnum => TooltipInfoType.Both;
     public string Label => SettingsStrings.tooltipOnHover_option_bothDevices;

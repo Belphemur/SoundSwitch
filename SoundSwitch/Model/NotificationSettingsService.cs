@@ -46,8 +46,15 @@ public class NotificationSettingsService : INotificationSettings
     /// </summary>
     public const int BannerScaleMaximum = BannerAppearance.MaxScalePercentage;
 
-    private readonly BannerPositionFactory _bannerPositionFactory = new();
+    private readonly BannerPositionFactory _bannerPositionFactory;
+
     private CachedSound _customNotificationCachedSound;
+
+    public NotificationSettingsService()
+    {
+        // The factory's custom-position strategy reads this service's banner settings.
+        _bannerPositionFactory = new(this);
+    }
 
     /// <summary>
     ///     A mute-banner-relevant setting changed. The device service reacts by

@@ -14,12 +14,13 @@
 
 using SoundSwitch.Framework.Banner.BannerPosition.Position;
 using SoundSwitch.Framework.Factory;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.Banner.BannerPosition;
 
-public class BannerPositionFactory() : AbstractFactory<BannerPosition, IPosition>(Position)
+public class BannerPositionFactory(INotificationSettings notificationSettings) : AbstractFactory<BannerPosition, IPosition>(Position(notificationSettings))
 {
-    private static readonly IEnumImplList<BannerPosition, IPosition> Position = new EnumImplList
+    private static IEnumImplList<BannerPosition, IPosition> Position(INotificationSettings notificationSettings) => new EnumImplList
         <BannerPosition, IPosition>
         {
             new PositionTopLeft(),
@@ -31,6 +32,6 @@ public class BannerPositionFactory() : AbstractFactory<BannerPosition, IPosition
             new PositionBottomLeft(),
             new PositionBottomCenter(),
             new PositionBottomRight(),
-            new PositionCustom()
+            new PositionCustom(notificationSettings)
         };
 }

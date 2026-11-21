@@ -33,15 +33,15 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.NotificationManager.Notification;
 
-internal class NotificationBanner : INotification
+internal class NotificationBanner(INotificationSettings notificationSettings, IDeviceService deviceService) : INotification
 {
     public NotificationType TypeEnum => NotificationType.BannerNotification;
     public string Label => SettingsStrings.notification_option_banner;
 
     public INotificationConfiguration Configuration { get; set; }
-    private readonly BannerManager _bannerManager = new();
-    private readonly BannerPositionFactory _bannerPositionFactory = new();
-    private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new();
+    private readonly BannerManager _bannerManager = new(notificationSettings);
+    private readonly BannerPositionFactory _bannerPositionFactory = new(notificationSettings);
+    private readonly MicrophoneMuteBannerManager _microphoneMuteBannerManager = new(notificationSettings, deviceService);
 
     internal void ClearPersistentMuteBanners() => _microphoneMuteBannerManager.ClearPersistentMuteBanners();
 

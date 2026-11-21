@@ -42,7 +42,7 @@ public class IconChangerMuteStateTests
     [Test]
     public void DeviceDrivenOverload_IsNoOp()
     {
-        var changer = new IconChangerMuteState();
+        var changer = new IconChangerMuteState(new FakeDeviceService());
 
         // The device-driven overload must never touch the tray icon: passing one
         // through unchanged (here: null) is the observable no-op contract.
@@ -53,7 +53,7 @@ public class IconChangerMuteStateTests
     [Test]
     public void Factory_ResolvesMuteStateChanger()
     {
-        var changer = new IconChangerFactory().Get(IconChanger.MuteState);
+        var changer = new IconChangerFactory(new FakeDeviceService()).Get(IconChanger.MuteState);
         changer.Should().BeOfType<IconChangerMuteState>();
         changer.TypeEnum.Should().Be(IconChanger.MuteState);
         changer.Label.Should().NotBeNullOrEmpty();

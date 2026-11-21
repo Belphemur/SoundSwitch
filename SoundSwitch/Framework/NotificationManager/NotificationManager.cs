@@ -43,7 +43,7 @@ public class NotificationManager(INotificationSettings notificationSettings, IAp
     private INotification _switchDeviceNotification;
     private INotification _switchProfileNotification;
     private INotification _microphoneMuteNotification;
-    private readonly NotificationFactory _notificationFactory = new();
+    private readonly NotificationFactory _notificationFactory = new(notificationSettings, deviceService);
     private bool _disposed;
 
     public void Init()

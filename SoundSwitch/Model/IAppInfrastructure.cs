@@ -47,11 +47,6 @@ public interface IAppInfrastructure
     AppSoundLockManager AppSoundLockManager { get; }
 
     /// <summary>
-    /// Initialize the Main class with Updater and Hotkeys
-    /// </summary>
-    void InitializeMain(IAudioDeviceLister active, bool skipUpdate = false);
-
-    /// <summary>
     /// If an exception happened in the model
     /// </summary>
     event EventHandler<ExceptionEvent> ErrorTriggered;

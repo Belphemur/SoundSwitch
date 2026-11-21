@@ -36,17 +36,26 @@ public partial class UpsertProfileExtended : Form
     private readonly Profile _profile;
     private readonly Profile _oldProfile;
     private readonly SettingsForm _settingsForm;
+    private readonly IAppInfrastructure _infrastructure;
     private readonly bool _editing;
     private readonly TriggerFactory _triggerFactory;
     private ToolTip _restoreDeviceToolTip;
 
-    public UpsertProfileExtended(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, bool editing = false)
+    /// <summary>
+    ///     Runtime construction with the model services (Q4 ADR: forms take services via
+    ///     constructor and expose a static factory for call sites).
+    /// </summary>
+    public static UpsertProfileExtended Factory(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, IAppInfrastructure infrastructure, IAppSettings appSettings, bool editing = false) =>
+        new(profile, playbacks, recordings, settingsForm, infrastructure, appSettings, editing);
+
+    public UpsertProfileExtended(Profile profile, IEnumerable<DeviceFullInfo> playbacks, IEnumerable<DeviceFullInfo> recordings, SettingsForm settingsForm, IAppInfrastructure infrastructure, IAppSettings appSettings, bool editing = false)
     {
-        RightToLeft = new LanguageFactory().Get(AppModel.Instance.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
+        RightToLeft = new LanguageFactory().Get(appSettings.Language).IsRightToLeft ? RightToLeft.Yes : RightToLeft.No;
 
         _oldProfile = editing ? profile : null;
         _profile = editing ? profile.Copy() : profile;
         _settingsForm = settingsForm;
+        _infrastructure = infrastructure;
         _editing = editing;
         _triggerFactory = new TriggerFactory();
         InitializeComponent();
@@ -160,7 +169,7 @@ public partial class UpsertProfileExtended : Form
     {
         var countByTrigger = _profile.Triggers.GroupBy(trigger => trigger.Type)
             .ToDictionary(triggers => triggers.Key);
-        var availableTriggers = AppModel.Instance.ProfileManager.AvailableTriggers()
+        var availableTriggers = _infrastructure.ProfileManager.AvailableTriggers()
             .Where(pair =>
             {
                 if (countByTrigger.TryGetValue(pair.TypeEnum, out var trigger))
@@ -392,7 +401,7 @@ public partial class UpsertProfileExtended : Form
 
     private void SaveButton_Click(object sender, EventArgs e)
     {
-        var result = _editing ? AppModel.Instance.ProfileManager.UpdateProfile(_oldProfile, _profile) : AppModel.Instance.ProfileManager.AddProfile(_profile);
+        var result = _editing ? _infrastructure.ProfileManager.UpdateProfile(_oldProfile, _profile) : _infrastructure.ProfileManager.AddProfile(_profile);
 
         result.Map(success =>
             {

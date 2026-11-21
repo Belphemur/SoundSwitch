@@ -25,7 +25,7 @@ namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 /// When the user double-clicks the system tray icon, this action cycles through the configured playback devices.
 /// This is the default behavior and provides the traditional SoundSwitch functionality of device switching.
 /// </summary>
-internal class IconDoubleClickSwitchPlaybackDevice : IIconDoubleClick
+internal class IconDoubleClickSwitchPlaybackDevice(IDeviceService deviceService) : IIconDoubleClick
 {
     /// <summary>
     /// Gets the enum type that this implementation corresponds to.
@@ -44,7 +44,7 @@ internal class IconDoubleClickSwitchPlaybackDevice : IIconDoubleClick
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
         TelemetryService.AddBreadcrumb("tray", "Playback switch (double-click)");
-        AppModel.Instance.CycleActiveDevice(EDataFlow.eRender);
+        deviceService.CycleActiveDevice(EDataFlow.eRender);
         TelemetryService.TrackPlaybackSwitch("tray");
     }
 }

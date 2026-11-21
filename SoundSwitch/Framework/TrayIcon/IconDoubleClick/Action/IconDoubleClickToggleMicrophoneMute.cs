@@ -18,7 +18,7 @@ using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.IconDoubleClick.Action;
 
-internal class IconDoubleClickToggleMicrophoneMute : IIconDoubleClick
+internal class IconDoubleClickToggleMicrophoneMute(IDeviceService deviceService) : IIconDoubleClick
 {
     public IconDoubleClick TypeEnum => IconDoubleClick.ToggleMicrophoneMute;
 
@@ -31,7 +31,7 @@ internal class IconDoubleClickToggleMicrophoneMute : IIconDoubleClick
     public void Execute(UI.Component.TrayIcon trayIcon)
     {
         TelemetryService.AddBreadcrumb("tray", "Microphone mute toggle (double-click)");
-        var micResult = AppModel.Instance.ToggleMicrophoneMute();
+        var micResult = deviceService.ToggleMicrophoneMute();
         if (micResult != null)
         {
             TelemetryService.TrackMicMute("tray", micResult.Value.IsMuted);

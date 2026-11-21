@@ -15,14 +15,26 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
+using SoundSwitch.Audio.Manager;
+using SoundSwitch.Audio.Manager.Interop.Enum;
+using SoundSwitch.Common.Framework.Audio.Device;
+using SoundSwitch.Framework.Audio.Lister;
+using SoundSwitch.Framework.Configuration;
+using SoundSwitch.Framework.NotificationManager;
+using SoundSwitch.Framework.Profile;
+using SoundSwitch.Framework.Profile.Trigger;
 using SoundSwitch.Model;
+using SoundSwitch.Services;
+using SoundSwitch.UI.Component;
 
 namespace SoundSwitch;
 
 /// <summary>
 ///     The single registry for the application's service graph (ADR
 ///     docs/design/architecture/2026-11-21-appmodel-decomposition-di.md §C):
-///     one file, explicit registrations, no convention scanning.
+///     one file, explicit registrations, no convention scanning. The registry
+///     is the graph's source of truth; <see cref="AppBootstrapper" /> owns when
+///     each service is resolved, preserving the pre-refactor startup order.
 /// </summary>
 public static class CompositionRoot
 {
@@ -32,18 +44,56 @@ public static class CompositionRoot
     /// </summary>
     public static void RegisterServices(IServiceCollection services)
     {
-        // The AppModel singleton is today's implementation of all four sub-interfaces
-        // (IDeviceService, INotificationSettings, IAppSettings, IAppInfrastructure).
-        // The registrations below give the application a single place to resolve them
-        // while the implementations are extracted into dedicated service classes; the
-        // manager registrations (TrayIcon, ProfileManager, AppSoundLockManager,
-        // NotificationManager) join the graph when their construction moves into it.
-        var appModel = AppModel.Instance;
-        services.AddSingleton(appModel);
-        services.AddSingleton<IDeviceService>(serviceProvider => serviceProvider.GetRequiredService<IAppModel>());
-        services.AddSingleton<INotificationSettings>(serviceProvider => serviceProvider.GetRequiredService<IAppModel>());
-        services.AddSingleton<IAppSettings>(serviceProvider => serviceProvider.GetRequiredService<IAppModel>());
-        services.AddSingleton<IAppInfrastructure>(serviceProvider => serviceProvider.GetRequiredService<IAppModel>());
+        // Process-level singletons, registered so the container owns their teardown.
+        // Their call sites keep using the static instances; JobScheduler and
+        // QuickMenuManager deliberately stay outside the graph (ADR non-goals).
+        services.AddSingleton(AudioSwitcher.Instance);
+        services.AddSingleton(MMNotificationClient.Instance);
+
+        // The cached audio device lister (constructed with the same device-state
+        // mask the pre-refactor context used) and the application error event.
+        services.AddSingleton<IAudioDeviceLister>(_ => new CachedAudioDeviceLister(EDeviceState.Active | EDeviceState.Unplugged));
+        services.AddSingleton<ErrorEvents>();
+
+        // Model services: the four sub-interfaces, each mapped to its single
+        // implementation so resolving the interface and the concrete class yields
+        // the same instance.
+        services.AddSingleton<SettingsService>();
+        services.AddSingleton<IAppSettings>(serviceProvider => serviceProvider.GetRequiredService<SettingsService>());
+        services.AddSingleton<NotificationSettingsService>();
+        services.AddSingleton<INotificationSettings>(serviceProvider => serviceProvider.GetRequiredService<NotificationSettingsService>());
+        services.AddSingleton<DeviceService>();
+        services.AddSingleton<IDeviceService>(serviceProvider => serviceProvider.GetRequiredService<DeviceService>());
+
+        // The IAppInfrastructure façade. The tray-adjacent managers resolve lazily:
+        // the notification manager (built before them) reads TrayIcon only after the
+        // startup sequence constructs it, as the pre-refactor property timing allowed.
+        services.AddSingleton<AppInfrastructure>();
+        services.AddSingleton<IAppInfrastructure>(serviceProvider => serviceProvider.GetRequiredService<AppInfrastructure>());
+
+        // Managers. ProfileManager and AppSoundLockManager take their collaborators
+        // exactly as the pre-refactor InitializeMain supplied them.
+        services.AddSingleton<NotificationManager>();
+        services.AddSingleton<TrayIcon>();
+        services.AddSingleton<ProfileManager>(serviceProvider => new ProfileManager(
+            new WindowMonitor(),
+            serviceProvider.GetRequiredService<AudioSwitcher>(),
+            serviceProvider.GetRequiredService<IAudioDeviceLister>(),
+            serviceProvider.GetRequiredService<IDeviceService>(),
+            serviceProvider.GetRequiredService<IAppSettings>(),
+            serviceProvider.GetRequiredService<TrayIcon>().ShowError,
+            new TriggerFactory(),
+            serviceProvider.GetRequiredService<NotificationManager>()));
+        services.AddSingleton<AppSoundLockManager>(serviceProvider => new AppSoundLockManager(
+            AppConfigs.Configuration,
+            serviceProvider.GetRequiredService<AudioSwitcher>(),
+            new WindowMonitor(),
+            new ProcessMonitor(),
+            serviceProvider.GetRequiredService<NotificationManager>(),
+            serviceProvider.GetRequiredService<IAudioDeviceLister>()));
+
+        // The startup sequence.
+        services.AddSingleton<AppBootstrapper>();
     }
 
     /// <summary>

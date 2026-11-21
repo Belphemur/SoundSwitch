@@ -28,7 +28,7 @@ namespace SoundSwitch.Framework.Banner.MicrophoneMute;
 /// Specialized banner manager for microphone mute notifications.
 /// Tracks one persistent state banner per microphone, whether muted or unmuted.
 /// </summary>
-public class MicrophoneMuteBannerManager
+public class MicrophoneMuteBannerManager(INotificationSettings notificationSettings, IDeviceService deviceService)
 {
     private static System.Threading.SynchronizationContext _syncContext;
     private readonly Dictionary<string, BannerForm> _activeBanners = new();
@@ -86,15 +86,15 @@ public class MicrophoneMuteBannerManager
     {
         var data = NotificationContentBuilder.BuildMicrophoneBanner(microphoneName, isMuted);
         data.Priority = 3;
-        data.Position = AppModel.Instance.BannerPositionImpl;
+        data.Position = notificationSettings.BannerPositionImpl;
         data.Ttl = TimeSpan.MaxValue;
-        data.Opacity = AppModel.Instance.BannerOpacityPercentage;
-        data.DisplayInfo = AppModel.Instance.BannerDisplayInfo;
+        data.Opacity = notificationSettings.BannerOpacityPercentage;
+        data.DisplayInfo = notificationSettings.BannerDisplayInfo;
         data.OnClick = (sender, args) =>
         {
             if (isMuted)
                 TelemetryService.TrackNotificationBanner("unmute_clicked");
-            var result = AppModel.Instance.SetMicrophoneMuteState(microphoneId, !isMuted);
+            var result = deviceService.SetMicrophoneMuteState(microphoneId, !isMuted);
             if (result != null)
             {
                 TelemetryService.TrackMicMute("banner", !isMuted);
@@ -109,7 +109,7 @@ public class MicrophoneMuteBannerManager
         else
         {
             // Create new banner
-            var newBanner = new BannerForm();
+            var newBanner = BannerForm.Factory(notificationSettings);
             newBanner.SetData(data);
             // Arrange existing banners vertically
             TrackBanner(microphoneId, newBanner);

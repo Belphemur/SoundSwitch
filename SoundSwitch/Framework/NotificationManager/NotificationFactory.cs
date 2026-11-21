@@ -17,16 +17,17 @@ using System.Linq;
 
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.NotificationManager.Notification;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.NotificationManager;
 
-public class NotificationFactory() : AbstractFactory<NotificationType, INotification>(Notifications)
+public class NotificationFactory(INotificationSettings notificationSettings, IDeviceService deviceService) : AbstractFactory<NotificationType, INotification>(Notifications(notificationSettings, deviceService))
 {
-    private static readonly IEnumImplList<NotificationType, INotification> Notifications = new EnumImplList
+    private static IEnumImplList<NotificationType, INotification> Notifications(INotificationSettings notificationSettings, IDeviceService deviceService) => new EnumImplList
         <NotificationType, INotification>
         {
             new NotificationNone(),
-            new NotificationBanner(),
+            new NotificationBanner(notificationSettings, deviceService),
             new NotificationWindows(),
             new NotificationSound()
         };

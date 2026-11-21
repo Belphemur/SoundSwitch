@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using FluentAssertions;
@@ -12,27 +12,21 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
 
 [TestFixture]
 public class DeviceCyclerTests
 {
-    private class TestDeviceCycler : ADeviceCycler
+    private class TestDeviceCycler(List<DeviceFullInfo> devices, IAppSettings appSettings) : ADeviceCycler(appSettings)
     {
-        private readonly List<DeviceFullInfo> _devices;
-
         public override DeviceCyclerType TypeEnum => DeviceCyclerType.Available;
         public override string Label => "Test Cycler";
 
-        public TestDeviceCycler(List<DeviceFullInfo> devices)
-        {
-            _devices = devices;
-        }
-
         protected override IEnumerable<DeviceFullInfo> GetDevices(EDataFlow type)
         {
-            return _devices;
+            return devices;
         }
     }
 
@@ -51,7 +45,7 @@ public class DeviceCyclerTests
         }
 
         var singleDevice = enumerator.Current;
-        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice });
+        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice }, new SettingsService(new ErrorEvents()));
         using var originalDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
 
         try
@@ -99,7 +93,7 @@ public class DeviceCyclerTests
         }
 
         var otherDevice = enumerator.Current;
-        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice });
+        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice }, new SettingsService(new ErrorEvents()));
         using var originalDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
 
         try

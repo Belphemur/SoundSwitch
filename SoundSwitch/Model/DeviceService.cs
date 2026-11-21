@@ -27,7 +27,6 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio.Microphone;
 using SoundSwitch.Framework.Configuration;
 using SoundSwitch.Framework.DeviceCyclerManager;
-using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Services;
@@ -43,7 +42,6 @@ namespace SoundSwitch.Model;
 public class DeviceService : IDeviceService
 {
     private readonly ErrorEvents _errorEvents;
-    private readonly NotificationManager _notificationManager;
     private readonly IAudioDeviceLister _audioDeviceLister;
     private readonly DeviceCyclerManager _deviceCyclerManager;
     private readonly MicrophoneMuteToggler _microphoneMuteToggler;
@@ -61,19 +59,19 @@ public class DeviceService : IDeviceService
 
     public DeviceService(IAudioDeviceLister audioDeviceLister,
         ErrorEvents errorEvents,
-        NotificationManager notificationManager,
+        IAppSettings appSettings,
         SettingsService settingsService,
         NotificationSettingsService notificationSettingsService)
     {
         _audioDeviceLister = audioDeviceLister;
         _errorEvents = errorEvents;
-        _notificationManager = notificationManager;
-        _deviceCyclerManager = new DeviceCyclerManager();
+        _deviceCyclerManager = new DeviceCyclerManager(appSettings, this, _audioDeviceLister);
         _microphoneMuteToggler = new MicrophoneMuteToggler(AudioSwitcher.Instance);
 
         // The settings services are built before the device service (they are usable before
-        // InitializeMain) and ask it — the reconcile owner — to react to mute-banner-relevant
-        // changes. Same reaction points and order as the pre-refactor setters.
+        // the startup sequence runs) and ask it — the reconcile owner — to react to
+        // mute-banner-relevant changes. Same reaction points and order as the
+        // pre-refactor setters.
         settingsService.MuteRecordingDeviceChanged += (_, _) =>
         {
             RefreshMicrophoneMuteBanners();
@@ -104,6 +102,21 @@ public class DeviceService : IDeviceService
     public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
     public event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
     public event EventHandler MuteTargetChanged;
+
+    /// <summary>
+    ///     A microphone mute change is pending notification. The composition root wires
+    ///     this to the notification manager, which applies the banner-mode and
+    ///     readiness guards and raises the notification — preserving the pre-refactor
+    ///     guard-then-log-then-notify order on the same thread.
+    /// </summary>
+    internal event EventHandler<MuteNotificationRequestEventArgs> MuteNotificationPending;
+
+    /// <summary>
+    ///     The persistent mute banners need a reconcile. The composition root wires this
+    ///     to the notification manager's <c>SyncMuteBanners</c>, pairing it with this
+    ///     service's scoped-microphone reader.
+    /// </summary>
+    internal event EventHandler MuteBannersSyncRequested;
 
     /// <summary>
     ///     Subscribes the device lister's event streams. Called at the exact
@@ -229,16 +242,29 @@ public class DeviceService : IDeviceService
             DefaultMicMuteChanged?.Invoke(this, new MicrophoneMuteChangedEventArgs(payload.Device.Id, payload.Device.NameClean, payload.IsMuted));
         }
 
-        // The "only selected input" option limits mute banners. Sound and toast
-        // notifications keep reporting every microphone.
-        if (_notificationManager.MicrophoneMuteNotificationIsBanner && !IsMuteBannerInScope(payload.Device.Id, muteTargetId))
-            return;
+        // The "only selected input" option limits mute banners; sound and toast
+        // notifications keep reporting every microphone. The scope verdict is resolved
+        // here and the notification manager applies it together with its banner-mode
+        // check — the same two conditions the pre-refactor guard evaluated.
+        MuteNotificationPending?.Invoke(this, new MuteNotificationRequestEventArgs(
+            payload.Device.Id,
+            GetMicrophoneBannerName(payload.Device),
+            payload.WasMuted,
+            payload.IsMuted,
+            IsMuteBannerInScope(payload.Device.Id, muteTargetId)));
+    }
 
-        Log.Information("Microphone {DeviceName} mute state changed from {WasMuted} to {IsMuted}",
-            payload.Device.NameClean, payload.WasMuted, payload.IsMuted);
-
-        // Notify about the mute state change
-        _notificationManager.NotifyMuteChanged(payload.Device.Id, GetMicrophoneBannerName(payload.Device), payload.IsMuted);
+    /// <summary>
+    ///     A microphone mute change to be rendered as a notification, with the
+    ///     banner-scope verdict already resolved by the device service.
+    /// </summary>
+    internal sealed class MuteNotificationRequestEventArgs(string deviceId, string microphoneName, bool wasMuted, bool isMuted, bool isBannerInScope) : EventArgs
+    {
+        public string DeviceId { get; } = deviceId;
+        public string MicrophoneName { get; } = microphoneName;
+        public bool WasMuted { get; } = wasMuted;
+        public bool IsMuted { get; } = isMuted;
+        public bool IsBannerInScope { get; } = isBannerInScope;
     }
 
     internal static string GetMicrophoneBannerName(DeviceInfo device)
@@ -342,16 +368,23 @@ public class DeviceService : IDeviceService
     {
         if (!_initialized) return;
 
-        _notificationManager.SyncMuteBanners(() =>
-        {
-            var targetId = AppConfigs.Configuration.LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
-            // Read the lister's cached states on the UI thread when applying the refresh.
-            // Capturing them before dispatch could overwrite a newer live mute event.
-            return _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
-                .Where(device => IsMuteBannerInScope(device.Id, targetId))
-                .Select(device => (device.Id, GetMicrophoneBannerName(device), device.IsMuted))
-                .ToList();
-        });
+        MuteBannersSyncRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>
+    ///     The in-scope microphones and their current mute states. Read when the UI thread
+    ///     applies a banner reconcile — same reads, comment and ordering rationale as the
+    ///     pre-refactor reconcile lambda.
+    /// </summary>
+    internal IReadOnlyCollection<(string Id, string Name, bool IsMuted)> GetInScopeMutedMicrophones()
+    {
+        var targetId = AppConfigs.Configuration.LimitMuteBannersToTarget ? GetConfiguredOrDefaultMuteDeviceId() : null;
+        // Read the lister's cached states on the UI thread when applying the refresh.
+        // Capturing them before dispatch could overwrite a newer live mute event.
+        return _audioDeviceLister.GetDevices(EDataFlow.eCapture, EDeviceState.Active)
+            .Where(device => IsMuteBannerInScope(device.Id, targetId))
+            .Select(device => (device.Id, GetMicrophoneBannerName(device), device.IsMuted))
+            .ToList();
     }
 
     #region Microphone control

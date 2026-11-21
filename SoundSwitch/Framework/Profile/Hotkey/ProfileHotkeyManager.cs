@@ -39,10 +39,12 @@ public class ProfileHotkeyManager
 
     private readonly Dictionary<HotKey, HotKeysSelection> _profiles = new();
     private readonly ProfileManager _profileManager;
+    private readonly IAppSettings _appSettings;
 
-    public ProfileHotkeyManager(ProfileManager profileManager)
+    public ProfileHotkeyManager(ProfileManager profileManager, IAppSettings appSettings)
     {
         _profileManager = profileManager;
+        _appSettings = appSettings;
         WindowsAPIAdapter.HotKeyPressed += WindowsAPIAdapterOnHotKeyPressed;
     }
 
@@ -64,7 +66,7 @@ public class ProfileHotkeyManager
         _profileManager.SwitchAudio(nextProfile);
         hotKeysSelection.LastUsed = nextProfile;
 
-        if (AppModel.Instance.QuickMenuEnabled)
+        if (_appSettings.QuickMenuEnabled)
         {
             QuickMenuManager<Profile>.Instance.DisplayMenu(hotKeysSelection.Profiles.Select(profile => new HotKeyItem(nextProfile == profile, profile)), @event =>
             {

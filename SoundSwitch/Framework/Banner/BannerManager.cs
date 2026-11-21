@@ -27,7 +27,7 @@ namespace SoundSwitch.Framework.Banner;
 /// <summary>
 /// Class to manage the banners. This class is the entrypoint to show a notification banner.
 /// </summary>
-public class BannerManager
+public class BannerManager(INotificationSettings notificationSettings)
 {
     private static System.Threading.SynchronizationContext _syncContext;
     private readonly List<BannerForm> _bannerForms = new();
@@ -57,7 +57,7 @@ public class BannerManager
             return;
         }
 
-        if (AppModel.Instance.MaxNumberNotification > 1)
+        if (notificationSettings.MaxNumberNotification > 1)
         {
             MultipleBannerShow(data);
             return;
@@ -67,7 +67,7 @@ public class BannerManager
         {
             if (_singleBanner == null)
             {
-                _singleBanner = new BannerForm();
+                _singleBanner = BannerForm.Factory(notificationSettings);
                 _singleBanner.Disposed += (s, e) => { _singleBanner = null; };
             }
 
@@ -95,7 +95,7 @@ public class BannerManager
         {
             if (_customPositionBanner == null)
             {
-                _customPositionBanner = new BannerForm();
+                _customPositionBanner = BannerForm.Factory(notificationSettings);
                 _customPositionBanner.Disposed += (s, e) => { _customPositionBanner = null; };
             }
 
@@ -108,7 +108,7 @@ public class BannerManager
         // Execute the banner in the context of the UI thread
         _syncContext.Send(_ =>
         {
-            var banner = new BannerForm();
+            var banner = BannerForm.Factory(notificationSettings);
             banner.Disposed += (s, e) =>
             {
                 _bannerForms.Remove(banner);
@@ -117,7 +117,7 @@ public class BannerManager
             banner.SetData(data);
             foreach (var bannerForm in _bannerForms.ToArray())
             {
-                bannerForm.UpdateLocationOpacity(banner.Height + SPACING,  0.10, 100/AppModel.Instance.MaxNumberNotification);
+                bannerForm.UpdateLocationOpacity(banner.Height + SPACING,  0.10, 100/notificationSettings.MaxNumberNotification);
             }
 
             _bannerForms.Add(banner);

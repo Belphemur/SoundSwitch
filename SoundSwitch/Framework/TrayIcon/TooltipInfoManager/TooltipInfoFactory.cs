@@ -14,17 +14,18 @@
 
 using SoundSwitch.Framework.Factory;
 using SoundSwitch.Framework.TrayIcon.TooltipInfoManager.TootipInfo;
+using SoundSwitch.Model;
 
 namespace SoundSwitch.Framework.TrayIcon.TooltipInfoManager;
 
-public class TooltipInfoFactory() : AbstractFactory<TooltipInfoType, ITooltipInfo>(TooltipInfos)
+public class TooltipInfoFactory(IDeviceService deviceService) : AbstractFactory<TooltipInfoType, ITooltipInfo>(TooltipInfos(deviceService))
 {
-    private static readonly IEnumImplList<TooltipInfoType, ITooltipInfo> TooltipInfos = new EnumImplList
+    private static IEnumImplList<TooltipInfoType, ITooltipInfo> TooltipInfos(IDeviceService deviceService) => new EnumImplList
         <TooltipInfoType, ITooltipInfo>
         {
             new TooltipInfoNone(),
-            new TooltipInfoPlayback(),
-            new TooltipInfoRecording(),
-            new TooltipInfoBoth()
+            new TooltipInfoPlayback(deviceService),
+            new TooltipInfoRecording(deviceService),
+            new TooltipInfoBoth(deviceService)
         };
 }

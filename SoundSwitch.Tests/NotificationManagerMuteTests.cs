@@ -76,29 +76,6 @@ public class NotificationManagerMuteTests
         public void InitializeMain(IAudioDeviceLister active, bool skipUpdate = false) { }
     }
 
-    private sealed class FakeDeviceService : IDeviceService
-    {
-        public DeviceCollection<DeviceInfo> SelectedDevices => null;
-        public IEnumerable<DeviceFullInfo> AvailablePlaybackDevices { get; } = Array.Empty<DeviceFullInfo>();
-        public IEnumerable<DeviceFullInfo> AvailableRecordingDevices { get; } = Array.Empty<DeviceFullInfo>();
-
-#pragma warning disable CS0067
-        public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
-        public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
-        public event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
-        public event EventHandler MuteTargetChanged;
-#pragma warning restore CS0067
-
-        public bool SelectDevice(DeviceFullInfo device) => false;
-        public bool UnselectDevice(DeviceFullInfo device) => false;
-        public bool SetActiveDevice(DeviceInfo device) => false;
-        public bool CycleActiveDevice(EDataFlow type) => false;
-        public (string DeviceName, bool IsMuted)? ToggleMicrophoneMute() => null;
-        public (string DeviceName, bool IsMuted)? GetMicrophoneMuteState() => null;
-        public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(bool muteState) => null;
-        public (string DeviceName, bool IsMuted)? SetMicrophoneMuteState(string deviceId, bool muteState) => null;
-    }
-
     [Test]
     public void NotifyMuteChanged_BeforeInit_DoesNotThrow()
     {
@@ -122,7 +99,7 @@ public class NotificationManagerMuteTests
     [Test]
     public void MicrophoneMuteBannerManager_BeforeSetup_DoesNotThrow()
     {
-        var bannerManager = new MicrophoneMuteBannerManager();
+        var bannerManager = new MicrophoneMuteBannerManager(new NotificationSettingsService(), new FakeDeviceService());
 
         // Setup() captures the UI-thread synchronization context at application start;
         // mute events arriving on audio threads before that must be skipped, not crash.

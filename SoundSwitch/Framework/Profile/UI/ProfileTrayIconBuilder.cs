@@ -13,11 +13,11 @@ using SoundSwitch.Properties;
 
 namespace SoundSwitch.Framework.Profile.UI;
 
-public class ProfileTrayIconBuilder
+public class ProfileTrayIconBuilder(ProfileManager profileManager, IAudioDeviceLister audioDeviceLister)
 {
-    private ProfileManager ProfileManager => AppModel.Instance.ProfileManager;
+    private ProfileManager ProfileManager => profileManager;
 
-    private IAudioDeviceLister AudioDeviceLister => AppModel.Instance.AudioDeviceLister;
+    private IAudioDeviceLister AudioDeviceLister => audioDeviceLister;
 
     /// <summary>
     /// Get the menu items for profile that needs to be shown in the menu

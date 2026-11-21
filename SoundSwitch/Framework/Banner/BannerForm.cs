@@ -86,7 +86,7 @@ public partial class BannerForm : Form
     private Timer _timerHide;
     private bool _hiding;
     private BannerData _currentData;
-    private BannerPositionFactory _bannerPositionFactory = new();
+    private readonly INotificationSettings _notificationSettings;
     private CancellationTokenSource _cancellationTokenSource = new();
     private int _currentOffset;
     private int _hide = 100;
@@ -126,13 +126,13 @@ public partial class BannerForm : Form
     /// <summary>
     /// Get the Screen object
     /// </summary>
-    internal static Screen GetScreen()
+    internal Screen GetScreen()
     {
         foreach (var screen in Screen.AllScreens)
-            if (IsPinnedDevice(screen.DeviceName, AppModel.Instance.BannerMonitorDeviceName))
+            if (IsPinnedDevice(screen.DeviceName, _notificationSettings.BannerMonitorDeviceName))
                 return screen;
 
-        return (AppModel.Instance.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
+        return (_notificationSettings.NotifyUsingPrimaryScreen ? Screen.PrimaryScreen : Screen.FromPoint(Cursor.Position))!;
     }
 
     /// <summary>
@@ -182,12 +182,12 @@ public partial class BannerForm : Form
 
         if (refreshNotificationSettings)
         {
-            var opacity = AppModel.Instance.BannerOpacityPercentage;
+            var opacity = _notificationSettings.BannerOpacityPercentage;
             // Keep the opacity reduction applied by stacking, and never brighten a fade-out.
             if (!_hiding)
                 Opacity = Math.Clamp(Opacity + (opacity - _currentData.Opacity) / 100.0, 0.0, 1.0);
             _currentData.Opacity = opacity;
-            _currentData.DisplayInfo = AppModel.Instance.BannerDisplayInfo;
+            _currentData.DisplayInfo = _notificationSettings.BannerDisplayInfo;
         }
 
         ApplyColors();
@@ -197,10 +197,24 @@ public partial class BannerForm : Form
     }
 
     /// <summary>
-    /// Constructor for the <see cref="BannerForm"/> class
+    ///     Constructor for the <see cref="BannerForm"/> class. The parameterless
+    ///     constructor stays for the WinForms designer and the banner tests: it
+    ///     self-supplies a service over the same single settings store
+    ///     (<see cref="AppConfigs.Configuration"/>), so the reads match the runtime ones.
     /// </summary>
-    public BannerForm()
+    public BannerForm() : this(new NotificationSettingsService())
     {
+    }
+
+    /// <summary>
+    ///     Runtime construction with the notification settings (Q4 ADR: forms take
+    ///     services via constructor).
+    /// </summary>
+    public static BannerForm Factory(INotificationSettings notificationSettings) => new(notificationSettings);
+
+    public BannerForm(INotificationSettings notificationSettings)
+    {
+        _notificationSettings = notificationSettings;
         InitializeComponent();
         StartPosition = FormStartPosition.Manual;
         Bounds = GetScreen().Bounds;
@@ -555,7 +569,7 @@ public partial class BannerForm : Form
     /// </summary>
     private void ApplyPresentation(BannerData data)
     {
-        var style = AppModel.Instance.BannerStyle;
+        var style = _notificationSettings.BannerStyle;
         var content = data.GetContent(style);
         var compactMode = style == BannerStyle.Compact;
         SuspendLayout();
@@ -582,7 +596,7 @@ public partial class BannerForm : Form
     /// </summary>
     private void ApplyColors()
     {
-        BackColor = AppModel.Instance.BannerBackgroundColor;
+        BackColor = _notificationSettings.BannerBackgroundColor;
         ForeColor = BannerAppearance.ContrastingForeground(BackColor);
         lblTitle.ForeColor = ForeColor;
         lblTop.ForeColor = ForeColor;
@@ -618,7 +632,7 @@ public partial class BannerForm : Form
     /// </summary>
     private void ApplyBannerScale(bool compactMode)
     {
-        var scalePercentage = AppModel.Instance.BannerScalePercentage;
+        var scalePercentage = _notificationSettings.BannerScalePercentage;
         var fontScale = BannerAppearance.FontScale(scalePercentage, compactMode);
         ApplyScaledFonts(fontScale);
 
@@ -760,7 +774,7 @@ public partial class BannerForm : Form
         if (e.Button == MouseButtons.Left)
         {
             Capture = false;
-            AppModel.Instance.CustomBannerPosition = Location;
+            _notificationSettings.CustomBannerPosition = Location;
             _timerHide?.Start();
         }
     }
@@ -805,7 +819,7 @@ public partial class BannerForm : Form
                 Location = new Point(
                     (screen.Bounds.Left + screen.Bounds.Right - Width) / 2,
                     (screen.Bounds.Top + screen.Bounds.Bottom - Height) / 2);
-                AppModel.Instance.CustomBannerPosition = Location;
+                _notificationSettings.CustomBannerPosition = Location;
                 return true;
             default:
                 return false;
