@@ -1946,7 +1946,7 @@ public sealed partial class SettingsForm : Form
 
     public static void GitHubHelpLink_LinkClicked(object sender, EventArgs e)
     {
-        BrowserUtil.OpenUrl("https://github.com/Belphemur/SoundSwitch/discussions");
+        BrowserUtil.OpenUrl("https://soundswitch.aaflalo.me/getting-started.html");
     }
 
     public static void DiscordCommunityLink_LinkClicked(object sender, EventArgs e)
