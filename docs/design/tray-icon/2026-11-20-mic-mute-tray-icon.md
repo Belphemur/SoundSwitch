@@ -44,7 +44,7 @@ Tray icon menu, double-click actions, tooltips, banners: unchanged. Selecting th
 - Which microphone is "the" microphone: `MicrophoneMuteToggler` resolves the configured mute device or falls back to `GetDefaultAudioDevice(eCapture, eCommunications)` (`Framework/Audio/Microphone/MicrophoneMuteToggler.cs:34`). The icon must key off the same resolution so icon and toggler never disagree.
 - Initial state: `TrayIcon.UpdateIcon()` runs at startup; the new changer can read the current mute state directly via `AudioSwitcher.Instance` / `AppModel.GetMicrophoneMuteState()`.
 - Icons: `ThemeIcons.GetIcon(IconKind, bool isDarkTaskbar)` (`Framework/TrayIcon/ThemeIcons.cs`) is the existing theme-aware cache; adding two resource entries and one `IconKind` extends it without touching its contract.
-- Theme switches: existing changers re-resolve `WindowsThemeHelper.IsDarkModeEnabled()` on every repaint; mute events and periodic device refreshes repaint the icon, so a taskbar theme change is picked up the next time any icon update fires (same behaviour as ThemeBased today).
+- Theme switches: `TrayIcon` subscribes `WindowsAPIAdapter.SystemThemeChanged` and re-invokes the parameterless `ChangeIcon` for `ThemeBased` and `MuteState`; the changer re-resolves `WindowsThemeHelper.IsDarkModeEnabled()` on every repaint, so the glyph flips colour immediately on a taskbar theme change.
 
 ## 6. Design
 
@@ -100,7 +100,9 @@ public void ChangeIcon(UI.Component.TrayIcon trayIcon, bool isMuted)  // new ded
 }
 ```
 
-To avoid `IIconChanger` interface churn across all six implementations, `IconChangerMuteState` exposes the dedicated `ChangeIcon(trayIcon, bool isMuted)` overload as its own public method; `TrayIcon` casts the factory result to it when `SwitchIcon == MuteState`.
+To avoid `IIconChanger` interface churn across all six implementations, `IconChangerMuteState` exposes the dedicated `ChangeIcon(trayIcon, bool isMuted)` overload as its own public method; the parameterless `ChangeIcon` resolves the live state and delegates to it, so it doubles as the changer's shared paint primitive.
+
+Review follow-up (ordering): `DeviceFullInfo` raises each volume event inside `Task.Run`, so two rapid toggles can be handled out of order and an older payload could overwrite a newer paint. The mute-event path in `TrayIcon` therefore never paints the event's historical boolean: it queues the parameterless re-read onto the UI thread, and the last queued update always resolves the microphone's final state.
 
 ### 6.3 Event wiring
 
@@ -123,7 +125,9 @@ public class MicrophoneMuteChangedEventArgs : EventArgs
 }
 ```
 
-`AppModel.HandleMicrophoneMuteChanged` (which already receives every capture mute change) raises `DefaultMicMuteChanged` **only when the changed device is the resolved mute target** (configured device id, else default communication capture). This guarantees the icon repaints only on the tracked mic's transitions and never on other mics. The handler in `TrayIcon` checks `AppConfigs.Configuration.SwitchIcon == IconChanger.MuteState`, casts to `IconChangerMuteState`, calls `ChangeIcon(this, payload.IsMuted)`.
+`AppModel.HandleMicrophoneMuteChanged` (which already receives every capture mute change) raises `DefaultMicMuteChanged` **only when the changed device is the resolved mute target** (configured device id, else default communication capture). This guarantees the icon repaints only on the tracked mic's transitions and never on other mics. The handler in `TrayIcon` checks `AppConfigs.Configuration.SwitchIcon == IconChanger.MuteState`, then queues a re-read of the live mute state onto the UI thread (see the ordering note in §6.2) rather than painting the event's boolean.
+
+Mute-target changes: selecting a different configured mute microphone, or a device arrival/removal that re-resolves the stored target, changes *which* microphone the icon must follow without any mute transition firing. `IAppModel` therefore also exposes `MuteTargetChanged` (plain `EventArgs`), raised from the `MuteRecordingDevice` setter and from the `DeviceListRefreshed` subscription; when `SwitchIcon == MuteState`, `TrayIcon` re-invokes the parameterless changer so the icon reflects the newly tracked microphone's state.
 
 Startup correctness: `TrayIcon.UpdateIcon()` (parameterless `ChangeIcon`) already runs at init — it reads the live mute state so the icon is right before any event arrives.
 
@@ -209,11 +213,10 @@ Base `.resx` only; translations follow via the usual localization pipeline (all 
 | 2 | Track the **default communication** microphone (configured mute target first, `eCommunications` fallback) | Matches `MicrophoneMuteToggler` exactly — icon and hotkey can never disagree. Rejected: console-role mic — the toggler never uses it. Rejected: "any mic muted" — ambiguous state when multiple mics exist. |
 | 3 | Mute event reused from the existing `DeviceVolumeChanged` stream, filtered to the tracked device | No new COM subscription, no new thread; the stream is already UI-marshalled and running. |
 | 4 | Theme-aware via `ThemeIcons` + `WindowsThemeHelper` | Consistent with the existing five types' theme handling; two-colour set keeps the asset pipeline identical (ADR 2026-09-02). |
-| 5 | Dedicated `ChangeIcon(trayIcon, bool)` overload on the concrete class, factory-cast in `TrayIcon` | Avoids changing `IIconChanger` for all six implementations (DRY over speculative generality). |
+| 5 | Dedicated `ChangeIcon(trayIcon, bool)` overload on the concrete class, no `IIconChanger` change | Avoids changing the interface for all six implementations (DRY over speculative generality). The parameterless path resolves the live state and delegates to it; the mute-event path re-reads via the parameterless path (§6.2 ordering note) and the `DefaultDeviceChanged` branch still pattern-matches the concrete type. |
 | 6 | Config: plain enum append, no migration | `SwitchIcon` persists as int; new member value `5` is additive. |
 
 ## 12. Future work
 
 - Settings preview icons in the dropdown (showing actual glyphs next to each entry) — cosmetic, deferred.
 - Hardware-mute sync beyond default mic (per-device mute glyph keying) — deferred with the per-device banner scope.
-- Listening to Windows theme-change events for an immediate repaint (today the repaint rides the next mute event) — same limitation ThemeBased has today, fixing it is a cross-type refactor.
