@@ -303,8 +303,27 @@ public sealed class TrayIcon : IDisposable
             if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
                 return;
 
-            if (new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon) is IconChangerMuteState muteStateChanger)
-                muteStateChanger.ChangeIcon(this, args.IsMuted);
+            // Mute events are raised from thread-pool tasks (DeviceFullInfo fires them
+            // via Task.Run), so rapid toggles can be handled out of order. Queue a
+            // re-read of the live state on the UI thread: the last queued repaint
+            // always paints the tracked microphone's final state, never the event's
+            // historical value.
+            _context.Post(_ =>
+            {
+                if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
+                    return;
+
+                new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
+            }, null);
+        };
+        AppModel.Instance.MuteTargetChanged += (sender, args) =>
+        {
+            if (AppConfigs.Configuration.SwitchIcon != IconChanger.MuteState)
+                return;
+
+            // The tracked microphone changed (configured target edited, or a device
+            // arrival/removal re-resolved it): re-read its live state and repaint.
+            new IconChangerFactory().Get(AppConfigs.Configuration.SwitchIcon).ChangeIcon(this);
         };
         AppModel.Instance.NewVersionReleased += (sender, @event) =>
         {
@@ -327,7 +346,7 @@ public sealed class TrayIcon : IDisposable
         };
         WindowsAPIAdapter.SystemThemeChanged += (_, _) =>
         {
-            if (AppConfigs.Configuration.SwitchIcon == IconChanger.ThemeBased)
+            if (AppConfigs.Configuration.SwitchIcon is IconChanger.ThemeBased or IconChanger.MuteState)
             {
                 UpdateIcon();
             }

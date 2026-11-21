@@ -59,6 +59,12 @@ public interface IDeviceService
     /// </summary>
     event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
 
+    /// <summary>
+    /// The microphone the mute actions target changed: the configured mute device was
+    /// edited, or a device arrival/removal re-resolved the stored target.
+    /// </summary>
+    event EventHandler MuteTargetChanged;
+
     bool SelectDevice(DeviceFullInfo device);
     bool UnselectDevice(DeviceFullInfo device);
     bool SetActiveDevice(DeviceInfo device);

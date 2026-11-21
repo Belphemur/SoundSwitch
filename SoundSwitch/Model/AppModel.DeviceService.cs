@@ -50,6 +50,7 @@ public partial class AppModel
     public event EventHandler<DeviceListChanged> SelectedDeviceChanged;
     public event EventHandler<DeviceDefaultChangedEvent> DefaultDeviceChanged;
     public event EventHandler<MicrophoneMuteChangedEventArgs> DefaultMicMuteChanged;
+    public event EventHandler MuteTargetChanged;
 
     #region Selected devices
 

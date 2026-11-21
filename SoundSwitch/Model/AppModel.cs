@@ -134,6 +134,9 @@ public partial class AppModel : IAppModel
                 _defaultMuteDeviceIdValid = false;
             if (_initialized)
                 RefreshMicrophoneMuteBanners();
+            // Arrival/removal can also change which microphone the mute actions target;
+            // the mute-state tray icon re-reads the live state to follow it.
+            MuteTargetChanged?.Invoke(this, EventArgs.Empty);
         });
 
         // Subscribe to volume change events for microphones

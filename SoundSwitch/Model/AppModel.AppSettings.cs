@@ -48,6 +48,7 @@ public partial class AppModel
             AppConfigs.Configuration.MuteRecordingDevice = value;
             AppConfigs.Configuration.Save();
             RefreshMicrophoneMuteBanners();
+            MuteTargetChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
