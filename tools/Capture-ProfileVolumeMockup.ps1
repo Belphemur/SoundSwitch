@@ -5,11 +5,11 @@
 
 .DESCRIPTION
     Mockup deliverable for issue #2547 (ADR:
-    docs/design/profile/2026-11-21-profile-volume-settings.md). Builds the app,
-    kills any running SoundSwitch instance first (one named pipe and one config
-    file per instance — a capture needs a fresh one), launches the freshly built
-    Debug exe, opens Settings on the Profiles tab and clicks Add so the real
-    UpsertProfileExtended form opens, then captures it twice:
+    docs/design/profile/2026-11-21-profile-volume-settings.md). Builds the app
+    and launches a fresh instance - it refuses to run while another SoundSwitch
+    instance is active (they share one named pipe and one config file) instead of
+    stopping that session. It opens Settings on the Profiles tab and clicks Add so
+    the real UpsertProfileExtended form opens, then captures it twice:
 
       1. default state — the advanced volume section collapsed, which must look
          identical to today's form plus the collapsed disclosure row;
@@ -109,13 +109,13 @@ function Assert-True {
     else { $script:Failures++; Write-Host "  FAIL  $Message" -ForegroundColor Red }
 }
 
-# --- guard: kill any running instance first -----------------------------------------
+# --- guard: a capture needs its own instance -----------------------------------------
+#
+# One named pipe and one config file per SoundSwitch instance: Start-SoundSwitchApp
+# below refuses with a clear message when the user already has SoundSwitch open.
+# This script never force-stops a session it did not launch (review round 1).
 
-foreach ($instance in @(Get-Process -Name 'SoundSwitch' -ErrorAction SilentlyContinue)) {
-    Write-Host "Killing running SoundSwitch instance (PID $($instance.Id))..." -ForegroundColor Yellow
-    $instance | Stop-Process -Force -ErrorAction SilentlyContinue
-    Start-Sleep -Milliseconds 300
-}
+$process = $null   # the instance this run launches; teardown only ever touches it
 
 try {
     # --- build -----------------------------------------------------------------------
@@ -134,12 +134,18 @@ try {
 
     # Control-SoundSwitch.ps1 declares its own param(...) block, and dot-sourcing
     # executes it in THIS scope - it would clobber same-named variables such as
-    # $OutputDirectory and $TimeoutSeconds with its defaults. Keep the capture's
-    # own values under dedicated names instead.
+    # $OutputDirectory, $TimeoutSeconds and $Configuration with its defaults. Keep the
+    # capture's own values under dedicated names instead, and restore $Configuration
+    # right after the import: Resolve-SoundSwitchExecutable resolves binaries through
+    # that variable, so a -Configuration Release run must keep its value (review
+    # round 1). The import itself only defines the helper functions: the control
+    # script detects dot-sourcing and returns before its standalone flow.
     $pngDirectory = $OutputDirectory
     $captureTimeout = $TimeoutSeconds
+    $captureConfiguration = $Configuration
 
     . (Join-Path $PSScriptRoot 'Control-SoundSwitch.ps1')
+    $Configuration = $captureConfiguration
 
     function Resolve-MockupExecutable {
         param([Parameter(Mandatory)][string]$ProjectDirectory, [Parameter(Mandatory)][string]$FileName)
@@ -362,11 +368,11 @@ catch {
     exit 1
 }
 finally {
-    # The instance this script launched is stopped again; config writes on exit are
-    # the app's own (a profile is only added by an explicit Save, which this capture
-    # never presses).
-    if ((Get-Command Stop-SoundSwitchApp -ErrorAction SilentlyContinue) -and
-        @(Get-Process -Name 'SoundSwitch' -ErrorAction SilentlyContinue).Count -gt 0) {
+    # Only ever stop the instance THIS run launched (Start-SoundSwitchApp tracked its
+    # PID): a user's own session or an instance started independently during the run
+    # is left alone. Config writes on exit are the app's own - a profile is only added
+    # by an explicit Save, which this capture never presses.
+    if ($null -ne $process -and (Get-Command Stop-SoundSwitchApp -ErrorAction SilentlyContinue)) {
         Stop-SoundSwitchApp -ErrorAction SilentlyContinue
     }
 }
