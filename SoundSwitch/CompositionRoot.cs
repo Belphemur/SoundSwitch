@@ -78,12 +78,18 @@ public static class CompositionRoot
         services.AddSingleton<AppInfrastructure>();
         services.AddSingleton<IAppInfrastructure>(serviceProvider => serviceProvider.GetRequiredService<AppInfrastructure>());
 
+        // One foreground-window monitor shared by the profile and app-rule managers
+        // (ADR docs/design/architecture/2026-11-21-shared-mechanism-consolidation.md
+        // §D1): a single SetWinEventHook pair and one process walk per foreground
+        // change, with each manager keeping its own handler.
+        services.AddSingleton<WindowMonitor>();
+
         // Managers. ProfileManager and AppSoundLockManager take their collaborators
         // exactly as the pre-refactor InitializeMain supplied them.
         services.AddSingleton<NotificationManager>();
         services.AddSingleton<TrayIcon>();
         services.AddSingleton<ProfileManager>(serviceProvider => new ProfileManager(
-            new WindowMonitor(),
+            serviceProvider.GetRequiredService<WindowMonitor>(),
             serviceProvider.GetRequiredService<AudioSwitcher>(),
             serviceProvider.GetRequiredService<IAudioDeviceLister>(),
             serviceProvider.GetRequiredService<IDeviceService>(),
@@ -94,7 +100,7 @@ public static class CompositionRoot
         services.AddSingleton<AppSoundLockManager>(serviceProvider => new AppSoundLockManager(
             AppConfigs.Configuration,
             serviceProvider.GetRequiredService<AudioSwitcher>(),
-            new WindowMonitor(),
+            serviceProvider.GetRequiredService<WindowMonitor>(),
             new ProcessMonitor(),
             serviceProvider.GetRequiredService<NotificationManager>(),
             serviceProvider.GetRequiredService<IAudioDeviceLister>()));
