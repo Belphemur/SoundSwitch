@@ -14,12 +14,12 @@ using SoundSwitch.Services;
 namespace SoundSwitch.Tests;
 
 /// <summary>
-/// Tests the device resolution used by App Rules: exact id match first,
-/// then the <see cref="DeviceInfo.Equals"/> (NameClean) fallback — the same
-/// matching machinery Profiles use, which survives device id changes.
+/// Tests the shared device resolution used by profiles, notifications and app
+/// rules: exact id match first, then the <see cref="DeviceInfo.Equals"/>
+/// (NameClean) fallback — matching that survives device id changes.
 /// </summary>
 [TestFixture]
-public class AppRuleDeviceResolverTests
+public class DeviceResolverTests
 {
     private const string PlaybackId = "{0.0.0.00000000}.{11111111-1111-1111-1111-111111111111}";
     private const string PlaybackNewId = "{0.0.0.00000000}.{33333333-3333-3333-3333-333333333333}";
@@ -42,7 +42,7 @@ public class AppRuleDeviceResolverTests
             Device(SpeakersName, PlaybackId, EDataFlow.eRender)
         };
 
-        var resolved = AppRuleDeviceResolver.Resolve(StoredSpeakers, candidates);
+        var resolved = DeviceResolver.Resolve(StoredSpeakers, candidates);
 
         resolved.Should().NotBeNull();
         resolved!.Id.Should().Be(PlaybackId);
@@ -58,7 +58,7 @@ public class AppRuleDeviceResolverTests
             Device(SpeakersName, PlaybackNewId, EDataFlow.eRender)
         };
 
-        var resolved = AppRuleDeviceResolver.Resolve(StoredSpeakers, candidates);
+        var resolved = DeviceResolver.Resolve(StoredSpeakers, candidates);
 
         resolved.Should().NotBeNull();
         resolved!.Id.Should().Be(PlaybackNewId);
@@ -69,7 +69,7 @@ public class AppRuleDeviceResolverTests
     {
         var candidates = new[] { Device(SpeakersName, PlaybackId, EDataFlow.eCapture) };
 
-        AppRuleDeviceResolver.Resolve(StoredSpeakers, candidates).Should().BeNull();
+        DeviceResolver.Resolve(StoredSpeakers, candidates).Should().BeNull();
     }
 
     [Test]
@@ -77,7 +77,7 @@ public class AppRuleDeviceResolverTests
     {
         var candidates = new[] { Device("Headphones", OtherPlaybackId, EDataFlow.eRender) };
 
-        AppRuleDeviceResolver.Resolve(StoredSpeakers, candidates).Should().BeNull();
+        DeviceResolver.Resolve(StoredSpeakers, candidates).Should().BeNull();
     }
 
     [Test]
@@ -85,13 +85,13 @@ public class AppRuleDeviceResolverTests
     {
         var candidates = new[] { Device(SpeakersName, PlaybackId, EDataFlow.eRender) };
 
-        AppRuleDeviceResolver.Resolve(null, candidates).Should().BeNull();
+        DeviceResolver.Resolve(null, candidates).Should().BeNull();
     }
 
     [Test]
     public void Resolve_EmptyCandidates_ReturnsNull()
     {
-        AppRuleDeviceResolver.Resolve(StoredSpeakers, Enumerable.Empty<DeviceFullInfo>()).Should().BeNull();
+        DeviceResolver.Resolve(StoredSpeakers, Enumerable.Empty<DeviceFullInfo>()).Should().BeNull();
     }
 
     [Test]
@@ -101,7 +101,7 @@ public class AppRuleDeviceResolverTests
         // the NameClean fallback also requires the same type, so nothing matches.
         var candidates = new[] { Device(SpeakersName, PlaybackId, EDataFlow.eCapture) };
 
-        AppRuleDeviceResolver.Resolve(StoredSpeakers, candidates).Should().BeNull();
+        DeviceResolver.Resolve(StoredSpeakers, candidates).Should().BeNull();
     }
 
     private const string SpeakersPath = @"USB\VID_1234&PID_5678&MI_00\6&2a3f5d7&0&0000";
@@ -120,7 +120,7 @@ public class AppRuleDeviceResolverTests
         var stored = new DeviceInfo("Old name (Realtek(R) Audio)", ThreeSegmentId(SpeakersPath, SpeakersEndpointGuid), EDataFlow.eRender, false, DateTime.UtcNow);
         var candidates = new[] { Device("New name (Realtek(R) Audio)", ThreeSegmentId(SpeakersPath, SpeakersNewEndpointGuid), EDataFlow.eRender) };
 
-        var resolved = AppRuleDeviceResolver.Resolve(stored, candidates);
+        var resolved = DeviceResolver.Resolve(stored, candidates);
 
         resolved.Should().NotBeNull();
         resolved!.Id.Should().Be(ThreeSegmentId(SpeakersPath, SpeakersNewEndpointGuid));
@@ -138,7 +138,7 @@ public class AppRuleDeviceResolverTests
             Device(SpeakersName, ThreeSegmentId(SpeakersPathB, SpeakersEndpointGuid), EDataFlow.eRender)
         };
 
-        AppRuleDeviceResolver.Resolve(stored, candidates).Should().BeNull();
+        DeviceResolver.Resolve(stored, candidates).Should().BeNull();
     }
 
     [Test]
@@ -151,7 +151,7 @@ public class AppRuleDeviceResolverTests
             Device(SpeakersName, $"{{0.0.0.00000000}}.{{22222222-2222-2222-2222-222222222222}}", EDataFlow.eRender)
         };
 
-        var result = AppRuleDeviceResolver.ResolveResult(stored, candidates);
+        var result = DeviceResolver.ResolveResult(stored, candidates);
 
         result.Kind.Should().Be(DeviceMatchKind.Ambiguous);
         result.Candidates.Should().HaveCount(2);

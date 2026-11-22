@@ -12,6 +12,7 @@ using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.DeviceCyclerManager;
 using SoundSwitch.Framework.DeviceCyclerManager.DeviceCycler;
+using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Model;
 
 namespace SoundSwitch.Tests;
@@ -45,7 +46,7 @@ public class DeviceCyclerTests
         }
 
         var singleDevice = enumerator.Current;
-        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice }, new SettingsService(new ErrorEvents()));
+        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice }, new SettingsService(new ErrorEvents(), new HotkeyRegistry()));
         using var originalDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
 
         try
@@ -93,7 +94,7 @@ public class DeviceCyclerTests
         }
 
         var otherDevice = enumerator.Current;
-        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice }, new SettingsService(new ErrorEvents()));
+        var cycler = new TestDeviceCycler(new List<DeviceFullInfo> { singleDevice }, new SettingsService(new ErrorEvents(), new HotkeyRegistry()));
         using var originalDefault = AudioSwitcher.Instance.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eConsole);
 
         try

@@ -2041,8 +2041,8 @@ public sealed partial class SettingsForm : Form
         {
             var pairs = rule.DevicePairs ?? new List<AppSoundRuleDevicePair>();
             var firstPair = pairs.FirstOrDefault();
-            var playbackResult = AppRuleDeviceResolver.ResolveResult(firstPair?.Playback, playbacks);
-            var recordingResult = AppRuleDeviceResolver.ResolveResult(firstPair?.Recording, recordings);
+            var playbackResult = DeviceResolver.ResolveResult(firstPair?.Playback, playbacks);
+            var recordingResult = DeviceResolver.ResolveResult(firstPair?.Recording, recordings);
             var playback = playbackResult.IsResolved ? playbackResult.Device : null;
             var recording = recordingResult.IsResolved ? recordingResult.Device : null;
 
@@ -2108,8 +2108,8 @@ public sealed partial class SettingsForm : Form
                     var pair = pairs[index];
                     // Resolve and format every pair the same way the cells do, so an
                     // ambiguous or unavailable side is visible for each cycle step.
-                    var pb = AppRuleDeviceResolver.ResolveResult(pair.Playback, activePlaybacks);
-                    var rc = AppRuleDeviceResolver.ResolveResult(pair.Recording, activeRecordings);
+                    var pb = DeviceResolver.ResolveResult(pair.Playback, activePlaybacks);
+                    var rc = DeviceResolver.ResolveResult(pair.Recording, activeRecordings);
                     tooltip.Add($"{index + 1}. {FormatResolvedDevice(pb.IsResolved ? pb.Device : null, pair.Playback, activePlaybacks)} / " +
                         $"{FormatResolvedDevice(rc.IsResolved ? rc.Device : null, pair.Recording, activeRecordings)}");
                 }

@@ -68,7 +68,7 @@ if (-not (Test-Path $testProject)) {
 # Feature fixtures: everything that exercises the mute target + banner scope feature.
 $featureFixtures = @(
     'MuteTargetConfigurationTests',        # persisted mute target + LimitMuteBannersToTarget, legacy migration
-    'AppRuleDeviceResolverTests',          # 3-tier device identity match used to resolve the target
+    'DeviceResolverTests',                 # 3-tier device identity match used to resolve the target
     'DeviceReadOnlyCollectionMatchTests',  # matching machinery behind the resolver
     'DeviceInfoSerializationTests',        # DeviceInfo snapshot (de)serialization round-trips
     'BannerMonitorTests',                  # pinned banner monitor detection

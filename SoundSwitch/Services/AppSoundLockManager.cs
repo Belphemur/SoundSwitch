@@ -30,6 +30,7 @@ namespace SoundSwitch.Services
         private readonly ProcessMonitor _processMonitor;
         private readonly NotificationManager _notificationManager;
         private readonly IAudioDeviceLister _audioDeviceLister;
+        private readonly HotkeyRegistry _hotkeyRegistry;
         private readonly ILogger _logger = Log.ForContext<AppSoundLockManager>();
         private readonly object _lock = new();
         private readonly AppRuleAssignmentReconciler _assignmentReconciler;
@@ -40,15 +41,18 @@ namespace SoundSwitch.Services
         private readonly Dictionary<HotKey, AppSoundRule> _rulesByHotkey = new();
 
         /// <summary>
-        /// Hotkeys this manager registered with the OS, so they can be unregistered again.
-        /// </summary>
-        private readonly HashSet<HotKey> _ruleHotkeys = new();
-
-        /// <summary>
         /// In-memory index of the next device pair for each hotkey rule. Reset whenever
         /// the rules change or the app restarts; it is deliberately not persisted.
         /// </summary>
         private readonly Dictionary<Guid, int> _nextPairIndex = new();
+
+        /// <summary>
+        /// Rule hotkey releases that failed at the native level and must be retried before
+        /// the next reload registers anything: the binding is still live and the registry
+        /// still names its rule as owner, so losing the cleanup obligation would block a
+        /// new rule from claiming that combination until a restart.
+        /// </summary>
+        private readonly List<KeyValuePair<HotKey, HotkeyOwner>> _pendingRuleReleases = new();
 
         /// <summary>
         /// The rules as they were at the last <see cref="OnRulesChanged"/>, used to detect
@@ -57,7 +61,7 @@ namespace SoundSwitch.Services
         /// </summary>
         private List<AppSoundRule> _rulesSnapshot = new();
 
-        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager, IAudioDeviceLister audioDeviceLister)
+        public AppSoundLockManager(ISoundSwitchConfiguration configuration, AudioSwitcher audioSwitcher, WindowMonitor windowMonitor, ProcessMonitor processMonitor, NotificationManager notificationManager, IAudioDeviceLister audioDeviceLister, HotkeyRegistry hotkeyRegistry)
         {
             _configuration = configuration;
             _audioSwitcher = audioSwitcher;
@@ -65,6 +69,7 @@ namespace SoundSwitch.Services
             _processMonitor = processMonitor;
             _notificationManager = notificationManager;
             _audioDeviceLister = audioDeviceLister;
+            _hotkeyRegistry = hotkeyRegistry;
             _assignmentReconciler = new AppRuleAssignmentReconciler(configuration, audioSwitcher);
         }
 
@@ -396,13 +401,13 @@ namespace SoundSwitch.Services
                         continue;
                     }
 
-                    if (!WindowsAPIAdapter.RegisterHotKey(hotKey))
+                    // The registry logs the localized conflict naming the owner (a profile,
+                    // a global hotkey, another rule) when the registration fails.
+                    if (_hotkeyRegistry.TryRegister(hotKey, new HotkeyOwner(HotkeyOwnerKind.AppRule, rule.ProcessPath)) != null)
                     {
-                        _logger.Warning("Couldn't register app rule hotkey {HotKey}; it may conflict with another hotkey", hotKey);
                         continue;
                     }
 
-                    _ruleHotkeys.Add(hotKey);
                     _rulesByHotkey[hotKey] = rule;
                 }
             }
@@ -414,12 +419,30 @@ namespace SoundSwitch.Services
         {
             lock (_lock)
             {
-                foreach (var hotKey in _ruleHotkeys)
+                // Retry releases that failed before: the binding often becomes
+                // releasable again (transient native failure), and clearing the
+                // dispatch map below must not lose the cleanup obligation.
+                for (var index = _pendingRuleReleases.Count - 1; index >= 0; index--)
                 {
-                    WindowsAPIAdapter.UnRegisterHotKey(hotKey);
+                    var pending = _pendingRuleReleases[index];
+                    if (_hotkeyRegistry.Unregister(pending.Key, pending.Value))
+                    {
+                        _pendingRuleReleases.RemoveAt(index);
+                    }
                 }
 
-                _ruleHotkeys.Clear();
+                // Owner-scoped: each rule unbinds exactly the registration it owns,
+                // leaving any other system's binding on the same combination alone.
+                // A failed release is queued so the next reload retries it.
+                foreach (var ruleHotkey in _rulesByHotkey)
+                {
+                    var owner = new HotkeyOwner(HotkeyOwnerKind.AppRule, ruleHotkey.Value.ProcessPath);
+                    if (!_hotkeyRegistry.Unregister(ruleHotkey.Key, owner))
+                    {
+                        _pendingRuleReleases.Add(new(ruleHotkey.Key, owner));
+                    }
+                }
+
                 _rulesByHotkey.Clear();
                 _nextPairIndex.Clear();
             }
@@ -698,7 +721,7 @@ namespace SoundSwitch.Services
             return Resolves(pair.Playback) || Resolves(pair.Recording);
 
             bool Resolves(DeviceInfo? device) =>
-                device != null && AppRuleDeviceResolver.Resolve(device, _audioDeviceLister) != null;
+                device != null && DeviceResolver.Resolve(device, _audioDeviceLister) != null;
         }
 
         private int TakeNextPairIndex(Guid ruleId, int pairCount)
@@ -780,7 +803,7 @@ namespace SoundSwitch.Services
             var stored = getter(pair);
             if (stored == null) return default;
 
-            var resolved = AppRuleDeviceResolver.Resolve(stored, _audioDeviceLister);
+            var resolved = DeviceResolver.Resolve(stored, _audioDeviceLister);
             if (resolved == null)
             {
                 _logger.Warning("App rule device {NameClean} ({DeviceId}) not found among active {Flow} devices, skipping switch", stored.NameClean, stored.Id, flow);

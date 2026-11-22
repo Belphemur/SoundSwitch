@@ -285,7 +285,7 @@ public class DeviceService : IDeviceService
         var stored = AppConfigs.Configuration.MuteRecordingDevice;
         if (stored == null || _audioDeviceLister == null) return null;
 
-        var resolved = AppRuleDeviceResolver.Resolve(stored, _audioDeviceLister);
+        var resolved = DeviceResolver.Resolve(stored, _audioDeviceLister);
         if (resolved == null) return null;
         // Heal the stored snapshot when the endpoint id or name changed (e.g. after a driver
         // update), so the next lookup stays exact. Write the config directly to avoid

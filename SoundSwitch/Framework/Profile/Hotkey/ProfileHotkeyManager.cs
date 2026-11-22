@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using SoundSwitch.Common.Framework.Icon;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Framework.WinApi.Keyboard;
+using SoundSwitch.Localization;
 using SoundSwitch.Model;
 using SoundSwitch.UI.Menu;
 using SoundSwitch.UI.Menu.Component;
@@ -40,11 +41,13 @@ public class ProfileHotkeyManager
     private readonly Dictionary<HotKey, HotKeysSelection> _profiles = new();
     private readonly ProfileManager _profileManager;
     private readonly IAppSettings _appSettings;
+    private readonly HotkeyRegistry _hotkeyRegistry;
 
-    public ProfileHotkeyManager(ProfileManager profileManager, IAppSettings appSettings)
+    public ProfileHotkeyManager(ProfileManager profileManager, IAppSettings appSettings, HotkeyRegistry hotkeyRegistry)
     {
         _profileManager = profileManager;
         _appSettings = appSettings;
+        _hotkeyRegistry = hotkeyRegistry;
         WindowsAPIAdapter.HotKeyPressed += WindowsAPIAdapterOnHotKeyPressed;
     }
 
@@ -83,17 +86,44 @@ public class ProfileHotkeyManager
     /// <returns></returns>
     public bool IsValidHotkey(HotKey hotKey)
     {
-        if (_profiles.ContainsKey(hotKey))
-            return true;
+        return GetHotkeyConflict(hotKey, null) == null;
+    }
 
-        return WindowsAPIAdapter.RegisterHotKey(hotKey) && WindowsAPIAdapter.UnRegisterHotKey(hotKey);
+    /// <summary>
+    /// Localized reason a profile can't claim the hotkey, or null when it can.
+    /// The registry names the SoundSwitch system that already holds the combination
+    /// (ADR docs/design/architecture/2026-11-21-shared-mechanism-consolidation.md §D3),
+    /// so a cross-system conflict is reported instead of silently stealing the
+    /// other owner's registration through the raw OS probe.
+    /// </summary>
+    /// <param name="profile">
+    /// The profile asking, when known: a registry record retained for that very
+    /// profile (a release that failed during deletion, still live at the OS level)
+    /// is not a conflict for it — the same-owner registration self-heals through
+    /// the adapter, so the UpdateProfile recovery can re-add the saved profile.
+    /// </param>
+    public string? GetHotkeyConflict(HotKey hotKey, Profile? profile)
+    {
+        if (_profiles.ContainsKey(hotKey))
+            return null;
+
+        if (profile != null && _hotkeyRegistry.IsOwnedBy(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profile.Name)))
+            return null;
+
+        var conflict = _hotkeyRegistry.DescribeConflict(hotKey);
+        if (conflict != null)
+            return conflict;
+
+        return WindowsAPIAdapter.RegisterHotKey(hotKey) && WindowsAPIAdapter.UnRegisterHotKey(hotKey)
+            ? null
+            : string.Format(SettingsStrings.hotkey_conflict_external, hotKey);
     }
 
     public bool Add(HotKey hotKey, Profile profile)
     {
         if (!_profiles.ContainsKey(hotKey))
         {
-            if (!WindowsAPIAdapter.RegisterHotKey(hotKey))
+            if (_hotkeyRegistry.TryRegister(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profile.Name)) != null)
             {
                 return false;
             }
@@ -121,8 +151,16 @@ public class ProfileHotkeyManager
         if (profiles.Count == 0)
         {
             _profiles.Remove(hotKey);
-            return WindowsAPIAdapter.UnRegisterHotKey(hotKey);
+            // Owner-scoped: with the promotion above, the recorded owner is exactly
+            // this profile when the last claimant leaves, so only what the profile
+            // feature actually owns is unbound.
+            return _hotkeyRegistry.Unregister(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profile.Name));
         }
+
+        // The recorded owner must always be a profile the user can still find:
+        // when other claimants remain after this removal, promote one of them so
+        // conflict messages never name a deleted profile.
+        _hotkeyRegistry.UpdateOwner(hotKey, new HotkeyOwner(HotkeyOwnerKind.Profile, profiles.First().Name));
 
         if (_profiles[hotKey].LastUsed == profile)
         {

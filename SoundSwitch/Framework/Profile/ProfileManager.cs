@@ -14,7 +14,6 @@ using Serilog;
 using SoundSwitch.Audio.Manager;
 using SoundSwitch.Audio.Manager.Interop.Com.User;
 using SoundSwitch.Audio.Manager.Interop.Enum;
-using SoundSwitch.Common.Framework.Audio.Collection;
 using SoundSwitch.Common.Framework.Audio.Device;
 using SoundSwitch.Framework.Audio;
 using SoundSwitch.Framework.Configuration;
@@ -24,6 +23,7 @@ using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.Localization;
 using SoundSwitch.Model;
+using SoundSwitch.Services;
 using SoundSwitch.Util;
 
 namespace SoundSwitch.Framework.Profile;
@@ -68,6 +68,7 @@ public class ProfileManager
         IAudioDeviceLister activeDeviceLister,
         IDeviceService deviceService,
         IAppSettings appSettings,
+        HotkeyRegistry hotkeyRegistry,
         ShowError showError,
         TriggerFactory triggerFactory,
         NotificationManager.NotificationManager notificationManager)
@@ -80,7 +81,7 @@ public class ProfileManager
         _showError = showError;
         _triggerFactory = triggerFactory;
         _notificationManager = notificationManager;
-        _profileHotkeyManager = new(this, appSettings);
+        _profileHotkeyManager = new(this, appSettings, hotkeyRegistry);
         _logger = Log.ForContext(GetType());
     }
 
@@ -388,20 +389,6 @@ public class ProfileManager
         }
     }
 
-    private DeviceInfo? CheckDeviceAvailable(DeviceInfo deviceInfo)
-    {
-        var collection = _activeDeviceLister.GetDevices(deviceInfo.Type, EDeviceState.Active);
-        var result = collection.Match(deviceInfo);
-        if (result.Kind == DeviceMatchKind.Ambiguous)
-        {
-            _logger.Warning("Ambiguous profile device match for {NameClean}: {Count} active devices share the name, treating as not found",
-                deviceInfo.NameClean, result.Candidates!.Count);
-            return null;
-        }
-
-        return result.IsResolved ? result.Device : null;
-    }
-
     private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, processId);
@@ -413,7 +400,7 @@ public class ProfileManager
         var deviceMissing = false;
         foreach (var device in profile.Devices)
         {
-            var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
+            var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
             if (deviceToUse == null)
             {
                 deviceMissing = true;
@@ -462,7 +449,7 @@ public class ProfileManager
         var deviceMissing = false;
         foreach (var device in profile.Devices)
         {
-            var deviceToUse = CheckDeviceAvailable(device.DeviceInfo);
+            var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
             if (deviceToUse == null)
             {
                 deviceMissing = true;
@@ -601,12 +588,17 @@ public class ProfileManager
         {
             var error = trigger.Type.Match(() =>
                 {
-                    if (trigger.HotKey == null || !_profileHotkeyManager.IsValidHotkey(trigger.HotKey))
+                    if (trigger.HotKey == null)
                     {
                         return string.Format(SettingsStrings.profile_error_hotkey, trigger.HotKey);
                     }
 
-                    return null;
+                    // Null when the profile can claim the hotkey; otherwise a localized
+                    // message naming the SoundSwitch system already holding it (ADR
+                    // docs/design/architecture/2026-11-21-shared-mechanism-consolidation.md §D3).
+                    // Passing the profile lets it reclaim its own retained record when a
+                    // previous release failed during deletion.
+                    return _profileHotkeyManager.GetHotkeyConflict(trigger.HotKey, profile);
                 }, () =>
                 {
                     if (string.IsNullOrEmpty(trigger.WindowName) || _profilesByWindowName.ContainsKey(trigger.WindowName.ToLower()))

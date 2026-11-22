@@ -176,6 +176,27 @@
   <data name="hotkey.tooltip" xml:space="preserve">
     <value>Check to enable hotkey.</value>
   </data>
+  <data name="hotkey.conflict" xml:space="preserve">
+    <value>The hotkey {0} is already used by {1}.</value>
+  </data>
+  <data name="hotkey.conflict.external" xml:space="preserve">
+    <value>The hotkey {0} couldn't be registered. It may be used by another application.</value>
+  </data>
+  <data name="hotkey.conflict.owner.playback" xml:space="preserve">
+    <value>the playback switch hotkey</value>
+  </data>
+  <data name="hotkey.conflict.owner.recording" xml:space="preserve">
+    <value>the recording switch hotkey</value>
+  </data>
+  <data name="hotkey.conflict.owner.mute" xml:space="preserve">
+    <value>the mute hotkey</value>
+  </data>
+  <data name="hotkey.conflict.owner.profile" xml:space="preserve">
+    <value>the profile {0}</value>
+  </data>
+  <data name="hotkey.conflict.owner.appRule" xml:space="preserve">
+    <value>the app rule {0}</value>
+  </data>
   <data name="basicSettings" xml:space="preserve">
     <value>Basic Settings</value>
   </data>
