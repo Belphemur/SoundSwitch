@@ -121,7 +121,13 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppSetupName}}"; Filename: "{uninstallex
 Name: "{userdesktop}\{#MyAppSetupName}"; Filename: "{app}\SoundSwitch.exe"; Tasks: desktopicon; AppUserModelID: {#MyAppUserModelId}
 
 [Run]
-Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall;
+; skipifsilent: during a silent update the Restart Manager already relaunches the
+; closed instance (RestartApplications=yes + the app's RegisterApplicationRestart
+; registration); a second start from this entry would lose the user-mutex race and
+; make the surviving instance open its Settings window. Fresh interactive installs
+; keep the postinstall launch. Trade-off: a fresh /VERYSILENT install no longer
+; auto-starts the app (same behaviour as the Readme/Changelog entries below).
+Filename: "{app}\SoundSwitch.exe"; Description: "{cm:LaunchProgram,{#MyAppSetupName}}"; Flags: nowait postinstall skipifsilent;
 Filename: "{app}\Readme.html"; Description: "{cm:ViewReadmeFile}"; Flags: postinstall shellexec skipifsilent
 Filename: "https://soundswitch.aaflalo.me/?utm_source={#MyAppVersion}&utm_campaign=installer#donate"; Description: "{cm:SupportTheProject}"; Flags: postinstall shellexec runasoriginaluser; Check: ShowDonate
 Filename: "{app}\Changelog.html"; Description: "{cm:ViewChangelogFile}"; Flags: postinstall shellexec skipifsilent unchecked
