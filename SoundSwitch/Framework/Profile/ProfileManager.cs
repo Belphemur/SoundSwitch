@@ -45,6 +45,18 @@ public class ProfileManager
     private Profile? _forcedProfile;
 
     /// <summary>
+    /// Serializes profile applications. Trigger events reach this manager unsynchronized on
+    /// threadpool threads (WindowMonitor foreground events, adapter hotkeys, window
+    /// destruction, resume jobs), so two applications can otherwise interleave their
+    /// per-role COM switches: the default device flip-flops and each switch fires its own
+    /// notification (#2580). Monitor is reentrant, and nothing inside the lock may block on
+    /// the UI thread — <see cref="NotificationManager.NotificationManager.NotifyProfileChanged"/>
+    /// (which dispatches banners synchronously to the UI thread) is deliberately called before
+    /// acquiring it.
+    /// </summary>
+    private readonly object _switchLock = new();
+
+    /// <summary>
     /// Name of the most recently triggered profile, or <c>null</c> if no profile
     /// has been triggered since startup. Read by the IPC layer to report the
     /// currently active profile to CLI consumers.
@@ -301,28 +313,47 @@ public class ProfileManager
             return false;
         }
 
-        if (_activeWindowsTrigger.ContainsKey(windowHandle))
+        // Serialized with profile applications: the check-then-capture-then-add sequence
+        // must not race a concurrent trigger event for the same window, and the captured
+        // defaults must not be read while another thread is mid-switch.
+        lock (_switchLock)
         {
-            return false;
+            if (_activeWindowsTrigger.ContainsKey(windowHandle))
+            {
+                return false;
+            }
+
+            // A window destroyed while this activation waited on _switchLock must not get a
+            // restore entry: its destruction event already ran RestoreState, found nothing
+            // and scheduled no restore — no later event removes the entry this TryAdd would
+            // create, so the saved state would leak until the handle value is reused.
+            // Re-check liveness under the lock, the same point the entry is created.
+            // Residual risk: the handle was destroyed and its value recycled by then —
+            // accepted, as everywhere else Win32 handles are compared by value.
+            if (!User32.NativeMethods.IsWindow(windowHandle))
+            {
+                _logger.Debug("Window {WindowHandle} is gone before its restore state was saved; skipping", windowHandle);
+                return false;
+            }
+
+            var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eCommunications);
+            var playback = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
+            var recording = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
+            var recordingCommunication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eCommunications);
+
+            var currentState = new Profile
+            {
+                AlsoSwitchDefaultDevice = true,
+                Name = SettingsStrings.profile_trigger_restoreDevices_title,
+                Communication = communication,
+                Playback = playback,
+                Recording = recording,
+                RecordingCommunication = recordingCommunication,
+                NotifyOnActivation = profile.NotifyOnActivation
+            };
+            _activeWindowsTrigger.TryAdd(windowHandle, currentState);
+            return true;
         }
-
-        var communication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eCommunications);
-        var playback = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
-        var recording = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eMultimedia);
-        var recordingCommunication = _audioSwitcher.GetDefaultAudioEndpoint(EDataFlow.eCapture, ERole.eCommunications);
-
-        var currentState = new Profile
-        {
-            AlsoSwitchDefaultDevice = true,
-            Name = SettingsStrings.profile_trigger_restoreDevices_title,
-            Communication = communication,
-            Playback = playback,
-            Recording = recording,
-            RecordingCommunication = recordingCommunication,
-            NotifyOnActivation = profile.NotifyOnActivation
-        };
-        _activeWindowsTrigger.TryAdd(windowHandle, currentState);
-        return true;
     }
 
     /// <summary>
@@ -392,44 +423,57 @@ public class ProfileManager
     private void SwitchAudio(Profile profile, uint processId, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, processId);
-        if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
+        var missingDeviceErrors = new List<string>();
+        lock (_switchLock)
         {
-            LastTriggeredProfile = profile.Name;
-        }
-
-        var deviceMissing = false;
-        foreach (var device in profile.Devices)
-        {
-            var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
-            if (deviceToUse == null)
+            if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
             {
-                deviceMissing = true;
-                _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
-                continue;
+                LastTriggeredProfile = profile.Name;
             }
 
-            foreach (var role in device.Roles)
+            var deviceMissing = false;
+            foreach (var device in profile.Devices)
             {
-                _audioSwitcher.SwitchProcessTo(
-                    deviceToUse.Id,
-                    role,
-                    deviceToUse.Type,
-                    processId);
-
-                if (profile.AlsoSwitchDefaultDevice)
+                var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
+                if (deviceToUse == null)
                 {
-                    _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                    deviceMissing = true;
+                    missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
+                    continue;
+                }
+
+                foreach (var role in device.Roles)
+                {
+                    _audioSwitcher.SwitchProcessTo(
+                        deviceToUse.Id,
+                        role,
+                        deviceToUse.Type,
+                        processId);
+
+                    if (profile.AlsoSwitchDefaultDevice)
+                    {
+                        _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                    }
+                }
+            }
+
+            if (triggerType.HasValue)
+            {
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+                if (deviceMissing)
+                {
+                    TelemetryService.TrackProfileActivationFailed("device_unavailable");
                 }
             }
         }
 
-        if (triggerType.HasValue)
+        // The balloon tip runs synchronously on the calling thread; showing it under the
+        // lock would stall every other profile switch — including a tray-menu selection on
+        // the UI thread — until the balloon call returns. Same pattern as
+        // NotifyProfileChanged: display after the switch is complete.
+        foreach (var error in missingDeviceErrors)
         {
-            TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
-            if (deviceMissing)
-            {
-                TelemetryService.TrackProfileActivationFailed("device_unavailable");
-            }
+            _showError.Invoke(error, $"{SettingsStrings.profile_error_title}: {profile.Name}");
         }
     }
 
@@ -437,43 +481,54 @@ public class ProfileManager
     public void SwitchAudio(Profile profile, TriggerFactory.Enum? triggerType = null)
     {
         _notificationManager.NotifyProfileChanged(profile, null);
-        if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
+        var missingDeviceErrors = new List<string>();
+        lock (_switchLock)
         {
-            LastTriggeredProfile = profile.Name;
-        }
-        if (profile.SwitchForegroundApp)
-        {
-            _audioSwitcher.ResetProcessDeviceConfiguration();
-        }
-
-        var deviceMissing = false;
-        foreach (var device in profile.Devices)
-        {
-            var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
-            if (deviceToUse == null)
+            if (AppConfigs.Configuration.Profiles.Any(p => p.Name == profile.Name))
             {
-                deviceMissing = true;
-                _showError.Invoke(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean), $"{SettingsStrings.profile_error_title}: {profile.Name}");
-                continue;
+                LastTriggeredProfile = profile.Name;
             }
 
-            foreach (var role in device.Roles)
+            if (profile.SwitchForegroundApp)
             {
-                _audioSwitcher.SwitchTo(deviceToUse.Id, role);
-                if (profile.SwitchForegroundApp)
+                _audioSwitcher.ResetProcessDeviceConfiguration();
+            }
+
+            var deviceMissing = false;
+            foreach (var device in profile.Devices)
+            {
+                var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
+                if (deviceToUse == null)
                 {
-                    _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, role, deviceToUse.Type);
+                    deviceMissing = true;
+                    missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
+                    continue;
+                }
+
+                foreach (var role in device.Roles)
+                {
+                    _audioSwitcher.SwitchTo(deviceToUse.Id, role);
+                    if (profile.SwitchForegroundApp)
+                    {
+                        _audioSwitcher.SwitchForegroundProcessTo(deviceToUse.Id, role, deviceToUse.Type);
+                    }
+                }
+            }
+
+            if (triggerType.HasValue)
+            {
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+                if (deviceMissing)
+                {
+                    TelemetryService.TrackProfileActivationFailed("device_unavailable");
                 }
             }
         }
 
-        if (triggerType.HasValue)
+        // See the private overload above: balloons are shown only once the lock is released.
+        foreach (var error in missingDeviceErrors)
         {
-            TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
-            if (deviceMissing)
-            {
-                TelemetryService.TrackProfileActivationFailed("device_unavailable");
-            }
+            _showError.Invoke(error, $"{SettingsStrings.profile_error_title}: {profile.Name}");
         }
     }
 

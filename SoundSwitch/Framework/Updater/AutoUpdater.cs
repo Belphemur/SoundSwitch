@@ -19,6 +19,7 @@ using System.Windows.Forms;
 
 using Serilog;
 
+using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;
@@ -43,7 +44,19 @@ public class AutoUpdater
         InstallerParameters = installerParameters;
     }
 
-    public void Update(AppRelease appRelease, bool closeApp, Action<bool>? onCompleted = null)
+    /// <summary>
+    /// Download the update and start the installer with the configured parameters.
+    /// </summary>
+    /// <remarks>
+    /// The caller must NOT exit the process after starting the installer: Setup closes the
+    /// running instance through the Windows Restart Manager (CloseApplications=yes in
+    /// setup.iss) — a close our WM_ENDSESSION handler already survives correctly — and
+    /// relaunches the updated executable afterwards (RmRestart + RegisterApplicationRestart
+    /// + /RESTARTAPPLICATIONS). Exiting ourselves up front defeats both: the Restart Manager
+    /// can only relaunch a process it closed itself (#2580). If starting the installer
+    /// fails, the app simply keeps running on the old version.
+    /// </remarks>
+    public void Update(AppRelease appRelease, Action<bool>? onCompleted = null)
     {
         var file = new WebFile(new Uri(appRelease.Asset.BrowserDownloadUrl));
         file.Downloaded += (sender, args) =>
@@ -79,12 +92,30 @@ public class AutoUpdater
             }
 #endif
 
-            new UpdateRunner().RunUpdate(file, InstallerParameters);
-            onCompleted?.Invoke(true);
-            if (closeApp)
+            try
             {
-                _context.Send(s => { Application.Exit(); }, null);
+                new UpdateRunner().RunUpdate(file, InstallerParameters);
             }
+            catch (Exception ex)
+            {
+                // The installer could not be started: stay on the current version and keep
+                // running — do not exit, the Restart Manager never got the chance to take
+                // over the shutdown (#2580).
+                Log.Error(ex, "Failed to launch the update installer; SoundSwitch keeps running on the current version");
+                onCompleted?.Invoke(false);
+                return;
+            }
+
+            // The installer now owns our shutdown. If the Restart Manager's relaunch is
+            // missed (instance younger than the 60 s Windows requires before a registered
+            // process may be restarted, or an old-version updater that self-exited before
+            // the Restart Manager could close it) nothing starts the updated executable:
+            // record the in-flight update so the next start — Restart-Manager relaunch,
+            // logon or manual — can detect and report what happened. Detection and logging
+            // only: a dead process cannot resurrect itself (#2624).
+            PendingRestartMarker.Write(ApplicationPath.Default);
+
+            onCompleted?.Invoke(true);
         };
         file.DownloadFile();
     }

@@ -33,6 +33,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.Theme;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
@@ -129,6 +130,21 @@ internal static class Program
         }
 
 
+        // Must run after single-instance ownership is confirmed (a process that is about to
+        // exit must not be registered for restart) and before any installer can close us.
+        // Without this registration the Restart Manager cannot relaunch SoundSwitch after
+        // an update closed it (#2580).
+        ApplicationRestart.TryRegister();
+
+        // Consume the marker a previous session's update may have left (AutoUpdater writes
+        // it once the installer has taken over the shutdown). Runs before the updater can
+        // write a new one; whether this process is the Restart Manager's relaunch (started
+        // with the marker argument) or a plain start decides the reported case. Consuming
+        // can never start a second instance — only one process holds the user mutex.
+        PendingRestartMarker.TryConsume(ApplicationPath.Default,
+            args != null && args.Any(arg => arg.Equals(ApplicationRestart.RestartCommandLine, StringComparison.OrdinalIgnoreCase)));
+
+
         // DPI awareness is declared in app.manifest (PerMonitorV2) and applied at process
         // creation. Do not call SetProcessDPIAware() or Application.SetHighDpiMode here: they run
         // too late to take effect and would silently downgrade the manifest declaration
@@ -157,9 +173,17 @@ internal static class Program
                     @event.Result = new IntPtr(1);
 
                     break;
+                case WindowsAPIAdapter.RestartManagerEventType.EndSession when !@event.SessionEnding:
+                    // Windows sends WM_ENDSESSION with wParam=0 when another application
+                    // refused the shutdown: the session continues, so keep running. Treating
+                    // every EndSession as fatal made SoundSwitch silently disappear while the
+                    // system kept running (#2580).
+                    Log.Information("Session end cancelled (wParam=0); {Application} keeps running", Application.ProductName);
+                    break;
                 case WindowsAPIAdapter.RestartManagerEventType.EndSession:
                 case WindowsAPIAdapter.RestartManagerEventType.ForceClose:
-                    Log.Debug("Close Application");
+                    Log.Information("Closing application: {EventType} (session ending: {SessionEnding}, restart-manager close: {CloseAppRequested})",
+                        @event.Type, @event.SessionEnding, @event.CloseAppRequested);
                     try
                     {
                         mainCts.Cancel();
@@ -169,6 +193,9 @@ internal static class Program
                         // We're closing anyway
                     }
 
+                    // The file sink buffers for minutes; without an explicit flush the last
+                    // log lines are lost and the exit looks like a silent crash (#2580).
+                    Log.CloseAndFlush();
                     Environment.Exit(0);
                     break;
             }

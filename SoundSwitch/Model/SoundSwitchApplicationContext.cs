@@ -66,8 +66,10 @@ public class SoundSwitchApplicationContext : ApplicationContext
             if (@event.UpdateMode == UpdateMode.Silent)
             {
                 TelemetryService.TrackUpdateAvailable(UpdateMode.Silent);
+                // No exit after starting the installer: Setup closes this instance via the
+                // Restart Manager and relaunches the updated executable (see AutoUpdater.Update).
                 new AutoUpdater("/VERYSILENT").Update(
-                    @event.AppRelease, true,
+                    @event.AppRelease,
                     onCompleted: ok => TelemetryService.TrackUpdateInstalled(UpdateMode.Silent, ok ? "success" : "failed"));
             }
         };
