@@ -43,6 +43,19 @@ public class Profile : IEquatable<Profile>, IDisposable
     public DeviceInfo? Communication { get; set; }
     public DeviceInfo? Recording { get; set; }
     public DeviceInfo? RecordingCommunication { get; set; }
+
+    /// <summary>
+    /// Optional volume preset applied to the profile's render devices on activation.
+    /// Null (absent in JSON) = feature off for playback.
+    /// </summary>
+    public ProfileVolumeSetting? PlaybackVolume { get; set; }
+
+    /// <summary>
+    /// Optional volume preset applied to the profile's capture devices on activation.
+    /// Null (absent in JSON) = feature off for recording.
+    /// </summary>
+    public ProfileVolumeSetting? RecordingVolume { get; set; }
+
     public string Name { get; set; } = "";
     public IList<Trigger.Trigger> Triggers { get; set; } = new List<Trigger.Trigger>();
 
@@ -91,6 +104,8 @@ public class Profile : IEquatable<Profile>, IDisposable
             Playback = Playback,
             Recording = Recording,
             RecordingCommunication = RecordingCommunication,
+            PlaybackVolume = PlaybackVolume?.Copy(),
+            RecordingVolume = RecordingVolume?.Copy(),
             RestoreDevices = RestoreDevices,
             NotifyOnActivation = NotifyOnActivation,
             SwitchForegroundApp = SwitchForegroundApp,

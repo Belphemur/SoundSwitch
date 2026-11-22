@@ -64,10 +64,23 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.communicationBox = new System.Windows.Forms.GroupBox();
             this.switchForegroundCheckbox = new System.Windows.Forms.CheckBox();
+            this.advancedToggleButton = new System.Windows.Forms.Button();
+            this.advancedPanel = new System.Windows.Forms.Panel();
+            this.playbackVolumeBox = new System.Windows.Forms.GroupBox();
+            this.playbackVolumeCheckBox = new System.Windows.Forms.CheckBox();
+            this.playbackVolumeTrackBar = new System.Windows.Forms.TrackBar();
+            this.playbackVolumeValueLabel = new System.Windows.Forms.Label();
+            this.recordingVolumeBox = new System.Windows.Forms.GroupBox();
+            this.recordingVolumeCheckBox = new System.Windows.Forms.CheckBox();
+            this.recordingVolumeTrackBar = new System.Windows.Forms.TrackBar();
+            this.recordingVolumeValueLabel = new System.Windows.Forms.Label();
             this.triggerBox.SuspendLayout();
             this.descriptionBox.SuspendLayout();
             this.profileBox.SuspendLayout();
             this.communicationBox.SuspendLayout();
+            this.advancedPanel.SuspendLayout();
+            this.playbackVolumeBox.SuspendLayout();
+            this.recordingVolumeBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // triggerBox
@@ -86,7 +99,7 @@
             this.triggerBox.Controls.Add(this.addTriggerButton);
             this.triggerBox.Controls.Add(this.availableTriggersText);
             this.triggerBox.Controls.Add(this.setTriggerBox);
-            this.triggerBox.Location = new System.Drawing.Point(14, 382);
+            this.triggerBox.Location = new System.Drawing.Point(14, 415);
             this.triggerBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.triggerBox.Name = "triggerBox";
             this.triggerBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -480,7 +493,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.saveButton.Location = new System.Drawing.Point(621, 627);
+            this.saveButton.Location = new System.Drawing.Point(621, 660);
             this.saveButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(60, 30);
@@ -488,6 +501,122 @@
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // advancedToggleButton
+            // 
+            this.advancedToggleButton.Location = new System.Drawing.Point(14, 382);
+            this.advancedToggleButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.advancedToggleButton.Name = "advancedToggleButton";
+            this.advancedToggleButton.Size = new System.Drawing.Size(100, 27);
+            this.advancedToggleButton.TabIndex = 4;
+            this.advancedToggleButton.Text = "Advanced";
+            this.advancedToggleButton.UseVisualStyleBackColor = true;
+            this.advancedToggleButton.Click += new System.EventHandler(this.AdvancedToggleButton_Click);
+            // 
+            // advancedPanel
+            // 
+            this.advancedPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.advancedPanel.Controls.Add(this.playbackVolumeBox);
+            this.advancedPanel.Controls.Add(this.recordingVolumeBox);
+            this.advancedPanel.Location = new System.Drawing.Point(14, 415);
+            this.advancedPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.advancedPanel.Name = "advancedPanel";
+            this.advancedPanel.Size = new System.Drawing.Size(668, 158);
+            this.advancedPanel.TabIndex = 5;
+            this.advancedPanel.Visible = false;
+            // 
+            // playbackVolumeBox
+            // 
+            this.playbackVolumeBox.Controls.Add(this.playbackVolumeCheckBox);
+            this.playbackVolumeBox.Controls.Add(this.playbackVolumeTrackBar);
+            this.playbackVolumeBox.Controls.Add(this.playbackVolumeValueLabel);
+            this.playbackVolumeBox.Location = new System.Drawing.Point(0, 0);
+            this.playbackVolumeBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.playbackVolumeBox.Name = "playbackVolumeBox";
+            this.playbackVolumeBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.playbackVolumeBox.Size = new System.Drawing.Size(668, 76);
+            this.playbackVolumeBox.TabIndex = 0;
+            this.playbackVolumeBox.TabStop = false;
+            this.playbackVolumeBox.Text = "Playback";
+            // 
+            // playbackVolumeCheckBox
+            // 
+            this.playbackVolumeCheckBox.AutoSize = true;
+            this.playbackVolumeCheckBox.Location = new System.Drawing.Point(13, 26);
+            this.playbackVolumeCheckBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.playbackVolumeCheckBox.Name = "playbackVolumeCheckBox";
+            this.playbackVolumeCheckBox.Size = new System.Drawing.Size(90, 19);
+            this.playbackVolumeCheckBox.TabIndex = 0;
+            this.playbackVolumeCheckBox.Text = "Set volume";
+            this.playbackVolumeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // playbackVolumeTrackBar
+            // 
+            this.playbackVolumeTrackBar.LargeChange = 10;
+            this.playbackVolumeTrackBar.Location = new System.Drawing.Point(170, 18);
+            this.playbackVolumeTrackBar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.playbackVolumeTrackBar.Maximum = 100;
+            this.playbackVolumeTrackBar.Name = "playbackVolumeTrackBar";
+            this.playbackVolumeTrackBar.Size = new System.Drawing.Size(350, 45);
+            this.playbackVolumeTrackBar.TabIndex = 1;
+            this.playbackVolumeTrackBar.TickFrequency = 10;
+            // 
+            // playbackVolumeValueLabel
+            // 
+            this.playbackVolumeValueLabel.AutoSize = true;
+            this.playbackVolumeValueLabel.Location = new System.Drawing.Point(530, 33);
+            this.playbackVolumeValueLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.playbackVolumeValueLabel.Name = "playbackVolumeValueLabel";
+            this.playbackVolumeValueLabel.Size = new System.Drawing.Size(32, 15);
+            this.playbackVolumeValueLabel.TabIndex = 2;
+            this.playbackVolumeValueLabel.Text = "50%";
+            // 
+            // recordingVolumeBox
+            // 
+            this.recordingVolumeBox.Controls.Add(this.recordingVolumeCheckBox);
+            this.recordingVolumeBox.Controls.Add(this.recordingVolumeTrackBar);
+            this.recordingVolumeBox.Controls.Add(this.recordingVolumeValueLabel);
+            this.recordingVolumeBox.Location = new System.Drawing.Point(0, 82);
+            this.recordingVolumeBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.recordingVolumeBox.Name = "recordingVolumeBox";
+            this.recordingVolumeBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.recordingVolumeBox.Size = new System.Drawing.Size(668, 76);
+            this.recordingVolumeBox.TabIndex = 1;
+            this.recordingVolumeBox.TabStop = false;
+            this.recordingVolumeBox.Text = "Recording";
+            // 
+            // recordingVolumeCheckBox
+            // 
+            this.recordingVolumeCheckBox.AutoSize = true;
+            this.recordingVolumeCheckBox.Location = new System.Drawing.Point(13, 26);
+            this.recordingVolumeCheckBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.recordingVolumeCheckBox.Name = "recordingVolumeCheckBox";
+            this.recordingVolumeCheckBox.Size = new System.Drawing.Size(90, 19);
+            this.recordingVolumeCheckBox.TabIndex = 0;
+            this.recordingVolumeCheckBox.Text = "Set volume";
+            this.recordingVolumeCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // recordingVolumeTrackBar
+            // 
+            this.recordingVolumeTrackBar.LargeChange = 10;
+            this.recordingVolumeTrackBar.Location = new System.Drawing.Point(170, 18);
+            this.recordingVolumeTrackBar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.recordingVolumeTrackBar.Maximum = 100;
+            this.recordingVolumeTrackBar.Name = "recordingVolumeTrackBar";
+            this.recordingVolumeTrackBar.Size = new System.Drawing.Size(350, 45);
+            this.recordingVolumeTrackBar.TabIndex = 1;
+            this.recordingVolumeTrackBar.TickFrequency = 10;
+            // 
+            // recordingVolumeValueLabel
+            // 
+            this.recordingVolumeValueLabel.AutoSize = true;
+            this.recordingVolumeValueLabel.Location = new System.Drawing.Point(530, 33);
+            this.recordingVolumeValueLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.recordingVolumeValueLabel.Name = "recordingVolumeValueLabel";
+            this.recordingVolumeValueLabel.Size = new System.Drawing.Size(32, 15);
+            this.recordingVolumeValueLabel.TabIndex = 2;
+            this.recordingVolumeValueLabel.Text = "50%";
             // 
             // communicationBox
             // 
@@ -521,13 +650,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(694, 660);
+            this.ClientSize = new System.Drawing.Size(694, 693);
             this.Controls.Add(this.communicationBox);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.profileBox);
             this.Controls.Add(this.triggerBox);
+            this.Controls.Add(this.advancedToggleButton);
+            this.Controls.Add(this.advancedPanel);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MinimumSize = new System.Drawing.Size(710, 640);
+            this.MinimumSize = new System.Drawing.Size(710, 673);
             this.Name = "UpsertProfileExtended";
             this.Text = "UpsertProfileExtended";
             this.triggerBox.ResumeLayout(false);
@@ -537,6 +668,11 @@
             this.profileBox.PerformLayout();
             this.communicationBox.ResumeLayout(false);
             this.communicationBox.PerformLayout();
+            this.advancedPanel.ResumeLayout(false);
+            this.playbackVolumeBox.ResumeLayout(false);
+            this.playbackVolumeBox.PerformLayout();
+            this.recordingVolumeBox.ResumeLayout(false);
+            this.recordingVolumeBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -579,5 +715,15 @@
         private Component.IconTextComboBox communicationRecordingComboBox;
         private System.Windows.Forms.GroupBox communicationBox;
         private System.Windows.Forms.CheckBox switchForegroundCheckbox;
+        private System.Windows.Forms.Button advancedToggleButton;
+        private System.Windows.Forms.Panel advancedPanel;
+        private System.Windows.Forms.GroupBox playbackVolumeBox;
+        private System.Windows.Forms.CheckBox playbackVolumeCheckBox;
+        private System.Windows.Forms.TrackBar playbackVolumeTrackBar;
+        private System.Windows.Forms.Label playbackVolumeValueLabel;
+        private System.Windows.Forms.GroupBox recordingVolumeBox;
+        private System.Windows.Forms.CheckBox recordingVolumeCheckBox;
+        private System.Windows.Forms.TrackBar recordingVolumeTrackBar;
+        private System.Windows.Forms.Label recordingVolumeValueLabel;
     }
 }

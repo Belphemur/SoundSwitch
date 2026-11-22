@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 using RailSharp;
 using RailSharp.Internal.Result;
@@ -43,6 +44,7 @@ public class ProfileManager
 
     private Profile? _steamProfile;
     private Profile? _forcedProfile;
+    private readonly ProfileVolumeApplier _volumeApplier;
 
     /// <summary>
     /// Serializes profile applications. Trigger events reach this manager unsynchronized on
@@ -63,7 +65,28 @@ public class ProfileManager
     /// </summary>
     public string? LastTriggeredProfile { get; private set; }
 
-    private readonly ConcurrentDictionary<User32.NativeMethods.HWND, Profile> _activeWindowsTrigger = new();
+    /// <summary>
+    /// The system state saved when a trigger profile activates: the devices to restore on
+    /// deactivation, plus each saved device's pre-trigger master volume when the trigger
+    /// profile applies volume presets (ADR Q3). A null <see cref="Volumes"/> means the
+    /// activation didn't involve volume and deactivation behaves exactly as before.
+    /// </summary>
+    private sealed class SavedTriggerState
+    {
+        public required Profile Profile { get; init; }
+        public (DeviceInfo Device, float VolumeScalar)[]? Volumes { get; init; }
+
+        /// <summary>
+        /// Activation order: when triggers overlap on an endpoint, the earliest active
+        /// state holding it owns the endpoint's original volume.
+        /// </summary>
+        public int Sequence { get; init; }
+    }
+
+    private readonly ConcurrentDictionary<User32.NativeMethods.HWND, SavedTriggerState> _activeWindowsTrigger = new();
+
+    /// <summary>Monotonically increasing activation order for <see cref="SavedTriggerState.Sequence"/>.</summary>
+    private int _savedStateSequence;
 
     private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profileByApplication = new();
     private readonly Dictionary<string, (Profile Profile, Trigger.Trigger Trigger)> _profilesByWindowName = new();
@@ -94,6 +117,7 @@ public class ProfileManager
         _triggerFactory = triggerFactory;
         _notificationManager = notificationManager;
         _profileHotkeyManager = new(this, appSettings, hotkeyRegistry);
+        _volumeApplier = new ProfileVolumeApplier(audioSwitcher);
         _logger = Log.ForContext(GetType());
     }
 
@@ -351,7 +375,41 @@ public class ProfileManager
                 RecordingCommunication = recordingCommunication,
                 NotifyOnActivation = profile.NotifyOnActivation
             };
-            _activeWindowsTrigger.TryAdd(windowHandle, currentState);
+
+            // ADR Q3: when the trigger profile applies volume presets, remember the volume
+            // of every device the activation overrides — the current defaults (the switch
+            // moves them away) and the profile's resolved targets (the presets write them;
+            // a target is not necessarily the current default) — so deactivation puts each
+            // of them back. Without active presets nothing is applied on activation, so
+            // nothing is snapshotted and deactivation behaves exactly as before.
+            (DeviceInfo Device, float VolumeScalar)[]? volumes = null;
+            if (ProfileVolumeApplier.HasActivePreset(profile))
+            {
+                var presetTargets = profile.Devices
+                    .Select(wrapper => DeviceResolver.Resolve(wrapper.DeviceInfo, _activeDeviceLister))
+                    .OfType<DeviceInfo>();
+                var requestedDevices = ProfileVolumeApplier.DevicesToSnapshot(
+                    new DeviceInfo?[] { communication, playback, recording, recordingCommunication }, presetTargets).ToArray();
+                var read = _volumeApplier.SnapshotVolumes(requestedDevices);
+
+                // Overlapping triggers (review round 1, qodo finding 6): an endpoint a
+                // still-active trigger already recorded must not be re-captured at its
+                // current, overridden volume. Inherit the earliest active record, so the
+                // LAST deactivation restores the endpoint's true pre-trigger volume — also
+                // when this activation's own read of it failed, so it still holds the
+                // endpoint for the overlap bookkeeping.
+                var heldByActive = ProfileVolumeApplier.HeldVolumes(_activeWindowsTrigger.Values
+                    .Where(state => state.Volumes != null)
+                    .Select(state => (state.Sequence, state.Volumes!)));
+                volumes = ProfileVolumeApplier.InheritHeldVolumes(requestedDevices, read, heldByActive);
+            }
+
+            _activeWindowsTrigger.TryAdd(windowHandle, new SavedTriggerState
+            {
+                Profile = currentState,
+                Volumes = volumes,
+                Sequence = Interlocked.Increment(ref _savedStateSequence)
+            });
             return true;
         }
     }
@@ -363,13 +421,39 @@ public class ProfileManager
     /// <returns></returns>
     private bool RestoreState(User32.NativeMethods.HWND windowHandle)
     {
-        if (!_activeWindowsTrigger.TryGetValue(windowHandle, out var oldState))
+        if (!_activeWindowsTrigger.TryGetValue(windowHandle, out var savedState))
         {
             return false;
         }
 
-        SwitchAudio(oldState);
-        oldState.Dispose();
+        SwitchAudio(savedState.Profile);
+
+        // ADR Q3: put back the volumes the trigger's presets overrode, after the
+        // devices themselves are back. Best-effort per device, like the apply: a
+        // failure is logged inside the applier and never fails the restore — except
+        // endpoints a still-active trigger holds (review round 1, qodo finding 6):
+        // its own deactivation owns their volume, so closing this window must not
+        // stomp the active trigger's preset with a stale snapshot.
+        if (savedState.Volumes != null)
+        {
+            var heldByOtherTriggers = ProfileVolumeApplier.HeldVolumes(_activeWindowsTrigger
+                .Where(pair => !pair.Key.Equals(windowHandle))
+                .Select(pair => pair.Value)
+                .Where(state => state.Volumes != null)
+                .Select(state => (state.Sequence, state.Volumes!)));
+            foreach (var (device, volumeScalar) in savedState.Volumes)
+            {
+                if (heldByOtherTriggers.ContainsKey(device.Id))
+                {
+                    _logger.Debug("Volume of {Device} left to the still-active trigger holding it", device.NameClean);
+                    continue;
+                }
+
+                _volumeApplier.Restore(device, volumeScalar);
+            }
+        }
+
+        savedState.Profile.Dispose();
         _activeWindowsTrigger.TryRemove(windowHandle, out _);
         return true;
     }
@@ -432,6 +516,10 @@ public class ProfileManager
             }
 
             var deviceMissing = false;
+            // The telemetry counts devices, not slots: playback and communication often
+            // resolve to the same physical endpoint, so deduplicate by resolved id
+            // (review round 1). Allocated only once a preset actually writes.
+            HashSet<string>? appliedEndpoints = null;
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
@@ -440,6 +528,14 @@ public class ProfileManager
                     deviceMissing = true;
                     missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
                     continue;
+                }
+
+                // Volume preset (ADR Decision 4): applied per resolved device, best-effort —
+                // a failure is logged inside the applier and never fails the switch.
+                if (_volumeApplier.Apply(profile, deviceToUse))
+                {
+                    appliedEndpoints ??= new HashSet<string>(StringComparer.Ordinal);
+                    appliedEndpoints.Add(deviceToUse.Id);
                 }
 
                 foreach (var role in device.Roles)
@@ -459,7 +555,7 @@ public class ProfileManager
 
             if (triggerType.HasValue)
             {
-                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), appliedEndpoints?.Count ?? 0);
                 if (deviceMissing)
                 {
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");
@@ -495,6 +591,10 @@ public class ProfileManager
             }
 
             var deviceMissing = false;
+            // The telemetry counts devices, not slots: playback and communication often
+            // resolve to the same physical endpoint, so deduplicate by resolved id
+            // (review round 1). Allocated only once a preset actually writes.
+            HashSet<string>? appliedEndpoints = null;
             foreach (var device in profile.Devices)
             {
                 var deviceToUse = DeviceResolver.Resolve(device.DeviceInfo, _activeDeviceLister);
@@ -503,6 +603,14 @@ public class ProfileManager
                     deviceMissing = true;
                     missingDeviceErrors.Add(string.Format(SettingsStrings.profile_error_deviceNotFound, device.DeviceInfo.NameClean));
                     continue;
+                }
+
+                // Volume preset (ADR Decision 4): applied per resolved device, best-effort —
+                // a failure is logged inside the applier and never fails the switch.
+                if (_volumeApplier.Apply(profile, deviceToUse))
+                {
+                    appliedEndpoints ??= new HashSet<string>(StringComparer.Ordinal);
+                    appliedEndpoints.Add(deviceToUse.Id);
                 }
 
                 foreach (var role in device.Roles)
@@ -517,7 +625,7 @@ public class ProfileManager
 
             if (triggerType.HasValue)
             {
-                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name);
+                TelemetryService.TrackProfileActivated(triggerType.Value, profile.Name, ProfileVolumeApplier.HasActivePreset(profile), appliedEndpoints?.Count ?? 0);
                 if (deviceMissing)
                 {
                     TelemetryService.TrackProfileActivationFailed("device_unavailable");

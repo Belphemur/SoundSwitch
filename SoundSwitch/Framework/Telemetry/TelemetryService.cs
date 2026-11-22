@@ -102,11 +102,12 @@ public static class TelemetryService
     }
 
 
-    public static void TrackProfileActivated(TriggerFactory.Enum triggerType, string profileName)
+    public static void TrackProfileActivated(TriggerFactory.Enum triggerType, string profileName, bool volumeConfigured = false, int volumeAppliedCount = 0)
     {
         if (!AppConfigs.Configuration.Telemetry) return;
         SentrySdk.Metrics.EmitCounter("soundswitch.profile.activated", 1,
-            Attributes(("trigger_type", triggerType.ToString()), ("profile_id", ProfileHash(profileName))), null);
+            Attributes(("trigger_type", triggerType.ToString()), ("profile_id", ProfileHash(profileName)),
+                ("volume_configured", volumeConfigured), ("volume_applied", volumeAppliedCount)), null);
     }
 
     public static void TrackProfileCreated()
