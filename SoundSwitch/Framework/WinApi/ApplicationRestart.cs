@@ -41,10 +41,10 @@ internal static class ApplicationRestart
     /// <summary>
     /// Marker argument used as the registered restart command line. It must be non-empty:
     /// a <c>null</c> or empty command line REMOVES the registration. The executable name is
-    /// added by the OS; the marker itself is ignored by startup argument handling, which only
-    /// recognises <c>--disable-updater</c>/<c>-s</c> (Program.cs OldMain).
+    /// added by the OS; the marker itself is only read by startup classification
+    /// (Program.OldMain: a process started with it was relaunched by the Restart Manager).
     /// </summary>
-    private const string RestartCommandLine = "--restarted";
+    internal const string RestartCommandLine = "--restarted";
 
     [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern int RegisterApplicationRestart(string? commandLine, uint flags);

@@ -33,6 +33,7 @@ using SoundSwitch.Framework.NotificationManager;
 using SoundSwitch.Framework.Telemetry;
 using SoundSwitch.Framework.Threading;
 using SoundSwitch.Framework.Theme;
+using SoundSwitch.Framework.Updater;
 using SoundSwitch.Framework.WinApi;
 using SoundSwitch.IPC.Pipe;
 using SoundSwitch.IPC.Pipe.Messages.OpenSettings;
@@ -134,6 +135,14 @@ internal static class Program
         // Without this registration the Restart Manager cannot relaunch SoundSwitch after
         // an update closed it (#2580).
         ApplicationRestart.TryRegister();
+
+        // Consume the marker a previous session's update may have left (AutoUpdater writes
+        // it once the installer has taken over the shutdown). Runs before the updater can
+        // write a new one; whether this process is the Restart Manager's relaunch (started
+        // with the marker argument) or a plain start decides the reported case. Consuming
+        // can never start a second instance — only one process holds the user mutex.
+        PendingRestartMarker.TryConsume(ApplicationPath.Default,
+            args != null && args.Any(arg => arg.Equals(ApplicationRestart.RestartCommandLine, StringComparison.OrdinalIgnoreCase)));
 
 
         // DPI awareness is declared in app.manifest (PerMonitorV2) and applied at process

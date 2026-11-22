@@ -19,6 +19,7 @@ using System.Windows.Forms;
 
 using Serilog;
 
+using SoundSwitch.Framework;
 using SoundSwitch.Framework.Updater.Installer;
 using SoundSwitch.Framework.Updater.Releases;
 using SoundSwitch.Localization;
@@ -104,6 +105,15 @@ public class AutoUpdater
                 onCompleted?.Invoke(false);
                 return;
             }
+
+            // The installer now owns our shutdown. If the Restart Manager's relaunch is
+            // missed (instance younger than the 60 s Windows requires before a registered
+            // process may be restarted, or an old-version updater that self-exited before
+            // the Restart Manager could close it) nothing starts the updated executable:
+            // record the in-flight update so the next start — Restart-Manager relaunch,
+            // logon or manual — can detect and report what happened. Detection and logging
+            // only: a dead process cannot resurrect itself (#2624).
+            PendingRestartMarker.Write(ApplicationPath.Default);
 
             onCompleted?.Invoke(true);
         };
