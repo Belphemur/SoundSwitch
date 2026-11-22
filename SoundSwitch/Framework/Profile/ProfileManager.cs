@@ -388,25 +388,6 @@ public class ProfileManager
                 var presetTargets = profile.Devices
                     .Select(wrapper => DeviceResolver.Resolve(wrapper.DeviceInfo, _activeDeviceLister))
                     .OfType<DeviceInfo>();
-                volumes = _volumeApplier.SnapshotVolumes(ProfileVolumeApplier.DevicesToSnapshot(
-                    new DeviceInfo?[] { communication, playback, recording, recordingCommunication }, presetTargets));
-            }
-
-            _activeWindowsTrigger.TryAdd(windowHandle, new SavedTriggerState { Profile = currentState, Volumes = volumes });
-            return true;
-        }
-            // ADR Q3: when the trigger profile applies volume presets, remember the volume
-            // of every device the activation overrides — the current defaults (the switch
-            // moves them away) and the profile's resolved targets (the presets write them;
-            // a target is not necessarily the current default) — so deactivation puts each
-            // of them back. Without active presets nothing is applied on activation, so
-            // nothing is snapshotted and deactivation behaves exactly as before.
-            (DeviceInfo Device, float VolumeScalar)[]? volumes = null;
-            if (ProfileVolumeApplier.HasActivePreset(profile))
-            {
-                var presetTargets = profile.Devices
-                    .Select(wrapper => DeviceResolver.Resolve(wrapper.DeviceInfo, _activeDeviceLister))
-                    .OfType<DeviceInfo>();
                 var requestedDevices = ProfileVolumeApplier.DevicesToSnapshot(
                     new DeviceInfo?[] { communication, playback, recording, recordingCommunication }, presetTargets).ToArray();
                 var read = _volumeApplier.SnapshotVolumes(requestedDevices);
