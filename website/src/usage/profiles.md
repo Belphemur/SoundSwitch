@@ -17,6 +17,7 @@ Each profile consists of:
 |---------|-------------|
 | **Name** | A human-readable label for the profile (shown in notifications and the tray menu). |
 | **Devices** | Playback, Recording, Default Communication Device (playback), and Default Communication Device (recording) to switch to. |
+| **Volume preset** | Optionally set a preferred volume for playback and recording devices when the profile activates. Every activation resets the volume to the preset — a manual tweak made while the profile is active is overridden again by design. |
 | **Triggers** | One or more conditions that activate the profile. |
 | **Also switch default device** | When enabled, the profile sets the Windows default device on activation. |
 | **Also switch the foreground program** | Re-routes the foreground application to the new device in addition to changing the default. Before applying the switch, SoundSwitch resets Windows per-app endpoint assignments for the profile activation to prevent stale routes. |
@@ -72,6 +73,7 @@ Acts as a fallback: whenever the Windows default audio device changes externally
    - **Restore devices when trigger ends** — Restores the previous device state when the trigger ends.
    - **Notify when profile is triggered** — Shows a notification when the profile activates.
    - **Also switch the foreground program** — Routes the currently focused app to the new device and clears stale Windows per-app endpoint assignments first.
+   - **Set volume** (under the collapsed **Advanced** section) — Per flow (Playback / Recording): check **Set volume** and pick a value on the 0–100 slider. The preset is applied on every activation of the profile.
 5. Select target devices for each category:
    - **Playback** — speakers, headphones, HDMI audio, etc.
    - **Recording** — microphones, virtual cables, etc.
@@ -83,7 +85,7 @@ Acts as a fallback: whenever the Windows default audio device changes externally
 
 ## Device Restoration
 
-When an application-triggered or window-triggered profile activates, SoundSwitch **saves the current audio state** before switching. When that application closes or its window loses focus, the saved state is restored — returning the system to the devices that were active before.
+When an application-triggered or window-triggered profile activates, SoundSwitch **saves the current audio state** before switching. When that application closes or its window loses focus, the saved state is restored — returning the system to the devices that were active before. When the profile also has **volume presets**, the pre-trigger volumes are saved and restored alongside the devices.
 
 This feature requires **Restore devices when trigger ends** to be enabled on the profile.
 
