@@ -1,3 +1,21 @@
+## [7.5.0-beta.2](https://github.com/Belphemur/SoundSwitch/compare/v7.5.0-beta.1...v7.5.0-beta.2) (2026-11-23)
+
+### Features
+
+* **banner:** add a Normal/Compact banner style setting, independent of notification lifetime ([d4ba8f2](https://github.com/Belphemur/SoundSwitch/commit/d4ba8f209db8439584786157c30969eaa8975c89))
+* **profile:** per-profile volume presets for playback and recording ([#2625](https://github.com/Belphemur/SoundSwitch/issues/2625)) ([7a68261](https://github.com/Belphemur/SoundSwitch/commit/7a68261b2d9f0896514a9868ff9dfb6fc70baccd)), closes [#2547](https://github.com/Belphemur/SoundSwitch/issues/2547) [#2547](https://github.com/Belphemur/SoundSwitch/issues/2547) [#2547](https://github.com/Belphemur/SoundSwitch/issues/2547) [#2547](https://github.com/Belphemur/SoundSwitch/issues/2547)
+* **settings:** enable Switch Default Communication Device by default on new installs ([#2614](https://github.com/Belphemur/SoundSwitch/issues/2614)) ([4717378](https://github.com/Belphemur/SoundSwitch/commit/47173785890f424aee5c21c1a7355287001df63f))
+* **tools:** add a banner screenshot capture tool for documentation and change review ([747b1b2](https://github.com/Belphemur/SoundSwitch/commit/747b1b2356a8fdaf6f53107fa51cf0cf20e05b87)), closes [#2579](https://github.com/Belphemur/SoundSwitch/issues/2579)
+* **tray-icon:** add a Microphone Mute State systray icon type ([4ce8778](https://github.com/Belphemur/SoundSwitch/commit/4ce8778598bec50c5418bbe8e4ec30976d1db0d1)), closes [#2620](https://github.com/Belphemur/SoundSwitch/issues/2620)
+
+### Bug Fixes
+
+* **app-rules:** name the app and its devices in rule notifications ([45e1a0c](https://github.com/Belphemur/SoundSwitch/commit/45e1a0c68e180f7ef839009b9f76e50c5341c4e9))
+* **app:** survive cancelled session ends, relaunch after silent updates, serialize profile switches ([#2624](https://github.com/Belphemur/SoundSwitch/issues/2624)) ([8cc3e69](https://github.com/Belphemur/SoundSwitch/commit/8cc3e69786ddee301e942498b2006693c7bcd6ce)), closes [#2580](https://github.com/Belphemur/SoundSwitch/issues/2580) [#2580](https://github.com/Belphemur/SoundSwitch/issues/2580) [#2580](https://github.com/Belphemur/SoundSwitch/issues/2580) [#2580](https://github.com/Belphemur/SoundSwitch/issues/2580) [#2580](https://github.com/Belphemur/SoundSwitch/issues/2580)
+* **banner:** apply opacity to persistent mute notifications ([#2577](https://github.com/Belphemur/SoundSwitch/issues/2577)) ([a500c7f](https://github.com/Belphemur/SoundSwitch/commit/a500c7fcb175f985c4dbf55e8c57b0c74039468c))
+* **logging:** ship Information-level logs in Release/Beta/Nightly builds ([#2611](https://github.com/Belphemur/SoundSwitch/issues/2611)) ([1542b4f](https://github.com/Belphemur/SoundSwitch/commit/1542b4fb1d1c6654b7b2168c8b10a7042e962b45))
+* **ui:** point tray Help link to the website Getting Started guide ([174b01b](https://github.com/Belphemur/SoundSwitch/commit/174b01b403311a75598121ca4f10fb1958a49d09)), closes [#2602](https://github.com/Belphemur/SoundSwitch/issues/2602)
+
 ## [7.5.0-beta.1](https://github.com/Belphemur/SoundSwitch/compare/v7.4.1...v7.5.0-beta.1) (2026-11-07)
 
 ### Features
