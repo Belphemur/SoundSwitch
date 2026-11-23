@@ -18,9 +18,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.url }}
           BASE: ${{ github.event.pull_request.base.ref }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
           TITLE: ${{ github.event.pull_request.title }}
         run: |
           set -euo pipefail
+
+          # Renovate bot PRs (dependency updates) are exempt from the template.
+          if [ "$AUTHOR" = "renovate[bot]" ] || [ "$AUTHOR" = "renovate" ]; then
+            echo "⏭️ Skipping validation: PR authored by $AUTHOR (Renovate bot)."
+            exit 0
+          fi
 
           BODY=$(gh api "$PR_URL" --jq '.body // ""')
           fail=0
