@@ -37,6 +37,17 @@ Apply **DRY > SOLID > KISS** in that priority order when they conflict. The deta
 
 Significant changes (new/reworked user-facing features, cross-project changes, schema migrations, or changes with real design alternatives) get an ADR under `docs/design/<topic>/<YYYY-MM-DD>-<slug>.md` **before** implementation. Load the `design-docs` skill ([`.opencode/skills/design-docs/SKILL.md`](./.opencode/skills/design-docs/SKILL.md); template at [`TEMPLATE.md`](./.opencode/skills/design-docs/TEMPLATE.md)) when the user asks for an ADR or when planning such a change. When implementing a change that already has an ADR, read the ADR first and keep it current in the same PR.
 
+## Pull Requests
+
+Every pull request — human **or** AI-generated — MUST follow the repository PR template ([`.github/pull_request_template.md`](.github/pull_request_template.md)):
+
+- Target the `dev` branch. `main` is release-only; PRs aimed elsewhere are closed or redirected.
+- Fill the **Summary (Human-Readable)** section: short `Why` and `How` for the maintainer.
+- Fill the **AI Disclosure** section: answer Yes/No; if AI was involved, name the agent/framework, model, provider, scope of involvement, and how the output was reviewed. Include the full technical explanation written by the agent.
+- Complete the **Checklist**.
+
+The `PR Validator` workflow enforces the required sections and the `dev` base branch as a required check — a PR that skips them will not merge.
+
 ## Pull Request Reviews
 
 To answer and close out GitHub review threads (CodeRabbit, Kody, or human), load the `answer-pull-request-reviews` skill ([`.agents/skills/answer-pull-request-reviews/SKILL.md`](./.agents/skills/answer-pull-request-reviews/SKILL.md)); it drives `tools/Review-Threads.ps1` to list threads via the gh CLI, decide fix-vs-push-back per thread, then reply and resolve until zero remain.
