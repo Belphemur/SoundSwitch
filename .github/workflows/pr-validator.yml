@@ -1,0 +1,67 @@
+name: PR Validator
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, ready_for_review, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate:
+    name: Validate PR body and base branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check base branch and required sections
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.url }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+
+          BODY=$(gh api "$PR_URL" --jq '.body // ""')
+          fail=0
+
+          if [ "$BASE" != "dev" ]; then
+            echo "❌ PR must target the 'dev' branch (got: '$BASE'). 'main' is release-only."
+            fail=1
+          else
+            echo "✅ Base branch is 'dev'"
+          fi
+
+          check_section() {
+            local header="$1"
+            if grep -Fq "$header" <<< "$BODY"; then
+              echo "✅ Found section: $header"
+            else
+              echo "❌ Missing section: $header"
+              fail=1
+            fi
+          }
+
+          check_section "🎯 Summary (Human-Readable)"
+          check_section "🤖 AI Disclosure"
+          check_section "✅ Checklist"
+
+          # AI disclosure must be answered (not left as a bare HTML comment placeholder)
+          if grep -Fq '<!-- Yes / No -->' <<< "$BODY"; then
+            echo "❌ AI Disclosure not answered: replace the '<!-- Yes / No -->' placeholder with Yes or No."
+            fail=1
+          fi
+
+          # Summary must not be empty (the '**Why:**' line must have content after it)
+          if ! awk '/\*\*Why:\*\*/{found=1; next} found && $0 !~ /^[[:space:]]*$/ {exit 0} END{exit 1}' <<< "$BODY"; then
+            echo "❌ Summary 'Why:' is empty — write one or two sentences for the maintainer."
+            fail=1
+          fi
+
+          if [ "$fail" -ne 0 ]; then
+            echo ""
+            echo "See .github/pull_request_template.md for the expected structure."
+            exit 1
+          fi
+
+          echo "✅ PR body and base branch valid"
