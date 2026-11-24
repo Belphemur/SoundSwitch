@@ -33,12 +33,15 @@ public class MMNotificationClient : IDisposable
 
     // Optimistic-concurrency guard for ReconcileDefaultDevices. The OS snapshot is taken
     // OUTSIDE _lastRoleDeviceLock (a COM-thread call or AudioDevice disposal under the lock
-    // deadlocks on resume — see ReconcileDefaultDevices), so a notification can commit a newer
-    // default device between the snapshot and the locked compare-and-set. Reconcile captures
-    // the role's revision before the lookup and commits only if it is unchanged; a real
-    // notification commit bumps the revision, superseding the stale snapshot. Entries are
-    // implicitly 0 and this map is accessed ONLY under _lastRoleDeviceLock, which keeps
-    // OnDefaultDeviceChanged nonblocking (no COM calls, no extra waits).
+    // deadlocks on resume — see ReconcileDefaultDevices), so a notification can change the
+    // default between the snapshot and the locked compare-and-set. Reconcile captures the
+    // role's revision before the lookup and commits only if it is unchanged. EVERY observed
+    // notification bumps the revision — including no-ops whose id already equals the cache,
+    // because the OS default may have flipped back to the cached id while the snapshot was in
+    // flight (A -> B -> A). A no-op bump can therefore discard a still-correct snapshot; that
+    // is the safe direction: no stale write, and the next notification or reconcile
+    // re-captures the true state. Entries are implicitly 0 and this map is accessed ONLY under
+    // _lastRoleDeviceLock, which keeps OnDefaultDeviceChanged nonblocking (no COM calls).
     private readonly Dictionary<DeviceRole, int> _roleRevision = new();
 
     private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
@@ -164,15 +167,21 @@ public class MMNotificationClient : IDisposable
                 var deviceId = device.Id;
                 using (_lastRoleDeviceLock.EnterScope())
                 {
-                    // A notification committed for this role since the revision capture: its
-                    // state is newer than this snapshot, so discard the snapshot entirely —
-                    // no write, no stale event.
+                    // A notification was observed for this role since the revision capture —
+                    // including a no-op whose id already equals the cache, because the OS
+                    // default may have flipped back to the cached id while this snapshot was
+                    // being read. Discard the snapshot entirely: no write, no stale event.
                     if (_roleRevision.TryGetValue(deviceRole, out var current) && current != revision)
                     {
                         continue;
                     }
 
-                    TryCommitDefaultDevice(deviceRole, deviceId, revision);
+                    if (TryCommitDefaultDevice(deviceRole, deviceId))
+                    {
+                        // Keep overlapping reconciles ordered: one that captured the revision
+                        // before this write will discard its own (possibly older) snapshot.
+                        IncrementRoleRevision(deviceRole);
+                    }
                 }
             }
         }
@@ -186,26 +195,37 @@ public class MMNotificationClient : IDisposable
         var deviceRole = new DeviceRole(e.Flow, e.Role);
         using (_lastRoleDeviceLock.EnterScope())
         {
-            // A no-op notification (cached id already equal) commits nothing and must not
-            // invalidate an in-flight reconcile — only real writes bump the revision.
-            var revision = _roleRevision.TryGetValue(deviceRole, out var current) ? current : 0;
-            TryCommitDefaultDevice(deviceRole, e.DeviceId, revision);
+            // Every observed notification — no-op or not — invalidates an in-flight reconcile
+            // snapshot: the OS default may have flipped back to the cached id while the
+            // snapshot read a device that no longer is the default (A -> B -> A). Discarding
+            // the snapshot is the safe direction; the next notification or reconcile
+            // re-captures the true state.
+            IncrementRoleRevision(deviceRole);
+            TryCommitDefaultDevice(deviceRole, e.DeviceId);
         }
+    }
+
+    /// <summary>
+    /// Advance the role's revision, invalidating any in-flight reconcile snapshot for it.
+    /// Must be called while holding <see cref="_lastRoleDeviceLock"/>.
+    /// </summary>
+    private void IncrementRoleRevision(DeviceRole deviceRole)
+    {
+        _roleRevision[deviceRole] = _roleRevision.TryGetValue(deviceRole, out var current) ? current + 1 : 1;
     }
 
     /// <summary>
     /// Commit a default-device observation to the cache and enqueue the change event.
     /// Must be called while holding <see cref="_lastRoleDeviceLock"/>. Returns false when the
-    /// cached id already equals <paramref name="deviceId"/> (dedupe, no revision bump); true
-    /// after storing the id, bumping <see cref="_roleRevision"/> and enqueuing the event.
+    /// cached id already equals <paramref name="deviceId"/> (dedupe); true after storing the
+    /// id and enqueuing the event. Revision advancement is the caller's responsibility.
     /// </summary>
-    private bool TryCommitDefaultDevice(DeviceRole deviceRole, string deviceId, int revision)
+    private bool TryCommitDefaultDevice(DeviceRole deviceRole, string deviceId)
     {
         if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
             return false;
 
         _lastRoleDevice[deviceRole] = deviceId;
-        _roleRevision[deviceRole] = revision + 1;
         _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, deviceRole.Role));
         return true;
     }
