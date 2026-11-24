@@ -133,20 +133,27 @@ public class MMNotificationClient : IDisposable
         {
             foreach (var role in Enum.GetValues<ERole>().Where(role => role != ERole.ERole_enum_count))
             {
+                // The COM-thread call and the AudioDevice disposal must happen OUTSIDE the lock:
+                // both wait on the ComThread, which can in turn wait on a notification callback
+                // blocked in OnDefaultDeviceChanged for this same lock — holding it here would
+                // deadlock on resume. Only the compare-and-set is done under the lock, mirroring
+                // OnDefaultDeviceChanged so a concurrent notification landing between the
+                // snapshot and the commit still wins.
+                using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
+                if (device == null)
+                    continue;
+
+                var deviceId = device.Id;
+                var deviceRole = new DeviceRole(flow, role);
                 using (_lastRoleDeviceLock.EnterScope())
                 {
-                    using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
-                    if (device == null)
-                        continue;
-
-                    var deviceRole = new DeviceRole(flow, role);
-                    if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == device.Id)
+                    if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
                     {
                         continue;
                     }
 
-                    _lastRoleDevice[deviceRole] = device.Id;
-                    _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, device.Id, role));
+                    _lastRoleDevice[deviceRole] = deviceId;
+                    _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, role));
                 }
             }
         }
