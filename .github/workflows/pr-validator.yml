@@ -60,7 +60,9 @@ jobs:
           fi
 
           # Summary must not be empty (the '**Why:**' line must have content after it)
-          if ! awk '/\*\*Why:\*\*/{found=1; next} found && $0 !~ /^[[:space:]]*$/ {exit 0} END{exit 1}' <<< "$BODY"; then
+          # 'exit' inside a rule jumps to END, so the pass must be recorded in a flag
+          # and honoured there — END's own exit is the only one that counts.
+          if ! awk '/\*\*Why:\*\*/{found=1; next} found && $0 !~ /^[[:space:]]*$/ {ok=1; exit} END{exit ok ? 0 : 1}' <<< "$BODY"; then
             echo "❌ Summary 'Why:' is empty — write one or two sentences for the maintainer."
             fail=1
           fi
