@@ -31,6 +31,22 @@ public class MMNotificationClient : IDisposable
     private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
     private readonly Lock _lastRoleDeviceLock = new();
 
+    // Optimistic-concurrency guard for ReconcileDefaultDevices. The OS snapshot is taken
+    // OUTSIDE _lastRoleDeviceLock (a COM-thread call or AudioDevice disposal under the lock
+    // deadlocks on resume — see ReconcileDefaultDevices), so a notification can change the
+    // default between the snapshot and the locked compare-and-set. Reconcile captures the
+    // role's revision before each lookup and commits only if it is unchanged. EVERY observed
+    // notification bumps the revision — including no-ops whose id already equals the cache,
+    // because the OS default may have flipped back to the cached id while the snapshot was in
+    // flight (A -> B -> A). A superseded snapshot is NOT dropped: the reconcile re-captures
+    // the revision and re-reads the OS default (bounded retry), so an older overlapping
+    // snapshot can never replace a newer one AND a discarded newer snapshot is retried rather
+    // than left stale. A no-op bump can discard a still-correct snapshot; that is the safe
+    // direction: no stale write, and the retried read re-captures the true state. Entries are
+    // implicitly 0 and this map is accessed ONLY under _lastRoleDeviceLock, which keeps
+    // OnDefaultDeviceChanged nonblocking (no COM calls).
+    private readonly Dictionary<DeviceRole, int> _roleRevision = new();
+
     private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
 
     /// <summary>
@@ -133,20 +149,62 @@ public class MMNotificationClient : IDisposable
         {
             foreach (var role in Enum.GetValues<ERole>().Where(role => role != ERole.ERole_enum_count))
             {
-                using (_lastRoleDeviceLock.EnterScope())
-                {
-                    using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
-                    if (device == null)
-                        continue;
+                var deviceRole = new DeviceRole(flow, role);
+                var committed = false;
+                var superseded = false;
 
-                    var deviceRole = new DeviceRole(flow, role);
-                    if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == device.Id)
+                // Bounded re-read loop: a superseded snapshot is retried with a fresh revision
+                // capture and a fresh OS read, so an older overlapping snapshot can never
+                // replace a newer one and a discarded newer snapshot is not simply dropped.
+                for (var attempt = 0; attempt < 3 && !committed; attempt++)
+                {
+                    // Capture the role's revision before the COM lookup, in its own short lock
+                    // scope — never held across the COM call (deadlock, see below).
+                    int revision;
+                    using (_lastRoleDeviceLock.EnterScope())
                     {
-                        continue;
+                        revision = _roleRevision.TryGetValue(deviceRole, out var current) ? current : 0;
                     }
 
-                    _lastRoleDevice[deviceRole] = device.Id;
-                    _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, device.Id, role));
+                    // The COM-thread call and the AudioDevice disposal must happen OUTSIDE the
+                    // lock: both wait on the ComThread, which can in turn wait for a
+                    // notification callback blocked in OnDefaultDeviceChanged for this same
+                    // lock — holding it here would deadlock on resume.
+                    using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
+                    if (device == null)
+                        break;
+
+                    var deviceId = device.Id;
+                    using (_lastRoleDeviceLock.EnterScope())
+                    {
+                        // A notification was observed for this role since the revision capture —
+                        // including a no-op whose id already equals the cache, because the OS
+                        // default may have flipped back to the cached id while this snapshot was
+                        // being read. Discard this attempt and re-read: the OS default may have
+                        // moved on from what the snapshot saw.
+                        if (_roleRevision.TryGetValue(deviceRole, out var current) && current != revision)
+                        {
+                            superseded = true;
+                            continue;
+                        }
+
+                        if (TryCommitDefaultDevice(deviceRole, deviceId))
+                        {
+                            // Keep overlapping reconciles ordered: one that captured the
+                            // revision before this write will discard its own (possibly older)
+                            // snapshot and re-read.
+                            IncrementRoleRevision(deviceRole);
+                        }
+
+                        committed = true;
+                    }
+                }
+
+                if (!committed && superseded)
+                {
+                    _logger.Information(
+                        "Reconcile for flow {Flow} role {Role} was superseded on every attempt; deferring to the next device notification or reconcile.",
+                        flow, role);
                 }
             }
         }
@@ -160,14 +218,39 @@ public class MMNotificationClient : IDisposable
         var deviceRole = new DeviceRole(e.Flow, e.Role);
         using (_lastRoleDeviceLock.EnterScope())
         {
-            if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == e.DeviceId)
-            {
-                return;
-            }
-
-            _lastRoleDevice[deviceRole] = e.DeviceId;
-            _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, e.DeviceId, e.Role));
+            // Every observed notification — no-op or not — invalidates an in-flight reconcile
+            // snapshot: the OS default may have flipped back to the cached id while the
+            // snapshot read a device that no longer is the default (A -> B -> A). Discarding
+            // the snapshot is the safe direction; the next notification or reconcile
+            // re-captures the true state.
+            IncrementRoleRevision(deviceRole);
+            TryCommitDefaultDevice(deviceRole, e.DeviceId);
         }
+    }
+
+    /// <summary>
+    /// Advance the role's revision, invalidating any in-flight reconcile snapshot for it.
+    /// Must be called while holding <see cref="_lastRoleDeviceLock"/>.
+    /// </summary>
+    private void IncrementRoleRevision(DeviceRole deviceRole)
+    {
+        _roleRevision[deviceRole] = _roleRevision.TryGetValue(deviceRole, out var current) ? current + 1 : 1;
+    }
+
+    /// <summary>
+    /// Commit a default-device observation to the cache and enqueue the change event.
+    /// Must be called while holding <see cref="_lastRoleDeviceLock"/>. Returns false when the
+    /// cached id already equals <paramref name="deviceId"/> (dedupe); true after storing the
+    /// id and enqueuing the event. Revision advancement is the caller's responsibility.
+    /// </summary>
+    private bool TryCommitDefaultDevice(DeviceRole deviceRole, string deviceId)
+    {
+        if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
+            return false;
+
+        _lastRoleDevice[deviceRole] = deviceId;
+        _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, deviceRole.Role));
+        return true;
     }
 
     private void OnPropertyValueChanged(object sender, DevicePropertyChangedEventArgs e)
