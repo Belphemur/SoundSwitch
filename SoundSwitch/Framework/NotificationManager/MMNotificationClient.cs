@@ -31,6 +31,16 @@ public class MMNotificationClient : IDisposable
     private readonly Dictionary<DeviceRole, string> _lastRoleDevice = new();
     private readonly Lock _lastRoleDeviceLock = new();
 
+    // Optimistic-concurrency guard for ReconcileDefaultDevices. The OS snapshot is taken
+    // OUTSIDE _lastRoleDeviceLock (a COM-thread call or AudioDevice disposal under the lock
+    // deadlocks on resume — see ReconcileDefaultDevices), so a notification can commit a newer
+    // default device between the snapshot and the locked compare-and-set. Reconcile captures
+    // the role's revision before the lookup and commits only if it is unchanged; a real
+    // notification commit bumps the revision, superseding the stale snapshot. Entries are
+    // implicitly 0 and this map is accessed ONLY under _lastRoleDeviceLock, which keeps
+    // OnDefaultDeviceChanged nonblocking (no COM calls, no extra waits).
+    private readonly Dictionary<DeviceRole, int> _roleRevision = new();
+
     private readonly ConcurrentQueue<DeviceChangedEvent> _deviceChangedEvents = new();
 
     /// <summary>
@@ -133,27 +143,36 @@ public class MMNotificationClient : IDisposable
         {
             foreach (var role in Enum.GetValues<ERole>().Where(role => role != ERole.ERole_enum_count))
             {
+                var deviceRole = new DeviceRole(flow, role);
+
+                // Capture the role's revision before the COM lookup, in its own short lock
+                // scope — never held across the COM call (deadlock, see above).
+                int revision;
+                using (_lastRoleDeviceLock.EnterScope())
+                {
+                    revision = _roleRevision.TryGetValue(deviceRole, out var current) ? current : 0;
+                }
+
                 // The COM-thread call and the AudioDevice disposal must happen OUTSIDE the lock:
-                // both wait on the ComThread, which can in turn wait on a notification callback
+                // both wait on the ComThread, which can in turn wait for a notification callback
                 // blocked in OnDefaultDeviceChanged for this same lock — holding it here would
-                // deadlock on resume. Only the compare-and-set is done under the lock, mirroring
-                // OnDefaultDeviceChanged so a concurrent notification landing between the
-                // snapshot and the commit still wins.
+                // deadlock on resume.
                 using var device = AudioSwitcher.Instance.GetDefaultAudioDevice(flow, role);
                 if (device == null)
                     continue;
 
                 var deviceId = device.Id;
-                var deviceRole = new DeviceRole(flow, role);
                 using (_lastRoleDeviceLock.EnterScope())
                 {
-                    if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
+                    // A notification committed for this role since the revision capture: its
+                    // state is newer than this snapshot, so discard the snapshot entirely —
+                    // no write, no stale event.
+                    if (_roleRevision.TryGetValue(deviceRole, out var current) && current != revision)
                     {
                         continue;
                     }
 
-                    _lastRoleDevice[deviceRole] = deviceId;
-                    _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, role));
+                    TryCommitDefaultDevice(deviceRole, deviceId, revision);
                 }
             }
         }
@@ -167,14 +186,28 @@ public class MMNotificationClient : IDisposable
         var deviceRole = new DeviceRole(e.Flow, e.Role);
         using (_lastRoleDeviceLock.EnterScope())
         {
-            if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == e.DeviceId)
-            {
-                return;
-            }
-
-            _lastRoleDevice[deviceRole] = e.DeviceId;
-            _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, e.DeviceId, e.Role));
+            // A no-op notification (cached id already equal) commits nothing and must not
+            // invalidate an in-flight reconcile — only real writes bump the revision.
+            var revision = _roleRevision.TryGetValue(deviceRole, out var current) ? current : 0;
+            TryCommitDefaultDevice(deviceRole, e.DeviceId, revision);
         }
+    }
+
+    /// <summary>
+    /// Commit a default-device observation to the cache and enqueue the change event.
+    /// Must be called while holding <see cref="_lastRoleDeviceLock"/>. Returns false when the
+    /// cached id already equals <paramref name="deviceId"/> (dedupe, no revision bump); true
+    /// after storing the id, bumping <see cref="_roleRevision"/> and enqueuing the event.
+    /// </summary>
+    private bool TryCommitDefaultDevice(DeviceRole deviceRole, string deviceId, int revision)
+    {
+        if (_lastRoleDevice.TryGetValue(deviceRole, out var oldDeviceId) && oldDeviceId == deviceId)
+            return false;
+
+        _lastRoleDevice[deviceRole] = deviceId;
+        _roleRevision[deviceRole] = revision + 1;
+        _deviceChangedEvents.Enqueue(new DefaultDeviceChangedEvent(EventType.DefaultChanged, deviceId, deviceRole.Role));
+        return true;
     }
 
     private void OnPropertyValueChanged(object sender, DevicePropertyChangedEventArgs e)
